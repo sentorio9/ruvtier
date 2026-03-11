@@ -20,17 +20,17 @@ const Index = () => {
       {/* Section 1 — Arrival */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-[center_40%] md:bg-[center_35%]"
           style={{ backgroundImage: `url(${heroImage})` }}
         >
-          <div className="absolute inset-0 bg-background/60" />
+          <div className="absolute inset-0 bg-background/55" />
         </div>
-        <div className="relative z-10 text-center px-6">
+        <div className="relative z-10 text-center px-6 -mt-8 md:-mt-12">
           <ScrollFadeIn>
-            <h1 className="luxury-heading-lg mb-6 uppercase">R U V T I E R</h1>
+            <h1 className="luxury-heading-lg mb-5 uppercase">R U V T I E R</h1>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.2}>
-            <p className="luxury-body mx-auto mb-8 text-center">
+            <p className="luxury-body mx-auto mb-10 text-center">
               Permanence in garment form
             </p>
           </ScrollFadeIn>

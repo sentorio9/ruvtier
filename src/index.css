@@ -81,7 +81,6 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif);
     font-weight: 300;
-    text-transform: uppercase;
     letter-spacing: var(--luxury-tracking);
   }
 }
@@ -91,7 +90,6 @@
     font-family: var(--font-serif);
     font-weight: 300;
     font-size: clamp(40px, 5vw, 60px);
-    text-transform: uppercase;
     letter-spacing: var(--luxury-tracking-wide);
     line-height: 1.1;
     color: hsl(var(--foreground));
@@ -101,7 +99,6 @@
     font-family: var(--font-serif);
     font-weight: 300;
     font-size: clamp(28px, 3.5vw, 40px);
-    text-transform: uppercase;
     letter-spacing: var(--luxury-tracking);
     line-height: 1.2;
     color: hsl(var(--foreground));
@@ -121,7 +118,6 @@
     font-weight: 400;
     font-size: 14px;
     letter-spacing: var(--luxury-tracking);
-    text-transform: uppercase;
     color: hsl(var(--foreground));
     background: none;
     border: none;

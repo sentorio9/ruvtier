@@ -1,12 +1,16 @@
+import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import WatermarkLogo from "@/components/WatermarkLogo";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
+import SubscribePanel from "@/components/SubscribePanel";
 import heroImage from "@/assets/hero-editorial.jpg";
 import garmentImage from "@/assets/garment-single.jpg";
 import materialImage from "@/assets/material-texture.jpg";
 
 const Index = () => {
+  const [subscribeOpen, setSubscribeOpen] = useState(false);
+
   return (
     <div className="relative">
       <WatermarkLogo />
@@ -22,7 +26,7 @@ const Index = () => {
         </div>
         <div className="relative z-10 text-center px-6">
           <ScrollFadeIn>
-            <h1 className="luxury-heading-lg mb-6">R U V T I E R</h1>
+            <h1 className="luxury-heading-lg mb-6 uppercase">R U V T I E R</h1>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.2}>
             <p className="luxury-body mx-auto mb-8 text-center">
@@ -87,20 +91,17 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Section 4 — Philosophy */}
+      {/* Section 4 — Philosophy (no heading, quote only) */}
       <section id="philosophy" className="luxury-section">
         <div className="luxury-container flex flex-col items-center text-center">
           <ScrollFadeIn>
-            <h2 className="luxury-heading-lg mb-8">Stillness</h2>
-          </ScrollFadeIn>
-          <ScrollFadeIn delay={0.15}>
-            <p className="luxury-body mx-auto mb-8 text-center">
-              Every fibre carries origin, landscape, and time.
+            <p className="luxury-body mx-auto mb-8 text-center italic">
+              "Every fibre carries origin, landscape, and time.
               <br />
-              We begin there, in silence.
+              We begin there, in silence."
             </p>
           </ScrollFadeIn>
-          <ScrollFadeIn delay={0.3}>
+          <ScrollFadeIn delay={0.15}>
             <a href="#" className="luxury-button">
               Enter Stillness
             </a>
@@ -109,7 +110,10 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <LuxuryFooter />
+      <LuxuryFooter onSubscribeClick={() => setSubscribeOpen(true)} />
+
+      {/* Subscribe Panel */}
+      <SubscribePanel isOpen={subscribeOpen} onClose={() => setSubscribeOpen(false)} />
     </div>
   );
 };

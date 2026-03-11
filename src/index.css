@@ -91,7 +91,6 @@
     font-family: var(--font-serif);
     font-weight: 300;
     font-size: clamp(40px, 5vw, 60px);
-    text-transform: uppercase;
     letter-spacing: var(--luxury-tracking-wide);
     line-height: 1.1;
     color: hsl(var(--foreground));
@@ -101,7 +100,6 @@
     font-family: var(--font-serif);
     font-weight: 300;
     font-size: clamp(28px, 3.5vw, 40px);
-    text-transform: uppercase;
     letter-spacing: var(--luxury-tracking);
     line-height: 1.2;
     color: hsl(var(--foreground));

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import WatermarkLogo from "@/components/WatermarkLogo";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
@@ -34,9 +35,9 @@ const Index = () => {
             </p>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.4}>
-            <a href="#garment" className="luxury-button">
+            <Link to="/garment" className="luxury-button">
               Enter
-            </a>
+            </Link>
           </ScrollFadeIn>
         </div>
       </section>
@@ -60,9 +61,9 @@ const Index = () => {
             </p>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.3}>
-            <a href="#material" className="luxury-button">
+            <Link to="/garment" className="luxury-button">
               Discover
-            </a>
+            </Link>
           </ScrollFadeIn>
         </div>
       </section>
@@ -84,14 +85,14 @@ const Index = () => {
             <h2 className="luxury-heading mb-6">Material is memory.</h2>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.3}>
-            <a href="#philosophy" className="luxury-button">
+            <Link to="/materials" className="luxury-button">
               Explore by material
-            </a>
+            </Link>
           </ScrollFadeIn>
         </div>
       </section>
 
-      {/* Section 4 — Philosophy (no heading, quote only) */}
+      {/* Section 4 — Philosophy */}
       <section id="philosophy" className="luxury-section">
         <div className="luxury-container flex flex-col items-center text-center">
           <ScrollFadeIn>
@@ -102,17 +103,14 @@ const Index = () => {
             </p>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.15}>
-            <a href="#" className="luxury-button">
+            <Link to="/stillness" className="luxury-button">
               Enter Stillness
-            </a>
+            </Link>
           </ScrollFadeIn>
         </div>
       </section>
 
-      {/* Footer */}
       <LuxuryFooter onSubscribeClick={() => setSubscribeOpen(true)} />
-
-      {/* Subscribe Panel */}
       <SubscribePanel isOpen={subscribeOpen} onClose={() => setSubscribeOpen(false)} />
     </div>
   );

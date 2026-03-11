@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 interface SlideMenuProps {
   isOpen: boolean;
@@ -8,13 +9,21 @@ interface SlideMenuProps {
 }
 
 const boutiqueSubcategories = [
-  "Lifestyle", "Men", "Women", "Children",
-  "Footwear", "Made-to-Measure", "Home Interiors",
-  "Leather Goods", "Accessories",
+  { label: "Lifestyle", slug: "lifestyle" },
+  { label: "Men", slug: "men" },
+  { label: "Women", slug: "women" },
+  { label: "Children", slug: "children" },
+  { label: "Footwear", slug: "footwear" },
+  { label: "Made-to-Measure", slug: "made-to-measure" },
+  { label: "Home Interiors", slug: "home-interiors" },
+  { label: "Leather Goods", slug: "leather-goods" },
+  { label: "Accessories", slug: "accessories" },
 ];
 
 const homeInteriorSubcategories = [
-  "Home Decor", "Gifts for the Home", "Homeware",
+  { label: "Home Decor", slug: "home-decor" },
+  { label: "Gifts for the Home", slug: "gifts-for-the-home" },
+  { label: "Homeware", slug: "homeware" },
 ];
 
 type ActiveMenu = null | "boutique" | "stillness" | "home";
@@ -31,7 +40,6 @@ const SlideMenu = ({ isOpen, onClose }: SlideMenuProps) => {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Dim backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -41,7 +49,6 @@ const SlideMenu = ({ isOpen, onClose }: SlideMenuProps) => {
             onClick={handleClose}
           />
 
-          {/* Slide panel */}
           <motion.div
             initial={{ x: "-100%" }}
             animate={{ x: 0 }}
@@ -49,14 +56,12 @@ const SlideMenu = ({ isOpen, onClose }: SlideMenuProps) => {
             transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
             className="fixed top-0 left-0 bottom-0 z-[100] w-[85vw] sm:w-[40vw] lg:w-[25vw] bg-background border-r border-border flex flex-col"
           >
-            {/* Close */}
             <div className="flex items-center justify-end h-16 md:h-20 px-6">
               <button onClick={handleClose} className="luxury-button p-2" aria-label="Close menu">
                 <X size={18} strokeWidth={1} />
               </button>
             </div>
 
-            {/* Menu items */}
             <div className="flex-1 flex flex-col justify-center px-8 gap-10">
               <button
                 onClick={() => setActiveMenu(activeMenu === "boutique" ? null : "boutique")}
@@ -64,52 +69,41 @@ const SlideMenu = ({ isOpen, onClose }: SlideMenuProps) => {
               >
                 Explore Online Boutique
               </button>
-              <button
-                onClick={() => setActiveMenu(activeMenu === "stillness" ? null : "stillness")}
+              <Link
+                to="/stillness"
+                onClick={handleClose}
                 className="luxury-button !text-left !text-[clamp(18px,2vw,22px)] !p-0 font-serif font-light tracking-wider"
               >
                 Stillness
-              </button>
-              <button
-                onClick={() => setActiveMenu(activeMenu === "home" ? null : "home")}
+              </Link>
+              <Link
+                to="/home-interior"
+                onClick={handleClose}
                 className="luxury-button !text-left !text-[clamp(18px,2vw,22px)] !p-0 font-serif font-light tracking-wider"
               >
                 Home Interior
-              </button>
+              </Link>
 
-              {/* Subcategories */}
               <AnimatePresence mode="wait">
-                {activeMenu && (
+                {activeMenu === "boutique" && (
                   <motion.div
-                    key={activeMenu}
+                    key="boutique"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
                     transition={{ duration: 0.25 }}
                     className="flex flex-col gap-3 pl-2 border-l border-border"
                   >
-                    {activeMenu === "boutique" &&
-                      boutiqueSubcategories.map((item) => (
-                        <a key={item} href="#" className="luxury-button !text-[14px] !text-left w-fit !p-0">
-                          {item}
-                        </a>
-                      ))}
-                    {activeMenu === "home" &&
-                      homeInteriorSubcategories.map((item) => (
-                        <a key={item} href="#" className="luxury-button !text-[14px] !text-left w-fit !p-0">
-                          {item}
-                        </a>
-                      ))}
-                    {activeMenu === "stillness" && (
-                      <div className="max-w-[280px]">
-                        <p className="luxury-body italic text-sm mb-4">
-                          "Every fibre carries origin, landscape, and time. We begin there, in silence."
-                        </p>
-                        <a href="#" className="luxury-button !text-[13px]">
-                          Enter Stillness
-                        </a>
-                      </div>
-                    )}
+                    {boutiqueSubcategories.map((item) => (
+                      <Link
+                        key={item.slug}
+                        to={`/boutique/${item.slug}`}
+                        onClick={handleClose}
+                        className="luxury-button !text-[14px] !text-left w-fit !p-0"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
                   </motion.div>
                 )}
               </AnimatePresence>

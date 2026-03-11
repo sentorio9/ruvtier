@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import ScrollFadeIn from "./ScrollFadeIn";
 
 interface LuxuryFooterProps {
@@ -13,15 +14,24 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
             <button onClick={onSubscribeClick} className="luxury-button !text-[13px]">
               Subscribe to newsletter
             </button>
-            <a href="#" className="luxury-button !text-[13px]">
+            <Link to="/contact" className="luxury-button !text-[13px]">
               Contact
-            </a>
-            <a href="#" className="luxury-button !text-[13px]">
+            </Link>
+            <Link to="/boutique" className="luxury-button !text-[13px]">
               Explore Online Boutique
-            </a>
-            <a href="#" className="luxury-button !text-[13px]">
+            </Link>
+            <Link to="/the-house" className="luxury-button !text-[13px]">
+              The House
+            </Link>
+            <Link to="/craft-career" className="luxury-button !text-[13px]">
+              Craft Career
+            </Link>
+            <Link to="/appointments" className="luxury-button !text-[13px]">
               Private Appointments
-            </a>
+            </Link>
+            <Link to="/find-boutique" className="luxury-button !text-[13px]">
+              Find a Boutique
+            </Link>
 
             <div className="flex gap-8 mt-4">
               {["Instagram", "YouTube", "Pinterest"].map((social) => (

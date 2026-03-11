@@ -119,7 +119,6 @@
     font-weight: 400;
     font-size: 14px;
     letter-spacing: var(--luxury-tracking);
-    text-transform: uppercase;
     color: hsl(var(--foreground));
     background: none;
     border: none;

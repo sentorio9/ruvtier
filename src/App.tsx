@@ -34,6 +34,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <TitleSetter />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/stillness" element={<Stillness />} />

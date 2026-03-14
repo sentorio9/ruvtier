@@ -37,6 +37,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <TitleSetter />
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/stillness" element={<Stillness />} />

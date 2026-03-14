@@ -18,7 +18,7 @@ const Index = () => {
       <Navigation />
 
       {/* Section 1 — Arrival */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-[center_40%] md:bg-[center_35%]"
           style={{ backgroundImage: `url(${heroImage})` }}
@@ -35,7 +35,7 @@ const Index = () => {
             </p>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.4}>
-            <Link to="/garment" className="luxury-button">
+            <Link to="/collection" className="luxury-button">
               Enter
             </Link>
           </ScrollFadeIn>
@@ -43,7 +43,7 @@ const Index = () => {
       </section>
 
       {/* Section 2 — First Garment */}
-      <section id="garment" className="luxury-section" style={{ paddingTop: "180px" }}>
+      <section id="garment" className="luxury-section" style={{ paddingTop: "var(--hero-gap)" }}>
         <div className="luxury-container flex flex-col items-center text-center">
           <ScrollFadeIn>
             <div className="w-full max-w-lg mb-12">
@@ -61,7 +61,7 @@ const Index = () => {
             </p>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.3}>
-            <Link to="/garment" className="luxury-button">
+            <Link to="/collection" className="luxury-button">
               Discover
             </Link>
           </ScrollFadeIn>

@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { Search } from "lucide-react";
 import SlideMenu from "./FullScreenMenu";
+import CartDrawer from "./CartDrawer";
 
 const Navigation = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
 
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm">
-        <div className="mx-auto max-w-[1400px] grid grid-cols-[1fr_auto_1fr] items-center h-16 md:h-[72px] px-6 md:px-12 lg:px-16">
-          {/* Left zone — Menu icon, aligned start */}
+        <div className="mx-auto max-w-[1400px] grid grid-cols-[1fr_auto_1fr] items-center h-14 md:h-[72px] px-5 md:px-12 lg:px-16">
+          {/* Left — Menu */}
           <div className="flex items-center justify-start">
             <button
               onClick={() => setMenuOpen(true)}
@@ -24,19 +26,23 @@ const Navigation = () => {
             </button>
           </div>
 
-          {/* Center zone — Logo, truly centered */}
+          {/* Center — Logo */}
           <div className="flex items-center justify-center">
-            <a href="/" className="luxury-heading-lg !text-[clamp(16px,1.6vw,22px)] tracking-[0.22em] uppercase whitespace-nowrap">
+            <a href="/" className="luxury-heading-lg !text-[clamp(14px,1.5vw,22px)] tracking-[0.22em] uppercase whitespace-nowrap">
               R U V T I E R
             </a>
           </div>
 
-          {/* Right zone — Icons, aligned end */}
-          <div className="flex items-center justify-end gap-6 lg:gap-8">
+          {/* Right — Icons */}
+          <div className="flex items-center justify-end gap-4 md:gap-6 lg:gap-8">
             <button className="luxury-button p-2 hidden md:block" aria-label="Search">
               <Search size={17} strokeWidth={1} />
             </button>
-            <button className="luxury-button p-2" aria-label="Shopping bag">
+            <button
+              onClick={() => setCartOpen(true)}
+              className="luxury-button p-2"
+              aria-label="Shopping bag"
+            >
               <svg width="17" height="19" viewBox="0 0 18 20" fill="none" stroke="currentColor" strokeWidth="0.9">
                 <path d="M1 6h16v13H1z" />
                 <path d="M5 6V4a4 4 0 0 1 8 0v2" />
@@ -50,6 +56,7 @@ const Navigation = () => {
       </nav>
 
       <SlideMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+      <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
     </>
   );
 };

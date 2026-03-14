@@ -52,10 +52,28 @@
     --luxury-tracking-wide: 0.2em;
     --content-max: 1200px;
     --text-max: 680px;
-    --section-gap: 140px;
-    --hero-gap: 180px;
+
+    /* Responsive section spacing */
+    --section-gap: 120px;
+    --hero-gap: 160px;
     --heading-body-gap: 24px;
     --body-button-gap: 32px;
+  }
+
+  @media (max-width: 1024px) {
+    :root {
+      --section-gap: 80px;
+      --hero-gap: 120px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    :root {
+      --section-gap: 60px;
+      --hero-gap: 80px;
+      --heading-body-gap: 18px;
+      --body-button-gap: 24px;
+    }
   }
 }
 
@@ -89,7 +107,7 @@
   .luxury-heading-lg {
     font-family: var(--font-serif);
     font-weight: 300;
-    font-size: clamp(40px, 5vw, 60px);
+    font-size: clamp(36px, 5vw, 60px);
     letter-spacing: var(--luxury-tracking-wide);
     line-height: 1.1;
     color: hsl(var(--foreground));
@@ -98,7 +116,7 @@
   .luxury-heading {
     font-family: var(--font-serif);
     font-weight: 300;
-    font-size: clamp(28px, 3.5vw, 40px);
+    font-size: clamp(26px, 3.5vw, 40px);
     letter-spacing: var(--luxury-tracking);
     line-height: 1.2;
     color: hsl(var(--foreground));
@@ -107,7 +125,7 @@
   .luxury-body {
     font-family: var(--font-sans);
     font-weight: 300;
-    font-size: clamp(16px, 1.2vw, 18px);
+    font-size: clamp(15px, 1.2vw, 18px);
     line-height: 1.8;
     max-width: var(--text-max);
     color: hsl(var(--muted-foreground));
@@ -145,6 +163,12 @@
     max-width: var(--content-max);
     margin: 0 auto;
     padding: 0 24px;
+  }
+
+  @media (max-width: 768px) {
+    .luxury-container {
+      padding: 0 20px;
+    }
   }
 
   .luxury-section {

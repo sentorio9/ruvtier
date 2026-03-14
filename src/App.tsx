@@ -10,10 +10,11 @@ import Stillness from "./pages/Stillness.tsx";
 import Materials from "./pages/Materials.tsx";
 import MaterialPage from "./pages/MaterialPage.tsx";
 import EditorialPage from "./pages/EditorialPage.tsx";
+import CollectionPage from "./pages/CollectionPage.tsx";
+import ProductPage from "./pages/ProductPage.tsx";
 
 const queryClient = new QueryClient();
 
-/** Force the browser tab title on every route change */
 function TitleSetter() {
   const location = useLocation();
   useEffect(() => {
@@ -40,6 +41,8 @@ const App = () => (
           <Route path="/stillness" element={<Stillness />} />
           <Route path="/materials" element={<Materials />} />
           <Route path="/materials/:slug" element={<MaterialPage />} />
+          <Route path="/collection" element={<CollectionPage />} />
+          <Route path="/product/:slug" element={<ProductPage />} />
           <Route
             path="/boutique"
             element={
@@ -48,7 +51,7 @@ const App = () => (
                 subtitle="The first pieces are in quiet preparation."
                 body="A curated collection, composed with care and intention."
                 actionLabel="Discover"
-                actionTo="/"
+                actionTo="/collection"
               />
             }
           />
@@ -148,7 +151,6 @@ const App = () => (
               />
             }
           />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

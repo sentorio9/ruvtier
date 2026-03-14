@@ -7,10 +7,10 @@ interface LuxuryFooterProps {
 
 const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   return (
-    <footer className="py-20 md:py-28 border-t border-border">
+    <footer className="border-t border-border" style={{ paddingTop: "var(--section-gap)", paddingBottom: "var(--section-gap)" }}>
       <div className="luxury-container">
         <ScrollFadeIn>
-          <div className="flex flex-col items-center text-center gap-8">
+          <div className="flex flex-col items-center text-center gap-6 md:gap-8">
             <button onClick={onSubscribeClick} className="luxury-button !text-[13px]">
               Subscribe to newsletter
             </button>
@@ -23,9 +23,6 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
             <Link to="/the-house" className="luxury-button !text-[13px]">
               The House
             </Link>
-            <Link to="/craft-career" className="luxury-button !text-[13px]">
-              Craft Career
-            </Link>
             <Link to="/appointments" className="luxury-button !text-[13px]">
               Private Appointments
             </Link>
@@ -33,7 +30,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
               Find a Boutique
             </Link>
 
-            <div className="flex gap-8 mt-4">
+            <div className="flex gap-6 md:gap-8 mt-4">
               {["Instagram", "YouTube", "Pinterest"].map((social) => (
                 <a key={social} href="#" className="luxury-button !text-[12px]">
                   {social}
@@ -41,7 +38,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
               ))}
             </div>
 
-            <p className="text-muted-foreground text-xs tracking-wide mt-6">
+            <p className="text-muted-foreground text-xs tracking-wide mt-4">
               © {new Date().getFullYear()} RUVTIER. All rights reserved.
             </p>
           </div>

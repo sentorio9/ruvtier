@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,6 +12,15 @@ import MaterialPage from "./pages/MaterialPage.tsx";
 import EditorialPage from "./pages/EditorialPage.tsx";
 
 const queryClient = new QueryClient();
+
+/** Force the browser tab title on every route change */
+function TitleSetter() {
+  const location = useLocation();
+  useEffect(() => {
+    document.title = "Ruvtier";
+  }, [location]);
+  return null;
+}
 
 const boutiqueCategories = [
   "Lifestyle", "Men", "Women", "Children",

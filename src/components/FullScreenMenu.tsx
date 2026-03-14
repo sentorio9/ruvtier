@@ -57,7 +57,7 @@ const subMenus: Record<string, SubMenu> = {
   },
 };
 
-const panelTransition = { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] };
+const panelTransition = { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] as const };
 
 const SlideMenu = ({ isOpen, onClose }: SlideMenuProps) => {
   const [activeSubMenu, setActiveSubMenu] = useState<SubMenuKey>(null);

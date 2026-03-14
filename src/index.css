@@ -152,3 +152,10 @@
     padding-bottom: var(--section-gap);
   }
 }
+
+/* Hide Lovable edit badge */
+[data-lovable-edit],
+.lovable-edit,
+#lovable-edit {
+  display: none !important;
+}

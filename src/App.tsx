@@ -131,17 +131,7 @@ const App = () => (
               />
             }
           />
-          <Route
-            path="/contact"
-            element={
-              <EditorialPage
-                title="Contact"
-                body="We welcome considered enquiries. A reply will arrive in its own time."
-                actionLabel="Return"
-                actionTo="/"
-              />
-            }
-          />
+          <Route path="/contact" element={<ContactPage />} />
           <Route
             path="/garment"
             element={

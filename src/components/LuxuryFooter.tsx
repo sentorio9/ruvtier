@@ -30,12 +30,20 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
               Find a Boutique
             </Link>
 
+            {/* Contact details */}
+            <div className="flex flex-col items-center gap-3 mt-4">
+              <a href="mailto:theruvtier@gmail.com" className="luxury-button !text-[12px] tracking-[0.08em]">
+                theruvtier@gmail.com
+              </a>
+              <a href="tel:+447881967338" className="luxury-button !text-[12px] tracking-[0.08em]">
+                +44 7881 967338
+              </a>
+            </div>
+
             <div className="flex gap-6 md:gap-8 mt-4">
-              {["Instagram", "YouTube", "Pinterest"].map((social) => (
-                <a key={social} href="#" className="luxury-button !text-[12px]">
-                  {social}
-                </a>
-              ))}
+              <a href="https://www.instagram.com/ruvtier" target="_blank" rel="noopener noreferrer" className="luxury-button !text-[12px]">
+                Instagram
+              </a>
             </div>
 
             <p className="text-muted-foreground text-xs tracking-wide mt-4">

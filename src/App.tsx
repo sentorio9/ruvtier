@@ -13,6 +13,7 @@ import MaterialPage from "./pages/MaterialPage.tsx";
 import EditorialPage from "./pages/EditorialPage.tsx";
 import CollectionPage from "./pages/CollectionPage.tsx";
 import ProductPage from "./pages/ProductPage.tsx";
+import ContactPage from "./pages/ContactPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -130,17 +131,7 @@ const App = () => (
               />
             }
           />
-          <Route
-            path="/contact"
-            element={
-              <EditorialPage
-                title="Contact"
-                body="We welcome considered enquiries. A reply will arrive in its own time."
-                actionLabel="Return"
-                actionTo="/"
-              />
-            }
-          />
+          <Route path="/contact" element={<ContactPage />} />
           <Route
             path="/garment"
             element={

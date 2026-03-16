@@ -1,7 +1,15 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import SlideMenu from "./FullScreenMenu";
 import CartDrawer from "./CartDrawer";
+
+const categories = [
+  { label: "Women", to: "/boutique/women" },
+  { label: "Men", to: "/boutique/men" },
+  { label: "Lifestyle", to: "/boutique/lifestyle" },
+  { label: "Book Appointment", to: "/appointments" },
+];
 
 const Navigation = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -11,10 +19,10 @@ const Navigation = () => {
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm">
-        <div className="mx-auto max-w-[1400px] flex items-center justify-between h-[52px] md:h-[64px] px-4 md:px-8 lg:px-12">
-          {/* Left cluster */}
-          <div className="flex items-center gap-5 md:gap-7 min-w-0">
-            {/* Menu */}
+        {/* Row 1 — Utility */}
+        <div className="mx-auto max-w-[1400px] grid grid-cols-[1fr_auto_1fr] items-center h-[52px] md:h-[56px] px-4 md:px-8 lg:px-12">
+          {/* Left */}
+          <div className="flex items-center gap-5 md:gap-7">
             <button
               onClick={() => setMenuOpen(true)}
               className="luxury-button !p-1.5"
@@ -26,8 +34,6 @@ const Navigation = () => {
                 <line x1="0" y1="11" x2="20" y2="11" />
               </svg>
             </button>
-
-            {/* Search — hidden on mobile, shown in menu instead */}
             {!isMobile && (
               <button className="luxury-button !p-1.5" aria-label="Search">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="0.6">
@@ -39,16 +45,15 @@ const Navigation = () => {
           </div>
 
           {/* Center — Emblem */}
-          <a
-            href="/"
-            className="absolute left-1/2 -translate-x-1/2 luxury-heading-lg !text-[clamp(13px,1.3vw,19px)] tracking-[0.28em] uppercase whitespace-nowrap !leading-none"
+          <Link
+            to="/"
+            className="luxury-heading-lg !text-[clamp(13px,1.3vw,19px)] tracking-[0.28em] uppercase whitespace-nowrap !leading-none"
           >
             R U V T I E R
-          </a>
+          </Link>
 
-          {/* Right cluster */}
-          <div className="flex items-center gap-5 md:gap-7 min-w-0">
-            {/* Shopping Bag */}
+          {/* Right */}
+          <div className="flex items-center justify-end gap-5 md:gap-7">
             <button
               onClick={() => setCartOpen(true)}
               className="luxury-button !p-1.5"
@@ -59,8 +64,6 @@ const Navigation = () => {
                 <path d="M4.5 5.5V4a3.5 3.5 0 0 1 7 0v1.5" />
               </svg>
             </button>
-
-            {/* Client Lounge — hidden on mobile, shown in menu instead */}
             {!isMobile && (
               <button className="luxury-button !p-1.5 !text-[10.5px] tracking-[0.16em] uppercase">
                 Client Lounge
@@ -68,6 +71,26 @@ const Navigation = () => {
             )}
           </div>
         </div>
+
+        {/* Row 2 — Category Navigation (desktop/tablet only) */}
+        {!isMobile && (
+          <>
+            <div className="mx-auto max-w-[1400px] px-4 md:px-8 lg:px-12">
+              <div className="border-t border-border" />
+            </div>
+            <div className="mx-auto max-w-[1400px] flex items-center justify-center h-[40px] px-4 md:px-8 lg:px-12 gap-10 md:gap-14">
+              {categories.map((cat) => (
+                <Link
+                  key={cat.to}
+                  to={cat.to}
+                  className="font-sans text-[11.5px] md:text-[12px] font-light tracking-[0.16em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300"
+                >
+                  {cat.label}
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
       </nav>
 
       <SlideMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />

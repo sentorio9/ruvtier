@@ -14,6 +14,7 @@ import EditorialPage from "./pages/EditorialPage.tsx";
 import CollectionPage from "./pages/CollectionPage.tsx";
 import ProductPage from "./pages/ProductPage.tsx";
 import ContactPage from "./pages/ContactPage.tsx";
+import TheHousePage from "./pages/TheHousePage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -87,17 +88,7 @@ const App = () => (
               />
             }
           />
-          <Route
-            path="/the-house"
-            element={
-              <EditorialPage
-                title="The House"
-                body="A house built on silence, craft, and conviction."
-                actionLabel="Explore"
-                actionTo="/"
-              />
-            }
-          />
+          <Route path="/the-house" element={<TheHousePage />} />
           <Route
             path="/craft-career"
             element={

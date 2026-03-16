@@ -6,7 +6,8 @@ import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
 import heroImage from "@/assets/hero-editorial.jpg";
-import garmentImage from "@/assets/garment-single.jpg";
+import womenImage from "@/assets/collection-women.jpg";
+import menImage from "@/assets/collection-men.jpg";
 import materialImage from "@/assets/material-texture.jpg";
 
 const Index = () => {

@@ -6,7 +6,8 @@ import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
 import heroImage from "@/assets/hero-editorial.jpg";
-import garmentImage from "@/assets/garment-single.jpg";
+import womenImage from "@/assets/collection-women.jpg";
+import menImage from "@/assets/collection-men.jpg";
 import materialImage from "@/assets/material-texture.jpg";
 
 const Index = () => {
@@ -42,49 +43,45 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Category Tiles — Women / Men */}
-      <section className="luxury-section" style={{ paddingTop: "var(--hero-gap)" }}>
-        <div className="luxury-container">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
-            {/* Women */}
-            <Link to="/boutique/women" className="group relative block overflow-hidden aspect-[3/4]">
-              <img
-                src={garmentImage}
-                alt="Women's collection by RUVTIER"
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-foreground/10 group-hover:bg-foreground/20 transition-colors duration-500" />
-              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
-                <h2 className="font-serif font-light text-[clamp(22px,2.5vw,32px)] tracking-wider text-primary-foreground mb-1">
-                  Women
-                </h2>
-                <span className="font-sans text-[11px] tracking-[0.14em] uppercase text-primary-foreground/70 group-hover:text-primary-foreground transition-colors duration-300">
-                  Discover more
-                </span>
-              </div>
-            </Link>
-
-            {/* Men */}
-            <Link to="/boutique/men" className="group relative block overflow-hidden aspect-[3/4]">
-              <img
-                src={materialImage}
-                alt="Men's collection by RUVTIER"
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-foreground/10 group-hover:bg-foreground/20 transition-colors duration-500" />
-              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
-                <h2 className="font-serif font-light text-[clamp(22px,2.5vw,32px)] tracking-wider text-primary-foreground mb-1">
-                  Men
-                </h2>
-                <span className="font-sans text-[11px] tracking-[0.14em] uppercase text-primary-foreground/70 group-hover:text-primary-foreground transition-colors duration-300">
-                  Explore Mens
-                </span>
-              </div>
-            </Link>
+      {/* Split Collection — Women / Men */}
+      <section className="grid grid-cols-1 md:grid-cols-2 min-h-[85svh] md:min-h-[90svh]">
+        {/* Women */}
+        <Link to="/boutique/women" className="group relative block overflow-hidden min-h-[60svh] md:min-h-0">
+          <img
+            src={womenImage}
+            alt="Women's collection by RUVTIER"
+            className="absolute inset-0 w-full h-full object-cover object-[center_25%] transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-foreground/15 group-hover:bg-foreground/25 transition-colors duration-700" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+            <h2 className="font-serif font-light text-[clamp(24px,3vw,38px)] tracking-[0.15em] text-primary-foreground mb-3 transition-transform duration-700 group-hover:-translate-y-1">
+              Women's Collection
+            </h2>
+            <span className="font-sans text-[12px] tracking-[0.18em] uppercase text-primary-foreground/60 group-hover:text-primary-foreground transition-all duration-500">
+              Discover More
+            </span>
           </div>
-        </div>
+        </Link>
+
+        {/* Men */}
+        <Link to="/boutique/men" className="group relative block overflow-hidden min-h-[60svh] md:min-h-0">
+          <img
+            src={menImage}
+            alt="Men's collection by RUVTIER"
+            className="absolute inset-0 w-full h-full object-cover object-[center_25%] transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-foreground/15 group-hover:bg-foreground/25 transition-colors duration-700" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+            <h2 className="font-serif font-light text-[clamp(24px,3vw,38px)] tracking-[0.15em] text-primary-foreground mb-3 transition-transform duration-700 group-hover:-translate-y-1">
+              Men's Collection
+            </h2>
+            <span className="font-sans text-[12px] tracking-[0.18em] uppercase text-primary-foreground/60 group-hover:text-primary-foreground transition-all duration-500">
+              Explore Men's Collection
+            </span>
+          </div>
+        </Link>
       </section>
 
       {/* Material is Memory */}

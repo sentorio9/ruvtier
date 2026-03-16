@@ -14,6 +14,7 @@ import EditorialPage from "./pages/EditorialPage.tsx";
 import CollectionPage from "./pages/CollectionPage.tsx";
 import ProductPage from "./pages/ProductPage.tsx";
 import ContactPage from "./pages/ContactPage.tsx";
+import TheHousePage from "./pages/TheHousePage.tsx";
 
 const queryClient = new QueryClient();
 

@@ -88,17 +88,7 @@ const App = () => (
               />
             }
           />
-          <Route
-            path="/the-house"
-            element={
-              <EditorialPage
-                title="The House"
-                body="A house built on silence, craft, and conviction."
-                actionLabel="Explore"
-                actionTo="/"
-              />
-            }
-          />
+          <Route path="/the-house" element={<TheHousePage />} />
           <Route
             path="/craft-career"
             element={

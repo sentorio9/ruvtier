@@ -15,6 +15,18 @@ import CollectionPage from "./pages/CollectionPage.tsx";
 import ProductPage from "./pages/ProductPage.tsx";
 import ContactPage from "./pages/ContactPage.tsx";
 import TheHousePage from "./pages/TheHousePage.tsx";
+import { AdminAuthProvider } from "./admin/hooks/useAdminAuth";
+import AdminGuard from "./admin/components/AdminGuard";
+import AdminLogin from "./admin/pages/AdminLogin";
+import AdminDashboard from "./admin/pages/AdminDashboard";
+import AdminProducts from "./admin/pages/AdminProducts";
+import AdminProductForm from "./admin/pages/AdminProductForm";
+import AdminOrders from "./admin/pages/AdminOrders";
+import AdminCustomers from "./admin/pages/AdminCustomers";
+import AdminCarts from "./admin/pages/AdminCarts";
+import AdminContent from "./admin/pages/AdminContent";
+import AdminLogs from "./admin/pages/AdminLogs";
+import AdminSettings from "./admin/pages/AdminSettings";
 
 const queryClient = new QueryClient();
 

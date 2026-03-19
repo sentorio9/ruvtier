@@ -147,6 +147,18 @@ const App = () => (
               />
             }
           />
+          {/* Admin routes - hidden, not linked publicly */}
+          <Route path="/admin/login" element={<AdminAuthProvider><AdminLogin /></AdminAuthProvider>} />
+          <Route path="/admin" element={<AdminAuthProvider><AdminGuard><AdminDashboard /></AdminGuard></AdminAuthProvider>} />
+          <Route path="/admin/products" element={<AdminAuthProvider><AdminGuard><AdminProducts /></AdminGuard></AdminAuthProvider>} />
+          <Route path="/admin/products/new" element={<AdminAuthProvider><AdminGuard><AdminProductForm /></AdminGuard></AdminAuthProvider>} />
+          <Route path="/admin/products/:id" element={<AdminAuthProvider><AdminGuard><AdminProductForm /></AdminGuard></AdminAuthProvider>} />
+          <Route path="/admin/orders" element={<AdminAuthProvider><AdminGuard><AdminOrders /></AdminGuard></AdminAuthProvider>} />
+          <Route path="/admin/customers" element={<AdminAuthProvider><AdminGuard><AdminCustomers /></AdminGuard></AdminAuthProvider>} />
+          <Route path="/admin/carts" element={<AdminAuthProvider><AdminGuard><AdminCarts /></AdminGuard></AdminAuthProvider>} />
+          <Route path="/admin/content" element={<AdminAuthProvider><AdminGuard><AdminContent /></AdminGuard></AdminAuthProvider>} />
+          <Route path="/admin/logs" element={<AdminAuthProvider><AdminGuard><AdminLogs /></AdminGuard></AdminAuthProvider>} />
+          <Route path="/admin/settings" element={<AdminAuthProvider><AdminGuard><AdminSettings /></AdminGuard></AdminAuthProvider>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

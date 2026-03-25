@@ -138,6 +138,7 @@ const App = () => (
             }
           />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route
             path="/garment"
             element={

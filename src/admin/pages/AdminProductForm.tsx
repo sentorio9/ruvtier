@@ -216,14 +216,18 @@ export default function AdminProductForm() {
         <div className="bg-[hsl(220,15%,9%)] border border-[hsl(220,10%,14%)] p-5 space-y-4">
           <h2 className="text-[12px] tracking-[0.12em] uppercase text-[hsl(220,10%,55%)] mb-2" style={fontStyle}>Images</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className={labelClass} style={fontStyle}>Thumbnail URL</label>
-              <input value={form.thumbnail_url} onChange={(e) => handleChange("thumbnail_url", e.target.value)} className={inputClass} style={fontStyle} />
-            </div>
-            <div>
-              <label className={labelClass} style={fontStyle}>Hero Image URL</label>
-              <input value={form.hero_image_url} onChange={(e) => handleChange("hero_image_url", e.target.value)} className={inputClass} style={fontStyle} />
-            </div>
+            <ImageUpload
+              label="Thumbnail"
+              value={form.thumbnail_url}
+              onChange={(url) => handleChange("thumbnail_url", url)}
+              folder="products/thumbnails"
+            />
+            <ImageUpload
+              label="Hero Image"
+              value={form.hero_image_url}
+              onChange={(url) => handleChange("hero_image_url", url)}
+              folder="products/heroes"
+            />
           </div>
         </div>
 

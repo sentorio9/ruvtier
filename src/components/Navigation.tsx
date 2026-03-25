@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import SlideMenu from "./FullScreenMenu";
 import CartDrawer from "./CartDrawer";
+import ClientLoungeDrawer from "./ClientLoungeDrawer";
 
 const categories = [
   { label: "Women", to: "/boutique/women" },
@@ -14,6 +15,7 @@ const categories = [
 const Navigation = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [loungeOpen, setLoungeOpen] = useState(false);
   const isMobile = useIsMobile();
 
   return (
@@ -65,7 +67,10 @@ const Navigation = () => {
               </svg>
             </button>
             {!isMobile && (
-              <button className="luxury-button !p-1.5 !text-[10.5px] tracking-[0.16em] uppercase">
+              <button
+                onClick={() => setLoungeOpen(true)}
+                className="luxury-button !p-1.5 !text-[10.5px] tracking-[0.16em] uppercase"
+              >
                 Client Lounge
               </button>
             )}
@@ -95,6 +100,7 @@ const Navigation = () => {
 
       <SlideMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+      <ClientLoungeDrawer isOpen={loungeOpen} onClose={() => setLoungeOpen(false)} />
     </>
   );
 };

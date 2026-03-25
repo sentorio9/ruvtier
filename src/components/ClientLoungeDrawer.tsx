@@ -81,6 +81,18 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
     setView("login");
   };
 
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+    if (!email.trim()) { setError("Please enter your email address"); return; }
+    setSubmitting(true);
+    const { error } = await resetPassword(email.trim());
+    setSubmitting(false);
+    if (error) setError(error);
+    else setSuccess(`Password reset link sent to ${email.trim()}. Please check your inbox.`);
+  };
+
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);

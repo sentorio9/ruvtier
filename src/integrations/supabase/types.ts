@@ -14,6 +14,89 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_credentials: {
+        Row: {
+          created_at: string
+          display_label: string | null
+          id: string
+          password_hash: string
+          role: string
+          supabase_email: string | null
+          supabase_password: string | null
+          supabase_user_id: string | null
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          display_label?: string | null
+          id?: string
+          password_hash: string
+          role?: string
+          supabase_email?: string | null
+          supabase_password?: string | null
+          supabase_user_id?: string | null
+          username: string
+        }
+        Update: {
+          created_at?: string
+          display_label?: string | null
+          id?: string
+          password_hash?: string
+          role?: string
+          supabase_email?: string | null
+          supabase_password?: string | null
+          supabase_user_id?: string | null
+          username?: string
+        }
+        Relationships: []
+      }
+      admin_login_requests: {
+        Row: {
+          created_at: string
+          credential_id: string
+          expires_at: string
+          id: string
+          ip_address: string | null
+          remember_me: boolean
+          resolved_at: string | null
+          status: string
+          token: string
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          credential_id: string
+          expires_at?: string
+          id?: string
+          ip_address?: string | null
+          remember_me?: boolean
+          resolved_at?: string | null
+          status?: string
+          token: string
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          credential_id?: string
+          expires_at?: string
+          id?: string
+          ip_address?: string | null
+          remember_me?: boolean
+          resolved_at?: string | null
+          status?: string
+          token?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_login_requests_credential_id_fkey"
+            columns: ["credential_id"]
+            isOneToOne: false
+            referencedRelation: "admin_credentials"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       admin_profiles: {
         Row: {
           avatar_url: string | null
@@ -49,6 +132,38 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      admin_sessions: {
+        Row: {
+          created_at: string
+          credential_id: string
+          expires_at: string
+          id: string
+          session_token: string
+        }
+        Insert: {
+          created_at?: string
+          credential_id: string
+          expires_at: string
+          id?: string
+          session_token: string
+        }
+        Update: {
+          created_at?: string
+          credential_id?: string
+          expires_at?: string
+          id?: string
+          session_token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_sessions_credential_id_fkey"
+            columns: ["credential_id"]
+            isOneToOne: false
+            referencedRelation: "admin_credentials"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       audit_logs: {
         Row: {
@@ -539,6 +654,14 @@ export type Database = {
           message: Json
           msg_id: number
           read_ct: number
+        }[]
+      }
+      verify_admin_credentials: {
+        Args: { p_password: string; p_username: string }
+        Returns: {
+          display_label: string
+          id: string
+          role: string
         }[]
       }
     }

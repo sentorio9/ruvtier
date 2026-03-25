@@ -3,7 +3,7 @@ import { useAdminAuth } from "../hooks/useAdminAuth";
 import { ADMIN_PREFIX } from "../config";
 
 export default function AdminGuard({ children }: { children: React.ReactNode }) {
-  const { user, isAdmin, loading } = useAdminAuth();
+  const { isAdmin, loading } = useAdminAuth();
 
   if (loading) {
     return (
@@ -15,7 +15,7 @@ export default function AdminGuard({ children }: { children: React.ReactNode }) 
     );
   }
 
-  if (!user || !isAdmin) {
+  if (!isAdmin) {
     return <Navigate to={`${ADMIN_PREFIX}/login`} replace />;
   }
 

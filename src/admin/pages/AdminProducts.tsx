@@ -10,7 +10,7 @@ import type { Tables } from "@/integrations/supabase/types";
 type Product = Tables<"products">;
 
 export default function AdminProducts() {
-  const { user, isSuperAdmin } = useAdminAuth();
+  const { isSuperAdmin, displayLabel } = useAdminAuth();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -29,14 +29,14 @@ export default function AdminProducts() {
   useEffect(() => { fetchProducts(); }, [search, statusFilter]);
 
   const archiveProduct = async (id: string) => {
-    await supabase.from("products").update({ status: "archived", updated_by: user?.id }).eq("id", id);
-    await supabase.from("audit_logs").insert({ action: "product_archived", actor_id: user?.id, actor_email: user?.email, target_type: "product", target_id: id });
+    await supabase.from("products").update({ status: "archived" }).eq("id", id);
+    await supabase.from("audit_logs").insert({ action: "product_archived", actor_email: displayLabel, target_type: "product", target_id: id });
     fetchProducts();
   };
 
   const softDelete = async (id: string) => {
-    await supabase.from("products").update({ deleted_at: new Date().toISOString(), updated_by: user?.id }).eq("id", id);
-    await supabase.from("audit_logs").insert({ action: "product_deleted", actor_id: user?.id, actor_email: user?.email, target_type: "product", target_id: id });
+    await supabase.from("products").update({ deleted_at: new Date().toISOString() }).eq("id", id);
+    await supabase.from("audit_logs").insert({ action: "product_deleted", actor_email: displayLabel, target_type: "product", target_id: id });
     setConfirmDelete(null);
     fetchProducts();
   };

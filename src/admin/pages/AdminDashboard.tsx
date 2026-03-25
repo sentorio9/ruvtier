@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "../components/AdminLayout";
-import { Package, ShoppingCart, Users, Activity, AlertCircle, Monitor } from "lucide-react";
+import { useAdminAuth } from "../hooks/useAdminAuth";
+import { Package, ShoppingCart, Users, Activity, AlertCircle, Monitor, X } from "lucide-react";
 
 interface DashboardStats {
   totalProducts: number;
@@ -60,13 +61,19 @@ function timeAgo(dateStr: string | null): string {
   return `${days}d ago`;
 }
 
+const ADMIN_AUTH_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-auth`;
+const API_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const SESSION_KEY = "ruvtier_admin_session";
+
 export default function AdminDashboard() {
+  const { isSuperAdmin } = useAdminAuth();
   const [stats, setStats] = useState<DashboardStats>({
     totalProducts: 0, activeProducts: 0, archivedProducts: 0,
     totalOrders: 0, pendingOrders: 0, fulfilledOrders: 0,
     totalCustomers: 0, recentLogs: [], activeSessions: [],
   });
   const [loading, setLoading] = useState(true);
+  const [revoking, setRevoking] = useState<string | null>(null);
 
   useEffect(() => {
     async function load() {
@@ -113,6 +120,30 @@ export default function AdminDashboard() {
       setLoading(false);
     }
     load();
+  }, []);
+
+  const revokeSession = useCallback(async (targetSessionId: string) => {
+    const token = localStorage.getItem(SESSION_KEY) || sessionStorage.getItem(SESSION_KEY);
+    if (!token) return;
+    setRevoking(targetSessionId);
+    try {
+      const res = await fetch(ADMIN_AUTH_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", apikey: API_KEY },
+        body: JSON.stringify({ action: "revoke-session", sessionToken: token, targetSessionId }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setStats(prev => ({
+          ...prev,
+          activeSessions: prev.activeSessions.filter(s => s.id !== targetSessionId),
+        }));
+      }
+    } catch {
+      // silent
+    } finally {
+      setRevoking(null);
+    }
   }, []);
 
   return (
@@ -165,13 +196,25 @@ export default function AdminDashboard() {
                         </p>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-[11px] text-[hsl(220,10%,55%)]" style={{ fontFamily: "var(--font-sans)" }}>
-                        {timeAgo(session.last_accessed_at)}
-                      </p>
-                      <p className="text-[10px] text-[hsl(220,10%,30%)] mt-0.5" style={{ fontFamily: "var(--font-sans)" }}>
-                        Expires {new Date(session.expires_at).toLocaleDateString()}
-                      </p>
+                    <div className="flex items-center gap-4">
+                      <div className="text-right">
+                        <p className="text-[11px] text-[hsl(220,10%,55%)]" style={{ fontFamily: "var(--font-sans)" }}>
+                          {timeAgo(session.last_accessed_at)}
+                        </p>
+                        <p className="text-[10px] text-[hsl(220,10%,30%)] mt-0.5" style={{ fontFamily: "var(--font-sans)" }}>
+                          Expires {new Date(session.expires_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                      {isSuperAdmin && (
+                        <button
+                          onClick={() => revokeSession(session.id)}
+                          disabled={revoking === session.id}
+                          className="p-1.5 text-[hsl(0,50%,45%)] hover:text-[hsl(0,60%,55%)] hover:bg-[hsl(0,30%,15%)] transition-colors disabled:opacity-40"
+                          title="Revoke session"
+                        >
+                          <X size={14} strokeWidth={2} />
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}

@@ -298,6 +298,47 @@ Deno.serve(async (req) => {
     })
   }
 
+  // --- REVOKE SESSION (super_admin only) ---
+  if (body.action === 'revoke-session') {
+    const { sessionToken: callerToken, targetSessionId } = body
+    if (!callerToken || !targetSessionId) return jsonResponse({ error: 'Missing parameters' }, 400)
+
+    // Verify caller is super_admin
+    const { data: callerSession } = await supabase
+      .from('admin_sessions')
+      .select('credential_id')
+      .eq('session_token', callerToken)
+      .gt('expires_at', new Date().toISOString())
+      .maybeSingle()
+
+    if (!callerSession) return jsonResponse({ error: 'Invalid session' }, 401)
+
+    const { data: callerCred } = await supabase
+      .from('admin_credentials')
+      .select('role')
+      .eq('id', callerSession.credential_id)
+      .single()
+
+    if (callerCred?.role !== 'super_admin') return jsonResponse({ error: 'Insufficient privileges' }, 403)
+
+    // Delete the target session
+    const { error: delErr } = await supabase
+      .from('admin_sessions')
+      .delete()
+      .eq('id', targetSessionId)
+
+    if (delErr) return jsonResponse({ error: 'Failed to revoke' }, 500)
+
+    const revokeIp = req.headers.get('x-forwarded-for') || 'unknown'
+    await supabase.from('audit_logs').insert({
+      action: 'admin_session_revoked',
+      actor_email: callerCred.role,
+      details: { target_session_id: targetSessionId, ip: revokeIp },
+    })
+
+    return jsonResponse({ success: true })
+  }
+
   // --- LOGOUT ---
   if (body.action === 'logout') {
     if (body.sessionToken) {

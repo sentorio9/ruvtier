@@ -61,13 +61,19 @@ function timeAgo(dateStr: string | null): string {
   return `${days}d ago`;
 }
 
+const ADMIN_AUTH_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-auth`;
+const API_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const SESSION_KEY = "ruvtier_admin_session";
+
 export default function AdminDashboard() {
+  const { isSuperAdmin } = useAdminAuth();
   const [stats, setStats] = useState<DashboardStats>({
     totalProducts: 0, activeProducts: 0, archivedProducts: 0,
     totalOrders: 0, pendingOrders: 0, fulfilledOrders: 0,
     totalCustomers: 0, recentLogs: [], activeSessions: [],
   });
   const [loading, setLoading] = useState(true);
+  const [revoking, setRevoking] = useState<string | null>(null);
 
   useEffect(() => {
     async function load() {

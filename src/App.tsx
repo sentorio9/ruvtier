@@ -15,6 +15,7 @@ import CollectionPage from "./pages/CollectionPage.tsx";
 import ProductPage from "./pages/ProductPage.tsx";
 import ContactPage from "./pages/ContactPage.tsx";
 import TheHousePage from "./pages/TheHousePage.tsx";
+import { AuthProvider } from "./hooks/useAuth";
 import { AdminAuthProvider } from "./admin/hooks/useAdminAuth";
 import AdminGuard from "./admin/components/AdminGuard";
 import AdminLogin from "./admin/pages/AdminLogin";
@@ -50,6 +51,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <AuthProvider>
         <TitleSetter />
         <ScrollToTop />
         <Routes>
@@ -161,6 +163,7 @@ const App = () => (
           <Route path="/admin/settings" element={<AdminAuthProvider><AdminGuard><AdminSettings /></AdminGuard></AdminAuthProvider>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

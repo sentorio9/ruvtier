@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { useAdminAuth } from "../hooks/useAdminAuth";
+import { ADMIN_PREFIX } from "../config";
 
 export default function AdminGuard({ children }: { children: React.ReactNode }) {
   const { user, isAdmin, loading } = useAdminAuth();
@@ -15,7 +16,7 @@ export default function AdminGuard({ children }: { children: React.ReactNode }) 
   }
 
   if (!user || !isAdmin) {
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to={`${ADMIN_PREFIX}/login`} replace />;
   }
 
   return <>{children}</>;

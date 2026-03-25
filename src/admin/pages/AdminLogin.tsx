@@ -49,7 +49,7 @@ export default function AdminLogin() {
     if (error) {
       setError(error);
     } else {
-      navigate("/admin");
+      navigate(ADMIN_PREFIX);
     }
   };
 

@@ -83,7 +83,7 @@ export default function AdminProductForm() {
     }
 
     setSaving(false);
-    navigate("/admin/products");
+    navigate(`${ADMIN_PREFIX}/products`);
   };
 
   const inputClass = "w-full h-9 px-3 bg-[hsl(220,15%,10%)] border border-[hsl(220,10%,16%)] text-[hsl(220,10%,80%)] text-[13px] focus:outline-none focus:border-[hsl(220,10%,30%)] transition-colors";

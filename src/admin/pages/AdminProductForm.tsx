@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "../components/AdminLayout";
 import { useAdminAuth } from "../hooks/useAdminAuth";
 import { ArrowLeft, Save } from "lucide-react";
+import { ADMIN_PREFIX } from "../config";
 
 const EMPTY_PRODUCT = {
   name: "", slug: "", collection: "", gender_segment: "", description: "", long_description: "",

@@ -340,6 +340,38 @@ function RegisterView({ email, password, displayName, error, success, submitting
   );
 }
 
+/* ─── Forgot Password View ─── */
+function ForgotPasswordView({ email, error, success, submitting, onEmail, onSubmit, onSwitchToLogin }: {
+  email: string; error: string | null; success: string | null; submitting: boolean;
+  onEmail: (v: string) => void; onSubmit: (e: React.FormEvent) => void; onSwitchToLogin: () => void;
+}) {
+  return (
+    <div className="space-y-6">
+      <p className="font-sans text-[11px] tracking-[0.15em] uppercase text-muted-foreground">Reset your password</p>
+      <p className="font-sans text-[12px] text-muted-foreground leading-relaxed">
+        Enter the email address associated with your account and we'll send you a link to reset your password.
+      </p>
+      <form onSubmit={onSubmit} className="space-y-5">
+        <InputField label="Email" value={email} onChange={onEmail} type="email" autoComplete="email" />
+        {error && <ErrorText>{error}</ErrorText>}
+        {success && <SuccessText>{success}</SuccessText>}
+        <button
+          type="submit"
+          disabled={submitting}
+          className="w-full h-11 bg-foreground text-background text-[11px] tracking-[0.15em] uppercase hover:bg-foreground/90 transition-colors disabled:opacity-40 font-sans"
+        >
+          {submitting ? "Sending..." : "Send Reset Link"}
+        </button>
+      </form>
+      <p className="font-sans text-[11px] text-muted-foreground text-center">
+        <button onClick={onSwitchToLogin} className="underline text-foreground hover:text-foreground/80">
+          Back to sign in
+        </button>
+      </p>
+    </div>
+  );
+}
+
 /* ─── Profile View ─── */
 function ProfileView({ user, profile, editMode, editName, editPhone, shippingAddress, billingAddress, useShippingAsBilling, error, submitting, onEditName, onEditPhone, onShippingChange, onBillingChange, onToggleBilling, onStartEdit, onCancelEdit, onSave, onSignOut }: {
   user: any; profile: any; editMode: boolean;

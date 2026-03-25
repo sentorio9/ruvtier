@@ -5,16 +5,17 @@ import {
   LayoutDashboard, Package, ShoppingCart, Users, ScrollText,
   FileText, Settings, LogOut, ChevronLeft, ChevronRight, ShoppingBag
 } from "lucide-react";
+import { ADMIN_PREFIX } from "../config";
 
 const navItems = [
-  { to: "/admin", icon: LayoutDashboard, label: "Dashboard", exact: true },
-  { to: "/admin/products", icon: Package, label: "Products" },
-  { to: "/admin/orders", icon: ShoppingCart, label: "Orders" },
-  { to: "/admin/customers", icon: Users, label: "Customers" },
-  { to: "/admin/carts", icon: ShoppingBag, label: "Carts" },
-  { to: "/admin/content", icon: FileText, label: "Content" },
-  { to: "/admin/logs", icon: ScrollText, label: "Audit Logs" },
-  { to: "/admin/settings", icon: Settings, label: "Settings" },
+  { to: ADMIN_PREFIX, icon: LayoutDashboard, label: "Dashboard", exact: true },
+  { to: `${ADMIN_PREFIX}/products`, icon: Package, label: "Products" },
+  { to: `${ADMIN_PREFIX}/orders`, icon: ShoppingCart, label: "Orders" },
+  { to: `${ADMIN_PREFIX}/customers`, icon: Users, label: "Customers" },
+  { to: `${ADMIN_PREFIX}/carts`, icon: ShoppingBag, label: "Carts" },
+  { to: `${ADMIN_PREFIX}/content`, icon: FileText, label: "Content" },
+  { to: `${ADMIN_PREFIX}/logs`, icon: ScrollText, label: "Audit Logs" },
+  { to: `${ADMIN_PREFIX}/settings`, icon: Settings, label: "Settings" },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
@@ -25,7 +26,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
   const handleSignOut = async () => {
     await signOut();
-    navigate("/admin/login");
+    navigate(`${ADMIN_PREFIX}/login`);
   };
 
   const isActive = (path: string, exact?: boolean) =>

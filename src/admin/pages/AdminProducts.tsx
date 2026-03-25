@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "../components/AdminLayout";
 import { useAdminAuth } from "../hooks/useAdminAuth";
 import { Plus, Search, Archive, Trash2 } from "lucide-react";
+import { ADMIN_PREFIX } from "../config";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Product = Tables<"products">;
@@ -58,7 +59,7 @@ export default function AdminProducts() {
           </p>
         </div>
         <Link
-          to="/admin/products/new"
+          to={`${ADMIN_PREFIX}/products/new`}
           className="flex items-center gap-2 h-9 px-4 bg-[hsl(220,10%,85%)] text-[hsl(220,15%,8%)] text-[11px] tracking-[0.12em] uppercase hover:bg-[hsl(220,10%,75%)] transition-colors"
           style={{ fontFamily: "var(--font-sans)" }}
         >
@@ -118,7 +119,7 @@ export default function AdminProducts() {
               {products.map((p) => (
                 <tr key={p.id} className="border-b border-[hsl(220,10%,10%)] hover:bg-[hsl(220,15%,9%)] transition-colors">
                   <td className="px-4 py-3">
-                    <Link to={`/admin/products/${p.id}`} className="text-[13px] text-[hsl(220,10%,75%)] hover:text-[hsl(220,10%,90%)]" style={{ fontFamily: "var(--font-sans)" }}>
+                    <Link to={`${ADMIN_PREFIX}/products/${p.id}`} className="text-[13px] text-[hsl(220,10%,75%)] hover:text-[hsl(220,10%,90%)]" style={{ fontFamily: "var(--font-sans)" }}>
                       {p.name}
                     </Link>
                     <p className="text-[10px] text-[hsl(220,10%,30%)] mt-0.5" style={{ fontFamily: "var(--font-sans)" }}>{p.slug}</p>

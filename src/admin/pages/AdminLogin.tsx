@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAdminAuth } from "../hooks/useAdminAuth";
+import { ADMIN_PREFIX } from "../config";
 
 const PASSWORD_POLICY = {
   minLength: 14,
@@ -49,7 +50,7 @@ export default function AdminLogin() {
     if (error) {
       setError(error);
     } else {
-      navigate("/admin");
+      navigate(ADMIN_PREFIX);
     }
   };
 

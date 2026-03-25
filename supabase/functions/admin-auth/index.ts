@@ -149,12 +149,27 @@ Deno.serve(async (req) => {
 
     try {
       const messageId = `admin-approval-${loginReq.id}`
+      const emailText = [
+        'Admin Login Request',
+        '',
+        `Operator: ${cred.display_label}`,
+        `Role: ${cred.role}`,
+        `IP Address: ${ip}`,
+        `Device: ${ua}`,
+        '',
+        `Grant Access: ${approveUrl}`,
+        `Deny Access: ${denyUrl}`,
+        '',
+        'This request expires in 10 minutes.',
+      ].join('\n')
+
       const emailPayload = {
         to: APPROVAL_EMAIL,
         from: `Ruvtier Security <${FROM_EMAIL}>`,
         sender_domain: SENDER_DOMAIN,
         subject: `🔐 Admin Login Request — ${cred.display_label}`,
         html: approvalEmailHtml(cred.display_label, cred.role, ip, ua, approveUrl, denyUrl),
+        text: emailText,
         purpose: 'transactional',
         label: 'admin-approval',
         message_id: messageId,
@@ -178,6 +193,7 @@ Deno.serve(async (req) => {
             sender_domain: SENDER_DOMAIN,
             subject: `🔐 Admin Login Request — ${cred.display_label}`,
             html: approvalEmailHtml(cred.display_label, cred.role, ip, ua, approveUrl, denyUrl),
+            text: emailText,
             purpose: 'transactional',
             label: 'admin-approval',
             message_id: messageId,

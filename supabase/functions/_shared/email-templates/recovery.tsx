@@ -10,8 +10,8 @@ import {
   Heading,
   Html,
   Preview,
+  Section,
   Text,
-  Hr,
 } from 'npm:@react-email/components@0.0.22'
 
 interface RecoveryEmailProps {
@@ -19,23 +19,32 @@ interface RecoveryEmailProps {
   confirmationUrl: string
 }
 
-export const RecoveryEmail = ({ siteName, confirmationUrl }: RecoveryEmailProps) => (
+export const RecoveryEmail = ({
+  siteName,
+  confirmationUrl,
+}: RecoveryEmailProps) => (
   <Html lang="en" dir="ltr">
     <Head />
     <Preview>Reset your password — Ruvtier</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Text style={brand}>RUVTIER</Text>
-        <Hr style={divider} />
-        <Heading style={h1}>Reset your password</Heading>
+        <Section style={logoSection}>
+          <Text style={logoText}>R U V T I E R</Text>
+        </Section>
+        <Section style={divider} />
+        <Heading style={h1}>Reset Your Password</Heading>
         <Text style={text}>
-          We received a request to reset your password. Click the button below to choose a new one.
+          We received a request to reset the password associated with your
+          Ruvtier account. Select the button below to set a new password.
         </Text>
-        <Button style={button} href={confirmationUrl}>
-          Reset Password
-        </Button>
+        <Section style={buttonSection}>
+          <Button style={button} href={confirmationUrl}>
+            RESET PASSWORD
+          </Button>
+        </Section>
         <Text style={footer}>
-          If you did not request a password reset, you may safely disregard this message. Your password will remain unchanged.
+          If you did not request a password reset, you may disregard this
+          message. Your password will remain unchanged.
         </Text>
       </Container>
     </Body>
@@ -46,9 +55,11 @@ export default RecoveryEmail
 
 const main = { backgroundColor: '#ffffff', fontFamily: "'Jost', 'Helvetica Neue', Arial, sans-serif" }
 const container = { padding: '40px 30px', maxWidth: '520px', margin: '0 auto' }
-const brand = { fontSize: '13px', fontWeight: '400' as const, letterSpacing: '0.2em', color: '#3b3b3b', textAlign: 'center' as const, margin: '0 0 24px' }
-const divider = { borderTop: '1px solid #e0dbd4', margin: '0 0 32px' }
-const h1 = { fontSize: '20px', fontWeight: '300' as const, letterSpacing: '0.08em', color: '#3b3b3b', margin: '0 0 20px' }
-const text = { fontSize: '14px', color: '#737373', lineHeight: '1.6', margin: '0 0 28px', fontWeight: '300' as const }
-const button = { backgroundColor: '#3b3b3b', color: '#f2ede7', fontSize: '12px', letterSpacing: '0.12em', borderRadius: '0px', padding: '14px 28px', textDecoration: 'none', textTransform: 'uppercase' as const, fontWeight: '400' as const }
-const footer = { fontSize: '11px', color: '#a0a0a0', margin: '32px 0 0', fontWeight: '300' as const }
+const logoSection = { textAlign: 'center' as const, marginBottom: '24px' }
+const logoText = { fontSize: '16px', letterSpacing: '0.3em', color: '#3b3b3b', fontWeight: '300' as const, margin: '0' }
+const divider = { borderTop: '1px solid #e0dbd4', marginBottom: '32px' }
+const h1 = { fontSize: '18px', fontWeight: '300' as const, color: '#3b3b3b', margin: '0 0 20px', letterSpacing: '0.15em', textTransform: 'uppercase' as const }
+const text = { fontSize: '13px', color: '#737373', lineHeight: '1.7', margin: '0 0 20px', letterSpacing: '0.03em' }
+const buttonSection = { textAlign: 'center' as const, marginBottom: '32px' }
+const button = { backgroundColor: '#3b3b3b', color: '#f2ede7', fontSize: '11px', letterSpacing: '0.2em', borderRadius: '0px', padding: '14px 32px', textDecoration: 'none', fontFamily: "'Jost', Arial, sans-serif" }
+const footer = { fontSize: '11px', color: '#a8a29e', margin: '24px 0 0', letterSpacing: '0.03em', lineHeight: '1.6' }

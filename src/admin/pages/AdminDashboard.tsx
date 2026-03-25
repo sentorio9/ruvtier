@@ -196,13 +196,25 @@ export default function AdminDashboard() {
                         </p>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-[11px] text-[hsl(220,10%,55%)]" style={{ fontFamily: "var(--font-sans)" }}>
-                        {timeAgo(session.last_accessed_at)}
-                      </p>
-                      <p className="text-[10px] text-[hsl(220,10%,30%)] mt-0.5" style={{ fontFamily: "var(--font-sans)" }}>
-                        Expires {new Date(session.expires_at).toLocaleDateString()}
-                      </p>
+                    <div className="flex items-center gap-4">
+                      <div className="text-right">
+                        <p className="text-[11px] text-[hsl(220,10%,55%)]" style={{ fontFamily: "var(--font-sans)" }}>
+                          {timeAgo(session.last_accessed_at)}
+                        </p>
+                        <p className="text-[10px] text-[hsl(220,10%,30%)] mt-0.5" style={{ fontFamily: "var(--font-sans)" }}>
+                          Expires {new Date(session.expires_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                      {isSuperAdmin && (
+                        <button
+                          onClick={() => revokeSession(session.id)}
+                          disabled={revoking === session.id}
+                          className="p-1.5 text-[hsl(0,50%,45%)] hover:text-[hsl(0,60%,55%)] hover:bg-[hsl(0,30%,15%)] transition-colors disabled:opacity-40"
+                          title="Revoke session"
+                        >
+                          <X size={14} strokeWidth={2} />
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}

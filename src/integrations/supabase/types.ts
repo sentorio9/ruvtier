@@ -383,36 +383,75 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          billing_city: string | null
+          billing_country: string | null
+          billing_state_province: string | null
+          billing_street_address: string | null
+          billing_street_address_2: string | null
+          billing_zip_code: string | null
+          city: string | null
+          country: string | null
           created_at: string
           display_name: string | null
           email: string
           id: string
           phone: string | null
           preferences: Json | null
+          state_province: string | null
+          street_address: string | null
+          street_address_2: string | null
           updated_at: string
+          use_shipping_as_billing: boolean | null
           user_id: string
+          zip_code: string | null
         }
         Insert: {
           avatar_url?: string | null
+          billing_city?: string | null
+          billing_country?: string | null
+          billing_state_province?: string | null
+          billing_street_address?: string | null
+          billing_street_address_2?: string | null
+          billing_zip_code?: string | null
+          city?: string | null
+          country?: string | null
           created_at?: string
           display_name?: string | null
           email: string
           id?: string
           phone?: string | null
           preferences?: Json | null
+          state_province?: string | null
+          street_address?: string | null
+          street_address_2?: string | null
           updated_at?: string
+          use_shipping_as_billing?: boolean | null
           user_id: string
+          zip_code?: string | null
         }
         Update: {
           avatar_url?: string | null
+          billing_city?: string | null
+          billing_country?: string | null
+          billing_state_province?: string | null
+          billing_street_address?: string | null
+          billing_street_address_2?: string | null
+          billing_zip_code?: string | null
+          city?: string | null
+          country?: string | null
           created_at?: string
           display_name?: string | null
           email?: string
           id?: string
           phone?: string | null
           preferences?: Json | null
+          state_province?: string | null
+          street_address?: string | null
+          street_address_2?: string | null
           updated_at?: string
+          use_shipping_as_billing?: boolean | null
           user_id?: string
+          zip_code?: string | null
         }
         Relationships: []
       }

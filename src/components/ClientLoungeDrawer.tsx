@@ -255,10 +255,10 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
 }
 
 /* ─── Login View ─── */
-function LoginView({ email, password, rememberMe, error, submitting, onEmail, onPassword, onRememberMe, onSubmit, onSwitchToRegister }: {
+function LoginView({ email, password, rememberMe, error, submitting, onEmail, onPassword, onRememberMe, onSubmit, onSwitchToRegister, onSwitchToForgot }: {
   email: string; password: string; rememberMe: boolean; error: string | null; submitting: boolean;
   onEmail: (v: string) => void; onPassword: (v: string) => void; onRememberMe: (v: boolean) => void;
-  onSubmit: (e: React.FormEvent) => void; onSwitchToRegister: () => void;
+  onSubmit: (e: React.FormEvent) => void; onSwitchToRegister: () => void; onSwitchToForgot: () => void;
 }) {
   return (
     <div className="space-y-6">
@@ -267,17 +267,22 @@ function LoginView({ email, password, rememberMe, error, submitting, onEmail, on
         <InputField label="Email" value={email} onChange={onEmail} type="email" autoComplete="email" />
         <InputField label="Password" value={password} onChange={onPassword} type="password" autoComplete="current-password" />
 
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="remember-me"
-            checked={rememberMe}
-            onChange={(e) => onRememberMe(e.target.checked)}
-            className="w-3.5 h-3.5 accent-foreground"
-          />
-          <label htmlFor="remember-me" className="font-sans text-[11px] text-muted-foreground cursor-pointer">
-            Keep me signed in
-          </label>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="remember-me"
+              checked={rememberMe}
+              onChange={(e) => onRememberMe(e.target.checked)}
+              className="w-3.5 h-3.5 accent-foreground"
+            />
+            <label htmlFor="remember-me" className="font-sans text-[11px] text-muted-foreground cursor-pointer">
+              Keep me signed in
+            </label>
+          </div>
+          <button type="button" onClick={onSwitchToForgot} className="font-sans text-[11px] text-muted-foreground hover:text-foreground underline transition-colors">
+            Forgot password?
+          </button>
         </div>
 
         {error && <ErrorText>{error}</ErrorText>}

@@ -19,7 +19,7 @@ interface AuthState {
   signUp: (email: string, password: string, displayName?: string) => Promise<{ error: string | null }>;
   signIn: (email: string, password: string, rememberMe?: boolean) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
-  updateProfile: (updates: Partial<Pick<Profile, "display_name" | "phone" | "avatar_url">>) => Promise<{ error: string | null }>;
+  updateProfile: (updates: Record<string, unknown>) => Promise<{ error: string | null }>;
 }
 
 const AuthContext = createContext<AuthState | null>(null);
@@ -94,7 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProfile(null);
   };
 
-  const updateProfile = async (updates: Partial<Pick<Profile, "display_name" | "phone" | "avatar_url">>): Promise<{ error: string | null }> => {
+  const updateProfile = async (updates: Record<string, unknown>): Promise<{ error: string | null }> => {
     if (!user) return { error: "Not authenticated" };
     const { error } = await supabase
       .from("profiles")

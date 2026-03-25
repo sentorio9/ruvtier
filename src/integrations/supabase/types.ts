@@ -135,24 +135,36 @@ export type Database = {
       }
       admin_sessions: {
         Row: {
+          access_count: number | null
           created_at: string
           credential_id: string
           expires_at: string
           id: string
+          last_accessed_at: string | null
+          last_ip_address: string | null
+          last_user_agent: string | null
           session_token: string
         }
         Insert: {
+          access_count?: number | null
           created_at?: string
           credential_id: string
           expires_at: string
           id?: string
+          last_accessed_at?: string | null
+          last_ip_address?: string | null
+          last_user_agent?: string | null
           session_token: string
         }
         Update: {
+          access_count?: number | null
           created_at?: string
           credential_id?: string
           expires_at?: string
           id?: string
+          last_accessed_at?: string | null
+          last_ip_address?: string | null
+          last_user_agent?: string | null
           session_token?: string
         }
         Relationships: [

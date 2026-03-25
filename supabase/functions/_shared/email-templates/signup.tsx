@@ -11,6 +11,7 @@ import {
   Html,
   Link,
   Preview,
+  Section,
   Text,
 } from 'npm:@react-email/components@0.0.22'
 
@@ -29,29 +30,27 @@ export const SignupEmail = ({
 }: SignupEmailProps) => (
   <Html lang="en" dir="ltr">
     <Head />
-    <Preview>Confirm your email for {siteName}</Preview>
+    <Preview>Verify your email — Ruvtier</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Confirm your email</Heading>
+        <Section style={logoSection}>
+          <Text style={logoText}>R U V T I E R</Text>
+        </Section>
+        <Section style={divider} />
+        <Heading style={h1}>Verify Your Email</Heading>
         <Text style={text}>
-          Thanks for signing up for{' '}
-          <Link href={siteUrl} style={link}>
-            <strong>{siteName}</strong>
-          </Link>
-          !
+          Welcome to the house. Please confirm your email address to complete your registration.
         </Text>
-        <Text style={text}>
-          Please confirm your email address (
-          <Link href={`mailto:${recipient}`} style={link}>
-            {recipient}
-          </Link>
-          ) by clicking the button below:
+        <Text style={textSmall}>
+          <Link href={`mailto:${recipient}`} style={link}>{recipient}</Link>
         </Text>
-        <Button style={button} href={confirmationUrl}>
-          Verify Email
-        </Button>
+        <Section style={buttonSection}>
+          <Button style={button} href={confirmationUrl}>
+            CONFIRM EMAIL
+          </Button>
+        </Section>
         <Text style={footer}>
-          If you didn't create an account, you can safely ignore this email.
+          If you did not create an account with Ruvtier, please disregard this message.
         </Text>
       </Container>
     </Body>
@@ -60,27 +59,15 @@ export const SignupEmail = ({
 
 export default SignupEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
-const container = { padding: '20px 25px' }
-const h1 = {
-  fontSize: '22px',
-  fontWeight: 'bold' as const,
-  color: '#000000',
-  margin: '0 0 20px',
-}
-const text = {
-  fontSize: '14px',
-  color: '#55575d',
-  lineHeight: '1.5',
-  margin: '0 0 25px',
-}
-const link = { color: 'inherit', textDecoration: 'underline' }
-const button = {
-  backgroundColor: '#000000',
-  color: '#ffffff',
-  fontSize: '14px',
-  borderRadius: '8px',
-  padding: '12px 20px',
-  textDecoration: 'none',
-}
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const main = { backgroundColor: '#ffffff', fontFamily: "'Jost', 'Helvetica Neue', Arial, sans-serif" }
+const container = { padding: '40px 30px', maxWidth: '520px', margin: '0 auto' }
+const logoSection = { textAlign: 'center' as const, marginBottom: '24px' }
+const logoText = { fontSize: '16px', letterSpacing: '0.3em', color: '#3b3b3b', fontWeight: '300' as const, margin: '0' }
+const divider = { borderTop: '1px solid #e0dbd4', marginBottom: '32px' }
+const h1 = { fontSize: '18px', fontWeight: '300' as const, color: '#3b3b3b', margin: '0 0 20px', letterSpacing: '0.15em', textTransform: 'uppercase' as const }
+const text = { fontSize: '13px', color: '#737373', lineHeight: '1.7', margin: '0 0 20px', letterSpacing: '0.03em' }
+const textSmall = { fontSize: '12px', color: '#737373', margin: '0 0 28px', letterSpacing: '0.03em' }
+const link = { color: '#3b3b3b', textDecoration: 'underline' }
+const buttonSection = { textAlign: 'center' as const, marginBottom: '32px' }
+const button = { backgroundColor: '#3b3b3b', color: '#f2ede7', fontSize: '11px', letterSpacing: '0.2em', borderRadius: '0px', padding: '14px 32px', textDecoration: 'none', fontFamily: "'Jost', Arial, sans-serif" }
+const footer = { fontSize: '11px', color: '#a8a29e', margin: '24px 0 0', letterSpacing: '0.03em', lineHeight: '1.6' }

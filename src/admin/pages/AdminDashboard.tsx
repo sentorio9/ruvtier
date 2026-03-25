@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "../components/AdminLayout";
-import { Package, ShoppingCart, Users, Activity, AlertCircle } from "lucide-react";
+import { Package, ShoppingCart, Users, Activity, AlertCircle, Monitor } from "lucide-react";
 
 interface DashboardStats {
   totalProducts: number;
@@ -12,6 +12,15 @@ interface DashboardStats {
   fulfilledOrders: number;
   totalCustomers: number;
   recentLogs: Array<{ id: string; action: string; actor_email: string | null; created_at: string }>;
+  activeSessions: Array<{
+    id: string;
+    last_accessed_at: string | null;
+    last_ip_address: string | null;
+    last_user_agent: string | null;
+    access_count: number | null;
+    expires_at: string;
+    credential: { display_label: string | null; role: string } | null;
+  }>;
 }
 
 function StatCard({ label, value, icon: Icon, accent }: { label: string; value: number; icon: any; accent?: string }) {
@@ -30,22 +39,62 @@ function StatCard({ label, value, icon: Icon, accent }: { label: string; value: 
   );
 }
 
+function parseUA(ua: string | null): string {
+  if (!ua) return "Unknown";
+  if (ua.includes("Chrome") && !ua.includes("Edg")) return "Chrome";
+  if (ua.includes("Edg")) return "Edge";
+  if (ua.includes("Firefox")) return "Firefox";
+  if (ua.includes("Safari") && !ua.includes("Chrome")) return "Safari";
+  return ua.substring(0, 30);
+}
+
+function timeAgo(dateStr: string | null): string {
+  if (!dateStr) return "Never";
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return "Just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  return `${days}d ago`;
+}
+
 export default function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats>({
     totalProducts: 0, activeProducts: 0, archivedProducts: 0,
     totalOrders: 0, pendingOrders: 0, fulfilledOrders: 0,
-    totalCustomers: 0, recentLogs: [],
+    totalCustomers: 0, recentLogs: [], activeSessions: [],
   });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function load() {
-      const [products, orders, customers, logs] = await Promise.all([
+      const [products, orders, customers, logs, sessions] = await Promise.all([
         supabase.from("products").select("status", { count: "exact" }).is("deleted_at", null),
         supabase.from("orders").select("status", { count: "exact" }).is("deleted_at", null),
         supabase.from("customers").select("id", { count: "exact" }).is("deleted_at", null),
         supabase.from("audit_logs").select("id, action, actor_email, created_at").order("created_at", { ascending: false }).limit(10),
+        supabase.from("admin_sessions").select("id, last_accessed_at, last_ip_address, last_user_agent, access_count, expires_at, credential_id").gt("expires_at", new Date().toISOString()).order("last_accessed_at", { ascending: false }),
       ]);
+
+      // Fetch credential info for sessions
+      const sessionData = sessions.data || [];
+      let enrichedSessions: DashboardStats["activeSessions"] = [];
+
+      if (sessionData.length > 0) {
+        const credIds = [...new Set(sessionData.map((s: any) => s.credential_id))];
+        const { data: creds } = await supabase
+          .from("admin_credentials")
+          .select("id, display_label, role")
+          .in("id", credIds);
+
+        const credMap = new Map((creds || []).map((c: any) => [c.id, c]));
+        enrichedSessions = sessionData.map((s: any) => ({
+          ...s,
+          credential: credMap.get(s.credential_id) || null,
+        }));
+      }
 
       const productRows = products.data || [];
       const orderRows = orders.data || [];
@@ -59,6 +108,7 @@ export default function AdminDashboard() {
         fulfilledOrders: orderRows.filter(o => o.status === "fulfilled").length,
         totalCustomers: customers.count || 0,
         recentLogs: (logs.data || []) as DashboardStats["recentLogs"],
+        activeSessions: enrichedSessions,
       });
       setLoading(false);
     }
@@ -88,6 +138,45 @@ export default function AdminDashboard() {
             <StatCard label="Pending Orders" value={stats.pendingOrders} icon={ShoppingCart} accent="text-[hsl(40,60%,55%)]" />
             <StatCard label="Fulfilled" value={stats.fulfilledOrders} icon={ShoppingCart} accent="text-[hsl(140,40%,50%)]" />
             <StatCard label="Customers" value={stats.totalCustomers} icon={Users} />
+          </div>
+
+          {/* Active Sessions */}
+          <div className="bg-[hsl(220,15%,9%)] border border-[hsl(220,10%,14%)] p-5 mb-8">
+            <h2 className="text-[13px] tracking-[0.12em] uppercase text-[hsl(220,10%,60%)] mb-4" style={{ fontFamily: "var(--font-sans)" }}>
+              Active Sessions
+            </h2>
+            {stats.activeSessions.length === 0 ? (
+              <p className="text-[12px] text-[hsl(220,10%,30%)]" style={{ fontFamily: "var(--font-sans)" }}>No active sessions</p>
+            ) : (
+              <div className="space-y-3">
+                {stats.activeSessions.map((session) => (
+                  <div key={session.id} className="flex items-center justify-between py-3 px-4 bg-[hsl(220,15%,7%)] border border-[hsl(220,10%,12%)]">
+                    <div className="flex items-center gap-4">
+                      <Monitor size={14} strokeWidth={1.5} className="text-[hsl(140,40%,50%)]" />
+                      <div>
+                        <p className="text-[12px] text-[hsl(220,10%,75%)]" style={{ fontFamily: "var(--font-sans)" }}>
+                          {session.credential?.display_label || "Unknown Operator"}
+                          <span className="ml-2 text-[10px] text-[hsl(220,10%,35%)] uppercase tracking-wider">
+                            {session.credential?.role}
+                          </span>
+                        </p>
+                        <p className="text-[11px] text-[hsl(220,10%,40%)] mt-0.5" style={{ fontFamily: "var(--font-sans)" }}>
+                          {session.last_ip_address || "—"} · {parseUA(session.last_user_agent)} · {session.access_count || 0} access{(session.access_count || 0) !== 1 ? "es" : ""}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[11px] text-[hsl(220,10%,55%)]" style={{ fontFamily: "var(--font-sans)" }}>
+                        {timeAgo(session.last_accessed_at)}
+                      </p>
+                      <p className="text-[10px] text-[hsl(220,10%,30%)] mt-0.5" style={{ fontFamily: "var(--font-sans)" }}>
+                        Expires {new Date(session.expires_at).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Integration status */}

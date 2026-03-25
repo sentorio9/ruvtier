@@ -1,5 +1,4 @@
 import Navigation from "@/components/Navigation";
-import WatermarkLogo from "@/components/WatermarkLogo";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
@@ -11,7 +10,6 @@ const Stillness = () => {
 
   return (
     <div className="relative">
-      <WatermarkLogo />
       <Navigation />
 
       <section className="min-h-[80vh] flex items-center justify-center pt-32 pb-20">
@@ -23,7 +21,23 @@ const Stillness = () => {
               We begin there, in silence."
             </p>
           </ScrollFadeIn>
-          <ScrollFadeIn delay={0.2}>
+
+          {/* Cinematic craft video */}
+          <ScrollFadeIn delay={0.15}>
+            <div className="w-full max-w-3xl mx-auto mb-12">
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full aspect-video object-cover"
+              >
+                <source src="/videos/fabric-craft.mov" type="video/mp4" />
+              </video>
+            </div>
+          </ScrollFadeIn>
+
+          <ScrollFadeIn delay={0.3}>
             <Link to="/" className="luxury-button">
               Return
             </Link>

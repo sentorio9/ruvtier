@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
-import WatermarkLogo from "@/components/WatermarkLogo";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
@@ -21,7 +20,6 @@ const CollectionPage = () => {
 
   return (
     <div className="relative">
-      <WatermarkLogo />
       <Navigation />
 
       <section className="pt-28 md:pt-36 pb-8 md:pb-12">

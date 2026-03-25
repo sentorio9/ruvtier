@@ -16,7 +16,7 @@ const EMPTY_PRODUCT = {
 export default function AdminProductForm() {
   const { id } = useParams();
   const isEditing = !!id;
-  const { user } = useAdminAuth();
+  const { displayLabel } = useAdminAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState(EMPTY_PRODUCT);
   const [loading, setLoading] = useState(false);
@@ -70,17 +70,17 @@ export default function AdminProductForm() {
       status: form.status, featured: form.featured, materials: form.materials || null,
       care_info: form.care_info || null, seo_title: form.seo_title || null,
       seo_description: form.seo_description || null, thumbnail_url: form.thumbnail_url || null,
-      hero_image_url: form.hero_image_url || null, updated_by: user?.id,
+      hero_image_url: form.hero_image_url || null,
     };
 
     if (isEditing) {
       const { error: err } = await supabase.from("products").update(payload).eq("id", id);
       if (err) { setError(err.message); setSaving(false); return; }
-      await supabase.from("audit_logs").insert({ action: "product_updated", actor_id: user?.id, actor_email: user?.email, target_type: "product", target_id: id });
+      await supabase.from("audit_logs").insert({ action: "product_updated", actor_email: displayLabel, target_type: "product", target_id: id });
     } else {
-      const { error: err } = await supabase.from("products").insert({ ...payload, created_by: user?.id });
+      const { error: err } = await supabase.from("products").insert(payload);
       if (err) { setError(err.message); setSaving(false); return; }
-      await supabase.from("audit_logs").insert({ action: "product_created", actor_id: user?.id, actor_email: user?.email, target_type: "product", target_id: form.slug });
+      await supabase.from("audit_logs").insert({ action: "product_created", actor_email: displayLabel, target_type: "product", target_id: form.slug });
     }
 
     setSaving(false);

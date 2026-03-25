@@ -19,7 +19,7 @@ const navItems = [
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
-  const { user, role, signOut } = useAdminAuth();
+  const { role, displayLabel, signOut } = useAdminAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
@@ -86,7 +86,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           {!collapsed && (
             <div className="mb-2 px-1">
               <p className="text-[11px] text-[hsl(220,10%,50%)] truncate" style={{ fontFamily: "var(--font-sans)" }}>
-                {user?.email}
+                {displayLabel || "Operator"}
               </p>
               <p className="text-[10px] text-[hsl(220,10%,30%)] uppercase tracking-wider" style={{ fontFamily: "var(--font-sans)" }}>
                 {role}

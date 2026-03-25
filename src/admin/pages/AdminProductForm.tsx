@@ -100,7 +100,7 @@ export default function AdminProductForm() {
   return (
     <AdminLayout>
       <div className="flex items-center gap-4 mb-8">
-        <button onClick={() => navigate("/admin/products")} className="text-[hsl(220,10%,40%)] hover:text-[hsl(220,10%,70%)]">
+        <button onClick={() => navigate(`${ADMIN_PREFIX}/products`)} className="text-[hsl(220,10%,40%)] hover:text-[hsl(220,10%,70%)]">
           <ArrowLeft size={18} />
         </button>
         <h1 className="text-[20px] font-light tracking-[0.12em] text-[hsl(220,10%,85%)]" style={fontStyle}>
@@ -240,7 +240,7 @@ export default function AdminProductForm() {
             <Save size={14} /> {saving ? "Saving..." : isEditing ? "Update Product" : "Create Product"}
           </button>
           <button
-            onClick={() => navigate("/admin/products")}
+            onClick={() => navigate(`${ADMIN_PREFIX}/products`)}
             className="h-10 px-6 text-[12px] tracking-[0.12em] uppercase text-[hsl(220,10%,45%)] hover:text-[hsl(220,10%,70%)] transition-colors"
             style={fontStyle}
           >

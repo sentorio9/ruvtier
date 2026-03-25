@@ -122,6 +122,30 @@ export default function AdminDashboard() {
     load();
   }, []);
 
+  const revokeSession = useCallback(async (targetSessionId: string) => {
+    const token = localStorage.getItem(SESSION_KEY) || sessionStorage.getItem(SESSION_KEY);
+    if (!token) return;
+    setRevoking(targetSessionId);
+    try {
+      const res = await fetch(ADMIN_AUTH_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", apikey: API_KEY },
+        body: JSON.stringify({ action: "revoke-session", sessionToken: token, targetSessionId }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setStats(prev => ({
+          ...prev,
+          activeSessions: prev.activeSessions.filter(s => s.id !== targetSessionId),
+        }));
+      }
+    } catch {
+      // silent
+    } finally {
+      setRevoking(null);
+    }
+  }, []);
+
   return (
     <AdminLayout>
       <div className="mb-8">

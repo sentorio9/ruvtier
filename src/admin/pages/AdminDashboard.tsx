@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "../components/AdminLayout";
-import { Package, ShoppingCart, Users, Activity, AlertCircle, Monitor } from "lucide-react";
+import { useAdminAuth } from "../hooks/useAdminAuth";
+import { Package, ShoppingCart, Users, Activity, AlertCircle, Monitor, X } from "lucide-react";
 
 interface DashboardStats {
   totalProducts: number;

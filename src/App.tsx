@@ -15,6 +15,7 @@ import CollectionPage from "./pages/CollectionPage.tsx";
 import ProductPage from "./pages/ProductPage.tsx";
 import ContactPage from "./pages/ContactPage.tsx";
 import TheHousePage from "./pages/TheHousePage.tsx";
+import ResetPassword from "./pages/ResetPassword.tsx";
 import { AuthProvider } from "./hooks/useAuth";
 import { AdminAuthProvider } from "./admin/hooks/useAdminAuth";
 import AdminGuard from "./admin/components/AdminGuard";

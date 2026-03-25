@@ -1,21 +1,18 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
-import WatermarkLogo from "@/components/WatermarkLogo";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
 import heroImage from "@/assets/hero-editorial.jpg";
 import womenImage from "@/assets/collection-women.jpg";
 import menImage from "@/assets/collection-men.jpg";
-import materialImage from "@/assets/material-texture.jpg";
 
 const Index = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
 
   return (
     <div className="relative">
-      <WatermarkLogo />
       <Navigation />
 
       {/* Hero */}
@@ -24,19 +21,16 @@ const Index = () => {
           className="absolute inset-0 bg-cover bg-[center_40%] md:bg-[center_35%]"
           style={{ backgroundImage: `url(${heroImage})` }}
         >
-          <div className="absolute inset-0 bg-background/55" />
+          <div className="absolute inset-0 bg-background/40" />
         </div>
         <div className="relative z-10 text-center px-6 -mt-8 md:-mt-12">
           <ScrollFadeIn>
-            <h1 className="luxury-heading-lg mb-5 uppercase">R U V T I E R</h1>
-          </ScrollFadeIn>
-          <ScrollFadeIn delay={0.2}>
-            <p className="luxury-body mx-auto mb-10 text-center">
+            <p className="font-serif font-light text-[clamp(20px,2.2vw,28px)] leading-[1.7] tracking-[0.08em] text-foreground mx-auto max-w-[var(--text-max)]">
               Permanence in garment form
             </p>
           </ScrollFadeIn>
-          <ScrollFadeIn delay={0.4}>
-            <Link to="/collection" className="luxury-button">
+          <ScrollFadeIn delay={0.3}>
+            <Link to="/collection" className="luxury-button mt-10 inline-block">
               Explore the Collection
             </Link>
           </ScrollFadeIn>
@@ -53,7 +47,7 @@ const Index = () => {
             className="absolute inset-0 w-full h-full object-cover object-[center_25%] transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-foreground/15 group-hover:bg-foreground/25 transition-colors duration-700" />
+          <div className="absolute inset-0 bg-foreground/10 group-hover:bg-foreground/20 transition-colors duration-700" />
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
             <h2 className="font-serif font-light text-[clamp(24px,3vw,38px)] tracking-[0.15em] text-primary-foreground mb-3 transition-transform duration-700 group-hover:-translate-y-1">
               Women's Collection
@@ -72,7 +66,7 @@ const Index = () => {
             className="absolute inset-0 w-full h-full object-cover object-[center_25%] transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-foreground/15 group-hover:bg-foreground/25 transition-colors duration-700" />
+          <div className="absolute inset-0 bg-foreground/10 group-hover:bg-foreground/20 transition-colors duration-700" />
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
             <h2 className="font-serif font-light text-[clamp(24px,3vw,38px)] tracking-[0.15em] text-primary-foreground mb-3 transition-transform duration-700 group-hover:-translate-y-1">
               Men's Collection
@@ -84,14 +78,20 @@ const Index = () => {
         </Link>
       </section>
 
-      {/* Material is Memory */}
+      {/* Material is Memory — Video Section */}
       <section className="luxury-section">
         <div className="relative overflow-hidden">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${materialImage})` }}
-          >
-            <div className="absolute inset-0 bg-background/60" />
+          <div className="absolute inset-0">
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover"
+            >
+              <source src="/videos/fabric-craft.mov" type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-background/55" />
           </div>
           <div className="relative z-10 luxury-container flex flex-col items-center text-center py-28 md:py-40">
             <ScrollFadeIn>
@@ -111,7 +111,7 @@ const Index = () => {
         <div className="luxury-container flex flex-col items-center text-center">
           <ScrollFadeIn>
             <p className="luxury-body mx-auto mb-3 text-center italic">
-              "Every fabric carries origin, landscape, and time."
+              "Every fibre carries origin, landscape, and time."
             </p>
             <p className="luxury-body mx-auto mb-10 text-center italic">
               "We begin there, in silence."

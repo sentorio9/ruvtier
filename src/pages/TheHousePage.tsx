@@ -1,5 +1,4 @@
 import Navigation from "@/components/Navigation";
-import WatermarkLogo from "@/components/WatermarkLogo";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
@@ -10,7 +9,6 @@ const TheHousePage = () => {
 
   return (
     <div className="relative">
-      <WatermarkLogo />
       <Navigation />
 
       <article className="pt-40 pb-20 md:pt-48 md:pb-28">

@@ -49,13 +49,13 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
         {/* Social links */}
         <ScrollFadeIn delay={0.15}>
           <div className="flex items-center justify-center gap-8 mb-10">
-            <a href="https://www.instagram.com/ruvtier" target="_blank" rel="noopener noreferrer" className="luxury-button !text-[11px] !p-0 tracking-[0.1em] uppercase text-muted-foreground">
+            <a href="https://www.instagram.com/ruvtier/" target="_blank" rel="noopener noreferrer" className="luxury-button !text-[11px] !p-0 tracking-[0.1em] uppercase text-muted-foreground">
               Instagram
             </a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="luxury-button !text-[11px] !p-0 tracking-[0.1em] uppercase text-muted-foreground">
+            <a href="https://www.youtube.com/@ruvtier" target="_blank" rel="noopener noreferrer" className="luxury-button !text-[11px] !p-0 tracking-[0.1em] uppercase text-muted-foreground">
               YouTube
             </a>
-            <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" className="luxury-button !text-[11px] !p-0 tracking-[0.1em] uppercase text-muted-foreground">
+            <a href="https://uk.pinterest.com/RUVTIER/_created/" target="_blank" rel="noopener noreferrer" className="luxury-button !text-[11px] !p-0 tracking-[0.1em] uppercase text-muted-foreground">
               Pinterest
             </a>
           </div>

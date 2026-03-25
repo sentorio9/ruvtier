@@ -213,6 +213,16 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
                 onSubmit={handleRegister}
                 onSwitchToLogin={() => { resetForm(); setView("login"); }}
               />
+            ) : currentView === "forgot" ? (
+              <ForgotPasswordView
+                email={email}
+                error={error}
+                success={success}
+                submitting={submitting}
+                onEmail={setEmail}
+                onSubmit={handleForgotPassword}
+                onSwitchToLogin={() => { resetForm(); setView("login"); }}
+              />
             ) : (
               <LoginView
                 email={email}
@@ -225,6 +235,7 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
                 onRememberMe={setRememberMe}
                 onSubmit={handleLogin}
                 onSwitchToRegister={() => { resetForm(); setView("register"); }}
+                onSwitchToForgot={() => { resetForm(); setView("forgot"); }}
               />
             )}
           </div>

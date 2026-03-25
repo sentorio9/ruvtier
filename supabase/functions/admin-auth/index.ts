@@ -149,6 +149,7 @@ Deno.serve(async (req) => {
 
     try {
       const messageId = `admin-approval-${loginReq.id}`
+      const unsubscribeToken = crypto.randomUUID()
       const emailText = [
         'Admin Login Request',
         '',
@@ -163,6 +164,15 @@ Deno.serve(async (req) => {
         'This request expires in 10 minutes.',
       ].join('\n')
 
+      const { error: unsubscribeErr } = await supabase.from('email_unsubscribe_tokens').insert({
+        email: APPROVAL_EMAIL,
+        token: unsubscribeToken,
+      })
+
+      if (unsubscribeErr) {
+        console.error('Failed to create unsubscribe token:', unsubscribeErr)
+      }
+
       const emailPayload = {
         to: APPROVAL_EMAIL,
         from: `Ruvtier Security <${FROM_EMAIL}>`,
@@ -174,6 +184,7 @@ Deno.serve(async (req) => {
         label: 'admin-approval',
         message_id: messageId,
         idempotency_key: messageId,
+        unsubscribe_token: unsubscribeToken,
         queued_at: new Date().toISOString(),
       }
 
@@ -198,6 +209,7 @@ Deno.serve(async (req) => {
             label: 'admin-approval',
             message_id: messageId,
             idempotency_key: messageId,
+            unsubscribe_token: unsubscribeToken,
           },
           { apiKey, sendUrl: Deno.env.get('LOVABLE_SEND_URL') }
         )

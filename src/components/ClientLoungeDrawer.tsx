@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { X } from "lucide-react";
 import { InputField, ErrorText, SuccessText } from "./client-lounge/FormElements";
 import PasswordStrengthIndicator, { isPasswordValid } from "./client-lounge/PasswordStrengthIndicator";
 import AddressFields, { type AddressData } from "./client-lounge/AddressFields";
 
-type View = "login" | "register" | "profile";
+type View = "login" | "register" | "profile" | "forgot";
 
 interface Props {
   isOpen: boolean;
@@ -22,7 +22,7 @@ const emptyAddress: AddressData = {
 };
 
 export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
-  const { user, profile, loading, signIn, signUp, signOut, updateProfile } = useAuth();
+  const { user, profile, loading, signIn, signUp, signOut, resetPassword, updateProfile } = useAuth();
   const [view, setView] = useState<View>("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -79,6 +79,18 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
     await signOut();
     resetForm();
     setView("login");
+  };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+    if (!email.trim()) { setError("Please enter your email address"); return; }
+    setSubmitting(true);
+    const { error } = await resetPassword(email.trim());
+    setSubmitting(false);
+    if (error) setError(error);
+    else setSuccess(`Password reset link sent to ${email.trim()}. Please check your inbox.`);
   };
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
@@ -201,6 +213,16 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
                 onSubmit={handleRegister}
                 onSwitchToLogin={() => { resetForm(); setView("login"); }}
               />
+            ) : currentView === "forgot" ? (
+              <ForgotPasswordView
+                email={email}
+                error={error}
+                success={success}
+                submitting={submitting}
+                onEmail={setEmail}
+                onSubmit={handleForgotPassword}
+                onSwitchToLogin={() => { resetForm(); setView("login"); }}
+              />
             ) : (
               <LoginView
                 email={email}
@@ -213,6 +235,7 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
                 onRememberMe={setRememberMe}
                 onSubmit={handleLogin}
                 onSwitchToRegister={() => { resetForm(); setView("register"); }}
+                onSwitchToForgot={() => { resetForm(); setView("forgot"); }}
               />
             )}
           </div>
@@ -232,10 +255,10 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
 }
 
 /* ─── Login View ─── */
-function LoginView({ email, password, rememberMe, error, submitting, onEmail, onPassword, onRememberMe, onSubmit, onSwitchToRegister }: {
+function LoginView({ email, password, rememberMe, error, submitting, onEmail, onPassword, onRememberMe, onSubmit, onSwitchToRegister, onSwitchToForgot }: {
   email: string; password: string; rememberMe: boolean; error: string | null; submitting: boolean;
   onEmail: (v: string) => void; onPassword: (v: string) => void; onRememberMe: (v: boolean) => void;
-  onSubmit: (e: React.FormEvent) => void; onSwitchToRegister: () => void;
+  onSubmit: (e: React.FormEvent) => void; onSwitchToRegister: () => void; onSwitchToForgot: () => void;
 }) {
   return (
     <div className="space-y-6">
@@ -244,17 +267,22 @@ function LoginView({ email, password, rememberMe, error, submitting, onEmail, on
         <InputField label="Email" value={email} onChange={onEmail} type="email" autoComplete="email" />
         <InputField label="Password" value={password} onChange={onPassword} type="password" autoComplete="current-password" />
 
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="remember-me"
-            checked={rememberMe}
-            onChange={(e) => onRememberMe(e.target.checked)}
-            className="w-3.5 h-3.5 accent-foreground"
-          />
-          <label htmlFor="remember-me" className="font-sans text-[11px] text-muted-foreground cursor-pointer">
-            Keep me signed in
-          </label>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="remember-me"
+              checked={rememberMe}
+              onChange={(e) => onRememberMe(e.target.checked)}
+              className="w-3.5 h-3.5 accent-foreground"
+            />
+            <label htmlFor="remember-me" className="font-sans text-[11px] text-muted-foreground cursor-pointer">
+              Keep me signed in
+            </label>
+          </div>
+          <button type="button" onClick={onSwitchToForgot} className="font-sans text-[11px] text-muted-foreground hover:text-foreground underline transition-colors">
+            Forgot password?
+          </button>
         </div>
 
         {error && <ErrorText>{error}</ErrorText>}
@@ -306,6 +334,38 @@ function RegisterView({ email, password, displayName, error, success, submitting
         Already have an account?{" "}
         <button onClick={onSwitchToLogin} className="underline text-foreground hover:text-foreground/80">
           Sign in
+        </button>
+      </p>
+    </div>
+  );
+}
+
+/* ─── Forgot Password View ─── */
+function ForgotPasswordView({ email, error, success, submitting, onEmail, onSubmit, onSwitchToLogin }: {
+  email: string; error: string | null; success: string | null; submitting: boolean;
+  onEmail: (v: string) => void; onSubmit: (e: React.FormEvent) => void; onSwitchToLogin: () => void;
+}) {
+  return (
+    <div className="space-y-6">
+      <p className="font-sans text-[11px] tracking-[0.15em] uppercase text-muted-foreground">Reset your password</p>
+      <p className="font-sans text-[12px] text-muted-foreground leading-relaxed">
+        Enter the email address associated with your account and we'll send you a link to reset your password.
+      </p>
+      <form onSubmit={onSubmit} className="space-y-5">
+        <InputField label="Email" value={email} onChange={onEmail} type="email" autoComplete="email" />
+        {error && <ErrorText>{error}</ErrorText>}
+        {success && <SuccessText>{success}</SuccessText>}
+        <button
+          type="submit"
+          disabled={submitting}
+          className="w-full h-11 bg-foreground text-background text-[11px] tracking-[0.15em] uppercase hover:bg-foreground/90 transition-colors disabled:opacity-40 font-sans"
+        >
+          {submitting ? "Sending..." : "Send Reset Link"}
+        </button>
+      </form>
+      <p className="font-sans text-[11px] text-muted-foreground text-center">
+        <button onClick={onSwitchToLogin} className="underline text-foreground hover:text-foreground/80">
+          Back to sign in
         </button>
       </p>
     </div>

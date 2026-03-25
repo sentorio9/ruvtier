@@ -19,6 +19,7 @@ interface AuthState {
   signUp: (email: string, password: string, displayName?: string) => Promise<{ error: string | null }>;
   signIn: (email: string, password: string, rememberMe?: boolean) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<{ error: string | null }>;
   updateProfile: (updates: Record<string, unknown>) => Promise<{ error: string | null }>;
 }
 
@@ -97,6 +98,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProfile(null);
   };
 
+  const resetPassword = async (email: string): Promise<{ error: string | null }> => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    if (error) return { error: error.message };
+    return { error: null };
+  };
+
   const updateProfile = async (updates: Record<string, unknown>): Promise<{ error: string | null }> => {
     if (!user) return { error: "Not authenticated" };
     const { error } = await supabase
@@ -109,7 +118,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, profile, loading, signUp, signIn, signOut, updateProfile }}>
+    <AuthContext.Provider value={{ user, session, profile, loading, signUp, signIn, signOut, resetPassword, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );

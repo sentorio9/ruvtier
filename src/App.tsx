@@ -83,7 +83,23 @@ const App = () => (
               />
             }
           />
-          {boutiqueCategories.map((cat) => {
+          {Object.entries(genderCategories).map(([label, gender]) => {
+            const slug = label.toLowerCase().replace(/\s+/g, "-");
+            return (
+              <Route
+                key={slug}
+                path={`/boutique/${slug}`}
+                element={
+                  <BoutiqueCategoryPage
+                    title={label}
+                    gender={gender}
+                    subtitle={`Curated ${label.toLowerCase()} pieces, composed with intention.`}
+                  />
+                }
+              />
+            );
+          })}
+          {editorialCategories.map((cat) => {
             const slug = cat.toLowerCase().replace(/\s+/g, "-");
             return (
               <Route

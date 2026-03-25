@@ -16,6 +16,7 @@ import ProductPage from "./pages/ProductPage.tsx";
 import ContactPage from "./pages/ContactPage.tsx";
 import TheHousePage from "./pages/TheHousePage.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
+import BoutiqueCategoryPage from "./pages/BoutiqueCategoryPage.tsx";
 import { AuthProvider } from "./hooks/useAuth";
 import { AdminAuthProvider } from "./admin/hooks/useAdminAuth";
 import AdminGuard from "./admin/components/AdminGuard";
@@ -41,10 +42,17 @@ function TitleSetter() {
   return null;
 }
 
-const boutiqueCategories = [
-  "Lifestyle", "Men", "Women", "Children",
-  "Footwear", "Made-to-Measure", "Home Interiors",
-  "Leather Goods", "Accessories",
+// Categories that show filtered products from database
+const genderCategories: Record<string, string> = {
+  Women: "women",
+  Men: "men",
+  Lifestyle: "lifestyle",
+};
+
+// Categories that remain editorial placeholders
+const editorialCategories = [
+  "Children", "Footwear", "Made-to-Measure",
+  "Home Interiors", "Leather Goods", "Accessories",
 ];
 
 const App = () => (
@@ -75,7 +83,23 @@ const App = () => (
               />
             }
           />
-          {boutiqueCategories.map((cat) => {
+          {Object.entries(genderCategories).map(([label, gender]) => {
+            const slug = label.toLowerCase().replace(/\s+/g, "-");
+            return (
+              <Route
+                key={slug}
+                path={`/boutique/${slug}`}
+                element={
+                  <BoutiqueCategoryPage
+                    title={label}
+                    gender={gender}
+                    subtitle={`Curated ${label.toLowerCase()} pieces, composed with intention.`}
+                  />
+                }
+              />
+            );
+          })}
+          {editorialCategories.map((cat) => {
             const slug = cat.toLowerCase().replace(/\s+/g, "-");
             return (
               <Route

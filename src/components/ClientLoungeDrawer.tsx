@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { X } from "lucide-react";
 import { InputField, ErrorText, SuccessText } from "./client-lounge/FormElements";
 import PasswordStrengthIndicator, { isPasswordValid } from "./client-lounge/PasswordStrengthIndicator";
 import AddressFields, { type AddressData } from "./client-lounge/AddressFields";
 
-type View = "login" | "register" | "profile";
+type View = "login" | "register" | "profile" | "forgot";
 
 interface Props {
   isOpen: boolean;
@@ -22,7 +22,7 @@ const emptyAddress: AddressData = {
 };
 
 export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
-  const { user, profile, loading, signIn, signUp, signOut, updateProfile } = useAuth();
+  const { user, profile, loading, signIn, signUp, signOut, resetPassword, updateProfile } = useAuth();
   const [view, setView] = useState<View>("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

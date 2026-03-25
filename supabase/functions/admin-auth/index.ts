@@ -148,17 +148,44 @@ Deno.serve(async (req) => {
     const denyUrl = `${functionUrl}?action=deny&token=${token}`
 
     try {
+      const messageId = `admin-approval-${loginReq.id}`
+      const unsubscribeToken = crypto.randomUUID()
+      const emailText = [
+        'Admin Login Request',
+        '',
+        `Operator: ${cred.display_label}`,
+        `Role: ${cred.role}`,
+        `IP Address: ${ip}`,
+        `Device: ${ua}`,
+        '',
+        `Grant Access: ${approveUrl}`,
+        `Deny Access: ${denyUrl}`,
+        '',
+        'This request expires in 10 minutes.',
+      ].join('\n')
+
+      const { error: unsubscribeErr } = await supabase.from('email_unsubscribe_tokens').insert({
+        email: APPROVAL_EMAIL,
+        token: unsubscribeToken,
+      })
+
+      if (unsubscribeErr) {
+        console.error('Failed to create unsubscribe token:', unsubscribeErr)
+      }
+
       const emailPayload = {
         to: APPROVAL_EMAIL,
         from: `Ruvtier Security <${FROM_EMAIL}>`,
         sender_domain: SENDER_DOMAIN,
         subject: `🔐 Admin Login Request — ${cred.display_label}`,
         html: approvalEmailHtml(cred.display_label, cred.role, ip, ua, approveUrl, denyUrl),
+        text: emailText,
         purpose: 'transactional',
         label: 'admin-approval',
-        message_id: `admin-approval-${loginReq.id}`,
-        apiKey,
-        sendUrl: Deno.env.get('LOVABLE_SEND_URL'),
+        message_id: messageId,
+        idempotency_key: messageId,
+        unsubscribe_token: unsubscribeToken,
+        queued_at: new Date().toISOString(),
       }
 
       // Enqueue via the reliable email queue
@@ -177,9 +204,12 @@ Deno.serve(async (req) => {
             sender_domain: SENDER_DOMAIN,
             subject: `🔐 Admin Login Request — ${cred.display_label}`,
             html: approvalEmailHtml(cred.display_label, cred.role, ip, ua, approveUrl, denyUrl),
+            text: emailText,
             purpose: 'transactional',
             label: 'admin-approval',
-            message_id: `admin-approval-${loginReq.id}`,
+            message_id: messageId,
+            idempotency_key: messageId,
+            unsubscribe_token: unsubscribeToken,
           },
           { apiKey, sendUrl: Deno.env.get('LOVABLE_SEND_URL') }
         )

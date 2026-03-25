@@ -203,10 +203,17 @@ Deno.serve(async (req) => {
         ? new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
         : new Date(Date.now() + 60 * 60 * 1000)
 
+      const checkIp = req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown'
+      const checkUa = req.headers.get('user-agent') || 'unknown'
+
       await supabase.from('admin_sessions').insert({
         credential_id: cred.id,
         session_token: sessionToken,
         expires_at: expiresAt.toISOString(),
+        last_accessed_at: new Date().toISOString(),
+        last_ip_address: checkIp,
+        last_user_agent: checkUa,
+        access_count: 1,
       })
 
       // Ensure Supabase auth account for data operations
@@ -236,12 +243,25 @@ Deno.serve(async (req) => {
 
     const { data: session } = await supabase
       .from('admin_sessions')
-      .select('credential_id, expires_at')
+      .select('credential_id, expires_at, access_count')
       .eq('session_token', sessionToken)
       .gt('expires_at', new Date().toISOString())
       .maybeSingle()
 
     if (!session) return jsonResponse({ valid: false })
+
+    // Track access activity
+    const validateIp = req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown'
+    const validateUa = req.headers.get('user-agent') || 'unknown'
+    await supabase
+      .from('admin_sessions')
+      .update({
+        last_accessed_at: new Date().toISOString(),
+        last_ip_address: validateIp,
+        last_user_agent: validateUa,
+        access_count: (session as any).access_count ? (session as any).access_count + 1 : 1,
+      })
+      .eq('session_token', sessionToken)
 
     const { data: cred } = await supabase
       .from('admin_credentials')

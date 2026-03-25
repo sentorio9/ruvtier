@@ -148,19 +148,42 @@ Deno.serve(async (req) => {
     const denyUrl = `${functionUrl}?action=deny&token=${token}`
 
     try {
-      await sendLovableEmail(
-        {
-          to: APPROVAL_EMAIL,
-          from: `Ruvtier Security <${FROM_EMAIL}>`,
-          sender_domain: SENDER_DOMAIN,
-          subject: `🔐 Admin Login Request — ${cred.display_label}`,
-          html: approvalEmailHtml(cred.display_label, cred.role, ip, ua, approveUrl, denyUrl),
-          purpose: 'transactional',
-          label: 'admin-approval',
-          message_id: `admin-approval-${loginReq.id}`,
-        },
-        { apiKey, sendUrl: Deno.env.get('LOVABLE_SEND_URL') }
-      )
+      const emailPayload = {
+        to: APPROVAL_EMAIL,
+        from: `Ruvtier Security <${FROM_EMAIL}>`,
+        sender_domain: SENDER_DOMAIN,
+        subject: `🔐 Admin Login Request — ${cred.display_label}`,
+        html: approvalEmailHtml(cred.display_label, cred.role, ip, ua, approveUrl, denyUrl),
+        purpose: 'transactional',
+        label: 'admin-approval',
+        message_id: `admin-approval-${loginReq.id}`,
+        apiKey,
+        sendUrl: Deno.env.get('LOVABLE_SEND_URL'),
+      }
+
+      // Enqueue via the reliable email queue
+      const { error: queueErr } = await supabase.rpc('enqueue_email', {
+        queue_name: 'transactional_emails',
+        payload: emailPayload,
+      })
+
+      if (queueErr) {
+        console.error('Failed to enqueue approval email:', queueErr)
+        // Fallback to direct send
+        await sendLovableEmail(
+          {
+            to: APPROVAL_EMAIL,
+            from: `Ruvtier Security <${FROM_EMAIL}>`,
+            sender_domain: SENDER_DOMAIN,
+            subject: `🔐 Admin Login Request — ${cred.display_label}`,
+            html: approvalEmailHtml(cred.display_label, cred.role, ip, ua, approveUrl, denyUrl),
+            purpose: 'transactional',
+            label: 'admin-approval',
+            message_id: `admin-approval-${loginReq.id}`,
+          },
+          { apiKey, sendUrl: Deno.env.get('LOVABLE_SEND_URL') }
+        )
+      }
     } catch (e) {
       console.error('Approval email send error:', e)
     }

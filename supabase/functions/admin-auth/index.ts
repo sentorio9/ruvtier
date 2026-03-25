@@ -148,6 +148,7 @@ Deno.serve(async (req) => {
     const denyUrl = `${functionUrl}?action=deny&token=${token}`
 
     try {
+      const messageId = `admin-approval-${loginReq.id}`
       const emailPayload = {
         to: APPROVAL_EMAIL,
         from: `Ruvtier Security <${FROM_EMAIL}>`,
@@ -156,9 +157,9 @@ Deno.serve(async (req) => {
         html: approvalEmailHtml(cred.display_label, cred.role, ip, ua, approveUrl, denyUrl),
         purpose: 'transactional',
         label: 'admin-approval',
-        message_id: `admin-approval-${loginReq.id}`,
-        apiKey,
-        sendUrl: Deno.env.get('LOVABLE_SEND_URL'),
+        message_id: messageId,
+        idempotency_key: messageId,
+        queued_at: new Date().toISOString(),
       }
 
       // Enqueue via the reliable email queue
@@ -179,7 +180,8 @@ Deno.serve(async (req) => {
             html: approvalEmailHtml(cred.display_label, cred.role, ip, ua, approveUrl, denyUrl),
             purpose: 'transactional',
             label: 'admin-approval',
-            message_id: `admin-approval-${loginReq.id}`,
+            message_id: messageId,
+            idempotency_key: messageId,
           },
           { apiKey, sendUrl: Deno.env.get('LOVABLE_SEND_URL') }
         )

@@ -4,6 +4,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import SlideMenu from "./FullScreenMenu";
 import CartDrawer from "./CartDrawer";
 import ClientLoungeDrawer from "./ClientLoungeDrawer";
+import SearchOverlay from "./SearchOverlay";
 
 const categories = [
   { label: "Women", to: "/boutique/women" },

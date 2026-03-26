@@ -104,39 +104,40 @@ const Index = () => {
 
 
       {/* In Your Keeping — Explore Section */}
-      <section className="luxury-section">
+      <section className="py-16 md:py-24">
         <div className="luxury-container">
           <ScrollFadeIn>
-            <h2 className="luxury-heading text-center mb-10 md:mb-16">In Your Keeping</h2>
+            <h2 className="font-serif font-light text-[clamp(18px,1.6vw,22px)] tracking-[0.15em] text-foreground text-center mb-10 md:mb-14">
+              In Your Keeping
+            </h2>
           </ScrollFadeIn>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-6">
             {[
               { img: knitwearImg, label: "Knitwear", to: "/boutique/women" },
               { img: lifestyleImg, label: "Life in RUVTIER", to: "/boutique/lifestyle" },
               { img: appointmentImg, label: "By Appointment Only", to: "/contact" },
             ].map((item, i) => (
-              <ScrollFadeIn key={item.label} delay={i * 0.12}>
+              <ScrollFadeIn key={item.label} delay={i * 0.1}>
                 <Link
                   to={item.to}
-                  className="group flex flex-col items-center text-center px-4 md:px-8 relative"
+                  className="group flex flex-col items-center text-center px-2 md:px-4"
                 >
-                  {i > 0 && (
-                    <div className="hidden md:block absolute left-0 top-[10%] bottom-[10%] w-px bg-border" />
-                  )}
-                  <div className="w-full aspect-[3/4] overflow-hidden mb-6 md:mb-8">
+                  <div className="w-full aspect-[4/3] overflow-hidden mb-5">
                     <img
                       src={item.img}
                       alt={item.label}
                       loading="lazy"
                       width={640}
-                      height={800}
+                      height={480}
                       className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                     />
                   </div>
-                  <h3 className="font-serif font-light text-[clamp(18px,1.8vw,22px)] tracking-[0.1em] text-foreground mb-3">
+                  <h3 className="font-serif font-light text-[clamp(15px,1.4vw,18px)] tracking-[0.12em] text-foreground mb-2">
                     {item.label}
                   </h3>
-                  <span className="luxury-button text-[13px]">Explore</span>
+                  <span className="font-sans text-[11px] tracking-[0.18em] uppercase text-muted-foreground group-hover:text-foreground transition-colors duration-500">
+                    Explore
+                  </span>
                 </Link>
               </ScrollFadeIn>
             ))}

@@ -7,20 +7,17 @@ interface LuxuryFooterProps {
 
 const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   return (
-    <footer className="border-t border-border" style={{ paddingTop: "var(--section-gap)", paddingBottom: "var(--section-gap)" }}>
+    <footer className="border-t border-border py-8 md:py-10">
       <div className="luxury-container">
         {/* Newsletter */}
-        <ScrollFadeIn>
-          <div className="flex flex-col items-center text-center mb-16 md:mb-20">
-            <button onClick={onSubscribeClick} className="luxury-button !text-[13px]">
-              Subscribe to our newsletter
-            </button>
-          </div>
-        </ScrollFadeIn>
+        <div className="flex flex-col items-center text-center mb-8 md:mb-10">
+          <button onClick={onSubscribeClick} className="luxury-button !text-[12px]">
+            Subscribe to our newsletter
+          </button>
+        </div>
 
         {/* Two-column links */}
-        <ScrollFadeIn delay={0.1}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 max-w-xl mx-auto mb-16 md:mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16 max-w-xl mx-auto mb-8 md:mb-10">
             {/* Left column */}
             <div className="flex flex-col items-center md:items-start gap-4">
               <Link to="/appointments" className="luxury-button !text-[12px] !p-0 tracking-[0.1em] uppercase text-muted-foreground">

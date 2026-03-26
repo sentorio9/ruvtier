@@ -122,7 +122,7 @@ const Index = () => {
                   to={item.to}
                   className="group flex flex-col items-center text-center px-2 md:px-4"
                 >
-                  <div className="w-full aspect-[3/4] flex items-center justify-center mb-5">
+                  <div className="w-full aspect-[3/4] flex items-center justify-center mb-5 bg-background">
                     <img
                       src={item.img}
                       alt={item.label}

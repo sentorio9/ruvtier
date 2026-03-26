@@ -2,11 +2,15 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
+import LazyVideo from "@/components/LazyVideo";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
 import heroImage from "@/assets/hero-editorial.jpg";
 import womenImage from "@/assets/collection-women.jpg";
 import menImage from "@/assets/collection-men.jpg";
+import knitwearImg from "@/assets/explore-knitwear.jpg";
+import lifestyleImg from "@/assets/explore-lifestyle.jpg";
+import appointmentImg from "@/assets/explore-appointment.jpg";
 
 const Index = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
@@ -82,15 +86,7 @@ const Index = () => {
       <section className="luxury-section">
         <div className="relative overflow-hidden">
           <div className="absolute inset-0">
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full h-full object-cover"
-            >
-              <source src="/videos/fabric-craft.mov" type="video/mp4" />
-            </video>
+            <LazyVideo src="/videos/fabric-craft.mov" className="w-full h-full" />
             <div className="absolute inset-0 bg-background/55" />
           </div>
           <div className="relative z-10 luxury-container flex flex-col items-center text-center py-28 md:py-40">
@@ -122,6 +118,47 @@ const Index = () => {
               Enter Stillness
             </Link>
           </ScrollFadeIn>
+        </div>
+      </section>
+
+      {/* In Your Keeping — Explore Section */}
+      <section className="luxury-section">
+        <div className="luxury-container">
+          <ScrollFadeIn>
+            <h2 className="luxury-heading text-center mb-16">In Your Keeping</h2>
+          </ScrollFadeIn>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0">
+            {[
+              { img: knitwearImg, label: "Knitwear", to: "/boutique/women" },
+              { img: lifestyleImg, label: "Life in RUVTIER", to: "/boutique/lifestyle" },
+              { img: appointmentImg, label: "By Appointment Only", to: "/contact" },
+            ].map((item, i) => (
+              <ScrollFadeIn key={item.label} delay={i * 0.12}>
+                <Link
+                  to={item.to}
+                  className="group flex flex-col items-center text-center px-6 md:px-8 relative"
+                >
+                  {i > 0 && (
+                    <div className="hidden md:block absolute left-0 top-[10%] bottom-[10%] w-px bg-border" />
+                  )}
+                  <div className="w-full max-w-[280px] aspect-[4/5] overflow-hidden mb-8">
+                    <img
+                      src={item.img}
+                      alt={item.label}
+                      loading="lazy"
+                      width={640}
+                      height={800}
+                      className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                    />
+                  </div>
+                  <h3 className="font-serif font-light text-[clamp(18px,1.8vw,22px)] tracking-[0.1em] text-foreground mb-4">
+                    {item.label}
+                  </h3>
+                  <span className="luxury-button text-[13px]">Explore</span>
+                </Link>
+              </ScrollFadeIn>
+            ))}
+          </div>
         </div>
       </section>
 

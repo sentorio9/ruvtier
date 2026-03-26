@@ -102,24 +102,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Stillness / Philosophy */}
-      <section className="luxury-section">
-        <div className="luxury-container flex flex-col items-center text-center">
-          <ScrollFadeIn>
-            <p className="luxury-body mx-auto mb-3 text-center italic">
-              "Every fibre carries origin, landscape, and time."
-            </p>
-            <p className="luxury-body mx-auto mb-10 text-center italic">
-              "We begin there, in silence."
-            </p>
-          </ScrollFadeIn>
-          <ScrollFadeIn delay={0.15}>
-            <Link to="/stillness" className="luxury-button">
-              Enter Stillness
-            </Link>
-          </ScrollFadeIn>
-        </div>
-      </section>
 
       {/* In Your Keeping — Explore Section */}
       <section className="luxury-section">

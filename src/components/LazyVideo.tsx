@@ -38,6 +38,9 @@ const LazyVideo = ({ src, type = "video/mp4", className }: LazyVideoProps) => {
           className="w-full h-full object-cover"
         >
           <source src={src} type={type} />
+          {src.endsWith('.mov') && (
+            <source src={src.replace('.mov', '.mp4')} type="video/mp4" />
+          )}
         </video>
       )}
     </div>

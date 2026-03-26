@@ -39,7 +39,7 @@ const Navigation = () => {
               </svg>
             </button>
             {!isMobile && (
-              <button className="luxury-button !p-1.5" aria-label="Search">
+              <button onClick={() => setSearchOpen(true)} className="luxury-button !p-1.5" aria-label="Search">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="0.6">
                   <circle cx="7" cy="7" r="5.5" />
                   <line x1="11" y1="11" x2="15" y2="15" />
@@ -103,6 +103,7 @@ const Navigation = () => {
       <SlideMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
       <ClientLoungeDrawer isOpen={loungeOpen} onClose={() => setLoungeOpen(false)} />
+      <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );
 };

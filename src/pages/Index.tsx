@@ -2,11 +2,15 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
+import LazyVideo from "@/components/LazyVideo";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
 import heroImage from "@/assets/hero-editorial.jpg";
 import womenImage from "@/assets/collection-women.jpg";
 import menImage from "@/assets/collection-men.jpg";
+import knitwearImg from "@/assets/explore-knitwear.jpg";
+import lifestyleImg from "@/assets/explore-lifestyle.jpg";
+import appointmentImg from "@/assets/explore-appointment.jpg";
 
 const Index = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);

@@ -8,8 +8,8 @@ import SubscribePanel from "@/components/SubscribePanel";
 import heroImage from "@/assets/hero-editorial.jpg";
 import womenImage from "@/assets/collection-women.jpg";
 import menImage from "@/assets/collection-men.jpg";
-import knitwearImg from "@/assets/explore-knitwear.png";
-import lifestyleImg from "@/assets/explore-lifestyle.png";
+import knitwearImg from "@/assets/explore-knitwear.jpg";
+import lifestyleImg from "@/assets/explore-lifestyle.jpg";
 import appointmentImg from "@/assets/explore-appointment.png";
 
 const Index = () => {

@@ -122,14 +122,12 @@ const Index = () => {
                   to={item.to}
                   className="group flex flex-col items-center text-center px-2 md:px-4"
                 >
-                  <div className="w-full aspect-[4/3] overflow-hidden mb-5">
+                  <div className="w-full aspect-[3/4] flex items-center justify-center mb-5">
                     <img
                       src={item.img}
                       alt={item.label}
                       loading="lazy"
-                      width={640}
-                      height={480}
-                      className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                      className="max-w-full max-h-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                     />
                   </div>
                   <h3 className="font-serif font-light text-[clamp(15px,1.4vw,18px)] tracking-[0.12em] text-foreground mb-2">

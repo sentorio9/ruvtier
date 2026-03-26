@@ -10,7 +10,7 @@ import womenImage from "@/assets/collection-women.jpg";
 import menImage from "@/assets/collection-men.jpg";
 import knitwearImg from "@/assets/explore-knitwear.jpg";
 import lifestyleImg from "@/assets/explore-lifestyle.jpg";
-import appointmentImg from "@/assets/explore-appointment.png";
+import appointmentImg from "@/assets/explore-appointment.jpg";
 
 const Index = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);

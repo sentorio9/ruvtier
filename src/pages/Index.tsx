@@ -125,9 +125,9 @@ const Index = () => {
       <section className="luxury-section">
         <div className="luxury-container">
           <ScrollFadeIn>
-            <h2 className="luxury-heading text-center mb-16">In Your Keeping</h2>
+            <h2 className="luxury-heading text-center mb-10 md:mb-16">In Your Keeping</h2>
           </ScrollFadeIn>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0">
             {[
               { img: knitwearImg, label: "Knitwear", to: "/boutique/women" },
               { img: lifestyleImg, label: "Life in RUVTIER", to: "/boutique/lifestyle" },
@@ -136,22 +136,22 @@ const Index = () => {
               <ScrollFadeIn key={item.label} delay={i * 0.12}>
                 <Link
                   to={item.to}
-                  className="group flex flex-col items-center text-center px-6 md:px-8 relative"
+                  className="group flex flex-col items-center text-center px-4 md:px-8 relative"
                 >
                   {i > 0 && (
                     <div className="hidden md:block absolute left-0 top-[10%] bottom-[10%] w-px bg-border" />
                   )}
-                  <div className="w-full max-w-[280px] aspect-[4/5] overflow-hidden mb-8">
+                  <div className="w-full aspect-[3/4] overflow-hidden mb-6 md:mb-8">
                     <img
                       src={item.img}
                       alt={item.label}
                       loading="lazy"
                       width={640}
                       height={800}
-                      className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                      className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                     />
                   </div>
-                  <h3 className="font-serif font-light text-[clamp(18px,1.8vw,22px)] tracking-[0.1em] text-foreground mb-4">
+                  <h3 className="font-serif font-light text-[clamp(18px,1.8vw,22px)] tracking-[0.1em] text-foreground mb-3">
                     {item.label}
                   </h3>
                   <span className="luxury-button text-[13px]">Explore</span>

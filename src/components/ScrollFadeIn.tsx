@@ -7,12 +7,14 @@ interface ScrollFadeInProps {
   delay?: number;
 }
 
+const luxuryEase = [0.22, 0.61, 0.36, 1] as const;
+
 const ScrollFadeIn = ({ children, className = "", delay = 0 }: ScrollFadeInProps) => (
   <motion.div
-    initial={{ opacity: 0, y: 30 }}
+    initial={{ opacity: 0, y: 24 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-80px" }}
-    transition={{ duration: 0.8, delay, ease: "easeOut" }}
+    transition={{ duration: 0.9, delay, ease: luxuryEase }}
     className={className}
   >
     {children}

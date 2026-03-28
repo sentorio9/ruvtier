@@ -22,7 +22,7 @@ const Navigation = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/85 backdrop-blur-md">
         {/* Row 1 — Utility */}
         <div className="mx-auto max-w-[1400px] grid grid-cols-[1fr_auto_1fr] items-center h-[52px] md:h-[56px] px-4 md:px-8 lg:px-12">
           {/* Left */}

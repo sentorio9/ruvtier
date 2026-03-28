@@ -130,7 +130,9 @@ const ProductPage = () => {
                         <button
                           key={size}
                           onClick={() => setSelectedSize(size as string)}
-                          className={`w-12 h-12 border text-sm tracking-wider transition-colors ${
+                          aria-label={`Select size ${size}`}
+                          aria-pressed={selectedSize === size}
+                          className={`w-12 h-12 border text-sm tracking-wider transition-colors duration-300 ${
                             selectedSize === size
                               ? "border-foreground bg-foreground text-background"
                               : "border-border text-foreground hover:border-foreground"

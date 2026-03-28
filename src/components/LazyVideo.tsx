@@ -27,7 +27,7 @@ const LazyVideo = ({ src, type = "video/mp4", className }: LazyVideoProps) => {
   }, []);
 
   return (
-    <div ref={ref} className={className} style={{ willChange: "transform" }}>
+    <div ref={ref} className={className}>
       {load && (
         <video
           autoPlay

@@ -63,6 +63,7 @@ const editorialCategories = [
 ];
 
 const App = () => (
+  <ErrorBoundary>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
@@ -203,6 +204,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;

@@ -5,6 +5,7 @@ import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
 import { useActiveProducts, formatPrice } from "@/hooks/useProducts";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import garmentImage from "@/assets/garment-single.jpg";
 
 interface BoutiqueCategoryPageProps {
@@ -16,6 +17,7 @@ interface BoutiqueCategoryPageProps {
 const BoutiqueCategoryPage = ({ title, gender, subtitle }: BoutiqueCategoryPageProps) => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   const { data: products, isLoading } = useActiveProducts({ gender });
+  usePageMeta({ title: `${title} — Boutique`, description: subtitle || `Curated ${title.toLowerCase()} pieces by RUVTIER.` });
 
   return (
     <div className="relative">

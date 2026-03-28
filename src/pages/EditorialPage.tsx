@@ -2,6 +2,7 @@ import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -21,6 +22,7 @@ const EditorialPage = ({
   actionTo = "/",
 }: EditorialPageProps) => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
+  usePageMeta({ title, description: subtitle || body });
 
   return (
     <div className="relative">

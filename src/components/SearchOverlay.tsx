@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 interface SearchOverlayProps {
   isOpen: boolean;
@@ -8,6 +9,7 @@ interface SearchOverlayProps {
 }
 
 const SearchOverlay = ({ isOpen, onClose }: SearchOverlayProps) => {
+  useBodyScrollLock(isOpen);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<{ name: string; slug: string; thumbnail_url: string | null }[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);

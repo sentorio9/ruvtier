@@ -7,6 +7,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 interface SlideMenuProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpenSearch?: () => void;
+  onOpenLounge?: () => void;
 }
 
 const boutiqueSubcategories = [

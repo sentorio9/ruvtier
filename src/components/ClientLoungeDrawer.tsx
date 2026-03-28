@@ -408,18 +408,36 @@ function ForgotPasswordView({ email, error, success, submitting, onEmail, onSubm
 }
 
 /* ─── Profile View ─── */
-function ProfileView({ user, profile, editMode, editName, editPhone, shippingAddress, billingAddress, useShippingAsBilling, error, submitting, onEditName, onEditPhone, onShippingChange, onBillingChange, onToggleBilling, onStartEdit, onCancelEdit, onSave, onSignOut }: {
-  user: any; profile: any; editMode: boolean;
-  editName: string; editPhone: string;
-  shippingAddress: AddressData; billingAddress: AddressData; useShippingAsBilling: boolean;
-  error: string | null; submitting: boolean;
-  onEditName: (v: string) => void; onEditPhone: (v: string) => void;
+interface ProfileViewProps {
+  user: { email?: string } | null;
+  profile: {
+    display_name?: string | null;
+    email?: string | null;
+    phone?: string | null;
+    city?: string | null;
+    state_province?: string | null;
+    country?: string | null;
+  } | null;
+  editMode: boolean;
+  editName: string;
+  editPhone: string;
+  shippingAddress: AddressData;
+  billingAddress: AddressData;
+  useShippingAsBilling: boolean;
+  error: string | null;
+  submitting: boolean;
+  onEditName: (v: string) => void;
+  onEditPhone: (v: string) => void;
   onShippingChange: (f: keyof AddressData, v: string) => void;
   onBillingChange: (f: keyof AddressData, v: string) => void;
   onToggleBilling: (v: boolean) => void;
-  onStartEdit: () => void; onCancelEdit: () => void;
-  onSave: (e: React.FormEvent) => void; onSignOut: () => void;
-}) {
+  onStartEdit: () => void;
+  onCancelEdit: () => void;
+  onSave: (e: React.FormEvent) => void;
+  onSignOut: () => void;
+}
+
+function ProfileView({ user, profile, editMode, editName, editPhone, shippingAddress, billingAddress, useShippingAsBilling, error, submitting, onEditName, onEditPhone, onShippingChange, onBillingChange, onToggleBilling, onStartEdit, onCancelEdit, onSave, onSignOut }: ProfileViewProps) {
   return (
     <div className="space-y-6">
       <p className="font-sans text-[11px] tracking-[0.15em] uppercase text-muted-foreground">Welcome back</p>

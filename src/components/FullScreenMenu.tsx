@@ -100,7 +100,7 @@ const SlideMenu = ({ isOpen, onClose, onOpenSearch, onOpenLounge }: SlideMenuPro
             animate={{ x: activeSubMenu ? "-16%" : 0 }}
             exit={{ x: "-100%" }}
             transition={panelTransition}
-            className="fixed top-0 left-0 bottom-0 z-[100] bg-background border-r border-border flex flex-col will-change-transform"
+            className="fixed top-0 left-0 bottom-0 z-[100] bg-background border-r border-border flex flex-col"
             style={{ width: menuWidth }}
           >
             {/* Header */}
@@ -204,7 +204,7 @@ const SlideMenu = ({ isOpen, onClose, onOpenSearch, onOpenLounge }: SlideMenuPro
                 animate={{ x: 0 }}
                 exit={{ x: "-100%" }}
                 transition={panelTransition}
-                className="fixed top-0 left-0 bottom-0 z-[101] bg-background border-r border-border flex flex-col will-change-transform"
+                className="fixed top-0 left-0 bottom-0 z-[101] bg-background border-r border-border flex flex-col"
                 style={{ width: menuWidth }}
               >
                 {/* Sub-menu header */}

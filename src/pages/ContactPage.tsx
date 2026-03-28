@@ -81,7 +81,9 @@ const ContactPage = () => {
                     value={form.name}
                     onChange={handleChange("name")}
                     placeholder="Name"
+                    aria-label="Your name"
                     className="w-full bg-transparent py-3 font-sans text-sm tracking-wide placeholder:text-muted-foreground/50 focus:outline-none"
+                  />
                   />
                 </div>
                 <div className="border-b border-foreground/20">
@@ -91,6 +93,7 @@ const ContactPage = () => {
                     value={form.email}
                     onChange={handleChange("email")}
                     placeholder="Email"
+                    aria-label="Your email address"
                     className="w-full bg-transparent py-3 font-sans text-sm tracking-wide placeholder:text-muted-foreground/50 focus:outline-none"
                   />
                 </div>
@@ -100,6 +103,7 @@ const ContactPage = () => {
                     value={form.message}
                     onChange={handleChange("message")}
                     placeholder="Message"
+                    aria-label="Your message"
                     rows={4}
                     className="w-full bg-transparent py-3 font-sans text-sm tracking-wide placeholder:text-muted-foreground/50 focus:outline-none resize-none"
                   />

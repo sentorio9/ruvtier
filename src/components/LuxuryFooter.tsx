@@ -35,6 +35,12 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
             <Link to="/boutique" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300">
               Explore Online Boutique
             </Link>
+            <Link to="/privacy-policy" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300">
+              Privacy Policy
+            </Link>
+            <Link to="/terms" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300">
+              Terms &amp; Conditions
+            </Link>
           </div>
         </div>
 

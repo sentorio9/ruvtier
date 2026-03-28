@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { X } from "lucide-react";
@@ -167,108 +168,124 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
   const currentView = user ? "profile" : view;
 
   return (
-    <>
-      {/* Backdrop */}
-      <div
-        className={`fixed inset-0 z-[100] bg-foreground/20 backdrop-blur-sm transition-opacity duration-500 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-        onClick={onClose}
-      />
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[100] bg-foreground/20 backdrop-blur-sm"
+            onClick={onClose}
+            aria-hidden="true"
+          />
 
-      {/* Drawer */}
-      <div
-        className={`fixed top-0 right-0 z-[101] h-full w-full max-w-[420px] bg-background border-l border-border transform transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${isOpen ? "translate-x-0" : "translate-x-full"}`}
-      >
-        <div className="flex flex-col h-full">
-          {/* Header */}
-          <div className="flex items-center justify-between px-8 pt-8 pb-6">
-            <h2 className="font-serif text-[18px] font-light tracking-[0.12em] text-foreground">
-              Client Lounge
-            </h2>
-            <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors">
-              <X size={18} strokeWidth={1} />
-            </button>
-          </div>
+          {/* Drawer */}
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed top-0 right-0 z-[101] h-full w-full max-w-[420px] bg-background border-l border-border"
+            role="dialog"
+            aria-label="Client Lounge"
+            aria-modal="true"
+          >
+            <div className="flex flex-col h-full">
+              {/* Header */}
+              <div className="flex items-center justify-between px-8 pt-8 pb-6">
+                <h2 className="font-serif text-[18px] font-light tracking-[0.12em] text-foreground">
+                  Client Lounge
+                </h2>
+                <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Close client lounge">
+                  <X size={18} strokeWidth={1} />
+                </button>
+              </div>
 
-          <div className="border-t border-border mx-8" />
+              <div className="border-t border-border mx-8" />
 
-          {/* Content */}
-          <div className="flex-1 overflow-y-auto px-8 py-8">
-            {loading ? (
-              <p className="font-sans text-[12px] tracking-[0.12em] uppercase text-muted-foreground">Loading...</p>
-            ) : currentView === "profile" ? (
-              <ProfileView
-                user={user}
-                profile={profile}
-                editMode={editMode}
-                editName={editName}
-                editPhone={editPhone}
-                shippingAddress={shippingAddress}
-                billingAddress={billingAddress}
-                useShippingAsBilling={useShippingAsBilling}
-                error={error}
-                submitting={submitting}
-                onEditName={setEditName}
-                onEditPhone={setEditPhone}
-                onShippingChange={(f, v) => setShippingAddress((p) => ({ ...p, [f]: v }))}
-                onBillingChange={(f, v) => setBillingAddress((p) => ({ ...p, [f]: v }))}
-                onToggleBilling={setUseShippingAsBilling}
-                onStartEdit={startEdit}
-                onCancelEdit={() => setEditMode(false)}
-                onSave={handleUpdateProfile}
-                onSignOut={handleSignOut}
-              />
-            ) : currentView === "register" ? (
-              <RegisterView
-                email={email}
-                password={password}
-                displayName={displayName}
-                error={error}
-                success={success}
-                submitting={submitting}
-                onEmail={setEmail}
-                onPassword={setPassword}
-                onDisplayName={setDisplayName}
-                onSubmit={handleRegister}
-                onSwitchToLogin={() => { resetForm(); setView("login"); }}
-              />
-            ) : currentView === "forgot" ? (
-              <ForgotPasswordView
-                email={email}
-                error={error}
-                success={success}
-                submitting={submitting}
-                onEmail={setEmail}
-                onSubmit={handleForgotPassword}
-                onSwitchToLogin={() => { resetForm(); setView("login"); }}
-              />
-            ) : (
-              <LoginView
-                email={email}
-                password={password}
-                rememberMe={rememberMe}
-                error={error}
-                submitting={submitting}
-                onEmail={setEmail}
-                onPassword={setPassword}
-                onRememberMe={setRememberMe}
-                onSubmit={handleLogin}
-                onSwitchToRegister={() => { resetForm(); setView("register"); }}
-                onSwitchToForgot={() => { resetForm(); setView("forgot"); }}
-              />
-            )}
-          </div>
+              {/* Content */}
+              <div className="flex-1 overflow-y-auto px-8 py-8">
+                {loading ? (
+                  <p className="font-sans text-[12px] tracking-[0.12em] uppercase text-muted-foreground">Loading...</p>
+                ) : currentView === "profile" ? (
+                  <ProfileView
+                    user={user}
+                    profile={profile}
+                    editMode={editMode}
+                    editName={editName}
+                    editPhone={editPhone}
+                    shippingAddress={shippingAddress}
+                    billingAddress={billingAddress}
+                    useShippingAsBilling={useShippingAsBilling}
+                    error={error}
+                    submitting={submitting}
+                    onEditName={setEditName}
+                    onEditPhone={setEditPhone}
+                    onShippingChange={(f, v) => setShippingAddress((p) => ({ ...p, [f]: v }))}
+                    onBillingChange={(f, v) => setBillingAddress((p) => ({ ...p, [f]: v }))}
+                    onToggleBilling={setUseShippingAsBilling}
+                    onStartEdit={startEdit}
+                    onCancelEdit={() => setEditMode(false)}
+                    onSave={handleUpdateProfile}
+                    onSignOut={handleSignOut}
+                  />
+                ) : currentView === "register" ? (
+                  <RegisterView
+                    email={email}
+                    password={password}
+                    displayName={displayName}
+                    error={error}
+                    success={success}
+                    submitting={submitting}
+                    onEmail={setEmail}
+                    onPassword={setPassword}
+                    onDisplayName={setDisplayName}
+                    onSubmit={handleRegister}
+                    onSwitchToLogin={() => { resetForm(); setView("login"); }}
+                  />
+                ) : currentView === "forgot" ? (
+                  <ForgotPasswordView
+                    email={email}
+                    error={error}
+                    success={success}
+                    submitting={submitting}
+                    onEmail={setEmail}
+                    onSubmit={handleForgotPassword}
+                    onSwitchToLogin={() => { resetForm(); setView("login"); }}
+                  />
+                ) : (
+                  <LoginView
+                    email={email}
+                    password={password}
+                    rememberMe={rememberMe}
+                    error={error}
+                    submitting={submitting}
+                    onEmail={setEmail}
+                    onPassword={setPassword}
+                    onRememberMe={setRememberMe}
+                    onSubmit={handleLogin}
+                    onSwitchToRegister={() => { resetForm(); setView("register"); }}
+                    onSwitchToForgot={() => { resetForm(); setView("forgot"); }}
+                  />
+                )}
+              </div>
 
-          {/* Footer */}
-          <div className="px-8 pb-8">
-            <div className="border-t border-border pt-6">
-              <p className="font-sans text-[10px] tracking-[0.1em] text-muted-foreground/60 text-center">
-                Your privacy is sacred to us
-              </p>
+              {/* Footer */}
+              <div className="px-8 pb-8">
+                <div className="border-t border-border pt-6">
+                  <p className="font-sans text-[10px] tracking-[0.1em] text-muted-foreground/60 text-center">
+                    Your privacy is sacred to us
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   );
 }
 

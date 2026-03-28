@@ -24,11 +24,11 @@ const boutiqueSubcategories = [
 ];
 
 const materialsSubcategories = [
+  { label: "Vicuña", slug: "vicuna" },
   { label: "Cashmere", slug: "cashmere" },
+  { label: "Merino Wool", slug: "merino-wool" },
   { label: "Silk", slug: "silk" },
-  { label: "Linen", slug: "linen" },
-  { label: "Wool", slug: "wool" },
-  { label: "Cotton", slug: "cotton" },
+  { label: "French Linen", slug: "french-linen" },
 ];
 
 const homeInteriorSubcategories = [
@@ -55,7 +55,7 @@ const subMenus: Record<string, SubMenu> = {
   },
   "home-interior": {
     title: "Home Interior",
-    items: homeInteriorSubcategories.map((i) => ({ ...i, basePath: "/home-interior" })),
+    items: homeInteriorSubcategories.map((i) => ({ ...i, basePath: "/boutique" })),
   },
 };
 
@@ -63,7 +63,7 @@ const subMenus: Record<string, SubMenu> = {
 const panelTransition = { duration: 0.55, ease: [0.22, 0.61, 0.36, 1] as const };
 const overlayTransition = { duration: 0.45, ease: "easeOut" as const };
 
-const SlideMenu = ({ isOpen, onClose }: SlideMenuProps) => {
+const SlideMenu = ({ isOpen, onClose, onOpenSearch, onOpenLounge }: SlideMenuProps) => {
   const [activeSubMenu, setActiveSubMenu] = useState<SubMenuKey>(null);
   const isMobile = useIsMobile();
 
@@ -119,14 +119,20 @@ const SlideMenu = ({ isOpen, onClose }: SlideMenuProps) => {
               {/* Mobile-only utilities */}
               {isMobile && (
                 <div className="flex flex-col gap-5 pb-5 border-b border-border mb-2">
-                  <button className="luxury-button !text-left !text-[11.5px] !p-0 flex items-center gap-3 tracking-[0.14em] uppercase">
+                  <button
+                    onClick={() => { handleClose(); onOpenSearch?.(); }}
+                    className="luxury-button !text-left !text-[11.5px] !p-0 flex items-center gap-3 tracking-[0.14em] uppercase"
+                  >
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="0.6">
                       <circle cx="7" cy="7" r="5.5" />
                       <line x1="11" y1="11" x2="15" y2="15" />
                     </svg>
                     Search
                   </button>
-                  <button className="luxury-button !text-left !text-[11.5px] !p-0 flex items-center gap-3 tracking-[0.14em] uppercase">
+                  <button
+                    onClick={() => { handleClose(); onOpenLounge?.(); }}
+                    className="luxury-button !text-left !text-[11.5px] !p-0 flex items-center gap-3 tracking-[0.14em] uppercase"
+                  >
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="0.6">
                       <circle cx="8" cy="5" r="3.5" />
                       <path d="M1.5 15c0-3.5 2.9-6 6.5-6s6.5 2.5 6.5 6" />

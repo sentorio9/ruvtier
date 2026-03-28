@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
@@ -11,6 +11,13 @@ interface SubscribePanelProps {
 const SubscribePanel = ({ isOpen, onClose }: SubscribePanelProps) => {
   useBodyScrollLock(isOpen);
   const [form, setForm] = useState({ email: "", firstName: "", lastName: "" });
+
+  // Escape key dismiss
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    if (isOpen) window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [isOpen, onClose]);
   const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,8 +94,9 @@ const SubscribePanel = ({ isOpen, onClose }: SubscribePanelProps) => {
                           required={key === "email"}
                           value={form[key as keyof typeof form]}
                           onChange={handleChange(key)}
-                          placeholder={label}
-                          className="w-full bg-transparent py-3 font-sans text-sm tracking-wide placeholder:text-muted-foreground/50 focus:outline-none"
+                        placeholder={label}
+                        aria-label={label}
+                        className="w-full bg-transparent py-3 font-sans text-sm tracking-wide placeholder:text-muted-foreground/50 focus:outline-none"
                         />
                       </div>
                     ))}

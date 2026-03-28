@@ -6,10 +6,9 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "./hooks/useAuth";
-import { AdminAuthProvider } from "./admin/hooks/useAdminAuth";
-import AdminGuard from "./admin/components/AdminGuard";
 import { ADMIN_PREFIX } from "./admin/config";
 import ErrorBoundary from "./components/ErrorBoundary";
+import { AdminProtectedLayout, AdminPublicLayout } from "./admin/components/AdminRoute";
 
 // Lazy-loaded pages
 const Index = lazy(() => import("./pages/Index"));
@@ -185,18 +184,26 @@ const App = () => (
               />
             }
           />
-          {/* Admin routes - hidden, not linked publicly */}
-          <Route path={`${ADMIN_PREFIX}/login`} element={<AdminAuthProvider><AdminLogin /></AdminAuthProvider>} />
-          <Route path={ADMIN_PREFIX} element={<AdminAuthProvider><AdminGuard><AdminDashboard /></AdminGuard></AdminAuthProvider>} />
-          <Route path={`${ADMIN_PREFIX}/products`} element={<AdminAuthProvider><AdminGuard><AdminProducts /></AdminGuard></AdminAuthProvider>} />
-          <Route path={`${ADMIN_PREFIX}/products/new`} element={<AdminAuthProvider><AdminGuard><AdminProductForm /></AdminGuard></AdminAuthProvider>} />
-          <Route path={`${ADMIN_PREFIX}/products/:id`} element={<AdminAuthProvider><AdminGuard><AdminProductForm /></AdminGuard></AdminAuthProvider>} />
-          <Route path={`${ADMIN_PREFIX}/orders`} element={<AdminAuthProvider><AdminGuard><AdminOrders /></AdminGuard></AdminAuthProvider>} />
-          <Route path={`${ADMIN_PREFIX}/customers`} element={<AdminAuthProvider><AdminGuard><AdminCustomers /></AdminGuard></AdminAuthProvider>} />
-          <Route path={`${ADMIN_PREFIX}/carts`} element={<AdminAuthProvider><AdminGuard><AdminCarts /></AdminGuard></AdminAuthProvider>} />
-          <Route path={`${ADMIN_PREFIX}/content`} element={<AdminAuthProvider><AdminGuard><AdminContent /></AdminGuard></AdminAuthProvider>} />
-          <Route path={`${ADMIN_PREFIX}/logs`} element={<AdminAuthProvider><AdminGuard><AdminLogs /></AdminGuard></AdminAuthProvider>} />
-          <Route path={`${ADMIN_PREFIX}/settings`} element={<AdminAuthProvider><AdminGuard><AdminSettings /></AdminGuard></AdminAuthProvider>} />
+
+          {/* Admin routes — public (login) */}
+          <Route path={`${ADMIN_PREFIX}/login`} element={<AdminPublicLayout />}>
+            <Route index element={<AdminLogin />} />
+          </Route>
+
+          {/* Admin routes — protected */}
+          <Route path={ADMIN_PREFIX} element={<AdminProtectedLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="products" element={<AdminProducts />} />
+            <Route path="products/new" element={<AdminProductForm />} />
+            <Route path="products/:id" element={<AdminProductForm />} />
+            <Route path="orders" element={<AdminOrders />} />
+            <Route path="customers" element={<AdminCustomers />} />
+            <Route path="carts" element={<AdminCarts />} />
+            <Route path="content" element={<AdminContent />} />
+            <Route path="logs" element={<AdminLogs />} />
+            <Route path="settings" element={<AdminSettings />} />
+          </Route>
+
           <Route path="*" element={<NotFound />} />
         </Routes>
         </Suspense>

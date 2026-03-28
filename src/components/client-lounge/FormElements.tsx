@@ -24,5 +24,5 @@ export function ErrorText({ children }: { children: ReactNode }) {
 }
 
 export function SuccessText({ children }: { children: ReactNode }) {
-  return <p className="font-sans text-[12px] text-emerald-700">{children}</p>;
+  return <p className="font-sans text-[12px] text-success">{children}</p>;
 }

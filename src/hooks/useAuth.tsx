@@ -9,6 +9,19 @@ interface Profile {
   display_name: string | null;
   phone: string | null;
   avatar_url: string | null;
+  street_address: string | null;
+  street_address_2: string | null;
+  city: string | null;
+  state_province: string | null;
+  zip_code: string | null;
+  country: string | null;
+  billing_street_address: string | null;
+  billing_street_address_2: string | null;
+  billing_city: string | null;
+  billing_state_province: string | null;
+  billing_zip_code: string | null;
+  billing_country: string | null;
+  use_shipping_as_billing: boolean | null;
 }
 
 interface AuthState {

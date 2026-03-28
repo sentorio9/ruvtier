@@ -67,6 +67,7 @@ const overlayTransition = { duration: 0.45, ease: "easeOut" as const };
 const SlideMenu = ({ isOpen, onClose, onOpenSearch, onOpenLounge }: SlideMenuProps) => {
   const [activeSubMenu, setActiveSubMenu] = useState<SubMenuKey>(null);
   const isMobile = useIsMobile();
+  useBodyScrollLock(isOpen);
 
   const handleClose = () => {
     setActiveSubMenu(null);

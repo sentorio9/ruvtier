@@ -84,7 +84,6 @@ const ContactPage = () => {
                     aria-label="Your name"
                     className="w-full bg-transparent py-3 font-sans text-sm tracking-wide placeholder:text-muted-foreground/50 focus:outline-none"
                   />
-                  />
                 </div>
                 <div className="border-b border-foreground/20">
                   <input

@@ -70,6 +70,7 @@ const App = () => (
         <AuthProvider>
         <TitleSetter />
         <ScrollToTop />
+        <Suspense fallback={<div className="min-h-screen bg-background" />}>
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/stillness" element={<Stillness />} />

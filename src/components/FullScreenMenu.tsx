@@ -3,6 +3,7 @@ import { X, ChevronRight, ArrowLeft } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 interface SlideMenuProps {
   isOpen: boolean;
@@ -66,6 +67,7 @@ const overlayTransition = { duration: 0.45, ease: "easeOut" as const };
 const SlideMenu = ({ isOpen, onClose, onOpenSearch, onOpenLounge }: SlideMenuProps) => {
   const [activeSubMenu, setActiveSubMenu] = useState<SubMenuKey>(null);
   const isMobile = useIsMobile();
+  useBodyScrollLock(isOpen);
 
   const handleClose = () => {
     setActiveSubMenu(null);

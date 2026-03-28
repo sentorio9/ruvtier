@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { X } from "lucide-react";
 import { InputField, ErrorText, SuccessText } from "./client-lounge/FormElements";
 import PasswordStrengthIndicator, { isPasswordValid } from "./client-lounge/PasswordStrengthIndicator";
@@ -23,6 +24,7 @@ const emptyAddress: AddressData = {
 
 export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
   const { user, profile, loading, signIn, signUp, signOut, resetPassword, updateProfile } = useAuth();
+  useBodyScrollLock(isOpen);
   const [view, setView] = useState<View>("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -97,7 +99,23 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
     e.preventDefault();
     setError(null);
     setSubmitting(true);
-    const updates: Record<string, unknown> = {
+    const updates: Partial<{
+      display_name: string | null;
+      phone: string | null;
+      street_address: string | null;
+      street_address_2: string | null;
+      city: string | null;
+      state_province: string | null;
+      zip_code: string | null;
+      country: string | null;
+      use_shipping_as_billing: boolean;
+      billing_street_address: string | null;
+      billing_street_address_2: string | null;
+      billing_city: string | null;
+      billing_state_province: string | null;
+      billing_zip_code: string | null;
+      billing_country: string | null;
+    }> = {
       display_name: editName.trim() || null,
       phone: editPhone.trim() || null,
       street_address: shippingAddress.street_address || null,
@@ -116,7 +134,7 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
       updates.billing_zip_code = billingAddress.zip_code || null;
       updates.billing_country = billingAddress.country || null;
     }
-    const { error } = await updateProfile(updates as any);
+    const { error } = await updateProfile(updates as Record<string, unknown>);
     setSubmitting(false);
     if (error) setError(error);
     else setEditMode(false);
@@ -126,22 +144,22 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
     setEditName(profile?.display_name || "");
     setEditPhone(profile?.phone || "");
     setShippingAddress({
-      street_address: (profile as any)?.street_address || "",
-      street_address_2: (profile as any)?.street_address_2 || "",
-      city: (profile as any)?.city || "",
-      state_province: (profile as any)?.state_province || "",
-      zip_code: (profile as any)?.zip_code || "",
-      country: (profile as any)?.country || "",
+      street_address: profile?.street_address || "",
+      street_address_2: profile?.street_address_2 || "",
+      city: profile?.city || "",
+      state_province: profile?.state_province || "",
+      zip_code: profile?.zip_code || "",
+      country: profile?.country || "",
     });
     setBillingAddress({
-      street_address: (profile as any)?.billing_street_address || "",
-      street_address_2: (profile as any)?.billing_street_address_2 || "",
-      city: (profile as any)?.billing_city || "",
-      state_province: (profile as any)?.billing_state_province || "",
-      zip_code: (profile as any)?.billing_zip_code || "",
-      country: (profile as any)?.billing_country || "",
+      street_address: profile?.billing_street_address || "",
+      street_address_2: profile?.billing_street_address_2 || "",
+      city: profile?.billing_city || "",
+      state_province: profile?.billing_state_province || "",
+      zip_code: profile?.billing_zip_code || "",
+      country: profile?.billing_country || "",
     });
-    setUseShippingAsBilling((profile as any)?.use_shipping_as_billing ?? true);
+    setUseShippingAsBilling(profile?.use_shipping_as_billing ?? true);
     setEditMode(true);
     setError(null);
   };

@@ -25,10 +25,10 @@ export function getStrengthLevel(password: string): { label: string; percent: nu
   const checks = getPasswordChecks(password);
   const met = checks.filter((c) => c.met).length;
   if (met <= 1) return { label: "Weak", percent: 20, color: "bg-destructive" };
-  if (met <= 2) return { label: "Fair", percent: 40, color: "bg-orange-500" };
-  if (met <= 3) return { label: "Good", percent: 60, color: "bg-yellow-500" };
-  if (met <= 4) return { label: "Strong", percent: 80, color: "bg-emerald-500" };
-  return { label: "Excellent", percent: 100, color: "bg-emerald-600" };
+  if (met <= 2) return { label: "Fair", percent: 40, color: "bg-warning" };
+  if (met <= 3) return { label: "Good", percent: 60, color: "bg-caution" };
+  if (met <= 4) return { label: "Strong", percent: 80, color: "bg-success" };
+  return { label: "Excellent", percent: 100, color: "bg-success" };
 }
 
 export default function PasswordStrengthIndicator({ password }: { password: string }) {
@@ -56,7 +56,7 @@ export default function PasswordStrengthIndicator({ password }: { password: stri
       <div className="grid grid-cols-2 gap-x-4 gap-y-1">
         {checks.map((check) => (
           <div key={check.label} className="flex items-center gap-1.5">
-            <span className={`text-[10px] ${check.met ? "text-emerald-600" : "text-muted-foreground/50"}`}>
+            <span className={`text-[10px] ${check.met ? "text-success" : "text-muted-foreground/50"}`}>
               {check.met ? "✓" : "○"}
             </span>
             <span

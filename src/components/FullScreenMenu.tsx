@@ -3,6 +3,7 @@ import { X, ChevronRight, ArrowLeft } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 interface SlideMenuProps {
   isOpen: boolean;

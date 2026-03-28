@@ -1,5 +1,6 @@
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -7,6 +8,7 @@ interface CartDrawerProps {
 }
 
 const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
+  useBodyScrollLock(isOpen);
   return (
     <AnimatePresence>
       {isOpen && (

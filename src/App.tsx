@@ -53,6 +53,7 @@ const genderCategories: Record<string, string> = {
 const editorialCategories = [
   "Children", "Footwear", "Made-to-Measure",
   "Home Interiors", "Leather Goods", "Accessories",
+  "Textiles", "Objects", "Fragrance",
 ];
 
 const App = () => (

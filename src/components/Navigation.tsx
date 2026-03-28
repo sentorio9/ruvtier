@@ -100,7 +100,12 @@ const Navigation = () => {
         )}
       </nav>
 
-      <SlideMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+      <SlideMenu
+        isOpen={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        onOpenSearch={() => setSearchOpen(true)}
+        onOpenLounge={() => setLoungeOpen(true)}
+      />
       <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
       <ClientLoungeDrawer isOpen={loungeOpen} onClose={() => setLoungeOpen(false)} />
       <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />

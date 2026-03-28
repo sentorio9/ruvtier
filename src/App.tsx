@@ -9,6 +9,7 @@ import { AuthProvider } from "./hooks/useAuth";
 import { AdminAuthProvider } from "./admin/hooks/useAdminAuth";
 import AdminGuard from "./admin/components/AdminGuard";
 import { ADMIN_PREFIX } from "./admin/config";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 // Lazy-loaded pages
 const Index = lazy(() => import("./pages/Index"));

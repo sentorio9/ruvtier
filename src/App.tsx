@@ -37,7 +37,10 @@ const queryClient = new QueryClient();
 function TitleSetter() {
   const location = useLocation();
   useEffect(() => {
-    document.title = "Ruvtier";
+    // Default title; individual pages override via usePageMeta
+    if (!document.title || document.title === "Ruvtier") {
+      document.title = "RUVTIER — A Whisper of Luxury";
+    }
   }, [location]);
   return null;
 }

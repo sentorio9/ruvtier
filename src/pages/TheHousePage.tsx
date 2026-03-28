@@ -2,10 +2,12 @@ import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { useState } from "react";
 
 const TheHousePage = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
+  usePageMeta({ title: "The House", description: "The philosophy, craft, and quiet conviction behind RUVTIER." });
 
   return (
     <div className="relative">

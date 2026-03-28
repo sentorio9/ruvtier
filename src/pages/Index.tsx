@@ -5,6 +5,7 @@ import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LazyVideo from "@/components/LazyVideo";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import heroImage from "@/assets/hero-editorial.jpg";
 import womenImage from "@/assets/collection-women.jpg";
 import menImage from "@/assets/collection-men.jpg";
@@ -14,6 +15,7 @@ import appointmentImg from "@/assets/explore-appointment.png";
 
 const Index = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
+  usePageMeta({ title: "RUVTIER", description: "A luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition." });
 
   return (
     <div className="relative">

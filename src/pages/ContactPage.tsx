@@ -4,9 +4,11 @@ import WatermarkLogo from "@/components/WatermarkLogo";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 const ContactPage = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
+  usePageMeta({ title: "Contact", description: "Reach the house of RUVTIER. Each correspondence is personal and considered." });
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
 

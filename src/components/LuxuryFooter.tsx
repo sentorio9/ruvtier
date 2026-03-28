@@ -18,21 +18,21 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
         {/* Two-column links */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16 max-w-xl mx-auto mb-8 md:mb-10">
           <div className="flex flex-col items-center md:items-start gap-3">
-            <Link to="/appointments" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/appointments" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300">
               Private Appointment
             </Link>
-            <Link to="/craft-career" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/craft-career" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300">
               Craft Career
             </Link>
-            <Link to="/contact" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/contact" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300">
               Contact
             </Link>
           </div>
           <div className="flex flex-col items-center md:items-start gap-3">
-            <Link to="/find-boutique" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/find-boutique" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300">
               Find a Boutique
             </Link>
-            <Link to="/boutique" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/boutique" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300">
               Explore Online Boutique
             </Link>
           </div>

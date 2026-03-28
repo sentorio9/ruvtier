@@ -46,7 +46,7 @@ export function useProductBySlug(slug: string | undefined) {
   });
 }
 
-export const formatPrice = (price: number | null) => {
-  if (!price) return "—";
+export const formatPrice = (price: number | null | undefined) => {
+  if (price == null) return "—";
   return `€${price.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
 };

@@ -47,7 +47,7 @@ const SearchOverlay = ({ isOpen, onClose }: SearchOverlayProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[60] bg-background/95 backdrop-blur-sm flex flex-col items-center pt-[20vh]" onClick={onClose}>
+    <div className="fixed inset-0 z-[110] bg-background/95 backdrop-blur-sm flex flex-col items-center pt-[20vh]" onClick={onClose}>
       <div className="w-full max-w-lg px-6" onClick={(e) => e.stopPropagation()}>
         <div className="border-b border-foreground/20 pb-2 flex items-center gap-3">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-muted-foreground shrink-0">

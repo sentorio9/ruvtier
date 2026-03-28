@@ -23,12 +23,14 @@ const Index = () => {
 
       {/* Hero */}
       <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-[center_40%] md:bg-[center_35%]"
-          style={{ backgroundImage: `url(${heroImage})` }}
-        >
-          <div className="absolute inset-0 bg-background/40" />
-        </div>
+        <img
+          src={heroImage}
+          alt="RUVTIER luxury garment editorial"
+          className="absolute inset-0 w-full h-full object-cover object-[center_40%] md:object-[center_35%]"
+          fetchPriority="high"
+          decoding="async"
+        />
+        <div className="absolute inset-0 bg-background/40" />
         <div className="relative z-10 text-center px-6 -mt-8 md:-mt-12">
           <ScrollFadeIn>
             <p className="font-serif font-light text-[clamp(20px,2.2vw,28px)] leading-[1.7] tracking-[0.08em] text-foreground mx-auto max-w-[var(--text-max)]">

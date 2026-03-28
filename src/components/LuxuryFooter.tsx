@@ -40,13 +40,13 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
 
         {/* Social links */}
         <div className="flex items-center justify-center gap-8 mb-6">
-          <a href="https://www.instagram.com/ruvtier/" target="_blank" rel="noopener noreferrer" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors">
+          <a href="https://www.instagram.com/ruvtier/" target="_blank" rel="noopener noreferrer" aria-label="Follow RUVTIER on Instagram" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300">
             Instagram
           </a>
-          <a href="https://www.youtube.com/@ruvtier" target="_blank" rel="noopener noreferrer" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors">
+          <a href="https://www.youtube.com/@ruvtier" target="_blank" rel="noopener noreferrer" aria-label="Watch RUVTIER on YouTube" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300">
             YouTube
           </a>
-          <a href="https://uk.pinterest.com/RUVTIER/_created/" target="_blank" rel="noopener noreferrer" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors">
+          <a href="https://uk.pinterest.com/RUVTIER/_created/" target="_blank" rel="noopener noreferrer" aria-label="Discover RUVTIER on Pinterest" className="text-[11px] tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300">
             Pinterest
           </a>
         </div>

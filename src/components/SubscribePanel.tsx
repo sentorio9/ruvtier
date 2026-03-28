@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 interface SubscribePanelProps {
   isOpen: boolean;
@@ -8,6 +9,7 @@ interface SubscribePanelProps {
 }
 
 const SubscribePanel = ({ isOpen, onClose }: SubscribePanelProps) => {
+  useBodyScrollLock(isOpen);
   const [form, setForm] = useState({ email: "", firstName: "", lastName: "" });
   const [submitted, setSubmitted] = useState(false);
 
@@ -45,7 +47,7 @@ const SubscribePanel = ({ isOpen, onClose }: SubscribePanelProps) => {
             initial={{ x: "-100%" }}
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
-            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+            transition={{ duration: 0.55, ease: [0.22, 0.61, 0.36, 1] }}
             className="fixed top-0 left-0 bottom-0 z-[100] w-[85vw] sm:w-[40vw] lg:w-[25vw] bg-background border-r border-border flex flex-col"
           >
             <div className="flex items-center justify-end h-16 md:h-20 px-6">

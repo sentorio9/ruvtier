@@ -3,6 +3,7 @@ import WatermarkLogo from "@/components/WatermarkLogo";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
@@ -22,6 +23,7 @@ const MaterialPage = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   const name = formatName(slug || "");
   const description = materialDescriptions[slug || ""] || "The first pieces are in quiet preparation.";
+  usePageMeta({ title: name || "Material", description: `RUVTIER ${name} — ${description}` });
 
   return (
     <div className="relative">

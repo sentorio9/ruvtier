@@ -173,6 +173,28 @@ const App = () => (
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route
+            path="/privacy-policy"
+            element={
+              <EditorialPage
+                title="Privacy Policy"
+                body="Your privacy is sacred to us. This policy is being finalised and will be published shortly."
+                actionLabel="Return"
+                actionTo="/"
+              />
+            }
+          />
+          <Route
+            path="/terms"
+            element={
+              <EditorialPage
+                title="Terms & Conditions"
+                body="Our terms of service are being composed with the same care we apply to our garments."
+                actionLabel="Return"
+                actionTo="/"
+              />
+            }
+          />
+          <Route
             path="/garment"
             element={
               <EditorialPage

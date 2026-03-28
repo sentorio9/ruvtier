@@ -438,16 +438,6 @@ interface ProfileViewProps {
 }
 
 function ProfileView({ user, profile, editMode, editName, editPhone, shippingAddress, billingAddress, useShippingAsBilling, error, submitting, onEditName, onEditPhone, onShippingChange, onBillingChange, onToggleBilling, onStartEdit, onCancelEdit, onSave, onSignOut }: ProfileViewProps) {
-  editName: string; editPhone: string;
-  shippingAddress: AddressData; billingAddress: AddressData; useShippingAsBilling: boolean;
-  error: string | null; submitting: boolean;
-  onEditName: (v: string) => void; onEditPhone: (v: string) => void;
-  onShippingChange: (f: keyof AddressData, v: string) => void;
-  onBillingChange: (f: keyof AddressData, v: string) => void;
-  onToggleBilling: (v: boolean) => void;
-  onStartEdit: () => void; onCancelEdit: () => void;
-  onSave: (e: React.FormEvent) => void; onSignOut: () => void;
-}) {
   return (
     <div className="space-y-6">
       <p className="font-sans text-[11px] tracking-[0.15em] uppercase text-muted-foreground">Welcome back</p>

@@ -122,7 +122,7 @@ const SlideMenu = ({ isOpen, onClose, onOpenSearch, onOpenLounge }: SlideMenuPro
               {isMobile && (
                 <div className="flex flex-col gap-5 pb-5 border-b border-border mb-2">
                   <button
-                    onClick={() => { handleClose(); onOpenSearch?.(); }}
+                    onClick={() => { handleClose(); setTimeout(() => onOpenSearch?.(), 100); }}
                     className="luxury-button !text-left !text-[11.5px] !p-0 flex items-center gap-3 tracking-[0.14em] uppercase"
                   >
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="0.6">
@@ -132,7 +132,7 @@ const SlideMenu = ({ isOpen, onClose, onOpenSearch, onOpenLounge }: SlideMenuPro
                     Search
                   </button>
                   <button
-                    onClick={() => { handleClose(); onOpenLounge?.(); }}
+                    onClick={() => { handleClose(); setTimeout(() => onOpenLounge?.(), 100); }}
                     className="luxury-button !text-left !text-[11.5px] !p-0 flex items-center gap-3 tracking-[0.14em] uppercase"
                   >
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="0.6">

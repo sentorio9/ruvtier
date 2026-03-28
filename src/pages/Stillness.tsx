@@ -32,7 +32,8 @@ const Stillness = () => {
                 playsInline
                 className="w-full aspect-video object-cover"
               >
-                <source src="/videos/fabric-craft.mov" type="video/mp4" />
+              <source src="/videos/fabric-craft.mp4" type="video/mp4" />
+              <source src="/videos/fabric-craft.mov" type="video/quicktime" />
               </video>
             </div>
           </ScrollFadeIn>

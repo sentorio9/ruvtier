@@ -40,7 +40,7 @@ const LazyVideo = ({ src, type = "video/mp4", className }: LazyVideoProps) => {
           {src.endsWith('.mov') && (
             <source src={src.replace('.mov', '.mp4')} type="video/mp4" />
           )}
-          <source src={src} type={type} />
+          <source src={src} type={src.endsWith('.mov') ? 'video/quicktime' : type} />
         </video>
       )}
     </div>

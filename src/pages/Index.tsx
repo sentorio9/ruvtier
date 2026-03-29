@@ -113,9 +113,9 @@ const Index = () => {
           </ScrollFadeIn>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-8 lg:gap-10 items-start">
             {[
-              { img: knitwearImg, label: "Knitwear", to: "/boutique/women" },
-              { img: lifestyleImg, label: "Life in RUVTIER", to: "/boutique/lifestyle" },
-              { img: appointmentImg, label: "By Appointment Only", to: "/contact" },
+              { img: knitwearImg, label: "Knitwear", to: "/boutique/women", imgClass: "h-[75%] w-[75%]" },
+              { img: lifestyleImg, label: "Life in RUVTIER", to: "/boutique/lifestyle", imgClass: "h-full w-full" },
+              { img: appointmentImg, label: "By Appointment Only", to: "/contact", imgClass: "h-full w-full" },
             ].map((item, i) => (
               <ScrollFadeIn key={item.label} delay={i * 0.08}>
                 <Link
@@ -127,7 +127,7 @@ const Index = () => {
                       src={item.img}
                       alt={item.label}
                       loading="lazy"
-                      className="h-full w-full object-contain object-center transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                      className={`object-contain object-center transition-transform duration-700 ease-out group-hover:scale-[1.02] ${item.imgClass}`}
                     />
                   </div>
                   <h3 className="mt-6 min-h-[2.75rem] self-start font-serif text-[clamp(15px,1.4vw,18px)] font-light tracking-[0.12em] text-foreground flex items-start justify-center text-center leading-[1.35] md:min-h-[3rem]">

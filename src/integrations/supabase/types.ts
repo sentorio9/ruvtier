@@ -417,6 +417,62 @@ export type Database = {
         }
         Relationships: []
       }
+      preorder_requests: {
+        Row: {
+          country: string | null
+          created_at: string
+          delivery_region: string | null
+          email: string
+          full_name: string
+          id: string
+          message: string | null
+          product_id: string | null
+          product_name: string
+          size_preference: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string
+          delivery_region?: string | null
+          email: string
+          full_name: string
+          id?: string
+          message?: string | null
+          product_id?: string | null
+          product_name: string
+          size_preference?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          country?: string | null
+          created_at?: string
+          delivery_region?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          message?: string | null
+          product_id?: string | null
+          product_name?: string
+          size_preference?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "preorder_requests_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           care_info: string | null
@@ -435,6 +491,8 @@ export type Database = {
           materials: string | null
           media_gallery: Json | null
           name: string
+          preorder_enabled: boolean | null
+          preorder_statement: string | null
           price: number | null
           seo_description: string | null
           seo_title: string | null
@@ -464,6 +522,8 @@ export type Database = {
           materials?: string | null
           media_gallery?: Json | null
           name: string
+          preorder_enabled?: boolean | null
+          preorder_statement?: string | null
           price?: number | null
           seo_description?: string | null
           seo_title?: string | null
@@ -493,6 +553,8 @@ export type Database = {
           materials?: string | null
           media_gallery?: Json | null
           name?: string
+          preorder_enabled?: boolean | null
+          preorder_statement?: string | null
           price?: number | null
           seo_description?: string | null
           seo_title?: string | null

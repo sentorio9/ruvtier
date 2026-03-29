@@ -11,7 +11,7 @@ const EMPTY_PRODUCT = {
   name: "", slug: "", collection: "", gender_segment: "", description: "", long_description: "",
   price: "", compare_at_price: "", sku: "", stock_quantity: "0", status: "draft",
   featured: false, materials: "", care_info: "", seo_title: "", seo_description: "",
-  thumbnail_url: "", hero_image_url: "",
+  thumbnail_url: "", hero_image_url: "", preorder_enabled: false, preorder_statement: "",
 };
 
 export default function AdminProductForm() {
@@ -39,6 +39,8 @@ export default function AdminProductForm() {
             care_info: data.care_info || "", seo_title: data.seo_title || "",
             seo_description: data.seo_description || "", thumbnail_url: data.thumbnail_url || "",
             hero_image_url: data.hero_image_url || "",
+            preorder_enabled: (data as any).preorder_enabled || false,
+            preorder_statement: (data as any).preorder_statement || "",
           });
         }
         setLoading(false);
@@ -72,6 +74,8 @@ export default function AdminProductForm() {
       care_info: form.care_info || null, seo_title: form.seo_title || null,
       seo_description: form.seo_description || null, thumbnail_url: form.thumbnail_url || null,
       hero_image_url: form.hero_image_url || null,
+      preorder_enabled: form.preorder_enabled,
+      preorder_statement: form.preorder_statement || null,
     };
 
     if (isEditing) {
@@ -197,6 +201,21 @@ export default function AdminProductForm() {
               <input value={form.care_info} onChange={(e) => handleChange("care_info", e.target.value)} className={inputClass} style={fontStyle} />
             </div>
           </div>
+        </div>
+
+        {/* Preorder / Private Access */}
+        <div className="bg-[hsl(220,15%,9%)] border border-[hsl(220,10%,14%)] p-5 space-y-4">
+          <h2 className="text-[12px] tracking-[0.12em] uppercase text-[hsl(220,10%,55%)] mb-2" style={fontStyle}>Private Access / Preorder</h2>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" checked={form.preorder_enabled} onChange={(e) => handleChange("preorder_enabled", e.target.checked)} className="accent-[hsl(220,10%,70%)]" />
+            <span className="text-[11px] text-[hsl(220,10%,55%)]" style={fontStyle}>Enable preorder / private access mode</span>
+          </label>
+          {form.preorder_enabled && (
+            <div>
+              <label className={labelClass} style={fontStyle}>Preorder Statement</label>
+              <input value={form.preorder_statement} onChange={(e) => handleChange("preorder_statement", e.target.value)} className={inputClass} style={fontStyle} placeholder="e.g. This piece is in quiet preparation." />
+            </div>
+          )}
         </div>
 
         {/* SEO */}

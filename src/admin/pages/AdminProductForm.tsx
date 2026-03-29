@@ -11,7 +11,7 @@ const EMPTY_PRODUCT = {
   name: "", slug: "", collection: "", gender_segment: "", description: "", long_description: "",
   price: "", compare_at_price: "", sku: "", stock_quantity: "0", status: "draft",
   featured: false, materials: "", care_info: "", seo_title: "", seo_description: "",
-  thumbnail_url: "", hero_image_url: "",
+  thumbnail_url: "", hero_image_url: "", preorder_enabled: false, preorder_statement: "",
 };
 
 export default function AdminProductForm() {
@@ -39,6 +39,8 @@ export default function AdminProductForm() {
             care_info: data.care_info || "", seo_title: data.seo_title || "",
             seo_description: data.seo_description || "", thumbnail_url: data.thumbnail_url || "",
             hero_image_url: data.hero_image_url || "",
+            preorder_enabled: (data as any).preorder_enabled || false,
+            preorder_statement: (data as any).preorder_statement || "",
           });
         }
         setLoading(false);
@@ -72,6 +74,8 @@ export default function AdminProductForm() {
       care_info: form.care_info || null, seo_title: form.seo_title || null,
       seo_description: form.seo_description || null, thumbnail_url: form.thumbnail_url || null,
       hero_image_url: form.hero_image_url || null,
+      preorder_enabled: form.preorder_enabled,
+      preorder_statement: form.preorder_statement || null,
     };
 
     if (isEditing) {

@@ -16,6 +16,9 @@ const ProductPage = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
+  const { data: product, isLoading } = useProductBySlug(slug);
+  const { data: relatedProducts } = useActiveProducts({ limit: 3 });
+
   // Redirect to preorder page if preorder is enabled
   useEffect(() => {
     if (product && (product as any).preorder_enabled) {
@@ -23,8 +26,6 @@ const ProductPage = () => {
     }
   }, [product, slug, navigate]);
 
-  const { data: product, isLoading } = useProductBySlug(slug);
-  const { data: relatedProducts } = useActiveProducts({ limit: 3 });
   usePageMeta({
     title: product?.name ?? "Product",
     description: product?.description ?? "A RUVTIER garment composed with intention.",

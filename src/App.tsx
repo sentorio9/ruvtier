@@ -22,6 +22,7 @@ const ProductPage = lazy(() => import("./pages/ProductPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const TheHousePage = lazy(() => import("./pages/TheHousePage"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+const RitualsOfCarePage = lazy(() => import("./pages/RitualsOfCarePage"));
 const BoutiqueCategoryPage = lazy(() => import("./pages/BoutiqueCategoryPage"));
 const AdminLogin = lazy(() => import("./admin/pages/AdminLogin"));
 const AdminDashboard = lazy(() => import("./admin/pages/AdminDashboard"));

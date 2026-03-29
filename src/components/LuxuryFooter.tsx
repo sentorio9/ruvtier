@@ -4,6 +4,12 @@ interface LuxuryFooterProps {
   onSubscribeClick: () => void;
 }
 
+const linkClass =
+  "text-[11px] tracking-[0.1em] text-muted-foreground hover:text-foreground transition-colors duration-300";
+
+const headingClass =
+  "text-[11px] tracking-[0.12em] font-medium text-foreground mb-3";
+
 const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   return (
     <footer className="border-t border-border py-8 md:py-10">
@@ -15,44 +21,71 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
           </button>
         </div>
 
-        {/* Two-column links */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16 max-w-xl mx-auto mb-8 md:mb-10">
-          <div className="flex flex-col items-center md:items-start gap-3">
-            <Link to="/appointments" className="text-[11px] tracking-[0.1em] text-muted-foreground hover:text-foreground transition-colors duration-300">
-              Private Appointment
+        {/* Four-column links */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10 max-w-3xl mx-auto mb-8 md:mb-10">
+          {/* Services */}
+          <div className="flex flex-col gap-2.5">
+            <h3 className={headingClass}>Services</h3>
+            <Link to="/rituals-of-care" className={linkClass}>
+              Rituals of Care & Restoration
             </Link>
-            <Link to="/craft-career" className="text-[11px] tracking-[0.1em] text-muted-foreground hover:text-foreground transition-colors duration-300">
-              Craft Career
+            <Link to="/appointments" className={linkClass}>
+              Book a Private Appointment
             </Link>
-            <Link to="/contact" className="text-[11px] tracking-[0.1em] text-muted-foreground hover:text-foreground transition-colors duration-300">
-              Contact
-            </Link>
-          </div>
-          <div className="flex flex-col items-center md:items-start gap-3">
-            <Link to="/find-boutique" className="text-[11px] tracking-[0.1em] text-muted-foreground hover:text-foreground transition-colors duration-300">
-              Find a Boutique
-            </Link>
-            <Link to="/boutique" className="text-[11px] tracking-[0.1em] text-muted-foreground hover:text-foreground transition-colors duration-300">
+            <Link to="/boutique" className={linkClass}>
               Explore Online Boutique
             </Link>
-            <Link to="/privacy-policy" className="text-[11px] tracking-[0.1em] text-muted-foreground hover:text-foreground transition-colors duration-300">
-              Privacy Policy
+            <Link to="/shipping" className={linkClass}>
+              Shipping & Delivery
             </Link>
-            <Link to="/terms" className="text-[11px] tracking-[0.1em] text-muted-foreground hover:text-foreground transition-colors duration-300">
+          </div>
+
+          {/* Get in touch */}
+          <div className="flex flex-col gap-2.5">
+            <h3 className={headingClass}>Get in touch</h3>
+            <Link to="/contact" className={linkClass}>
+              Contact
+            </Link>
+            <Link to="/faq" className={linkClass}>
+              FAQ
+            </Link>
+          </div>
+
+          {/* Company */}
+          <div className="flex flex-col gap-2.5">
+            <h3 className={headingClass}>Company</h3>
+            <Link to="/the-house" className={linkClass}>
+              House Philosophy
+            </Link>
+            <Link to="/craft-career" className={linkClass}>
+              Craft Career
+            </Link>
+            <Link to="/find-boutique" className={linkClass}>
+              Find a Boutique
+            </Link>
+          </div>
+
+          {/* Legal */}
+          <div className="flex flex-col gap-2.5">
+            <h3 className={headingClass}>Legal</h3>
+            <Link to="/terms" className={linkClass}>
               Terms & Conditions
+            </Link>
+            <Link to="/privacy-policy" className={linkClass}>
+              Privacy & Cookie
             </Link>
           </div>
         </div>
 
         {/* Social links */}
         <div className="flex items-center justify-center gap-8 mb-6">
-          <a href="https://www.instagram.com/ruvtier/" target="_blank" rel="noopener noreferrer" aria-label="Follow RUVTIER on Instagram" className="text-[11px] tracking-[0.1em] text-muted-foreground hover:text-foreground transition-colors duration-300">
+          <a href="https://www.instagram.com/ruvtier/" target="_blank" rel="noopener noreferrer" aria-label="Follow RUVTIER on Instagram" className={linkClass}>
             Instagram
           </a>
-          <a href="https://www.youtube.com/@ruvtier" target="_blank" rel="noopener noreferrer" aria-label="Watch RUVTIER on YouTube" className="text-[11px] tracking-[0.1em] text-muted-foreground hover:text-foreground transition-colors duration-300">
+          <a href="https://www.youtube.com/@ruvtier" target="_blank" rel="noopener noreferrer" aria-label="Watch RUVTIER on YouTube" className={linkClass}>
             YouTube
           </a>
-          <a href="https://uk.pinterest.com/RUVTIER/_created/" target="_blank" rel="noopener noreferrer" aria-label="Discover RUVTIER on Pinterest" className="text-[11px] tracking-[0.1em] text-muted-foreground hover:text-foreground transition-colors duration-300">
+          <a href="https://uk.pinterest.com/RUVTIER/_created/" target="_blank" rel="noopener noreferrer" aria-label="Discover RUVTIER on Pinterest" className={linkClass}>
             Pinterest
           </a>
         </div>

@@ -111,29 +111,29 @@ const Index = () => {
               In Your Keeping
             </h2>
           </ScrollFadeIn>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-8 lg:gap-10">
             {[
               { img: knitwearImg, label: "Knitwear", to: "/boutique/women" },
               { img: lifestyleImg, label: "Life in RUVTIER", to: "/boutique/lifestyle" },
               { img: appointmentImg, label: "By Appointment Only", to: "/contact" },
             ].map((item, i) => (
-              <ScrollFadeIn key={item.label} delay={i * 0.1}>
+              <ScrollFadeIn key={item.label} delay={i * 0.08}>
                 <Link
                   to={item.to}
-                  className="group flex flex-col items-center text-center px-2 md:px-4"
+                  className="group flex flex-col items-center text-center"
                 >
-                  <div className="w-full aspect-[3/4] overflow-hidden mb-5 bg-background flex items-center justify-center">
+                  <div className="w-full aspect-square overflow-hidden mb-6 bg-background flex items-center justify-center p-4 md:p-6">
                     <img
                       src={item.img}
                       alt={item.label}
                       loading="lazy"
-                      className="w-full h-full object-contain object-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                      className="max-w-full max-h-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                     />
                   </div>
-                  <h3 className="font-serif font-light text-[clamp(15px,1.4vw,18px)] tracking-[0.12em] text-foreground mb-2">
+                  <h3 className="font-serif font-light text-[clamp(15px,1.4vw,18px)] tracking-[0.12em] text-foreground mb-1.5">
                     {item.label}
                   </h3>
-                  <span className="font-sans text-[11px] tracking-[0.18em] uppercase text-muted-foreground group-hover:text-foreground transition-colors duration-500">
+                  <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-muted-foreground group-hover:text-foreground transition-colors duration-500">
                     Explore
                   </span>
                 </Link>

@@ -19,6 +19,7 @@ const MaterialPage = lazy(() => import("./pages/MaterialPage"));
 const EditorialPage = lazy(() => import("./pages/EditorialPage"));
 const CollectionPage = lazy(() => import("./pages/CollectionPage"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
+const PreorderPage = lazy(() => import("./pages/PreorderPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const TheHousePage = lazy(() => import("./pages/TheHousePage"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
@@ -34,6 +35,7 @@ const AdminCarts = lazy(() => import("./admin/pages/AdminCarts"));
 const AdminContent = lazy(() => import("./admin/pages/AdminContent"));
 const AdminLogs = lazy(() => import("./admin/pages/AdminLogs"));
 const AdminSettings = lazy(() => import("./admin/pages/AdminSettings"));
+const AdminPreorders = lazy(() => import("./admin/pages/AdminPreorders"));
 
 const queryClient = new QueryClient();
 
@@ -80,6 +82,7 @@ const App = () => (
           <Route path="/materials/:slug" element={<MaterialPage />} />
           <Route path="/collection" element={<CollectionPage />} />
           <Route path="/product/:slug" element={<ProductPage />} />
+          <Route path="/preorder/:slug" element={<PreorderPage />} />
           <Route
             path="/boutique"
             element={
@@ -246,6 +249,7 @@ const App = () => (
             <Route path="customers" element={<AdminCustomers />} />
             <Route path="carts" element={<AdminCarts />} />
             <Route path="content" element={<AdminContent />} />
+            <Route path="preorders" element={<AdminPreorders />} />
             <Route path="logs" element={<AdminLogs />} />
             <Route path="settings" element={<AdminSettings />} />
           </Route>

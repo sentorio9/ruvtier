@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import WatermarkLogo from "@/components/WatermarkLogo";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
@@ -12,8 +12,16 @@ import materialImage from "@/assets/material-texture.jpg";
 
 const ProductPage = () => {
   const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+
+  // Redirect to preorder page if preorder is enabled
+  useEffect(() => {
+    if (product && (product as any).preorder_enabled) {
+      navigate(`/preorder/${slug}`, { replace: true });
+    }
+  }, [product, slug, navigate]);
 
   const { data: product, isLoading } = useProductBySlug(slug);
   const { data: relatedProducts } = useActiveProducts({ limit: 3 });

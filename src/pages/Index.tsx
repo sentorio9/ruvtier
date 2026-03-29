@@ -113,7 +113,7 @@ const Index = () => {
           </ScrollFadeIn>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-8 lg:gap-10 items-start">
             {[
-              { img: knitwearImg, label: "Knitwear", to: "/boutique/women", imgClass: "h-[90%] w-[90%] translate-y-[15%]" },
+              { img: knitwearImg, label: "Knitwear", to: "/boutique/women", imgClass: "h-full w-[85%]" },
               { img: lifestyleImg, label: "Life in RUVTIER", to: "/boutique/lifestyle", imgClass: "h-full w-full" },
               { img: appointmentImg, label: "By Appointment Only", to: "/contact", imgClass: "h-full w-full" },
             ].map((item, i) => (

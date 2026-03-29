@@ -203,6 +203,21 @@ export default function AdminProductForm() {
           </div>
         </div>
 
+        {/* Preorder / Private Access */}
+        <div className="bg-[hsl(220,15%,9%)] border border-[hsl(220,10%,14%)] p-5 space-y-4">
+          <h2 className="text-[12px] tracking-[0.12em] uppercase text-[hsl(220,10%,55%)] mb-2" style={fontStyle}>Private Access / Preorder</h2>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" checked={form.preorder_enabled} onChange={(e) => handleChange("preorder_enabled", e.target.checked)} className="accent-[hsl(220,10%,70%)]" />
+            <span className="text-[11px] text-[hsl(220,10%,55%)]" style={fontStyle}>Enable preorder / private access mode</span>
+          </label>
+          {form.preorder_enabled && (
+            <div>
+              <label className={labelClass} style={fontStyle}>Preorder Statement</label>
+              <input value={form.preorder_statement} onChange={(e) => handleChange("preorder_statement", e.target.value)} className={inputClass} style={fontStyle} placeholder="e.g. This piece is in quiet preparation." />
+            </div>
+          )}
+        </div>
+
         {/* SEO */}
         <div className="bg-[hsl(220,15%,9%)] border border-[hsl(220,10%,14%)] p-5 space-y-4">
           <h2 className="text-[12px] tracking-[0.12em] uppercase text-[hsl(220,10%,55%)] mb-2" style={fontStyle}>SEO</h2>

@@ -172,6 +172,29 @@ const App = () => (
             }
           />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/rituals-of-care" element={<RitualsOfCarePage />} />
+          <Route
+            path="/shipping"
+            element={
+              <EditorialPage
+                title="Shipping & Delivery"
+                body="Each order is prepared and dispatched with the same care applied to its creation."
+                actionLabel="Return"
+                actionTo="/"
+              />
+            }
+          />
+          <Route
+            path="/faq"
+            element={
+              <EditorialPage
+                title="Frequently Asked Questions"
+                body="This page is being composed. For any enquiry, please contact the house directly."
+                actionLabel="Contact"
+                actionTo="/contact"
+              />
+            }
+          />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route
             path="/privacy-policy"

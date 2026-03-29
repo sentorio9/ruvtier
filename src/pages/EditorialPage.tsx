@@ -28,7 +28,7 @@ const EditorialPage = ({
     <div className="relative">
       <Navigation />
 
-      <section className="min-h-[70vh] flex items-center justify-center pt-32 pb-20">
+      <section className="min-h-[40vh] flex items-center justify-center pt-32 pb-12">
         <div className="luxury-container flex flex-col items-center text-center">
           <ScrollFadeIn>
             <h1 className="luxury-heading mb-6">{title}</h1>

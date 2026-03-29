@@ -10,7 +10,7 @@ const categories = [
   { label: "Women", to: "/boutique/women" },
   { label: "Men", to: "/boutique/men" },
   { label: "Lifestyle", to: "/boutique/lifestyle" },
-  { label: "Book Appointment", to: "/appointments" },
+  { label: "Book an Appointment", to: "/appointments" },
 ];
 
 const Navigation = () => {
@@ -71,7 +71,7 @@ const Navigation = () => {
             {!isMobile && (
               <button
                 onClick={() => setLoungeOpen(true)}
-                className="luxury-button !p-1.5 !text-[10.5px] tracking-[0.16em] uppercase"
+                className="luxury-button !p-1.5 !text-[10.5px] tracking-[0.16em]"
               >
                 Client Lounge
               </button>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
-import LazyVideo from "@/components/LazyVideo";
+
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
 import { usePageMeta } from "@/hooks/usePageMeta";
@@ -46,63 +46,59 @@ const Index = () => {
       </section>
 
       {/* Split Collection — Women / Men */}
-      <section className="grid grid-cols-1 md:grid-cols-2 min-h-[85svh] md:min-h-[90svh]">
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 py-16 md:py-24 luxury-container">
         {/* Women */}
-        <Link to="/boutique/women" className="group relative block overflow-hidden min-h-[60svh] md:min-h-0">
-          <img
-            src={womenImage}
-            alt="Women's collection by RUVTIER"
-            className="absolute inset-0 w-full h-full object-cover object-[center_25%] transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-foreground/10 group-hover:bg-foreground/20 transition-colors duration-700" />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-            <h2 className="font-serif font-light text-[clamp(24px,3vw,38px)] tracking-[0.15em] text-primary-foreground mb-3 transition-transform duration-700 group-hover:-translate-y-1">
+        <ScrollFadeIn>
+          <Link to="/boutique/women" className="group flex flex-col items-center text-center">
+            <div className="w-full aspect-[3/4] overflow-hidden mb-5">
+              <img
+                src={womenImage}
+                alt="Women's collection by RUVTIER"
+                className="w-full h-full object-cover object-[center_25%] transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                loading="lazy"
+              />
+            </div>
+            <h2 className="font-serif font-light text-[clamp(18px,1.8vw,24px)] tracking-[0.12em] text-foreground mb-2">
               Women's Collection
             </h2>
-            <span className="font-sans text-[12px] tracking-[0.18em] uppercase text-primary-foreground/60 group-hover:text-primary-foreground transition-all duration-500">
+            <span className="font-sans text-[11px] tracking-[0.18em] text-muted-foreground group-hover:text-foreground transition-colors duration-500">
               Discover More
             </span>
-          </div>
-        </Link>
+          </Link>
+        </ScrollFadeIn>
 
         {/* Men */}
-        <Link to="/boutique/men" className="group relative block overflow-hidden min-h-[60svh] md:min-h-0">
-          <img
-            src={menImage}
-            alt="Men's collection by RUVTIER"
-            className="absolute inset-0 w-full h-full object-cover object-[center_25%] transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-foreground/10 group-hover:bg-foreground/20 transition-colors duration-700" />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-            <h2 className="font-serif font-light text-[clamp(24px,3vw,38px)] tracking-[0.15em] text-primary-foreground mb-3 transition-transform duration-700 group-hover:-translate-y-1">
+        <ScrollFadeIn delay={0.1}>
+          <Link to="/boutique/men" className="group flex flex-col items-center text-center">
+            <div className="w-full aspect-[3/4] overflow-hidden mb-5">
+              <img
+                src={menImage}
+                alt="Men's collection by RUVTIER"
+                className="w-full h-full object-cover object-[center_25%] transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                loading="lazy"
+              />
+            </div>
+            <h2 className="font-serif font-light text-[clamp(18px,1.8vw,24px)] tracking-[0.12em] text-foreground mb-2">
               Men's Collection
             </h2>
-            <span className="font-sans text-[12px] tracking-[0.18em] uppercase text-primary-foreground/60 group-hover:text-primary-foreground transition-all duration-500">
-              Explore Men's Collection
+            <span className="font-sans text-[11px] tracking-[0.18em] text-muted-foreground group-hover:text-foreground transition-colors duration-500">
+              Explore Collection
             </span>
-          </div>
-        </Link>
+          </Link>
+        </ScrollFadeIn>
       </section>
 
-      {/* Material is Memory — Video Section */}
+      {/* Material is Memory — Static Section (video disabled) */}
       <section className="luxury-section">
-        <div className="relative overflow-hidden">
-          <div className="absolute inset-0">
-            <LazyVideo src="/videos/fabric-craft.mov" className="w-full h-full" />
-            <div className="absolute inset-0 bg-background/55" />
-          </div>
-          <div className="relative z-10 luxury-container flex flex-col items-center text-center py-28 md:py-40">
-            <ScrollFadeIn>
-              <h2 className="luxury-heading mb-6">Material is Memory</h2>
-            </ScrollFadeIn>
-            <ScrollFadeIn delay={0.15}>
-              <Link to="/materials" className="luxury-button">
-                Discover all material
-              </Link>
-            </ScrollFadeIn>
-          </div>
+        <div className="luxury-container flex flex-col items-center text-center py-28 md:py-40">
+          <ScrollFadeIn>
+            <h2 className="luxury-heading mb-6">Material is Memory</h2>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={0.15}>
+            <Link to="/materials" className="luxury-button">
+              Discover all material
+            </Link>
+          </ScrollFadeIn>
         </div>
       </section>
 

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
-import LazyVideo from "@/components/LazyVideo";
+
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
 import { usePageMeta } from "@/hooks/usePageMeta";

@@ -28,7 +28,38 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
       <div className="luxury-container">
         {/* ─── 5-column grid: Newsletter + Nav ─── */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-y-8 gap-x-6 md:gap-x-10 max-w-4xl mx-auto mb-10 md:mb-14">
-          {/* Newsletter - left */}
+          {/* Services */}
+          <div className="flex flex-col gap-3">
+            <h3 className={headingClass}>Services</h3>
+            <Link to="/rituals-of-care" className={linkClass}>Rituals of Care & Restoration</Link>
+            <Link to="/appointments" className={linkClass}>Book a Private Appointment</Link>
+            <Link to="/boutique" className={linkClass}>Explore Online Boutique</Link>
+            <Link to="/shipping" className={linkClass}>Shipping & Delivery</Link>
+          </div>
+
+          {/* Company */}
+          <div className="flex flex-col gap-3">
+            <h3 className={headingClass}>Company</h3>
+            <Link to="/the-house" className={linkClass}>House Philosophy</Link>
+            <Link to="/craft-career" className={linkClass}>Craft Career</Link>
+            <Link to="/find-boutique" className={linkClass}>Find a Boutique</Link>
+          </div>
+
+          {/* Get in Touch */}
+          <div className="flex flex-col gap-3">
+            <h3 className={headingClass}>Get in touch</h3>
+            <Link to="/contact" className={linkClass}>Contact</Link>
+            <Link to="/faq" className={linkClass}>FAQ</Link>
+          </div>
+
+          {/* Legal */}
+          <div className="flex flex-col gap-3">
+            <h3 className={headingClass}>Legal</h3>
+            <Link to="/terms" className={linkClass}>Terms & Conditions</Link>
+            <Link to="/privacy-policy" className={linkClass}>Privacy & Cookie</Link>
+          </div>
+
+          {/* Newsletter - right */}
           <div className="flex flex-col gap-3 col-span-2 md:col-span-1">
             <h3 className={headingClass}>Newsletter</h3>
             <p className="text-[10px] tracking-[0.06em] text-muted-foreground leading-relaxed mb-1">
@@ -60,37 +91,6 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
                 </p>
               )}
             </form>
-          </div>
-
-          {/* Services */}
-          <div className="flex flex-col gap-3">
-            <h3 className={headingClass}>Services</h3>
-            <Link to="/rituals-of-care" className={linkClass}>Rituals of Care & Restoration</Link>
-            <Link to="/appointments" className={linkClass}>Book a Private Appointment</Link>
-            <Link to="/boutique" className={linkClass}>Explore Online Boutique</Link>
-            <Link to="/shipping" className={linkClass}>Shipping & Delivery</Link>
-          </div>
-
-          {/* Company */}
-          <div className="flex flex-col gap-3">
-            <h3 className={headingClass}>Company</h3>
-            <Link to="/the-house" className={linkClass}>House Philosophy</Link>
-            <Link to="/craft-career" className={linkClass}>Craft Career</Link>
-            <Link to="/find-boutique" className={linkClass}>Find a Boutique</Link>
-          </div>
-
-          {/* Get in Touch */}
-          <div className="flex flex-col gap-3">
-            <h3 className={headingClass}>Get in touch</h3>
-            <Link to="/contact" className={linkClass}>Contact</Link>
-            <Link to="/faq" className={linkClass}>FAQ</Link>
-          </div>
-
-          {/* Legal */}
-          <div className="flex flex-col gap-3">
-            <h3 className={headingClass}>Legal</h3>
-            <Link to="/terms" className={linkClass}>Terms & Conditions</Link>
-            <Link to="/privacy-policy" className={linkClass}>Privacy & Cookie</Link>
           </div>
         </div>
 

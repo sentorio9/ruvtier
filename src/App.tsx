@@ -6,9 +6,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "./hooks/useAuth";
+import { RegionProvider } from "./hooks/useRegionCurrency";
 import { ADMIN_PREFIX } from "./admin/config";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { AdminProtectedLayout, AdminPublicLayout } from "./admin/components/AdminRoute";
+import CookieConsent from "./components/CookieConsent";
 
 // Lazy-loaded pages
 const Index = lazy(() => import("./pages/Index"));
@@ -72,6 +74,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
+        <RegionProvider>
         <TitleSetter />
         <ScrollToTop />
         <Suspense fallback={<div className="min-h-screen bg-background" />}>
@@ -257,6 +260,8 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
         </Suspense>
+        <CookieConsent />
+        </RegionProvider>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

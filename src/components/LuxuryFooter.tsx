@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import RegionSelector from "./RegionSelector";
 
 interface LuxuryFooterProps {
   onSubscribeClick: () => void;
@@ -134,13 +135,14 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
           </a>
         </div>
 
-        {/* ─── Copyright ─── */}
-        <div className="text-center">
+        {/* ─── Copyright + Region ─── */}
+        <div className="flex items-center justify-between">
           <p className="text-muted-foreground text-[10px] tracking-[0.08em]">
             © {new Date().getFullYear()}{" "}
             <span className="font-serif tracking-[0.12em]">RUVTIER</span>
             . All rights reserved.
           </p>
+          <RegionSelector />
         </div>
       </div>
     </footer>

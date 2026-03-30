@@ -9,10 +9,10 @@ const linkClass =
   "text-[11.5px] tracking-[0.08em] text-muted-foreground hover:text-foreground transition-colors duration-300 leading-relaxed font-sans";
 
 const headingClass =
-  "font-serif text-[13.5px] tracking-[0.14em] font-light text-foreground mb-4";
+  "font-serif tracking-[0.14em] text-foreground mb-4 text-base font-medium";
 
 const newsletterHeadingClass =
-  "font-serif text-[15px] tracking-[0.14em] font-light text-foreground mb-4";
+  "tracking-[0.14em] font-light text-foreground mb-4 font-sans text-lg";
 
 const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const [email, setEmail] = useState("");

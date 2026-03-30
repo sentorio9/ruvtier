@@ -6,10 +6,10 @@ interface LuxuryFooterProps {
 }
 
 const linkClass =
-  "text-[11px] tracking-[0.08em] text-muted-foreground hover:text-foreground transition-colors duration-300 leading-relaxed";
+  "text-[11.5px] tracking-[0.08em] text-muted-foreground hover:text-foreground transition-colors duration-300 leading-relaxed";
 
 const headingClass =
-  "font-serif text-[13px] tracking-[0.14em] font-light text-foreground mb-4";
+  "font-serif text-[13.5px] tracking-[0.14em] font-light text-foreground mb-4";
 
 const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const [email, setEmail] = useState("");

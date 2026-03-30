@@ -48,5 +48,18 @@ export function useProductBySlug(slug: string | undefined) {
 
 export const formatPrice = (price: number | null | undefined) => {
   if (price == null) return "—";
+  // Try to read region from localStorage for static contexts
+  try {
+    const saved = localStorage.getItem("ruvtier_region");
+    if (saved) {
+      const { locale, currency } = JSON.parse(saved);
+      return new Intl.NumberFormat(locale, {
+        style: "currency",
+        currency,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      }).format(price);
+    }
+  } catch { /* fallback */ }
   return `€${price.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
 };

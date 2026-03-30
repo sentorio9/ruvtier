@@ -6,9 +6,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "./hooks/useAuth";
+import { RegionProvider } from "./hooks/useRegionCurrency";
 import { ADMIN_PREFIX } from "./admin/config";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { AdminProtectedLayout, AdminPublicLayout } from "./admin/components/AdminRoute";
+import CookieConsent from "./components/CookieConsent";
 
 // Lazy-loaded pages
 const Index = lazy(() => import("./pages/Index"));

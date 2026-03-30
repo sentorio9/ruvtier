@@ -50,20 +50,22 @@ const Index = () => {
         {/* Women */}
         <ScrollFadeIn>
           <Link to="/boutique/women" className="group flex flex-col items-center text-center">
-            <div className="w-full aspect-[3/4] overflow-hidden mb-5">
+            <div className="relative w-full aspect-[3/4] overflow-hidden">
               <img
                 src={womenImage}
                 alt="Women's collection by RUVTIER"
                 className="w-full h-full object-cover object-[center_25%] transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
                 loading="lazy"
               />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent pt-16 pb-6 px-4">
+                <h2 className="font-serif font-light text-[clamp(18px,1.8vw,24px)] tracking-[0.12em] text-white mb-1">
+                  Women's Collection
+                </h2>
+                <span className="font-sans text-[11px] tracking-[0.18em] text-white/70 group-hover:text-white transition-colors duration-500">
+                  Discover More
+                </span>
+              </div>
             </div>
-            <h2 className="font-serif font-light text-[clamp(18px,1.8vw,24px)] tracking-[0.12em] text-foreground mb-2">
-              Women's Collection
-            </h2>
-            <span className="font-sans text-[11px] tracking-[0.18em] text-muted-foreground group-hover:text-foreground transition-colors duration-500">
-              Discover More
-            </span>
           </Link>
         </ScrollFadeIn>
 

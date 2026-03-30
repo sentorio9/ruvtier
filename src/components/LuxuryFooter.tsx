@@ -61,7 +61,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
 
           {/* Newsletter - right */}
           <div className="flex flex-col gap-3 col-span-2 md:col-span-1">
-            <h3 className={headingClass}>Newsletter</h3>
+            <h3 className={`${headingClass} text-lg`}>Newsletter</h3>
             <p className="text-[10px] tracking-[0.06em] text-muted-foreground leading-relaxed mb-1">
               Exclusive collections, heritage stories, and special events.
             </p>

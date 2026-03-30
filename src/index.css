@@ -55,6 +55,12 @@
     /* Custom luxury tokens */
     --font-serif: 'Cormorant Garamond', Georgia, serif;
     --font-sans: 'Jost', system-ui, sans-serif;
+
+    /* Footer tokens */
+    --footer-red: 8 45% 42%;
+    --footer-red-foreground: 30 30% 92%;
+    --footer-beige: 35 30% 92%;
+    --footer-beige-foreground: 0 0% 30%;
     --luxury-tracking: 0.12em;
     --luxury-tracking-wide: 0.2em;
     --content-max: 1200px;

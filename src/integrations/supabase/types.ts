@@ -22,7 +22,6 @@ export type Database = {
           password_hash: string
           role: string
           supabase_email: string | null
-          supabase_password: string | null
           supabase_user_id: string | null
           username: string
         }
@@ -33,7 +32,6 @@ export type Database = {
           password_hash: string
           role?: string
           supabase_email?: string | null
-          supabase_password?: string | null
           supabase_user_id?: string | null
           username: string
         }
@@ -44,7 +42,6 @@ export type Database = {
           password_hash?: string
           role?: string
           supabase_email?: string | null
-          supabase_password?: string | null
           supabase_user_id?: string | null
           username?: string
         }

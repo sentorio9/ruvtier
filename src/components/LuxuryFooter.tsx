@@ -6,10 +6,13 @@ interface LuxuryFooterProps {
 }
 
 const linkClass =
-  "text-[11.5px] tracking-[0.08em] text-muted-foreground hover:text-foreground transition-colors duration-300 leading-relaxed";
+  "text-[11.5px] tracking-[0.08em] text-muted-foreground hover:text-foreground transition-colors duration-300 leading-relaxed font-sans";
 
 const headingClass =
   "font-serif text-[13.5px] tracking-[0.14em] font-light text-foreground mb-4";
+
+const newsletterHeadingClass =
+  "font-serif text-[15px] tracking-[0.14em] font-light text-foreground mb-4";
 
 const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const [email, setEmail] = useState("");
@@ -61,7 +64,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
 
           {/* Newsletter - right */}
           <div className="flex flex-col gap-3 col-span-2 md:col-span-1">
-            <h3 className={`${headingClass} text-lg`}>Newsletter</h3>
+            <h3 className={newsletterHeadingClass}>Newsletter</h3>
             <p className="text-[10px] tracking-[0.06em] text-muted-foreground leading-relaxed mb-1">
               Exclusive collections, heritage stories, and special events.
             </p>

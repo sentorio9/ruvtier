@@ -74,6 +74,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
+        <RegionProvider>
         <TitleSetter />
         <ScrollToTop />
         <Suspense fallback={<div className="min-h-screen bg-background" />}>

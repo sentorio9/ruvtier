@@ -213,6 +213,51 @@ export type Database = {
         }
         Relationships: []
       }
+      carts: {
+        Row: {
+          abandoned_at: string | null
+          created_at: string
+          email: string | null
+          id: string
+          item_count: number
+          items: Json
+          recovered_at: string | null
+          session_id: string | null
+          status: string
+          subtotal: number | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          abandoned_at?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          item_count?: number
+          items?: Json
+          recovered_at?: string | null
+          session_id?: string | null
+          status?: string
+          subtotal?: number | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          abandoned_at?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          item_count?: number
+          items?: Json
+          recovered_at?: string | null
+          session_id?: string | null
+          status?: string
+          subtotal?: number | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       customers: {
         Row: {
           created_at: string
@@ -638,6 +683,33 @@ export type Database = {
           use_shipping_as_billing?: boolean | null
           user_id?: string
           zip_code?: string | null
+        }
+        Relationships: []
+      }
+      site_content: {
+        Row: {
+          content_key: string
+          content_value: Json
+          id: string
+          section: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          content_key: string
+          content_value?: Json
+          id?: string
+          section?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          content_key?: string
+          content_value?: Json
+          id?: string
+          section?: string
+          updated_at?: string
+          updated_by?: string | null
         }
         Relationships: []
       }

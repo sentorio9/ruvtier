@@ -51,6 +51,79 @@ function approvalEmailHtml(label: string, role: string, ip: string, ua: string, 
 </td></tr></table></td></tr></table></body></html>`
 }
 
+/**
+ * Create or retrieve a Supabase auth user for an admin credential.
+ * Passwords are generated transiently and NEVER persisted to the database.
+ */
+async function ensureSupabaseAuth(
+  supabase: ReturnType<typeof createClient>,
+  cred: { id: string; role: string; supabase_email: string | null; supabase_user_id: string | null },
+  supabaseUrl: string
+) {
+  // If we already have a linked Supabase user, generate a fresh session via admin API
+  if (cred.supabase_user_id) {
+    // Generate a transient password, sign in, then immediately update it away
+    const transientPassword = crypto.randomUUID() + crypto.randomUUID()
+    
+    // Update the user's password transiently
+    const { error: updateErr } = await supabase.auth.admin.updateUser(cred.supabase_user_id, {
+      password: transientPassword,
+    })
+    if (updateErr) throw updateErr
+
+    const anonKey = Deno.env.get('SUPABASE_ANON_KEY')!
+    const anonClient = createClient(supabaseUrl, anonKey)
+    const email = cred.supabase_email || `admin-${cred.id}@internal.ruvtier.com`
+    const { data: signIn, error: signInErr } = await anonClient.auth.signInWithPassword({
+      email,
+      password: transientPassword,
+    })
+    if (signInErr) throw signInErr
+
+    return {
+      access_token: signIn.session?.access_token,
+      refresh_token: signIn.session?.refresh_token,
+    }
+  }
+
+  // No linked user yet — create one
+  const email = `admin-${cred.id}@internal.ruvtier.com`
+  const transientPassword = crypto.randomUUID() + crypto.randomUUID()
+
+  const { data: newUser, error: createErr } = await supabase.auth.admin.createUser({
+    email,
+    password: transientPassword,
+    email_confirm: true,
+  })
+  if (createErr) throw createErr
+
+  // Add role to user_roles
+  const dbRole = cred.role === 'super_admin' ? 'super_admin' : 'admin'
+  await supabase.from('user_roles').insert({
+    user_id: newUser.user.id,
+    role: dbRole,
+  })
+
+  // Store only the email and user_id — NEVER the password
+  await supabase
+    .from('admin_credentials')
+    .update({ supabase_email: email, supabase_user_id: newUser.user.id })
+    .eq('id', cred.id)
+
+  const anonKey = Deno.env.get('SUPABASE_ANON_KEY')!
+  const anonClient = createClient(supabaseUrl, anonKey)
+  const { data: signIn, error: signInErr } = await anonClient.auth.signInWithPassword({
+    email,
+    password: transientPassword,
+  })
+  if (signInErr) throw signInErr
+
+  return {
+    access_token: signIn.session?.access_token,
+    refresh_token: signIn.session?.refresh_token,
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
@@ -241,10 +314,10 @@ Deno.serve(async (req) => {
     if (request.status === 'denied') return jsonResponse({ status: 'denied' })
 
     if (request.status === 'approved') {
-      // Get credential details
+      // Get credential details — explicit column selection, no sensitive fields
       const { data: cred } = await supabase
         .from('admin_credentials')
-        .select('id, role, display_label, supabase_email, supabase_password, supabase_user_id')
+        .select('id, role, display_label, supabase_email, supabase_user_id')
         .eq('id', request.credential_id)
         .single()
 
@@ -316,28 +389,18 @@ Deno.serve(async (req) => {
       })
       .eq('session_token', sessionToken)
 
+    // Explicit column selection — no sensitive fields
     const { data: cred } = await supabase
       .from('admin_credentials')
-      .select('role, display_label, supabase_email, supabase_password')
+      .select('id, role, display_label, supabase_email, supabase_user_id')
       .eq('id', session.credential_id)
       .single()
 
-    // Also refresh Supabase session
+    // Refresh Supabase session using admin API (no stored passwords)
     let supabaseSession = null
-    if (cred?.supabase_email && cred?.supabase_password) {
+    if (cred?.supabase_user_id) {
       try {
-        const anonKey = Deno.env.get('SUPABASE_ANON_KEY')!
-        const anonClient = createClient(supabaseUrl, anonKey)
-        const { data: signIn } = await anonClient.auth.signInWithPassword({
-          email: cred.supabase_email,
-          password: cred.supabase_password,
-        })
-        if (signIn?.session) {
-          supabaseSession = {
-            access_token: signIn.session.access_token,
-            refresh_token: signIn.session.refresh_token,
-          }
-        }
+        supabaseSession = await ensureSupabaseAuth(supabase, cred, supabaseUrl)
       } catch (e) {
         console.error('Supabase session refresh error:', e)
       }
@@ -402,47 +465,3 @@ Deno.serve(async (req) => {
 
   return jsonResponse({ error: 'Invalid action' }, 400)
 })
-
-async function ensureSupabaseAuth(
-  supabase: ReturnType<typeof createClient>,
-  cred: { id: string; role: string; supabase_email: string | null; supabase_password: string | null; supabase_user_id: string | null },
-  supabaseUrl: string
-) {
-  let email = cred.supabase_email
-  let password = cred.supabase_password
-
-  if (!email || !password) {
-    email = `admin-${cred.id}@internal.ruvtier.com`
-    password = crypto.randomUUID() + crypto.randomUUID()
-
-    const { data: newUser, error: createErr } = await supabase.auth.admin.createUser({
-      email,
-      password,
-      email_confirm: true,
-    })
-
-    if (createErr) throw createErr
-
-    // Add role to user_roles
-    const dbRole = cred.role === 'super_admin' ? 'super_admin' : 'admin'
-    await supabase.from('user_roles').insert({
-      user_id: newUser.user.id,
-      role: dbRole,
-    })
-
-    await supabase
-      .from('admin_credentials')
-      .update({ supabase_email: email, supabase_password: password, supabase_user_id: newUser.user.id })
-      .eq('id', cred.id)
-  }
-
-  const anonKey = Deno.env.get('SUPABASE_ANON_KEY')!
-  const anonClient = createClient(supabaseUrl, anonKey)
-  const { data: signIn, error: signInErr } = await anonClient.auth.signInWithPassword({ email, password })
-  if (signInErr) throw signInErr
-
-  return {
-    access_token: signIn.session?.access_token,
-    refresh_token: signIn.session?.refresh_token,
-  }
-}

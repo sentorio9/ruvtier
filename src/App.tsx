@@ -259,10 +259,12 @@ const App = () => (
             <Route path="preorders" element={<AdminPreorders />} />
             <Route path="logs" element={<AdminLogs />} />
             <Route path="settings" element={<AdminSettings />} />
+            <Route path="maintenance" element={<AdminMaintenance />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </MaintenanceGate>
         </Suspense>
         <CookieConsent />
         <LocationConsentPrompt />

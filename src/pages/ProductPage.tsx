@@ -4,7 +4,7 @@ import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
-import { useProductBySlug, useActiveProducts, formatPrice } from "@/hooks/useProducts";
+import { useProductBySlug, useActiveProducts, formatPrice, usePriceTick } from "@/hooks/useProducts";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import garmentImage from "@/assets/garment-single.jpg";
 import materialImage from "@/assets/material-texture.jpg";
@@ -30,6 +30,7 @@ const ProductPage = () => {
     title: product?.name ?? "Product",
     description: product?.description ?? "A RUVTIER garment composed with intention.",
   });
+  usePriceTick();
 
   // Parse size_options from product JSON
   const sizes: string[] = product?.size_options

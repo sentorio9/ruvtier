@@ -4,7 +4,7 @@ import Navigation from "@/components/Navigation";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
-import { useProductBySlug, formatPrice } from "@/hooks/useProducts";
+import { useProductBySlug, formatPrice, usePriceTick } from "@/hooks/useProducts";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { supabase } from "@/integrations/supabase/client";
 import garmentImage from "@/assets/garment-single.jpg";
@@ -34,6 +34,7 @@ const PreorderPage = () => {
     title: product?.name ? `${product.name} — Private Access` : "Private Access",
     description: product?.description ?? "Request private access to this RUVTIER garment.",
   });
+  usePriceTick();
 
   const [form, setForm] = useState({
     full_name: "",

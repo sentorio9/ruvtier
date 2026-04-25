@@ -4,7 +4,7 @@ import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
-import { useActiveProducts, formatPrice } from "@/hooks/useProducts";
+import { useActiveProducts, formatPrice, usePriceTick } from "@/hooks/useProducts";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import garmentImage from "@/assets/garment-single.jpg";
 
@@ -12,6 +12,7 @@ const CollectionPage = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   const { data: products, isLoading } = useActiveProducts();
   usePageMeta({ title: "The Collection", description: "Curated garments composed with care, intention, and the finest materials." });
+  usePriceTick();
 
   return (
     <div className="relative">

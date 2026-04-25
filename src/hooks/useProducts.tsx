@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
@@ -46,20 +47,66 @@ export function useProductBySlug(slug: string | undefined) {
   });
 }
 
+// Prices are authored in EUR (base). This static helper reads the active region
+// AND the cached FX rates from localStorage so non-React contexts can display
+// the converted, market-priced amount. Components that need to re-render on
+// currency change should additionally subscribe via `useRegionCurrency()` or
+// the `usePriceTick()` hook below.
+const ZERO_DECIMAL = new Set(["JPY", "KRW", "VND", "IDR", "HUF", "CLP", "TWD"]);
+
 export const formatPrice = (price: number | null | undefined) => {
   if (price == null) return "—";
-  // Try to read region from localStorage for static contexts
+  if (price === 0) return "€0";
+
+  let locale = "en-US";
+  let currency = "EUR";
+  let symbol = "€";
+  let rate = 1;
+
   try {
-    const saved = localStorage.getItem("ruvtier_region");
-    if (saved) {
-      const { locale, currency } = JSON.parse(saved);
-      return new Intl.NumberFormat(locale, {
-        style: "currency",
-        currency,
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2,
-      }).format(price);
+    const savedRegion = localStorage.getItem("ruvtier_region");
+    if (savedRegion) {
+      const r = JSON.parse(savedRegion);
+      locale = r.locale || locale;
+      currency = r.currency || currency;
+      symbol = r.currencySymbol || symbol;
     }
-  } catch { /* fallback */ }
-  return `€${price.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+    if (currency !== "EUR") {
+      const savedRates = localStorage.getItem("ruvtier_fx_rates");
+      if (savedRates) {
+        const fx = JSON.parse(savedRates);
+        if (fx?.base === "EUR" && typeof fx?.rates?.[currency] === "number") {
+          rate = fx.rates[currency];
+        }
+      }
+    }
+  } catch { /* keep defaults */ }
+
+  const converted = price * rate;
+  const zd = ZERO_DECIMAL.has(currency);
+  try {
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: zd ? 0 : 2,
+    }).format(converted);
+  } catch {
+    return `${symbol}${(zd ? Math.round(converted) : converted).toLocaleString("en-US", { maximumFractionDigits: zd ? 0 : 2 })}`;
+  }
 };
+
+// Tiny hook: forces a re-render when the region or FX rates change so callers
+// that use the static `formatPrice` helper still update live on currency switch.
+export function usePriceTick() {
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const bump = () => setTick((n) => n + 1);
+    window.addEventListener("ruvtier:region-changed", bump);
+    window.addEventListener("ruvtier:rates-updated", bump);
+    return () => {
+      window.removeEventListener("ruvtier:region-changed", bump);
+      window.removeEventListener("ruvtier:rates-updated", bump);
+    };
+  }, []);
+}

@@ -103,21 +103,20 @@ const ProductPage = () => {
             {/* Images */}
             <ScrollFadeIn>
               <div className="flex flex-col gap-4">
-                <div className="aspect-[3/4] bg-secondary overflow-hidden">
-                  <img
-                    src={product.hero_image_url || product.thumbnail_url || garmentImage}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                {product.thumbnail_url && product.hero_image_url && (
+                {galleryImages.length > 0 ? (
+                  galleryImages.map((src, i) => (
+                    <div key={`${src}-${i}`} className="aspect-[3/4] bg-secondary overflow-hidden">
+                      <img
+                        src={src}
+                        alt={i === 0 ? product.name : `${product.name} — view ${i + 1}`}
+                        className="w-full h-full object-cover"
+                        loading={i === 0 ? "eager" : "lazy"}
+                      />
+                    </div>
+                  ))
+                ) : (
                   <div className="aspect-[3/4] bg-secondary overflow-hidden">
-                    <img
-                      src={product.thumbnail_url}
-                      alt={`${product.name} detail`}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
+                    <img src={garmentImage} alt={product.name} className="w-full h-full object-cover" />
                   </div>
                 )}
               </div>

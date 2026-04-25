@@ -11,6 +11,7 @@ import { ADMIN_PREFIX } from "./admin/config";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { AdminProtectedLayout, AdminPublicLayout } from "./admin/components/AdminRoute";
 import CookieConsent from "./components/CookieConsent";
+import LocationConsentPrompt from "./components/LocationConsentPrompt";
 
 // Lazy-loaded pages
 const Index = lazy(() => import("./pages/Index"));

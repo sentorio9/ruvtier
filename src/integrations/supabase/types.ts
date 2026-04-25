@@ -258,6 +258,39 @@ export type Database = {
         }
         Relationships: []
       }
+      content_versions: {
+        Row: {
+          changed_at: string
+          changed_by: string | null
+          entity_id: string
+          entity_label: string | null
+          entity_type: string
+          id: string
+          new_value: Json
+          previous_value: Json | null
+        }
+        Insert: {
+          changed_at?: string
+          changed_by?: string | null
+          entity_id: string
+          entity_label?: string | null
+          entity_type: string
+          id?: string
+          new_value: Json
+          previous_value?: Json | null
+        }
+        Update: {
+          changed_at?: string
+          changed_by?: string | null
+          entity_id?: string
+          entity_label?: string | null
+          entity_type?: string
+          id?: string
+          new_value?: Json
+          previous_value?: Json | null
+        }
+        Relationships: []
+      }
       customers: {
         Row: {
           created_at: string
@@ -390,6 +423,27 @@ export type Database = {
           id?: string
           token?: string
           used_at?: string | null
+        }
+        Relationships: []
+      }
+      maintenance_subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          notified_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          notified_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          notified_at?: string | null
         }
         Relationships: []
       }
@@ -713,6 +767,72 @@ export type Database = {
         }
         Relationships: []
       }
+      site_settings: {
+        Row: {
+          id: number
+          maintenance_collect_email: boolean
+          maintenance_enabled: boolean
+          maintenance_headline: string
+          maintenance_started_at: string | null
+          maintenance_subline: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          id?: number
+          maintenance_collect_email?: boolean
+          maintenance_enabled?: boolean
+          maintenance_headline?: string
+          maintenance_started_at?: string | null
+          maintenance_subline?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          id?: number
+          maintenance_collect_email?: boolean
+          maintenance_enabled?: boolean
+          maintenance_headline?: string
+          maintenance_started_at?: string | null
+          maintenance_subline?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      site_snapshots: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          name: string
+          products_data: Json
+          site_content_data: Json
+          site_settings_data: Json
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          products_data?: Json
+          site_content_data?: Json
+          site_settings_data?: Json
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          products_data?: Json
+          site_content_data?: Json
+          site_settings_data?: Json
+        }
+        Relationships: []
+      }
       suppressed_emails: {
         Row: {
           created_at: string
@@ -782,6 +902,7 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
+      is_editor_or_admin: { Args: { _user_id: string }; Returns: boolean }
       move_to_dlq: {
         Args: {
           dlq_name: string

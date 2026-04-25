@@ -14,6 +14,7 @@ const ProductPage = () => {
   const navigate = useNavigate();
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
   const { data: product, isLoading } = useProductBySlug(slug);
   const { data: relatedProducts } = useActiveProducts({ limit: 3 });
@@ -34,6 +35,19 @@ const ProductPage = () => {
   const sizes: string[] = product?.size_options
     ? (Array.isArray(product.size_options) ? product.size_options as string[] : [])
     : ["XS", "S", "M", "L", "XL"];
+
+  const colors: string[] = product?.color_options
+    ? (Array.isArray(product.color_options) ? product.color_options as string[] : [])
+    : [];
+
+  const gallery: string[] = product?.media_gallery && Array.isArray(product.media_gallery)
+    ? (product.media_gallery as string[])
+    : [];
+
+  // Compose hero image stack: media_gallery if present, otherwise hero/thumbnail
+  const galleryImages = gallery.length > 0
+    ? gallery
+    : [product?.hero_image_url, product?.thumbnail_url].filter(Boolean) as string[];
 
   if (isLoading) {
     return (

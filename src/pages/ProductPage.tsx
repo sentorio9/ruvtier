@@ -14,6 +14,7 @@ const ProductPage = () => {
   const navigate = useNavigate();
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
   const { data: product, isLoading } = useProductBySlug(slug);
   const { data: relatedProducts } = useActiveProducts({ limit: 3 });
@@ -34,6 +35,19 @@ const ProductPage = () => {
   const sizes: string[] = product?.size_options
     ? (Array.isArray(product.size_options) ? product.size_options as string[] : [])
     : ["XS", "S", "M", "L", "XL"];
+
+  const colors: string[] = product?.color_options
+    ? (Array.isArray(product.color_options) ? product.color_options as string[] : [])
+    : [];
+
+  const gallery: string[] = product?.media_gallery && Array.isArray(product.media_gallery)
+    ? (product.media_gallery as string[])
+    : [];
+
+  // Compose hero image stack: media_gallery if present, otherwise hero/thumbnail
+  const galleryImages = gallery.length > 0
+    ? gallery
+    : [product?.hero_image_url, product?.thumbnail_url].filter(Boolean) as string[];
 
   if (isLoading) {
     return (
@@ -89,21 +103,20 @@ const ProductPage = () => {
             {/* Images */}
             <ScrollFadeIn>
               <div className="flex flex-col gap-4">
-                <div className="aspect-[3/4] bg-secondary overflow-hidden">
-                  <img
-                    src={product.hero_image_url || product.thumbnail_url || garmentImage}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                {product.thumbnail_url && product.hero_image_url && (
+                {galleryImages.length > 0 ? (
+                  galleryImages.map((src, i) => (
+                    <div key={`${src}-${i}`} className="aspect-[3/4] bg-secondary overflow-hidden">
+                      <img
+                        src={src}
+                        alt={i === 0 ? product.name : `${product.name} — view ${i + 1}`}
+                        className="w-full h-full object-cover"
+                        loading={i === 0 ? "eager" : "lazy"}
+                      />
+                    </div>
+                  ))
+                ) : (
                   <div className="aspect-[3/4] bg-secondary overflow-hidden">
-                    <img
-                      src={product.thumbnail_url}
-                      alt={`${product.name} detail`}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
+                    <img src={garmentImage} alt={product.name} className="w-full h-full object-cover" />
                   </div>
                 )}
               </div>
@@ -124,6 +137,31 @@ const ProductPage = () => {
 
                 {product.description && (
                   <p className="luxury-body mb-8">{product.description}</p>
+                )}
+
+                {/* Colour selector */}
+                {colors.length > 0 && (
+                  <div className="mb-6">
+                    <p className="text-sm text-muted-foreground tracking-wide mb-3">
+                      Colour{selectedColor ? ` — ${selectedColor}` : ""}
+                    </p>
+                    <div className="flex flex-wrap gap-3">
+                      {colors.map((c) => (
+                        <button
+                          key={c}
+                          onClick={() => setSelectedColor(c)}
+                          aria-pressed={selectedColor === c}
+                          className={`px-4 h-9 border text-xs tracking-[0.15em] uppercase transition-colors duration-300 ${
+                            selectedColor === c
+                              ? "border-foreground bg-foreground text-background"
+                              : "border-border text-foreground hover:border-foreground"
+                          }`}
+                        >
+                          {c}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 )}
 
                 {/* Size selector */}

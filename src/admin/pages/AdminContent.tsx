@@ -14,35 +14,9 @@ interface ContentBlock {
 }
 
 const CONTENT_META: Record<string, { title: string; desc: string; fields: { key: string; label: string; type: "text" | "textarea" | "url" }[] }> = {
-  homepage_hero: {
-    title: "Homepage Hero",
-    desc: "Hero text, CTA, background",
-    fields: [
-      { key: "heading", label: "Heading", type: "text" },
-      { key: "subheading", label: "Subheading", type: "textarea" },
-      { key: "cta_text", label: "CTA Text", type: "text" },
-      { key: "cta_link", label: "CTA Link", type: "url" },
-    ],
-  },
-  the_house: {
-    title: "The House",
-    desc: "Brand philosophy page content",
-    fields: [
-      { key: "heading", label: "Heading", type: "text" },
-      { key: "body", label: "Body", type: "textarea" },
-    ],
-  },
-  stillness: {
-    title: "Stillness",
-    desc: "Stillness editorial page",
-    fields: [
-      { key: "heading", label: "Heading", type: "text" },
-      { key: "body", label: "Body", type: "textarea" },
-    ],
-  },
   footer_social: {
     title: "Footer & Social",
-    desc: "Social media URLs",
+    desc: "Social media URLs shown in the footer",
     fields: [
       { key: "instagram", label: "Instagram URL", type: "url" },
       { key: "pinterest", label: "Pinterest URL", type: "url" },
@@ -51,7 +25,7 @@ const CONTENT_META: Record<string, { title: string; desc: string; fields: { key:
   },
   contact_details: {
     title: "Contact Details",
-    desc: "Contact page information",
+    desc: "Email, phone and address shown on the contact page",
     fields: [
       { key: "email", label: "Email", type: "text" },
       { key: "phone", label: "Phone", type: "text" },
@@ -59,8 +33,8 @@ const CONTENT_META: Record<string, { title: string; desc: string; fields: { key:
     ],
   },
   seo_global: {
-    title: "SEO Metadata",
-    desc: "Global meta titles & descriptions",
+    title: "Global SEO",
+    desc: "Default meta title & description used across the site",
     fields: [
       { key: "title", label: "Meta Title", type: "text" },
       { key: "description", label: "Meta Description", type: "textarea" },
@@ -126,7 +100,15 @@ export default function AdminContent() {
     <AdminLayout>
       <div className="mb-6">
         <h1 className="text-[22px] font-light tracking-[0.12em] text-[hsl(220,10%,85%)]" style={fontStyle}>Content</h1>
-        <p className="text-[12px] text-[hsl(220,10%,40%)] mt-1" style={fontStyle}>Brand page & site content management</p>
+        <p className="text-[12px] text-[hsl(220,10%,40%)] mt-1" style={fontStyle}>Site-wide content blocks. Click any card to edit.</p>
+      </div>
+
+      <div className="bg-[hsl(220,15%,9%)] border border-[hsl(220,10%,14%)] p-4 mb-6 max-w-[900px]">
+        <p className="text-[11px] text-[hsl(220,10%,55%)] leading-[1.7]" style={fontStyle}>
+          Editorial pages (Homepage, The House, Stillness, Materials) are composed in dedicated templates. To revise their copy, request changes from your developer.
+          <br />
+          Product names, descriptions, prices and images are managed under <span className="text-[hsl(220,10%,80%)]">Products</span>.
+        </p>
       </div>
 
       {loading ? (

@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAdminAuth } from "../hooks/useAdminAuth";
 import {
   LayoutDashboard, Package, ShoppingCart, Users, ScrollText,
-  FileText, Settings, LogOut, ChevronLeft, ChevronRight, ShoppingBag, ClipboardList
+  FileText, Settings, LogOut, ChevronLeft, ChevronRight, ShoppingBag, ClipboardList, Power
 } from "lucide-react";
 import { ADMIN_PREFIX } from "../config";
 

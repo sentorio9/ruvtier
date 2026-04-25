@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "../components/AdminLayout";
 import { useAdminAuth } from "../hooks/useAdminAuth";
 import { FileText, Save, X, ChevronDown } from "lucide-react";
+import AdminSiteImages from "../components/AdminSiteImages";
 
 interface ContentBlock {
   id: string;
@@ -110,6 +111,8 @@ export default function AdminContent() {
           Product names, descriptions, prices and images are managed under <span className="text-[hsl(220,10%,80%)]">Products</span>.
         </p>
       </div>
+
+      <AdminSiteImages />
 
       {loading ? (
         <p className="text-[12px] text-[hsl(220,10%,40%)]" style={fontStyle}>Loading...</p>

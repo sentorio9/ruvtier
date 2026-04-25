@@ -111,9 +111,11 @@ export default function ImageUpload({
 
   return (
     <div>
-      <label className={labelClass} style={fontStyle}>
-        {label}
-      </label>
+      {label && (
+        <label className={labelClass} style={fontStyle}>
+          {label}
+        </label>
+      )}
 
       {value ? (
         <div className="relative group">

@@ -1,0 +1,1 @@
+drop policy if exists "Site images are publicly readable" on storage.objects;

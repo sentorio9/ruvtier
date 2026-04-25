@@ -18,6 +18,7 @@ const BoutiqueCategoryPage = ({ title, gender, subtitle }: BoutiqueCategoryPageP
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   const { data: products, isLoading } = useActiveProducts({ gender });
   usePageMeta({ title: `${title} — Boutique`, description: subtitle || `Curated ${title.toLowerCase()} pieces by RUVTIER.` });
+  usePriceTick();
 
   return (
     <div className="relative">

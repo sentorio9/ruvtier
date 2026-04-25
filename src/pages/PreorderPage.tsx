@@ -34,6 +34,7 @@ const PreorderPage = () => {
     title: product?.name ? `${product.name} — Private Access` : "Private Access",
     description: product?.description ?? "Request private access to this RUVTIER garment.",
   });
+  usePriceTick();
 
   const [form, setForm] = useState({
     full_name: "",

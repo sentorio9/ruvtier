@@ -12,6 +12,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { AdminProtectedLayout, AdminPublicLayout } from "./admin/components/AdminRoute";
 import CookieConsent from "./components/CookieConsent";
 import LocationConsentPrompt from "./components/LocationConsentPrompt";
+import MaintenanceGate from "./components/MaintenanceGate";
 
 // Lazy-loaded pages
 const Index = lazy(() => import("./pages/Index"));

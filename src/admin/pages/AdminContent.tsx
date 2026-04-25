@@ -112,6 +112,8 @@ export default function AdminContent() {
         </p>
       </div>
 
+      <AdminSiteImages />
+
       {loading ? (
         <p className="text-[12px] text-[hsl(220,10%,40%)]" style={fontStyle}>Loading...</p>
       ) : (

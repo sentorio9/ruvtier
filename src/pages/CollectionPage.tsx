@@ -4,8 +4,7 @@ import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
-import { useActiveProducts, formatPrice } from "@/hooks/useProducts";
-import { usePriceTick as __usePriceTick } from "@/hooks/useProducts";
+import { useActiveProducts, formatPrice, usePriceTick } from "@/hooks/useProducts";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import garmentImage from "@/assets/garment-single.jpg";
 

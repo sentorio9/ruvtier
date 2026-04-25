@@ -16,81 +16,56 @@ const TheHousePage = () => {
       <article className="pt-40 pb-20 md:pt-48 md:pb-28">
         <div className="max-w-[620px] mx-auto px-6 md:px-8">
 
-          {/* Section 1 — Intro */}
+          {/* Paragraph 1 — Discipline */}
           <ScrollFadeIn>
-            <section className="mb-20 md:mb-28">
-              <p className="font-serif font-light text-[clamp(17px,1.4vw,20px)] leading-[1.9] text-foreground text-center">
-                At Ruvtier, stillness is a discipline. It governs cut, material, proportion.
-                <br />
-                Silence is treated as material.
+            <section className="mb-12 md:mb-16">
+              <p className="font-serif font-light text-[clamp(16px,1.25vw,19px)] leading-[2] text-foreground">
+                At Ruvtier, stillness is a discipline. It governs cut, material, proportion. Silence is treated as material — measured, protected, never filled.
               </p>
             </section>
           </ScrollFadeIn>
 
-          {/* Quote block — measured / protected / never filled */}
+          {/* Paragraph 2 — Craft */}
           <ScrollFadeIn delay={0.1}>
-            <section className="mb-24 md:mb-32 flex flex-col items-center text-center gap-3">
-              <span className="font-serif font-light text-[clamp(22px,2vw,28px)] leading-[1.5] italic text-foreground tracking-[0.06em]">
-                measured.
-              </span>
-              <span className="font-serif font-light text-[clamp(22px,2vw,28px)] leading-[1.5] italic text-foreground tracking-[0.06em]">
-                protected.
-              </span>
-              <span className="font-serif font-light text-[clamp(22px,2vw,28px)] leading-[1.5] italic text-foreground tracking-[0.06em]">
-                never filled.
-              </span>
-            </section>
-          </ScrollFadeIn>
-
-          {/* Section 2 — Manifesto body */}
-          <ScrollFadeIn delay={0.15}>
-            <section className="mb-24 md:mb-32">
-              <p className="font-sans font-light text-[clamp(15px,1.15vw,17px)] leading-[2] text-muted-foreground">
+            <section className="mb-12 md:mb-16">
+              <p className="font-serif font-light text-[clamp(16px,1.25vw,19px)] leading-[2] text-foreground">
                 Work proceeds without audience. Decisions are slow and final. What is unresolved is not released. Craft is continuity. Seams dissolve into structure. Weight is calibrated. Drape is held, not performed. Materials are refined until their presence becomes quiet, revealing themselves only through time and wear.
               </p>
             </section>
           </ScrollFadeIn>
 
-          {/* Section 3 — Second statement block */}
+          {/* Paragraph 3 — Garments */}
           <ScrollFadeIn delay={0.1}>
-            <section className="mb-24 md:mb-32 text-center">
-              <p className="font-serif font-light text-[clamp(19px,1.6vw,24px)] leading-[1.8] italic text-foreground tracking-[0.04em]">
-                Garments conceived between motion and rest.
-                <br />
-                Composed in movement.
-                <br />
-                Stable in stillness.
+            <section className="mb-12 md:mb-16">
+              <p className="font-serif font-light text-[clamp(16px,1.25vw,19px)] leading-[2] text-foreground">
+                Garments conceived between motion and rest. Composed in movement. Stable in stillness.
               </p>
             </section>
           </ScrollFadeIn>
 
-          {/* Section 4 — Philosophy */}
-          <ScrollFadeIn delay={0.15}>
-            <section className="mb-24 md:mb-32">
-              <p className="font-sans font-light text-[clamp(15px,1.15vw,17px)] leading-[2] text-muted-foreground">
-                The house extends beyond clothing, dry scent, matte surface, spaces shaped by proportion, light, absence. Ruvtier is for those who recognize restraint without explanation, whose precision is a form of respect.
+          {/* Paragraph 4 — Philosophy */}
+          <ScrollFadeIn delay={0.1}>
+            <section className="mb-12 md:mb-16">
+              <p className="font-serif font-light text-[clamp(16px,1.25vw,19px)] leading-[2] text-foreground">
+                The house extends beyond clothing — dry scent, matte surface, spaces shaped by proportion, light, absence. Ruvtier is for those who recognize restraint without explanation, whose precision is a form of respect.
               </p>
             </section>
           </ScrollFadeIn>
 
-          {/* Section 5 — Founder */}
+          {/* Paragraph 5 — Founder */}
           <ScrollFadeIn delay={0.1}>
-            <section className="mb-28 md:mb-40 text-center">
-              <p className="font-serif font-light text-[clamp(16px,1.3vw,19px)] leading-[1.9] text-foreground">
-                Founded by Rexford Joon Valenttier.
-                <br />
-                He serves as custodian.
+            <section className="mb-12 md:mb-16">
+              <p className="font-serif font-light text-[clamp(16px,1.25vw,19px)] leading-[2] text-foreground">
+                Founded by Rexford Joon Valenttier. He serves as custodian.
               </p>
             </section>
           </ScrollFadeIn>
 
-          {/* Section 6 — Final statement */}
+          {/* Paragraph 6 — Closing */}
           <ScrollFadeIn delay={0.1}>
-            <section className="mb-28 md:mb-40 text-center py-10 md:py-16">
-              <p className="font-serif font-light text-[clamp(20px,1.8vw,26px)] leading-[1.7] italic text-foreground tracking-[0.05em]">
-                Ruvtier does not persuade.
-                <br />
-                It remains.
+            <section className="mb-20 md:mb-28">
+              <p className="font-serif font-light text-[clamp(16px,1.25vw,19px)] leading-[2] text-foreground">
+                Ruvtier does not persuade. It remains.
               </p>
             </section>
           </ScrollFadeIn>

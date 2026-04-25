@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Navigation from "@/components/Navigation";
-import WatermarkLogo from "@/components/WatermarkLogo";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
@@ -26,7 +25,6 @@ const ContactPage = () => {
 
   return (
     <div className="relative">
-      <WatermarkLogo />
       <Navigation />
 
       <section className="min-h-[70vh] flex items-center justify-center pt-32 pb-20">

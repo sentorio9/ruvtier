@@ -6,6 +6,7 @@ import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
 import { usePageMeta } from "@/hooks/usePageMeta";
+import { useActiveProducts, formatPrice } from "@/hooks/useProducts";
 import heroImage from "@/assets/hero-editorial.jpg";
 import womenImage from "@/assets/collection-women.jpg";
 import menImage from "@/assets/collection-men.jpg";
@@ -16,6 +17,20 @@ import appointmentImg from "@/assets/explore-appointment.png";
 const Index = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   usePageMeta({ title: "RUVTIER", description: "A luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition." });
+
+  // Featured pre-order — pick the first featured product with preorder enabled, or any featured product
+  const { data: featuredProducts } = useActiveProducts({ featured: true, limit: 5 });
+  const featuredPreorder =
+    featuredProducts?.find((p: any) => p.preorder_enabled) ?? featuredProducts?.[0] ?? null;
+  const featuredImage =
+    (featuredPreorder as any)?.hero_image_url ||
+    (featuredPreorder as any)?.thumbnail_url ||
+    null;
+  const featuredHref = featuredPreorder
+    ? ((featuredPreorder as any).preorder_enabled
+        ? `/preorder/${featuredPreorder.slug}`
+        : `/product/${featuredPreorder.slug}`)
+    : null;
 
   return (
     <div className="relative">
@@ -44,6 +59,66 @@ const Index = () => {
           </ScrollFadeIn>
         </div>
       </section>
+
+      {/* Featured Pre-Order — second scroll */}
+      {featuredPreorder && (
+        <section className="luxury-section bg-background">
+          <div className="luxury-container py-20 md:py-28">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+              {/* Image */}
+              <ScrollFadeIn>
+                <Link to={featuredHref!} className="block group overflow-hidden">
+                  <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary">
+                    {featuredImage ? (
+                      <img
+                        src={featuredImage}
+                        alt={featuredPreorder.name}
+                        loading="lazy"
+                        className="w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-muted-foreground font-serif italic">
+                        {featuredPreorder.name}
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              </ScrollFadeIn>
+
+              {/* Details */}
+              <ScrollFadeIn delay={0.1}>
+                <div className="flex flex-col items-start text-left max-w-[460px]">
+                  {(featuredPreorder as any).preorder_enabled && (
+                    <span className="font-sans text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-5">
+                      Private Access — Pre-Register
+                    </span>
+                  )}
+                  <h2 className="font-serif font-light text-[clamp(28px,3.2vw,44px)] leading-[1.15] tracking-[0.04em] text-foreground mb-5">
+                    {featuredPreorder.name}
+                  </h2>
+                  {featuredPreorder.description && (
+                    <p className="font-sans font-light text-[clamp(14px,1.05vw,16px)] leading-[1.9] text-muted-foreground mb-6">
+                      {featuredPreorder.description}
+                    </p>
+                  )}
+                  {(featuredPreorder as any).preorder_enabled ? (
+                    <p className="font-sans text-[11px] uppercase tracking-[0.22em] text-muted-foreground mb-8">
+                      Available by allocation — not open purchase
+                    </p>
+                  ) : featuredPreorder.price != null ? (
+                    <p className="font-serif font-light text-[clamp(16px,1.3vw,20px)] text-foreground mb-8">
+                      {formatPrice(featuredPreorder.price)}
+                    </p>
+                  ) : null}
+                  <Link to={featuredHref!} className="luxury-button">
+                    {(featuredPreorder as any).preorder_enabled ? "Pre-Register" : "Discover the Piece"}
+                  </Link>
+                </div>
+              </ScrollFadeIn>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Split Collection — Women / Men */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 py-16 md:py-24 luxury-container">

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
-import WatermarkLogo from "@/components/WatermarkLogo";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
@@ -39,7 +38,6 @@ const ProductPage = () => {
   if (isLoading) {
     return (
       <div className="relative">
-        <WatermarkLogo />
         <Navigation />
         <section className="pt-20 md:pt-28">
           <div className="luxury-container">
@@ -62,7 +60,6 @@ const ProductPage = () => {
   if (!product) {
     return (
       <div className="relative">
-        <WatermarkLogo />
         <Navigation />
         <section className="pt-28 md:pt-36 pb-20">
           <div className="luxury-container text-center">
@@ -83,7 +80,6 @@ const ProductPage = () => {
 
   return (
     <div className="relative">
-      <WatermarkLogo />
       <Navigation />
 
       {/* Product hero */}

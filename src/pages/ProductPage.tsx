@@ -30,6 +30,7 @@ const ProductPage = () => {
     title: product?.name ?? "Product",
     description: product?.description ?? "A RUVTIER garment composed with intention.",
   });
+  usePriceTick();
 
   // Parse size_options from product JSON
   const sizes: string[] = product?.size_options

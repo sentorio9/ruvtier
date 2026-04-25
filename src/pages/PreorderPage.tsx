@@ -5,6 +5,7 @@ import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import { useProductBySlug, formatPrice } from "@/hooks/useProducts";
+import { usePriceTick as __usePriceTick } from "@/hooks/useProducts";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { supabase } from "@/integrations/supabase/client";
 import garmentImage from "@/assets/garment-single.jpg";

@@ -7,6 +7,7 @@ import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { useActiveProducts, formatPrice } from "@/hooks/useProducts";
+import { usePriceTick as __usePriceTick } from "@/hooks/useProducts";
 import heroImage from "@/assets/hero-editorial.jpg";
 import womenImage from "@/assets/collection-women.jpg";
 import menImage from "@/assets/collection-men.jpg";

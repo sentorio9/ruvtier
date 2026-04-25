@@ -100,7 +100,15 @@ export default function AdminContent() {
     <AdminLayout>
       <div className="mb-6">
         <h1 className="text-[22px] font-light tracking-[0.12em] text-[hsl(220,10%,85%)]" style={fontStyle}>Content</h1>
-        <p className="text-[12px] text-[hsl(220,10%,40%)] mt-1" style={fontStyle}>Brand page & site content management</p>
+        <p className="text-[12px] text-[hsl(220,10%,40%)] mt-1" style={fontStyle}>Site-wide content blocks. Click any card to edit.</p>
+      </div>
+
+      <div className="bg-[hsl(220,15%,9%)] border border-[hsl(220,10%,14%)] p-4 mb-6 max-w-[900px]">
+        <p className="text-[11px] text-[hsl(220,10%,55%)] leading-[1.7]" style={fontStyle}>
+          Editorial pages (Homepage, The House, Stillness, Materials) are composed in dedicated templates. To revise their copy, request changes from your developer.
+          <br />
+          Product names, descriptions, prices and images are managed under <span className="text-[hsl(220,10%,80%)]">Products</span>.
+        </p>
       </div>
 
       {loading ? (

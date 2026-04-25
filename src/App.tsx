@@ -81,6 +81,7 @@ const App = () => (
         <TitleSetter />
         <ScrollToTop />
         <Suspense fallback={<div className="min-h-screen bg-background" />}>
+        <MaintenanceGate>
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/stillness" element={<Stillness />} />

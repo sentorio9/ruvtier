@@ -12,6 +12,7 @@ const materialDescriptions: Record<string, string> = {
   "merino-wool": "Fine-gauge merino, bred for softness beyond measure. Each fibre a quiet act of precision.",
   silk: "A filament born from stillness. Silk carries light the way memory carries time.",
   "french-linen": "Grown in the fields of Normandy. Linen that softens with every season, never losing its character.",
+  denim: "Selvedge denim woven on heritage shuttle looms. A weight that earns its memory through wear, fading into the rhythm of a life.",
 };
 
 const formatName = (slug: string) =>

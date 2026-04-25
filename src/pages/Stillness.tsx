@@ -24,21 +24,7 @@ const Stillness = () => {
             </p>
           </ScrollFadeIn>
 
-          {/* Cinematic craft video */}
-          <ScrollFadeIn delay={0.15}>
-            <div className="w-full max-w-3xl mx-auto mb-12">
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="w-full aspect-video object-cover"
-              >
-              <source src="/videos/fabric-craft.mp4" type="video/mp4" />
-              <source src="/videos/fabric-craft.mov" type="video/quicktime" />
-              </video>
-            </div>
-          </ScrollFadeIn>
+          {/* Video removed per editorial direction */}
 
           <ScrollFadeIn delay={0.3}>
             <Link to="/" className="luxury-button">

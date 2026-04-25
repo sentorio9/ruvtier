@@ -12,6 +12,7 @@ const materials = [
   { name: "Merino Wool", slug: "merino-wool" },
   { name: "Silk", slug: "silk" },
   { name: "French Linen", slug: "french-linen" },
+  { name: "Denim", slug: "denim" },
 ];
 
 const Materials = () => {

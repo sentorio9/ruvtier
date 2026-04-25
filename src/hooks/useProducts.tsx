@@ -98,7 +98,6 @@ export const formatPrice = (price: number | null | undefined) => {
 
 // Tiny hook: forces a re-render when the region or FX rates change so callers
 // that use the static `formatPrice` helper still update live on currency switch.
-import { useEffect, useState } from "react";
 export function usePriceTick() {
   const [, setTick] = useState(0);
   useEffect(() => {

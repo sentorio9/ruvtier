@@ -28,10 +28,10 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   };
 
   return (
-    <footer className="border-t border-border pt-14 md:pt-20 pb-8 md:pb-10">
+    <footer className="border-t border-border pt-16 md:pt-24 pb-10 md:pb-14">
       <div className="luxury-container">
         {/* ─── 5-column grid: Newsletter + Nav ─── */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-y-8 gap-x-6 md:gap-x-10 max-w-4xl mx-auto mb-10 md:mb-14">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-y-10 gap-x-6 md:gap-x-10 max-w-4xl mx-auto mb-12 md:mb-16">
           {/* Services */}
           <div className="flex flex-col gap-3">
             <h3 className={headingClass}>Services</h3>
@@ -99,12 +99,12 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
         </div>
 
         {/* ─── Divider ─── */}
-        <div className="w-full max-w-4xl mx-auto mb-8 md:mb-10">
+        <div className="w-full max-w-4xl mx-auto mb-10 md:mb-12">
           <div className="h-px bg-border/60" />
         </div>
 
         {/* ─── Social Links ─── */}
-        <div className="flex items-center justify-center gap-10 md:gap-14 mb-8 md:mb-10">
+        <div className="flex items-center justify-center gap-10 md:gap-14 mb-10 md:mb-12">
           <a href="https://www.instagram.com/ruvtier/" target="_blank" rel="noopener noreferrer" aria-label="Follow RUVTIER on Instagram"
             className="flex flex-col items-center gap-2 group">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"

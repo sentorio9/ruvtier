@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "../components/AdminLayout";
 import { useAdminAuth } from "../hooks/useAdminAuth";
 import { FileText, Save, X, ChevronDown } from "lucide-react";
+import AdminSiteImages from "../components/AdminSiteImages";
 
 interface ContentBlock {
   id: string;

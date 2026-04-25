@@ -12,6 +12,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { AdminProtectedLayout, AdminPublicLayout } from "./admin/components/AdminRoute";
 import CookieConsent from "./components/CookieConsent";
 import LocationConsentPrompt from "./components/LocationConsentPrompt";
+import MaintenanceGate from "./components/MaintenanceGate";
 
 // Lazy-loaded pages
 const Index = lazy(() => import("./pages/Index"));
@@ -39,6 +40,7 @@ const AdminContent = lazy(() => import("./admin/pages/AdminContent"));
 const AdminLogs = lazy(() => import("./admin/pages/AdminLogs"));
 const AdminSettings = lazy(() => import("./admin/pages/AdminSettings"));
 const AdminPreorders = lazy(() => import("./admin/pages/AdminPreorders"));
+const AdminMaintenance = lazy(() => import("./admin/pages/AdminMaintenance"));
 
 const queryClient = new QueryClient();
 
@@ -79,6 +81,7 @@ const App = () => (
         <TitleSetter />
         <ScrollToTop />
         <Suspense fallback={<div className="min-h-screen bg-background" />}>
+        <MaintenanceGate>
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/stillness" element={<Stillness />} />
@@ -256,10 +259,12 @@ const App = () => (
             <Route path="preorders" element={<AdminPreorders />} />
             <Route path="logs" element={<AdminLogs />} />
             <Route path="settings" element={<AdminSettings />} />
+            <Route path="maintenance" element={<AdminMaintenance />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </MaintenanceGate>
         </Suspense>
         <CookieConsent />
         <LocationConsentPrompt />

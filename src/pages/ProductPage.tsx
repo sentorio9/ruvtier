@@ -139,6 +139,31 @@ const ProductPage = () => {
                   <p className="luxury-body mb-8">{product.description}</p>
                 )}
 
+                {/* Colour selector */}
+                {colors.length > 0 && (
+                  <div className="mb-6">
+                    <p className="text-sm text-muted-foreground tracking-wide mb-3">
+                      Colour{selectedColor ? ` — ${selectedColor}` : ""}
+                    </p>
+                    <div className="flex flex-wrap gap-3">
+                      {colors.map((c) => (
+                        <button
+                          key={c}
+                          onClick={() => setSelectedColor(c)}
+                          aria-pressed={selectedColor === c}
+                          className={`px-4 h-9 border text-xs tracking-[0.15em] uppercase transition-colors duration-300 ${
+                            selectedColor === c
+                              ? "border-foreground bg-foreground text-background"
+                              : "border-border text-foreground hover:border-foreground"
+                          }`}
+                        >
+                          {c}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* Size selector */}
                 {sizes.length > 0 && (
                   <div className="mb-8">

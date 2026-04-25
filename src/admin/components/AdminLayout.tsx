@@ -15,6 +15,7 @@ const navItems = [
   { to: `${ADMIN_PREFIX}/carts`, icon: ShoppingBag, label: "Carts" },
   { to: `${ADMIN_PREFIX}/preorders`, icon: ClipboardList, label: "Preorders" },
   { to: `${ADMIN_PREFIX}/content`, icon: FileText, label: "Content" },
+  { to: `${ADMIN_PREFIX}/maintenance`, icon: Power, label: "Maintenance" },
   { to: `${ADMIN_PREFIX}/logs`, icon: ScrollText, label: "Audit Logs" },
   { to: `${ADMIN_PREFIX}/settings`, icon: Settings, label: "Settings" },
 ];

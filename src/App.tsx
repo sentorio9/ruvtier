@@ -262,6 +262,7 @@ const App = () => (
         </Routes>
         </Suspense>
         <CookieConsent />
+        <LocationConsentPrompt />
         </RegionProvider>
         </AuthProvider>
       </BrowserRouter>

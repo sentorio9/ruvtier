@@ -14,35 +14,9 @@ interface ContentBlock {
 }
 
 const CONTENT_META: Record<string, { title: string; desc: string; fields: { key: string; label: string; type: "text" | "textarea" | "url" }[] }> = {
-  homepage_hero: {
-    title: "Homepage Hero",
-    desc: "Hero text, CTA, background",
-    fields: [
-      { key: "heading", label: "Heading", type: "text" },
-      { key: "subheading", label: "Subheading", type: "textarea" },
-      { key: "cta_text", label: "CTA Text", type: "text" },
-      { key: "cta_link", label: "CTA Link", type: "url" },
-    ],
-  },
-  the_house: {
-    title: "The House",
-    desc: "Brand philosophy page content",
-    fields: [
-      { key: "heading", label: "Heading", type: "text" },
-      { key: "body", label: "Body", type: "textarea" },
-    ],
-  },
-  stillness: {
-    title: "Stillness",
-    desc: "Stillness editorial page",
-    fields: [
-      { key: "heading", label: "Heading", type: "text" },
-      { key: "body", label: "Body", type: "textarea" },
-    ],
-  },
   footer_social: {
     title: "Footer & Social",
-    desc: "Social media URLs",
+    desc: "Social media URLs shown in the footer",
     fields: [
       { key: "instagram", label: "Instagram URL", type: "url" },
       { key: "pinterest", label: "Pinterest URL", type: "url" },
@@ -51,7 +25,7 @@ const CONTENT_META: Record<string, { title: string; desc: string; fields: { key:
   },
   contact_details: {
     title: "Contact Details",
-    desc: "Contact page information",
+    desc: "Email, phone and address shown on the contact page",
     fields: [
       { key: "email", label: "Email", type: "text" },
       { key: "phone", label: "Phone", type: "text" },
@@ -59,8 +33,8 @@ const CONTENT_META: Record<string, { title: string; desc: string; fields: { key:
     ],
   },
   seo_global: {
-    title: "SEO Metadata",
-    desc: "Global meta titles & descriptions",
+    title: "Global SEO",
+    desc: "Default meta title & description used across the site",
     fields: [
       { key: "title", label: "Meta Title", type: "text" },
       { key: "description", label: "Meta Description", type: "textarea" },

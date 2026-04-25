@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from "react";
 
 export interface RegionConfig {
   country: string;
@@ -9,6 +9,11 @@ export interface RegionConfig {
 }
 
 const REGION_KEY = "ruvtier_region";
+const RATES_KEY = "ruvtier_fx_rates";
+const CONSENT_KEY = "ruvtier_location_consent";
+const RATES_TTL_MS = 60 * 60 * 1000; // 1h
+// Prices are authored in EUR — this is the base currency for FX conversion.
+const BASE_CURRENCY = "EUR";
 
 const CURRENCY_MAP: Record<string, { currency: string; symbol: string; locale: string }> = {
   US: { currency: "USD", symbol: "$", locale: "en-US" },
@@ -93,10 +98,24 @@ export const REGIONS: { code: string; name: string; currency: string; symbol: st
   { code: "TR", name: "Turkey", currency: "TRY", symbol: "₺" },
 ];
 
+interface FxCache {
+  base: string;
+  fetchedAt: number;
+  rates: Record<string, number>;
+}
+
 interface RegionContextValue {
   region: RegionConfig;
   setRegion: (code: string) => void;
-  formatPrice: (amount: number) => string;
+  formatPrice: (amountInBase: number) => string;
+  convert: (amountInBase: number) => number;
+  rate: number;
+  ratesUpdatedAt: number | null;
+  refreshing: boolean;
+  refreshRates: () => Promise<void>;
+  needsLocationConsent: boolean;
+  acceptLocationConsent: () => Promise<void>;
+  dismissLocationConsent: () => void;
   loading: boolean;
 }
 
@@ -105,63 +124,205 @@ const RegionContext = createContext<RegionContextValue | null>(null);
 function getRegionFromCode(code: string): RegionConfig {
   const r = REGIONS.find((r) => r.code === code);
   const cm = CURRENCY_MAP[code];
-  if (r && cm) {
-    return { country: r.name, countryCode: code, currency: cm.currency, currencySymbol: cm.symbol, locale: cm.locale };
+  if (cm) {
+    return {
+      country: r?.name ?? code,
+      countryCode: code,
+      currency: cm.currency,
+      currencySymbol: cm.symbol,
+      locale: cm.locale,
+    };
   }
   return { ...DEFAULT_REGION, countryCode: code };
+}
+
+function readCachedRates(): FxCache | null {
+  try {
+    const raw = localStorage.getItem(RATES_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as FxCache;
+    if (parsed.base !== BASE_CURRENCY) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+async function fetchRates(): Promise<FxCache | null> {
+  // Free, no-key endpoints. Try primary, fallback to secondary.
+  const endpoints = [
+    `https://api.exchangerate.host/latest?base=${BASE_CURRENCY}`,
+    `https://open.er-api.com/v6/latest/${BASE_CURRENCY}`,
+  ];
+  for (const url of endpoints) {
+    try {
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) continue;
+      const json = await res.json();
+      const rates: Record<string, number> | undefined = json?.rates;
+      if (rates && typeof rates === "object" && Object.keys(rates).length > 0) {
+        const cache: FxCache = { base: BASE_CURRENCY, fetchedAt: Date.now(), rates };
+        try { localStorage.setItem(RATES_KEY, JSON.stringify(cache)); } catch { /* ignore quota */ }
+        return cache;
+      }
+    } catch {
+      // try next
+    }
+  }
+  return null;
 }
 
 export function RegionProvider({ children }: { children: ReactNode }) {
   const [region, setRegionState] = useState<RegionConfig>(DEFAULT_REGION);
   const [loading, setLoading] = useState(true);
+  const [fx, setFx] = useState<FxCache | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const [needsLocationConsent, setNeedsLocationConsent] = useState(false);
+  const initialized = useRef(false);
 
+  // Persist region + broadcast so static helpers (outside React) can react.
+  const persistRegion = (r: RegionConfig) => {
+    try { localStorage.setItem(REGION_KEY, JSON.stringify(r)); } catch { /* ignore */ }
+    try { window.dispatchEvent(new CustomEvent("ruvtier:region-changed", { detail: r })); } catch { /* ignore */ }
+  };
+
+  const ensureFreshRates = useCallback(async (force = false) => {
+    const cached = readCachedRates();
+    const stale = !cached || Date.now() - cached.fetchedAt > RATES_TTL_MS;
+    if (cached && !stale && !force) {
+      setFx(cached);
+      return cached;
+    }
+    setRefreshing(true);
+    const next = await fetchRates();
+    if (next) setFx(next);
+    else if (cached) setFx(cached); // fall back to stale cache
+    setRefreshing(false);
+    return next ?? cached;
+  }, []);
+
+  const refreshRates = useCallback(async () => {
+    await ensureFreshRates(true);
+    try { window.dispatchEvent(new CustomEvent("ruvtier:rates-updated")); } catch { /* ignore */ }
+  }, [ensureFreshRates]);
+
+  // Initial mount: restore region, decide on consent, prime rates.
   useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
+
     const saved = localStorage.getItem(REGION_KEY);
+    const consent = localStorage.getItem(CONSENT_KEY);
+    let restored: RegionConfig | null = null;
     if (saved) {
+      try { restored = JSON.parse(saved); } catch { /* ignore */ }
+    }
+
+    if (restored) {
+      setRegionState(restored);
+    } else {
+      // No saved region: fall back to timezone immediately, but ask for consent for IP-based precision.
       try {
-        setRegionState(JSON.parse(saved));
-        setLoading(false);
-        return;
-      } catch { /* fall through */ }
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const lang = navigator.language || "en";
+        const code = detectCountryFromTimezone(tz, lang);
+        const r = getRegionFromCode(code);
+        setRegionState(r);
+        persistRegion(r);
+      } catch { /* keep default */ }
     }
 
-    try {
-      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      const lang = navigator.language || "en";
-      const countryCode = detectCountryFromTimezone(tz, lang);
-      const detected = getRegionFromCode(countryCode);
-      setRegionState(detected);
-      localStorage.setItem(REGION_KEY, JSON.stringify(detected));
-    } catch {
-      // Keep default
-    }
+    if (!consent && !restored) setNeedsLocationConsent(true);
+
     setLoading(false);
+    // Prime FX rates in the background.
+    ensureFreshRates(false);
+  }, [ensureFreshRates]);
+
+  const setRegion = useCallback(
+    (code: string) => {
+      const r = getRegionFromCode(code);
+      setRegionState(r);
+      persistRegion(r);
+      // Always refresh on currency switch so the user sees market price.
+      ensureFreshRates(true).then(() => {
+        try { window.dispatchEvent(new CustomEvent("ruvtier:rates-updated")); } catch { /* ignore */ }
+      });
+    },
+    [ensureFreshRates]
+  );
+
+  const acceptLocationConsent = useCallback(async () => {
+    try { localStorage.setItem(CONSENT_KEY, "granted"); } catch { /* ignore */ }
+    setNeedsLocationConsent(false);
+    try {
+      const res = await fetch("https://ipapi.co/json/", { cache: "no-store" });
+      if (res.ok) {
+        const json = await res.json();
+        const code: string | undefined = json?.country_code;
+        if (code && CURRENCY_MAP[code]) {
+          const r = getRegionFromCode(code);
+          setRegionState(r);
+          persistRegion(r);
+          ensureFreshRates(true);
+        }
+      }
+    } catch {
+      // Non-fatal — keep timezone-based region.
+    }
+  }, [ensureFreshRates]);
+
+  const dismissLocationConsent = useCallback(() => {
+    try { localStorage.setItem(CONSENT_KEY, "dismissed"); } catch { /* ignore */ }
+    setNeedsLocationConsent(false);
   }, []);
 
-  const setRegion = useCallback((code: string) => {
-    const r = getRegionFromCode(code);
-    setRegionState(r);
-    localStorage.setItem(REGION_KEY, JSON.stringify(r));
-  }, []);
+  const rate = fx?.rates?.[region.currency] ?? (region.currency === BASE_CURRENCY ? 1 : 1);
+
+  const convert = useCallback(
+    (amountInBase: number) => {
+      if (region.currency === BASE_CURRENCY) return amountInBase;
+      return amountInBase * rate;
+    },
+    [region.currency, rate]
+  );
 
   const formatPrice = useCallback(
-    (amount: number) => {
+    (amountInBase: number) => {
+      const converted = convert(amountInBase);
+      // Round sensibly: zero-decimal currencies (JPY/KRW/VND/etc.) get whole numbers; others keep up to 2.
+      const zeroDecimal = ["JPY", "KRW", "VND", "IDR", "HUF", "CLP", "TWD"].includes(region.currency);
       try {
         return new Intl.NumberFormat(region.locale, {
           style: "currency",
           currency: region.currency,
           minimumFractionDigits: 0,
-          maximumFractionDigits: 2,
-        }).format(amount);
+          maximumFractionDigits: zeroDecimal ? 0 : 2,
+        }).format(converted);
       } catch {
-        return `${region.currencySymbol}${amount}`;
+        return `${region.currencySymbol}${Math.round(converted).toLocaleString()}`;
       }
     },
-    [region]
+    [region, convert]
   );
 
   return (
-    <RegionContext.Provider value={{ region, setRegion, formatPrice, loading }}>
+    <RegionContext.Provider
+      value={{
+        region,
+        setRegion,
+        formatPrice,
+        convert,
+        rate,
+        ratesUpdatedAt: fx?.fetchedAt ?? null,
+        refreshing,
+        refreshRates,
+        needsLocationConsent,
+        acceptLocationConsent,
+        dismissLocationConsent,
+        loading,
+      }}
+    >
       {children}
     </RegionContext.Provider>
   );

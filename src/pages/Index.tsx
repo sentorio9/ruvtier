@@ -6,6 +6,7 @@ import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
 import { usePageMeta } from "@/hooks/usePageMeta";
+import { useActiveProducts, formatPrice } from "@/hooks/useProducts";
 import heroImage from "@/assets/hero-editorial.jpg";
 import womenImage from "@/assets/collection-women.jpg";
 import menImage from "@/assets/collection-men.jpg";
@@ -16,6 +17,20 @@ import appointmentImg from "@/assets/explore-appointment.png";
 const Index = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   usePageMeta({ title: "RUVTIER", description: "A luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition." });
+
+  // Featured pre-order — pick the first featured product with preorder enabled, or any featured product
+  const { data: featuredProducts } = useActiveProducts({ featured: true, limit: 5 });
+  const featuredPreorder =
+    featuredProducts?.find((p: any) => p.preorder_enabled) ?? featuredProducts?.[0] ?? null;
+  const featuredImage =
+    (featuredPreorder as any)?.hero_image_url ||
+    (featuredPreorder as any)?.thumbnail_url ||
+    null;
+  const featuredHref = featuredPreorder
+    ? ((featuredPreorder as any).preorder_enabled
+        ? `/preorder/${featuredPreorder.slug}`
+        : `/product/${featuredPreorder.slug}`)
+    : null;
 
   return (
     <div className="relative">

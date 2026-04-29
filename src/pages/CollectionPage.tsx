@@ -7,13 +7,16 @@ import SubscribePanel from "@/components/SubscribePanel";
 import { useActiveProducts, formatPrice, usePriceTick } from "@/hooks/useProducts";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import garmentImage from "@/assets/garment-single.jpg";
+import inStoreImage from "@/assets/collection-in-store.png";
+import madeToMeasureImage from "@/assets/collection-made-to-measure.png";
+import byAllocationImage from "@/assets/collection-by-allocation.png";
 
 type Availability = "in_store" | "made_to_measure" | "by_allocation";
 
-const FILTERS: { value: Availability; label: string }[] = [
-  { value: "in_store", label: "In Store Only" },
-  { value: "made_to_measure", label: "Made-to-Measure Only" },
-  { value: "by_allocation", label: "By Allocation Only" },
+const FILTERS: { value: Availability; label: string; placeholder: string; placeholderName: string }[] = [
+  { value: "in_store", label: "In Store Only", placeholder: inStoreImage, placeholderName: "The Atelier Knit" },
+  { value: "made_to_measure", label: "Made-to-Measure Only", placeholder: madeToMeasureImage, placeholderName: "The Half-Zip in Cashmere" },
+  { value: "by_allocation", label: "By Allocation Only", placeholder: byAllocationImage, placeholderName: "The Weekend Carryall" },
 ];
 
 const CollectionPage = () => {
@@ -120,11 +123,34 @@ const CollectionPage = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-20">
-              <p className="luxury-body text-muted-foreground">
-                No pieces are currently offered under this category.
-              </p>
-            </div>
+            (() => {
+              const placeholder = FILTERS.find((f) => f.value === active)!;
+              return (
+                <div
+                  key={active}
+                  className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-6 gap-y-10 md:gap-y-16"
+                >
+                  <ScrollFadeIn>
+                    <div className="group block">
+                      <div className="relative overflow-hidden mb-4 bg-secondary aspect-[3/4]">
+                        <img
+                          src={placeholder.placeholder}
+                          alt={placeholder.placeholderName}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                      </div>
+                      <h3 className="font-serif font-light text-base md:text-lg tracking-wide text-foreground mb-1">
+                        {placeholder.placeholderName}
+                      </h3>
+                      <p className="text-sm text-muted-foreground tracking-wide italic">
+                        Composed soon
+                      </p>
+                    </div>
+                  </ScrollFadeIn>
+                </div>
+              );
+            })()
           )}
         </div>
       </section>

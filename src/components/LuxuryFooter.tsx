@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import RegionSelector from "./RegionSelector";
+import { Editable } from "@/editor/Editable";
+import { useSiteText } from "@/editor/useSiteContent";
 
 interface LuxuryFooterProps {
   onSubscribeClick: () => void;

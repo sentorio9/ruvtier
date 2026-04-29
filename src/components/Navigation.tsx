@@ -120,6 +120,7 @@ const Navigation = () => {
       <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
       <ClientLoungeDrawer isOpen={loungeOpen} onClose={() => setLoungeOpen(false)} />
       <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      <ShippingRegionModal open={shippingOpen} onClose={() => setShippingOpen(false)} />
     </>
   );
 };

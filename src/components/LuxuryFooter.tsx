@@ -45,7 +45,7 @@ const headingClass =
   "font-serif tracking-[0.14em] text-foreground mb-4 text-[18px] font-medium";
 
 const newsletterHeadingClass =
-  "font-serif font-light tracking-[0.04em] text-foreground mb-4 text-[clamp(26px,2.4vw,36px)] leading-[1.2]";
+  "font-serif font-light tracking-[0.04em] text-foreground mb-4 text-[clamp(20px,1.6vw,26px)] leading-[1.2]";
 
 const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const [email, setEmail] = useState("");

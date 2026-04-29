@@ -194,7 +194,7 @@ const Index = () => {
       <section className="luxury-section">
         <div className="luxury-container flex flex-col items-center text-center py-28 md:py-40">
           <ScrollFadeIn>
-            <Editable kind="text_block" contentKey="home_material_memory" field="headline" label="'Material is Memory' heading" as="h2" className="luxury-heading mb-6">Material is Memory</Editable>
+            <Editable kind="text_block" contentKey="home_material_memory" field="headline" label="'Material is Memory' heading" as="h2" className="luxury-heading mb-6">{materialMemoryHeadline}</Editable>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.15}>
             <Link to="/materials" className="luxury-button">

@@ -277,13 +277,11 @@ export function RegionProvider({ children }: { children: ReactNode }) {
     (code: string) => {
       const r = getRegionFromCode(code);
       persistRegion(r);
-      // Refresh rates first so the reloaded page shows accurate market prices,
-      // then perform a full reload so every price/format updates instantly.
+      setRegionState(r);
+      // Refresh rates in the background so prices update live without a reload.
       (async () => {
         try { await ensureFreshRates(true); } catch { /* ignore */ }
         try { window.dispatchEvent(new CustomEvent("ruvtier:rates-updated")); } catch { /* ignore */ }
-        setRegionState(r);
-        try { window.location.reload(); } catch { /* ignore */ }
       })();
     },
     [ensureFreshRates]

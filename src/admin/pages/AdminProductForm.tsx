@@ -307,6 +307,8 @@ export default function AdminProductForm() {
               <p className="text-[10px] text-[hsl(220,10%,35%)] mt-1" style={fontStyle}>
                 When enabled, the public product link redirects to /preorder/{form.slug || "..."}
               </p>
+            </div>
+          )}
         </div>
 
         {/* Availability */}
@@ -339,8 +341,6 @@ export default function AdminProductForm() {
               );
             })}
           </div>
-        </div>
-          )}
         </div>
 
         {/* Images */}

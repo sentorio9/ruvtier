@@ -20,6 +20,7 @@ export default {
       letterSpacing: {
         'luxury-tight': 'var(--luxury-tracking-tight)',
         'luxury-title': 'var(--luxury-tracking-title)',
+        'luxury-card': 'var(--luxury-tracking-card)',
         luxury: 'var(--luxury-tracking)',
         'luxury-wide': 'var(--luxury-tracking-wide)',
         'luxury-eyebrow': 'var(--luxury-tracking-eyebrow)',
@@ -28,6 +29,7 @@ export default {
       lineHeight: {
         'luxury-display': 'var(--luxury-leading-display)',
         'luxury-title': 'var(--luxury-leading-title)',
+        'luxury-card': 'var(--luxury-leading-card)',
         'luxury-snug': 'var(--luxury-leading-snug)',
         'luxury-relaxed': 'var(--luxury-leading-relaxed)',
         'luxury-body': 'var(--luxury-leading-body)',

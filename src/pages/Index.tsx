@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import { Editable } from "@/editor/Editable";
-import { useSiteText } from "@/editor/useSiteContent";
+import { useSiteText, useSiteImage } from "@/editor/useSiteContent";
 
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";

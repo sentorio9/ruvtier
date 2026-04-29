@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import CrossTabLanguageProbe from "@/components/dev/CrossTabLanguageProbe";
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import { Editable } from "@/editor/Editable";
@@ -53,7 +52,6 @@ const Index = () => {
 
   return (
     <div className="relative">
-      <CrossTabLanguageProbe />
       <Navigation />
 
       {/* Hero */}

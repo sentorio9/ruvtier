@@ -5,6 +5,7 @@ import ShippingRegionModal from "./ShippingRegionModal";
 import { Editable } from "@/editor/Editable";
 import { useSiteText } from "@/editor/useSiteContent";
 import { useRegionCurrency } from "@/hooks/useRegionCurrency";
+import { useLanguage } from "@/hooks/useLanguage";
 
 interface LuxuryFooterProps {
   onSubscribeClick: () => void;

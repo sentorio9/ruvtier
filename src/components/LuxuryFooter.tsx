@@ -80,7 +80,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
           {/* Newsletter - right */}
           <div className="flex flex-col gap-3 col-span-2 md:col-span-1">
             <Editable kind="text_block" contentKey="footer_headings" field="newsletter" label="Footer — Newsletter heading" as="h3" className={newsletterHeadingClass}>{newsletterHeading}</Editable>
-            <Editable kind="text_block" contentKey="footer_newsletter" field="blurb" label="Footer — Newsletter blurb" as="p" className="text-[10px] tracking-[0.06em] text-muted-foreground leading-relaxed mb-1">
+            <Editable kind="text_block" contentKey="footer_newsletter" field="blurb" label="Footer — Newsletter blurb" as="p" className="text-[12px] tracking-[0.06em] text-muted-foreground leading-relaxed mb-1">
               {newsletterBlurb}
             </Editable>
             <form onSubmit={handleNewsletterSubmit}>
@@ -90,7 +90,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Your email address"
-                  className="w-full bg-transparent border-b border-border focus:border-foreground text-[11px] tracking-[0.08em] text-foreground placeholder:text-muted-foreground/60 pb-2 pr-7 outline-none transition-colors duration-300 font-sans"
+                  className="w-full bg-transparent border-b border-border focus:border-foreground text-[13px] tracking-[0.08em] text-foreground placeholder:text-muted-foreground/60 pb-2 pr-7 outline-none transition-colors duration-300 font-sans"
                   required
                 />
                 <button

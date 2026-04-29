@@ -213,9 +213,9 @@ const Index = () => {
             <Editable kind="text_block" contentKey="home_material_memory" field="headline" label="'Material is Memory' heading" as="h2" className="luxury-heading mb-6">{materialMemoryHeadline}</Editable>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.15}>
-            <Link to="/materials" className="luxury-button">
-              Discover all material
-            </Link>
+            <Editable kind="text_block" contentKey="home_material_memory" field="cta_label" label="'Material is Memory' button" as="span" className="inline-block">
+              <Link to="/materials" className="luxury-button">{materialMemoryCta}</Link>
+            </Editable>
           </ScrollFadeIn>
         </div>
       </section>

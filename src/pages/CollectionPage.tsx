@@ -13,10 +13,10 @@ import byAllocationImage from "@/assets/collection-by-allocation.png";
 
 type Availability = "in_store" | "made_to_measure" | "by_allocation";
 
-const FILTERS: { value: Availability; label: string; placeholder: string; placeholderName: string }[] = [
-  { value: "in_store", label: "In Store Only", placeholder: inStoreImage, placeholderName: "The Atelier Knit" },
-  { value: "made_to_measure", label: "Made-to-Measure Only", placeholder: madeToMeasureImage, placeholderName: "The Half-Zip in Cashmere" },
-  { value: "by_allocation", label: "By Allocation Only", placeholder: byAllocationImage, placeholderName: "The Weekend Carryall" },
+const FILTERS: { value: Availability; label: string; image: string; alt: string }[] = [
+  { value: "in_store", label: "In Store Only", image: inStoreImage, alt: "A piece available exclusively in our boutiques." },
+  { value: "made_to_measure", label: "Made-to-Measure Only", image: madeToMeasureImage, alt: "A garment composed to the wearer's own measure." },
+  { value: "by_allocation", label: "By Allocation Only", image: byAllocationImage, alt: "A piece released only by quiet allocation." },
 ];
 
 const CollectionPage = () => {

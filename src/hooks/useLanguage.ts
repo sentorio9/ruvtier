@@ -92,7 +92,10 @@ function readStoredLanguage(): LanguageCode | null {
 
 let currentLanguage: LanguageCode = (() => {
   if (typeof window === "undefined") return "en";
-  return readStoredLanguage() ?? "en";
+  const stored = readStoredLanguage();
+  // eslint-disable-next-line no-console
+  console.log("[i18n] init: localStorage ruvtier_language =", localStorage.getItem(LANG_KEY), "→ resolved", stored ?? "en");
+  return stored ?? "en";
 })();
 
 const listeners = new Set<(lang: LanguageCode) => void>();
@@ -115,6 +118,8 @@ function applyDocumentDirection(code: LanguageCode) {
 export function setLanguageGlobal(code: LanguageCode) {
   if (!(code in LANGUAGE_LABELS)) return;
   try { localStorage.setItem(LANG_KEY, code); } catch { /* ignore */ }
+  // eslint-disable-next-line no-console
+  console.log("[i18n] setLanguageGlobal →", code, "| localStorage now:", localStorage.getItem(LANG_KEY));
   applyDocumentDirection(code);
   emit(code);
 }

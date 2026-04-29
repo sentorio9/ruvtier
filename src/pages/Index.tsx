@@ -208,13 +208,13 @@ const Index = () => {
               {/* Image */}
               <ScrollFadeIn>
                 <Link to={featuredHref!} className="block group overflow-hidden">
-                  <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary flex items-center justify-center">
+                  <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary flex items-center justify-center transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:shadow-[0_24px_60px_-30px_rgba(58,58,58,0.18)]">
                     {featuredImage ? (
                       <img
                         src={featuredImage}
                         alt={featuredPreorder.name}
                         loading="lazy"
-                        className="w-full h-full object-contain object-center transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
+                        className="w-full h-full object-contain object-center transition-[transform,filter] duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.015] group-hover:brightness-[1.02]"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-muted-foreground font-serif italic">

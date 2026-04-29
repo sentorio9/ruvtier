@@ -84,76 +84,71 @@ const CollectionPage = () => {
         </div>
       </section>
 
-      <section className="luxury-section" style={{ paddingTop: 0 }}>
+      {/* Active section visual — the hero image bound to the chosen filter */}
+      <section className="pb-12 md:pb-20">
         <div className="luxury-container">
-          {isLoading ? (
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-6 gap-y-10 md:gap-y-16">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="animate-pulse">
-                  <div className="aspect-[3/4] bg-secondary mb-4" />
-                  <div className="h-4 bg-secondary w-3/4 mb-2" />
-                  <div className="h-3 bg-secondary w-1/4" />
+          {(() => {
+            const current = FILTERS.find((f) => f.value === active)!;
+            return (
+              <ScrollFadeIn key={`hero-${active}`}>
+                <div className="mx-auto w-full max-w-[420px] md:max-w-[520px] aspect-[3/4] overflow-hidden bg-secondary">
+                  <img
+                    src={current.image}
+                    alt={current.alt}
+                    className="w-full h-full object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                    loading="eager"
+                  />
                 </div>
-              ))}
-            </div>
-          ) : filtered.length > 0 ? (
-            <div
-              key={active}
-              className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-6 gap-y-10 md:gap-y-16"
-            >
-              {filtered.map((product, i) => (
-                <ScrollFadeIn key={product.id} delay={i * 0.06}>
-                  <Link to={`/product/${product.slug}`} className="group block">
-                    <div className="relative overflow-hidden mb-4 bg-secondary aspect-[3/4]">
-                      <img
-                        src={product.thumbnail_url || garmentImage}
-                        alt={product.name}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        loading="lazy"
-                      />
-                    </div>
-                    <h3 className="font-serif font-light text-base md:text-lg tracking-wide text-foreground mb-1">
-                      {product.name}
-                    </h3>
-                    <p className="text-sm text-muted-foreground tracking-wide">
-                      {formatPrice(product.price)}
-                    </p>
-                  </Link>
-                </ScrollFadeIn>
-              ))}
-            </div>
-          ) : (
-            (() => {
-              const placeholder = FILTERS.find((f) => f.value === active)!;
-              return (
-                <div
-                  key={active}
-                  className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-6 gap-y-10 md:gap-y-16"
-                >
-                  <ScrollFadeIn>
-                    <div className="group block">
+              </ScrollFadeIn>
+            );
+          })()}
+        </div>
+      </section>
+
+      {/* Pieces tagged for this section, if any */}
+      {(isLoading || filtered.length > 0) && (
+        <section className="luxury-section" style={{ paddingTop: 0 }}>
+          <div className="luxury-container">
+            {isLoading ? (
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-6 gap-y-10 md:gap-y-16">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="animate-pulse">
+                    <div className="aspect-[3/4] bg-secondary mb-4" />
+                    <div className="h-4 bg-secondary w-3/4 mb-2" />
+                    <div className="h-3 bg-secondary w-1/4" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div
+                key={`grid-${active}`}
+                className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-6 gap-y-10 md:gap-y-16"
+              >
+                {filtered.map((product, i) => (
+                  <ScrollFadeIn key={product.id} delay={i * 0.06}>
+                    <Link to={`/product/${product.slug}`} className="group block">
                       <div className="relative overflow-hidden mb-4 bg-secondary aspect-[3/4]">
                         <img
-                          src={placeholder.placeholder}
-                          alt={placeholder.placeholderName}
+                          src={product.thumbnail_url || garmentImage}
+                          alt={product.name}
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                           loading="lazy"
                         />
                       </div>
                       <h3 className="font-serif font-light text-base md:text-lg tracking-wide text-foreground mb-1">
-                        {placeholder.placeholderName}
+                        {product.name}
                       </h3>
-                      <p className="text-sm text-muted-foreground tracking-wide italic">
-                        Composed soon
+                      <p className="text-sm text-muted-foreground tracking-wide">
+                        {formatPrice(product.price)}
                       </p>
-                    </div>
+                    </Link>
                   </ScrollFadeIn>
-                </div>
-              );
-            })()
-          )}
-        </div>
-      </section>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       <LuxuryFooter onSubscribeClick={() => setSubscribeOpen(true)} />
       <SubscribePanel isOpen={subscribeOpen} onClose={() => setSubscribeOpen(false)} />

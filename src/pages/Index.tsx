@@ -225,9 +225,9 @@ const Index = () => {
       <section className="py-16 md:py-24">
         <div className="luxury-container">
           <ScrollFadeIn>
-            <h2 className="font-serif font-light text-[clamp(18px,1.6vw,22px)] tracking-[0.15em] text-foreground text-center mb-10 md:mb-14">
-              In Your Keeping
-            </h2>
+            <Editable kind="text_block" contentKey="home_in_your_keeping" field="headline" label="'In Your Keeping' heading" as="h2" className="font-serif font-light text-[clamp(18px,1.6vw,22px)] tracking-[0.15em] text-foreground text-center mb-10 md:mb-14">
+              {inYourKeepingHeading}
+            </Editable>
           </ScrollFadeIn>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-8 lg:gap-10 items-start">
             {[

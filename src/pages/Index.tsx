@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
@@ -19,21 +19,77 @@ import materialMemoryScarf from "@/assets/material-memory-scarf.png";
 
 const Index = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
   usePageMeta({ title: "RUVTIER", description: "A luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition." });
   usePriceTick();
 
+  // Loro-Piana style hero inset — symmetrical scroll-driven expansion / contraction.
+  // Image is inset by HERO_INSET_PX at the top of the page; as you scroll down it
+  // eases out to a full-bleed frame, and as you scroll back up it eases back in.
+  // We drive this with rAF + a cubic-bezier easing so motion stays calm in both directions.
+  const heroFrameRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    const HERO_INSET_PX = 48;
+    const SCROLL_RANGE = 600;
+    // Brand easing: cubic-bezier(0.22, 0.61, 0.36, 1) — calm "ease-out-quint" feel.
+    const ease = (t: number) => {
+      const c = Math.min(1, Math.max(0, t));
+      // Cubic Bezier sampled via a fast approximation that matches the brand curve closely.
+      // Newton-Raphson on the x component for accuracy.
+      const cx1 = 0.22, cy1 = 0.61, cx2 = 0.36, cy2 = 1;
+      const bezX = (u: number) => 3 * (1 - u) * (1 - u) * u * cx1 + 3 * (1 - u) * u * u * cx2 + u * u * u;
+      const bezY = (u: number) => 3 * (1 - u) * (1 - u) * u * cy1 + 3 * (1 - u) * u * u * cy2 + u * u * u;
+      let u = c;
+      for (let i = 0; i < 6; i++) {
+        const x = bezX(u) - c;
+        const dx = 3 * (1 - u) * (1 - u) * cx1 + 6 * (1 - u) * u * (cx2 - cx1) + 3 * u * u * (1 - cx2);
+        if (Math.abs(dx) < 1e-6) break;
+        u -= x / dx;
+        u = Math.min(1, Math.max(0, u));
+      }
+      return bezY(u);
+    };
 
-  // Loro-Piana style inset: at top of page the image sits inside a margin (trimmed),
-  // as the user scrolls down the side margin eases toward 0 (image expands).
-  const heroProgress = Math.min(1, Math.max(0, scrollY / 600));
-  const heroInset = (1 - heroProgress) * 48; // px on each side at rest, 0 once scrolled
+    let target = Math.min(1, Math.max(0, window.scrollY / SCROLL_RANGE));
+    let current = target;
+    let raf = 0;
+
+    const apply = (progress: number) => {
+      const eased = ease(progress);
+      const inset = (1 - eased) * HERO_INSET_PX;
+      const el = heroFrameRef.current;
+      if (!el) return;
+      el.style.left = `${inset}px`;
+      el.style.right = `${inset}px`;
+      el.style.top = `${inset * 0.5}px`;
+      el.style.bottom = `${inset * 0.5}px`;
+    };
+
+    const tick = () => {
+      // Critically-damped lerp — symmetrical in both directions, never overshoots.
+      const delta = target - current;
+      if (Math.abs(delta) < 0.0005) {
+        current = target;
+        apply(current);
+        raf = 0;
+        return;
+      }
+      current += delta * 0.18; // 18% per frame ≈ ~600ms settle, matches brand 550–900ms range
+      apply(current);
+      raf = requestAnimationFrame(tick);
+    };
+
+    const onScroll = () => {
+      target = Math.min(1, Math.max(0, window.scrollY / SCROLL_RANGE));
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+
+    apply(current);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
   const heroHeadline = useSiteText("home_hero", "headline", "Permanence in garment form");
   const heroPreorderWomen = useSiteText("home_hero", "preorder_women", "Pre-Order for Women");
   const heroPreorderMen = useSiteText("home_hero", "preorder_men", "Pre-Order for Men");
@@ -70,27 +126,23 @@ const Index = () => {
 
       {/* Hero */}
       <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
-        <Editable
-          kind="site_image"
-          contentKey="site_image_home_hero"
-          label="Homepage hero image"
-          as="div"
-          className="absolute inset-0 overflow-hidden transition-[left,right,top,bottom] duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
-          style={{
-            left: `${heroInset}px`,
-            right: `${heroInset}px`,
-            top: `${heroInset * 0.5}px`,
-            bottom: `${heroInset * 0.5}px`,
-          }}
-        >
-          <img
-            src={heroImageOverride || heroImage}
-            alt="RUVTIER luxury garment editorial"
-            className="absolute inset-0 w-full h-full object-cover object-[center_30%] md:object-center"
-            fetchPriority="high"
-            decoding="async"
-          />
-        </Editable>
+        <div ref={heroFrameRef} className="absolute inset-0 overflow-hidden">
+          <Editable
+            kind="site_image"
+            contentKey="site_image_home_hero"
+            label="Homepage hero image"
+            as="div"
+            className="absolute inset-0 overflow-hidden"
+          >
+            <img
+              src={heroImageOverride || heroImage}
+              alt="RUVTIER luxury garment editorial"
+              className="absolute inset-0 w-full h-full object-cover object-[center_30%] md:object-center"
+              fetchPriority="high"
+              decoding="async"
+            />
+          </Editable>
+        </div>
         {/* Subtle full-frame veil for global legibility */}
         <div className="absolute inset-0 bg-black/15 pointer-events-none" />
         {/* Soft luminous halo centred behind the editorial line for legibility on imagery */}

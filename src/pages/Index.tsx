@@ -207,7 +207,7 @@ const Index = () => {
                 <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#F6F4F1]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
                   {womenSeason}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-luxury text-[#F6F4F1] mb-[clamp(16px,1.6vw,26px)] leading-luxury-title [text-shadow:0_2px_18px_rgba(0,0,0,0.55),0_0_28px_rgba(246,244,241,0.18)]">
+                <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-luxury-card text-[#F6F4F1] mb-[clamp(16px,1.6vw,26px)] leading-luxury-card [text-shadow:0_2px_18px_rgba(0,0,0,0.55),0_0_28px_rgba(246,244,241,0.18)]">
                   {womenTitle}
                 </Editable>
                 <Editable kind="text_block" contentKey="home_women_card" field="blurb" label="Women — blurb" as="p" className="font-sans text-[clamp(11px,0.84vw,13px)] tracking-luxury-tight text-[#F6F4F1]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] leading-luxury-body [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
@@ -257,7 +257,7 @@ const Index = () => {
                 <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#F6F4F1]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
                   {menSeason}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-luxury text-[#F6F4F1] mb-[clamp(16px,1.6vw,26px)] leading-luxury-title [text-shadow:0_2px_18px_rgba(0,0,0,0.55),0_0_28px_rgba(246,244,241,0.18)]">
+                <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-luxury-card text-[#F6F4F1] mb-[clamp(16px,1.6vw,26px)] leading-luxury-card [text-shadow:0_2px_18px_rgba(0,0,0,0.55),0_0_28px_rgba(246,244,241,0.18)]">
                   {menTitle}
                 </Editable>
                 <Editable kind="text_block" contentKey="home_men_card" field="blurb" label="Men — blurb" as="p" className="font-sans text-[clamp(11px,0.84vw,13px)] tracking-luxury-tight text-[#F6F4F1]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] leading-luxury-body [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">

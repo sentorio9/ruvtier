@@ -525,9 +525,22 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
                     <span className="block text-[10px] tracking-[0.32em] uppercase text-muted-foreground/80 mb-3">
                       Shipping to
                     </span>
-                    <h3 className="font-serif font-light text-[26px] md:text-[30px] tracking-[0.02em] text-foreground mb-10">
+                    <h3 className="font-serif font-light text-[26px] md:text-[30px] tracking-[0.02em] text-foreground mb-4">
                       {pendingCountry.name}
                     </h3>
+
+                    {!REGIONS.some((r) => r.code === pendingCountry.code) && (
+                      <div className="mb-10 border-l border-foreground/30 pl-4 py-2">
+                        <span className="block text-[10px] tracking-[0.32em] uppercase text-muted-foreground/80 mb-1.5">
+                          A note
+                        </span>
+                        <p className="font-serif font-light italic text-[15px] leading-relaxed text-foreground/80">
+                          Pricing and locale are not yet tailored for this destination.
+                          You may continue browsing in your chosen language — orders will be
+                          handled by our private clientelling team.
+                        </p>
+                      </div>
+                    )}
 
                     <span className="block text-[10px] tracking-[0.32em] uppercase text-muted-foreground/80 mb-5">
                       Choose a language

@@ -208,13 +208,13 @@ const Index = () => {
               {/* Image */}
               <ScrollFadeIn>
                 <Link to={featuredHref!} className="block group overflow-hidden">
-                  <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary flex items-center justify-center">
+                  <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary flex items-center justify-center transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:shadow-[0_24px_60px_-30px_rgba(58,58,58,0.18)]">
                     {featuredImage ? (
                       <img
                         src={featuredImage}
                         alt={featuredPreorder.name}
                         loading="lazy"
-                        className="w-full h-full object-contain object-center transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
+                        className="w-full h-full object-contain object-center transition-[transform,filter] duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.015] group-hover:brightness-[1.02]"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-muted-foreground font-serif italic">
@@ -265,15 +265,15 @@ const Index = () => {
         {/* Women */}
         <ScrollFadeIn>
           <Link to="/boutique/women" className="group flex flex-col items-center text-center">
-            <div className="relative w-full aspect-[3/4] overflow-hidden">
+            <div className="relative w-full aspect-[3/4] overflow-hidden transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:shadow-[0_30px_70px_-32px_rgba(0,0,0,0.35)]">
               <img
                 src={womenImage}
                 alt="Women's collection by RUVTIER"
-                className="w-full h-full object-cover object-[center_25%] transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                className="w-full h-full object-cover object-[center_25%] transition-[transform,filter] duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.02] group-hover:brightness-[1.03]"
                 loading="lazy"
               />
-              {/* Refined overlay — deeper at the base so type can glow */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/0 opacity-95 group-hover:opacity-100 transition-opacity duration-700" />
+              {/* Static base gradient — no opacity flicker on hover, keeps the frame calm */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/0" />
               {/* Soft luminous halo behind the title — anchored to the title row across breakpoints */}
               <div
                 aria-hidden
@@ -315,15 +315,15 @@ const Index = () => {
         {/* Men */}
         <ScrollFadeIn delay={0.1}>
           <Link to="/boutique/men" className="group flex flex-col items-center text-center">
-            <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary flex items-center justify-center">
+            <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary flex items-center justify-center transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:shadow-[0_30px_70px_-32px_rgba(0,0,0,0.35)]">
               <img
                 src={menImage}
                 alt="Men's collection by RUVTIER"
-                className="w-full h-full object-contain object-center transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                className="w-full h-full object-contain object-center transition-[transform,filter] duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.02] group-hover:brightness-[1.03]"
                 loading="lazy"
               />
-              {/* Refined overlay — deeper at the base so type can glow */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/0 opacity-95 group-hover:opacity-100 transition-opacity duration-700" />
+              {/* Static base gradient — no opacity flicker on hover, keeps the frame calm */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/0" />
               {/* Soft luminous halo behind the title — anchored to the title row across breakpoints */}
               <div
                 aria-hidden

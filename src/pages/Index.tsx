@@ -28,8 +28,8 @@ const Index = () => {
   // We drive this with rAF + a cubic-bezier easing so motion stays calm in both directions.
   const heroFrameRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
-    const HERO_INSET_PX = 48;
-    const SCROLL_RANGE = 600;
+    const HERO_INSET_PX = 88;        // deeper trim at rest — generous editorial frame
+    const SCROLL_RANGE = 1200;       // longer distance before fully expanded — Loro Piana pacing
     // Brand easing: cubic-bezier(0.22, 0.61, 0.36, 1) — calm "ease-out-quint" feel.
     const ease = (t: number) => {
       const c = Math.min(1, Math.max(0, t));

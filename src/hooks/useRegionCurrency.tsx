@@ -1,4 +1,22 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from "react";
+import { useLanguage, type LanguageCode } from "./useLanguage";
+
+// Build an Intl locale tag combining the active UI language with the region's
+// country, so e.g. selecting "English" in France formats as "en-FR" (English
+// language conventions, French currency placement). Falls back gracefully when
+// the runtime can't resolve the combined tag.
+function resolveDisplayLocale(language: LanguageCode, regionLocale: string, countryCode: string): string {
+  const country = countryCode || regionLocale.split("-")[1] || "";
+  const candidates = country ? [`${language}-${country}`, language, regionLocale] : [language, regionLocale];
+  try {
+    if (typeof (Intl as unknown as { Locale?: unknown }).Locale === "function") {
+      for (const c of candidates) {
+        try { new (Intl as unknown as { Locale: new (s: string) => unknown }).Locale(c); return c; } catch { /* try next */ }
+      }
+    }
+  } catch { /* ignore */ }
+  return candidates[0];
+}
 
 export interface RegionConfig {
   country: string;

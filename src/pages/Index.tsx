@@ -187,17 +187,17 @@ const Index = () => {
               {/* Refined overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-700" />
               <div className="absolute bottom-0 left-0 right-0 px-6 pb-8 pt-20 flex flex-col items-center text-center">
-                <span className="font-sans text-[9px] uppercase tracking-[0.3em] text-[#12131C]/50 mb-2">
-                  Spring / Summer 2026
-                </span>
-                <h2 className="font-serif font-light text-[clamp(22px,2.2vw,32px)] tracking-[0.08em] text-[#12131C] mb-2 leading-[1.2]">
-                  Men's Collection
-                </h2>
-                <p className="font-sans text-[11px] tracking-[0.04em] text-[#12131C]/60 mb-4 max-w-[260px] leading-[1.6]">
-                  Understated forms built from heritage craft and enduring composition.
-                </p>
+                <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="font-sans text-[9px] uppercase tracking-[0.3em] text-[#12131C]/50 mb-2">
+                  {menSeason}
+                </Editable>
+                <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="font-serif font-light text-[clamp(22px,2.2vw,32px)] tracking-[0.08em] text-[#12131C] mb-2 leading-[1.2]">
+                  {menTitle}
+                </Editable>
+                <Editable kind="text_block" contentKey="home_men_card" field="blurb" label="Men — blurb" as="p" className="font-sans text-[11px] tracking-[0.04em] text-[#12131C]/60 mb-4 max-w-[260px] leading-[1.6]">
+                  {menBlurb}
+                </Editable>
                 <span className="inline-flex items-center gap-2 font-sans text-[10px] uppercase tracking-[0.22em] text-[#12131C]/70 group-hover:text-[#12131C] transition-colors duration-500 border-b border-[#12131C]/20 group-hover:border-[#12131C]/50 pb-0.5">
-                  Explore Collection
+                  <Editable kind="text_block" contentKey="home_men_card" field="cta_label" label="Men — CTA label" as="span">{menCta}</Editable>
                   <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
                 </span>
               </div>

@@ -186,6 +186,40 @@ Deno.serve(async (req) => {
 
   const body = await req.json()
 
+  // --- RESOLVE APPROVAL REQUEST (from email link via /admin-approval page) ---
+  if (body.action === 'resolve_request') {
+    const { token, decision } = body
+    if (!token || (decision !== 'approve' && decision !== 'deny')) {
+      return jsonResponse({ error: 'Invalid request' }, 400)
+    }
+
+    const { data: request } = await supabase
+      .from('admin_login_requests')
+      .select('*')
+      .eq('token', token)
+      .eq('status', 'pending')
+      .gt('expires_at', new Date().toISOString())
+      .maybeSingle()
+
+    if (!request) {
+      return jsonResponse({ error: 'Request expired or already processed.' }, 410)
+    }
+
+    const newStatus = decision === 'approve' ? 'approved' : 'denied'
+    await supabase
+      .from('admin_login_requests')
+      .update({ status: newStatus, resolved_at: new Date().toISOString() })
+      .eq('id', request.id)
+
+    await supabase.from('audit_logs').insert({
+      action: `admin_login_${newStatus}`,
+      actor_email: APPROVAL_EMAIL,
+      details: { request_id: request.id },
+    })
+
+    return jsonResponse({ status: newStatus })
+  }
+
   // --- LOGIN ---
   if (body.action === 'login') {
     const { username, password, rememberMe } = body

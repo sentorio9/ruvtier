@@ -221,17 +221,17 @@ const Index = () => {
               />
               {/* Refined overlay — deeper at the base so type can glow */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/0 opacity-95 group-hover:opacity-100 transition-opacity duration-700" />
-              {/* Soft luminous halo behind the title */}
+              {/* Soft luminous halo behind the title — anchored to the title row across breakpoints */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-[8%] md:bottom-[10%] w-[70%] h-[38%] rounded-[50%] blur-3xl opacity-70 group-hover:opacity-90 transition-opacity duration-700"
+                className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-[20%] md:bottom-[22%] lg:bottom-[24%] w-[72%] md:w-[64%] lg:w-[58%] h-[26%] md:h-[24%] lg:h-[22%] rounded-[50%] blur-3xl opacity-70 group-hover:opacity-90 transition-opacity duration-700"
                 style={{ background: "radial-gradient(ellipse at center, rgba(246,244,241,0.45) 0%, rgba(246,244,241,0.15) 45%, rgba(246,244,241,0) 75%)" }}
               />
               <div className="absolute bottom-0 left-0 right-0 px-6 pb-6 md:pb-10 pt-24 flex flex-col items-center text-center">
-                <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="font-sans text-[9px] uppercase tracking-[0.22em] text-[#F6F4F1]/70 mb-3 [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
+                <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="font-sans text-[9px] uppercase tracking-[0.22em] text-[#F6F4F1]/70 mb-2 md:mb-3 [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
                   {menSeason}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-[0.12em] text-[#F6F4F1] mb-3 leading-[1.2] [text-shadow:0_2px_18px_rgba(0,0,0,0.55),0_0_28px_rgba(246,244,241,0.18)]">
+                <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-[0.12em] text-[#F6F4F1] mb-4 md:mb-5 lg:mb-6 leading-[1.2] [text-shadow:0_2px_18px_rgba(0,0,0,0.55),0_0_28px_rgba(246,244,241,0.18)]">
                   {menTitle}
                 </Editable>
                 <Editable kind="text_block" contentKey="home_men_card" field="blurb" label="Men — blurb" as="p" className="font-sans text-[11px] tracking-[0.02em] text-[#F6F4F1]/80 mb-5 max-w-[260px] leading-[1.75] [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">

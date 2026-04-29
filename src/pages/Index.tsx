@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
+import { Editable } from "@/editor/Editable";
+import { useSiteText } from "@/editor/useSiteContent";
 
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
@@ -18,6 +20,8 @@ const Index = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   usePageMeta({ title: "RUVTIER", description: "A luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition." });
   usePriceTick();
+  const heroHeadline = useSiteText("home_hero", "headline", "Permanence in garment form");
+  const materialMemoryHeadline = useSiteText("home_material_memory", "headline", "Material is Memory");
 
   // Featured pre-order — pick the first featured product with preorder enabled, or any featured product
   const { data: featuredProducts } = useActiveProducts({ featured: true, limit: 5 });
@@ -49,9 +53,9 @@ const Index = () => {
         <div className="absolute inset-0 bg-background/40" />
         <div className="relative z-10 text-center px-6 -mt-8 md:-mt-12">
           <ScrollFadeIn>
-            <p className="font-serif font-light text-[clamp(20px,2.2vw,28px)] leading-[1.7] tracking-[0.08em] text-foreground mx-auto max-w-[var(--text-max)]">
-              Permanence in garment form
-            </p>
+            <Editable kind="text_block" contentKey="home_hero" field="headline" label="Homepage hero text" as="p" className="font-serif font-light text-[clamp(20px,2.2vw,28px)] leading-[1.7] tracking-[0.08em] text-foreground mx-auto max-w-[var(--text-max)]">
+              {heroHeadline}
+            </Editable>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.3}>
             <Link to="/collection" className="luxury-button mt-10 inline-block">
@@ -190,7 +194,7 @@ const Index = () => {
       <section className="luxury-section">
         <div className="luxury-container flex flex-col items-center text-center py-28 md:py-40">
           <ScrollFadeIn>
-            <h2 className="luxury-heading mb-6">Material is Memory</h2>
+            <Editable kind="text_block" contentKey="home_material_memory" field="headline" label="'Material is Memory' heading" as="h2" className="luxury-heading mb-6">{materialMemoryHeadline}</Editable>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.15}>
             <Link to="/materials" className="luxury-button">

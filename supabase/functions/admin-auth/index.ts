@@ -396,9 +396,9 @@ Deno.serve(async (req) => {
       .eq('id', session.credential_id)
       .single()
 
-    // Refresh Supabase session using admin API (no stored passwords)
+    // Refresh (or lazily provision) the Supabase auth session so storage/db RLS works.
     let supabaseSession = null
-    if (cred?.supabase_user_id) {
+    if (cred) {
       try {
         supabaseSession = await ensureSupabaseAuth(supabase, cred, supabaseUrl)
       } catch (e) {

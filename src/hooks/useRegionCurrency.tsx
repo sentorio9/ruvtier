@@ -9,7 +9,9 @@ export interface RegionConfig {
 }
 
 const REGION_KEY = "ruvtier_region";
-const RATES_KEY = "ruvtier_fx_rates";
+// Bumped cache key to invalidate any stale/empty rate caches written by the
+// previous (now key-protected) exchangerate.host endpoint.
+const RATES_KEY = "ruvtier_fx_rates_v2";
 const CONSENT_KEY = "ruvtier_location_consent";
 const RATES_TTL_MS = 60 * 60 * 1000; // 1h
 // Prices are authored in EUR — this is the base currency for FX conversion.

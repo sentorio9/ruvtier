@@ -296,33 +296,39 @@ export function RegionProvider({ children }: { children: ReactNode }) {
     setNeedsLocationConsent(false);
   }, []);
 
-  const rate = fx?.rates?.[region.currency] ?? (region.currency === BASE_CURRENCY ? 1 : 1);
+  // If we don't have a rate yet for the selected currency, fall back to EUR (base)
+  // rather than silently rendering "10 USD" for €10 — which is what produces the
+  // "wrong amount" the user is seeing.
+  const hasRate = region.currency === BASE_CURRENCY || typeof fx?.rates?.[region.currency] === "number";
+  const rate = hasRate ? (region.currency === BASE_CURRENCY ? 1 : (fx!.rates[region.currency] as number)) : 1;
 
   const convert = useCallback(
     (amountInBase: number) => {
+      if (!hasRate) return amountInBase; // EUR amount
       if (region.currency === BASE_CURRENCY) return amountInBase;
       return amountInBase * rate;
     },
-    [region.currency, rate]
+    [region.currency, rate, hasRate]
   );
 
   const formatPrice = useCallback(
     (amountInBase: number) => {
+      const displayCurrency = hasRate ? region.currency : BASE_CURRENCY;
+      const displayLocale = hasRate ? region.locale : "fr-FR";
       const converted = convert(amountInBase);
-      // Round sensibly: zero-decimal currencies (JPY/KRW/VND/etc.) get whole numbers; others keep up to 2.
-      const zeroDecimal = ["JPY", "KRW", "VND", "IDR", "HUF", "CLP", "TWD"].includes(region.currency);
+      const zeroDecimal = ["JPY", "KRW", "VND", "IDR", "HUF", "CLP", "TWD"].includes(displayCurrency);
       try {
-        return new Intl.NumberFormat(region.locale, {
+        return new Intl.NumberFormat(displayLocale, {
           style: "currency",
-          currency: region.currency,
+          currency: displayCurrency,
           minimumFractionDigits: 0,
           maximumFractionDigits: zeroDecimal ? 0 : 2,
         }).format(converted);
       } catch {
-        return `${region.currencySymbol}${Math.round(converted).toLocaleString()}`;
+        return `${hasRate ? region.currencySymbol : "€"}${Math.round(converted).toLocaleString()}`;
       }
     },
-    [region, convert]
+    [region, convert, hasRate]
   );
 
   return (

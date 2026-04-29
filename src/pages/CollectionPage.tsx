@@ -7,13 +7,16 @@ import SubscribePanel from "@/components/SubscribePanel";
 import { useActiveProducts, formatPrice, usePriceTick } from "@/hooks/useProducts";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import garmentImage from "@/assets/garment-single.jpg";
+import inStoreImage from "@/assets/collection-in-store.png";
+import madeToMeasureImage from "@/assets/collection-made-to-measure.png";
+import byAllocationImage from "@/assets/collection-by-allocation.png";
 
 type Availability = "in_store" | "made_to_measure" | "by_allocation";
 
-const FILTERS: { value: Availability; label: string }[] = [
-  { value: "in_store", label: "In Store Only" },
-  { value: "made_to_measure", label: "Made-to-Measure Only" },
-  { value: "by_allocation", label: "By Allocation Only" },
+const FILTERS: { value: Availability; label: string; placeholder: string; placeholderName: string }[] = [
+  { value: "in_store", label: "In Store Only", placeholder: inStoreImage, placeholderName: "The Atelier Knit" },
+  { value: "made_to_measure", label: "Made-to-Measure Only", placeholder: madeToMeasureImage, placeholderName: "The Half-Zip in Cashmere" },
+  { value: "by_allocation", label: "By Allocation Only", placeholder: byAllocationImage, placeholderName: "The Weekend Carryall" },
 ];
 
 const CollectionPage = () => {

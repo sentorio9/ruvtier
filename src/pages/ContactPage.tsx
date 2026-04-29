@@ -10,6 +10,10 @@ import { useSiteText } from "@/editor/useSiteContent";
 const ContactPage = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   usePageMeta({ title: "Contact", description: "Reach the house of RUVTIER. Each correspondence is personal and considered." });
+  const heading = useSiteText("contact_intro", "headline", "Contact");
+  const email = useSiteText("contact_details", "email", "theruvtier@gmail.com");
+  const phone = useSiteText("contact_details", "phone", "+44 7881 967338");
+  const instagram = useSiteText("contact_details", "instagram_label", "Instagram");
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
 

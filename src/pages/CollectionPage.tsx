@@ -66,14 +66,21 @@ const CollectionPage = () => {
                     type="button"
                     onClick={() => setActive(f.value)}
                     aria-pressed={isActive}
-                    className="group relative pb-1 font-serif font-light text-[15px] md:text-[17px] tracking-wide transition-colors duration-500 text-foreground"
+                    className="group relative inline-flex flex-col items-center pb-2 font-serif font-light text-[15px] md:text-[17px] tracking-[0.04em] text-foreground"
                   >
-                    <span className={isActive ? "opacity-100" : "opacity-60 group-hover:opacity-100 transition-opacity duration-500"}>
+                    <span
+                      className={`transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] ${
+                        isActive ? "opacity-100" : "opacity-55 group-hover:opacity-100"
+                      }`}
+                    >
                       {f.label}
                     </span>
                     <span
-                      className={`pointer-events-none absolute left-0 right-0 -bottom-0.5 h-px bg-foreground origin-center transition-transform duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)] ${
-                        isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                      aria-hidden="true"
+                      className={`pointer-events-none mt-1.5 block h-px w-full bg-foreground/70 origin-center transform transition-all duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] ${
+                        isActive
+                          ? "opacity-100 scale-x-100"
+                          : "opacity-0 scale-x-0 group-hover:opacity-50 group-hover:scale-x-100"
                       }`}
                     />
                   </button>

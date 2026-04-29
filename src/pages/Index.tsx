@@ -9,7 +9,7 @@ import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { useActiveProducts, formatPrice, usePriceTick } from "@/hooks/useProducts";
-import heroImage from "@/assets/hero-editorial.jpg";
+import heroImage from "@/assets/hero-permanence.jpg";
 import womenImage from "@/assets/collection-women.jpg";
 import menImage from "@/assets/collection-men.jpg";
 import knitwearImg from "@/assets/explore-knitwear.jpg";
@@ -22,7 +22,8 @@ const Index = () => {
   usePageMeta({ title: "RUVTIER", description: "A luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition." });
   usePriceTick();
   const heroHeadline = useSiteText("home_hero", "headline", "Permanence in garment form");
-  const heroCta = useSiteText("home_hero", "cta_label", "Explore the Collection");
+  const heroPreorderWomen = useSiteText("home_hero", "preorder_women", "Pre-Order for Women");
+  const heroPreorderMen = useSiteText("home_hero", "preorder_men", "Pre-Order for Men");
   const materialMemoryHeadline = useSiteText("home_material_memory", "headline", "Material is Memory");
   const materialMemoryCta = useSiteText("home_material_memory", "cta_label", "Discover all material");
   const womenSeason = useSiteText("home_women_card", "season", "Spring / Summer 2026");
@@ -60,21 +61,21 @@ const Index = () => {
           <img
             src={heroImageOverride || heroImage}
             alt="RUVTIER luxury garment editorial"
-            className="absolute inset-0 w-full h-full object-cover object-[center_40%] md:object-[center_35%]"
+            className="absolute inset-0 w-full h-full object-cover object-[center_30%] md:object-center"
             fetchPriority="high"
             decoding="async"
           />
         </Editable>
         {/* Subtle full-frame veil for global legibility */}
-        <div className="absolute inset-0 bg-background/25 pointer-events-none" />
-        {/* Adaptive luminous halo behind the editorial line — works on bright cream
-            and darker scenes alike without darkening the imagery. */}
+        <div className="absolute inset-0 bg-black/15 pointer-events-none" />
+        {/* Soft luminous halo centred behind the editorial line for legibility on imagery */}
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(78vw,820px)] h-[min(46vh,360px)] rounded-[50%] blur-3xl opacity-90"
-          style={{ background: "radial-gradient(ellipse at center, hsl(var(--background) / 0.85) 0%, hsl(var(--background) / 0.55) 35%, hsl(var(--background) / 0.18) 60%, transparent 78%)" }}
+          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(78vw,820px)] h-[min(38vh,300px)] rounded-[50%] blur-3xl opacity-70"
+          style={{ background: "radial-gradient(ellipse at center, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0) 75%)" }}
         />
-        <div className="relative z-10 text-center px-6 -mt-8 md:-mt-12">
+        {/* Centred editorial line */}
+        <div className="relative z-10 text-center px-6">
           <ScrollFadeIn>
             <Editable
               kind="text_block"
@@ -82,17 +83,42 @@ const Index = () => {
               field="headline"
               label="Homepage hero text"
               as="p"
-              className="font-serif font-light text-[clamp(20px,2.2vw,28px)] leading-[1.7] tracking-[0.08em] text-foreground mx-auto max-w-[var(--text-max)] [text-shadow:0_1px_2px_hsl(var(--background)/0.55),0_0_18px_hsl(var(--background)/0.4)]"
+              className="font-serif font-light text-[clamp(20px,2.2vw,28px)] leading-[1.7] tracking-[0.08em] text-[#F6F4F1] mx-auto max-w-[var(--text-max)] [text-shadow:0_1px_2px_rgba(0,0,0,0.55),0_0_18px_rgba(0,0,0,0.4)]"
             >
               {heroHeadline}
             </Editable>
           </ScrollFadeIn>
-          <ScrollFadeIn delay={0.3}>
-            <Editable kind="text_block" contentKey="home_hero" field="cta_label" label="Hero button label" as="span" className="inline-block mt-10">
-              <Link to="/collection" className="luxury-button [text-shadow:0_1px_2px_hsl(var(--background)/0.5)]">
-                {heroCta}
+        </div>
+
+        {/* Pre-order links anchored near the bottom */}
+        <div className="absolute z-10 left-0 right-0 bottom-[clamp(48px,8vh,96px)] px-6">
+          <ScrollFadeIn delay={0.25}>
+            <div className="flex items-center justify-center gap-[clamp(40px,8vw,120px)]">
+              <Link
+                to="/boutique/women"
+                className="group relative inline-block font-sans text-[clamp(13px,1vw,15px)] tracking-[0.08em] text-[#F6F4F1]/95 hover:text-[#F6F4F1] transition-colors duration-500 [text-shadow:0_1px_8px_rgba(0,0,0,0.55)]"
+              >
+                <Editable kind="text_block" contentKey="home_hero" field="preorder_women" label="Hero — Pre-Order Women" as="span">
+                  {heroPreorderWomen}
+                </Editable>
+                <span
+                  aria-hidden
+                  className="absolute left-0 right-0 -bottom-1 h-px bg-[#F6F4F1]/80 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                />
               </Link>
-            </Editable>
+              <Link
+                to="/boutique/men"
+                className="group relative inline-block font-sans text-[clamp(13px,1vw,15px)] tracking-[0.08em] text-[#F6F4F1]/95 hover:text-[#F6F4F1] transition-colors duration-500 [text-shadow:0_1px_8px_rgba(0,0,0,0.55)]"
+              >
+                <Editable kind="text_block" contentKey="home_hero" field="preorder_men" label="Hero — Pre-Order Men" as="span">
+                  {heroPreorderMen}
+                </Editable>
+                <span
+                  aria-hidden
+                  className="absolute left-0 right-0 -bottom-1 h-px bg-[#F6F4F1]/80 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                />
+              </Link>
+            </div>
           </ScrollFadeIn>
         </div>
       </section>

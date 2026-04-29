@@ -37,7 +37,7 @@ const Navigation = () => {
             <button
               onClick={() => setMenuOpen(true)}
               className="luxury-button !p-1.5"
-              aria-label="Open menu"
+              aria-label={t("nav.menu")}
             >
               <svg width="20" height="12" viewBox="0 0 20 12" fill="none" stroke="currentColor" strokeWidth="0.6">
                 <line x1="0" y1="1" x2="20" y2="1" />
@@ -46,7 +46,7 @@ const Navigation = () => {
               </svg>
             </button>
             {!isMobile && (
-              <button onClick={() => setSearchOpen(true)} className="luxury-button !p-1.5" aria-label="Search">
+              <button onClick={() => setSearchOpen(true)} className="luxury-button !p-1.5" aria-label={t("nav.search")}>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="0.6">
                   <circle cx="7" cy="7" r="5.5" />
                   <line x1="11" y1="11" x2="15" y2="15" />
@@ -68,14 +68,14 @@ const Navigation = () => {
             <button
               onClick={() => setShippingOpen(true)}
               className="luxury-button !p-1.5 !text-[10.5px] tracking-[0.18em] uppercase"
-              aria-label={`Current language: ${language}. Change region or language`}
+              aria-label={`${t("nav.language_change")} (${language.toUpperCase()})`}
             >
               {language.toUpperCase()}
             </button>
             <button
               onClick={() => setCartOpen(true)}
               className="luxury-button !p-1.5"
-              aria-label="Shopping bag"
+              aria-label={t("nav.cart")}
             >
               <svg width="15" height="17" viewBox="0 0 16 18" fill="none" stroke="currentColor" strokeWidth="0.6">
                 <path d="M1 5.5h14v11.5H1z" />
@@ -87,7 +87,7 @@ const Navigation = () => {
                 onClick={() => setLoungeOpen(true)}
                 className="luxury-button !p-1.5 !text-[10.5px] tracking-[0.16em]"
               >
-                Client Lounge
+                {t("nav.client_lounge")}
               </button>
             )}
           </div>
@@ -100,13 +100,13 @@ const Navigation = () => {
               <div className="border-t border-border" />
             </div>
             <div className="mx-auto max-w-[1400px] flex items-center justify-center h-[40px] px-4 md:px-8 lg:px-12 gap-10 md:gap-14">
-              {categories.map((cat) => (
+              {CATEGORY_ROUTES.map((cat) => (
                 <Link
                   key={cat.to}
                   to={cat.to}
                   className="font-sans text-[11.5px] md:text-[12px] font-light tracking-[0.16em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300"
                 >
-                  {cat.label}
+                  {t(cat.key)}
                 </Link>
               ))}
             </div>

@@ -21,7 +21,19 @@ const Index = () => {
   usePageMeta({ title: "RUVTIER", description: "A luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition." });
   usePriceTick();
   const heroHeadline = useSiteText("home_hero", "headline", "Permanence in garment form");
+  const heroCta = useSiteText("home_hero", "cta_label", "Explore the Collection");
   const materialMemoryHeadline = useSiteText("home_material_memory", "headline", "Material is Memory");
+  const materialMemoryCta = useSiteText("home_material_memory", "cta_label", "Discover all material");
+  const womenSeason = useSiteText("home_women_card", "season", "Spring / Summer 2026");
+  const womenTitle = useSiteText("home_women_card", "title", "Women's Collection");
+  const womenBlurb = useSiteText("home_women_card", "blurb", "Refined silhouettes shaped by material devotion and quiet permanence.");
+  const womenCta = useSiteText("home_women_card", "cta_label", "Discover More");
+  const menSeason = useSiteText("home_men_card", "season", "Spring / Summer 2026");
+  const menTitle = useSiteText("home_men_card", "title", "Men's Collection");
+  const menBlurb = useSiteText("home_men_card", "blurb", "Understated forms built from heritage craft and enduring composition.");
+  const menCta = useSiteText("home_men_card", "cta_label", "Explore Collection");
+  const inYourKeepingHeading = useSiteText("home_in_your_keeping", "headline", "In Your Keeping");
+  const heroImageOverride = useSiteImage("site_image_home_hero");
 
   // Featured pre-order — pick the first featured product with preorder enabled, or any featured product
   const { data: featuredProducts } = useActiveProducts({ featured: true, limit: 5 });

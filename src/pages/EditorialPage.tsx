@@ -5,6 +5,8 @@ import SubscribePanel from "@/components/SubscribePanel";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Editable } from "@/editor/Editable";
+import { useSiteText } from "@/editor/useSiteContent";
 
 interface EditorialPageProps {
   title: string;
@@ -12,6 +14,13 @@ interface EditorialPageProps {
   body?: string;
   actionLabel?: string;
   actionTo?: string;
+}
+
+function slugify(s: string) {
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_|_$/g, "");
 }
 
 const EditorialPage = ({
@@ -23,6 +32,11 @@ const EditorialPage = ({
 }: EditorialPageProps) => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   usePageMeta({ title, description: subtitle || body });
+  const key = `editorial_${slugify(title)}`;
+  const titleVal = useSiteText(key, "title", title);
+  const subtitleVal = useSiteText(key, "subtitle", subtitle || "");
+  const bodyVal = useSiteText(key, "body", body);
+  const actionVal = useSiteText(key, "action_label", actionLabel);
 
   return (
     <div className="relative">
@@ -31,20 +45,28 @@ const EditorialPage = ({
       <section className="min-h-[40vh] flex items-center justify-center pt-32 pb-12">
         <div className="luxury-container flex flex-col items-center text-center">
           <ScrollFadeIn>
-            <h1 className="luxury-heading mb-6">{title}</h1>
+            <Editable kind="text_block" contentKey={key} field="title" label={`${title} — title`} as="h1" className="luxury-heading mb-6">
+              {titleVal}
+            </Editable>
           </ScrollFadeIn>
-          {subtitle && (
+          {subtitleVal && (
             <ScrollFadeIn delay={0.1}>
-              <p className="luxury-body mx-auto mb-4 italic text-center">{subtitle}</p>
+              <Editable kind="text_block" contentKey={key} field="subtitle" label={`${title} — subtitle`} as="p" className="luxury-body mx-auto mb-4 italic text-center">
+                {subtitleVal}
+              </Editable>
             </ScrollFadeIn>
           )}
           <ScrollFadeIn delay={0.2}>
-            <p className="luxury-body mx-auto mb-10 text-center">{body}</p>
+            <Editable kind="text_block" contentKey={key} field="body" label={`${title} — body`} as="p" className="luxury-body mx-auto mb-10 text-center">
+              {bodyVal}
+            </Editable>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.3}>
-            <Link to={actionTo} className="luxury-button">
-              {actionLabel}
-            </Link>
+            <Editable kind="text_block" contentKey={key} field="action_label" label={`${title} — button`} as="span" className="inline-block">
+              <Link to={actionTo} className="luxury-button">
+                {actionVal}
+              </Link>
+            </Editable>
           </ScrollFadeIn>
         </div>
       </section>

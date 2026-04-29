@@ -207,12 +207,18 @@ async function fetchRates(): Promise<FxCache | null> {
 }
 
 export function RegionProvider({ children }: { children: ReactNode }) {
+  const { language } = useLanguage();
   const [region, setRegionState] = useState<RegionConfig>(DEFAULT_REGION);
   const [loading, setLoading] = useState(true);
   const [fx, setFx] = useState<FxCache | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [needsLocationConsent, setNeedsLocationConsent] = useState(false);
   const initialized = useRef(false);
+
+  // Broadcast on language change so non-React `formatPrice` callers re-render via usePriceTick.
+  useEffect(() => {
+    try { window.dispatchEvent(new CustomEvent("ruvtier:region-changed")); } catch { /* ignore */ }
+  }, [language]);
 
   // Persist region + broadcast so static helpers (outside React) can react.
   const persistRegion = (r: RegionConfig) => {

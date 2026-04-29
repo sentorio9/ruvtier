@@ -246,6 +246,7 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
       <button
         key={`${c.code}-${c.name}-${i}`}
         onClick={() => openLanguagePanel(c)}
+        title={!supported ? "Pricing & locale not yet tailored — browse in English" : undefined}
         className={`group relative flex items-baseline justify-between gap-3 text-left text-[12.5px] tracking-[0.04em] py-1.5 pr-3 transition-colors duration-300 font-sans ${
           isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
         }`}
@@ -259,9 +260,13 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
             }`}
           />
         </span>
-        <span className="text-[10px] tracking-[0.18em] uppercase text-muted-foreground/50 shrink-0">
-          {langs.length > 1 ? `${langs.length} langs` : langs[0].toUpperCase()}
-          {!supported && <span className="ml-1 opacity-60">·</span>}
+        <span className="text-[10px] tracking-[0.18em] uppercase text-muted-foreground/50 shrink-0 flex items-center gap-1.5">
+          {!supported && (
+            <span className="text-muted-foreground/60 italic normal-case tracking-[0.04em] font-serif">
+              browse only
+            </span>
+          )}
+          <span>{langs.length > 1 ? `${langs.length} langs` : langs[0].toUpperCase()}</span>
         </span>
       </button>
     );

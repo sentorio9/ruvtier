@@ -102,10 +102,20 @@ function emit(lang: LanguageCode) {
   listeners.forEach((l) => l(lang));
 }
 
+// Arabic is the only RTL language we ship for nav/footer in this pass.
+const RTL_LANGS = new Set<LanguageCode>(["ar"]);
+
+function applyDocumentDirection(code: LanguageCode) {
+  try {
+    document.documentElement.lang = code;
+    document.documentElement.dir = RTL_LANGS.has(code) ? "rtl" : "ltr";
+  } catch { /* ignore */ }
+}
+
 export function setLanguageGlobal(code: LanguageCode) {
   if (!(code in LANGUAGE_LABELS)) return;
   try { localStorage.setItem(LANG_KEY, code); } catch { /* ignore */ }
-  try { document.documentElement.lang = code; } catch { /* ignore */ }
+  applyDocumentDirection(code);
   emit(code);
 }
 
@@ -113,11 +123,12 @@ if (typeof window !== "undefined") {
   // Sync across browser tabs / external writes.
   window.addEventListener("storage", (e: StorageEvent) => {
     if (e.key === LANG_KEY && e.newValue && e.newValue in LANGUAGE_LABELS) {
+      applyDocumentDirection(e.newValue as LanguageCode);
       emit(e.newValue as LanguageCode);
     }
   });
-  // Reflect initial value on <html lang>.
-  try { document.documentElement.lang = currentLanguage; } catch { /* ignore */ }
+  // Reflect initial value on <html lang> + dir.
+  applyDocumentDirection(currentLanguage);
 }
 
 /**

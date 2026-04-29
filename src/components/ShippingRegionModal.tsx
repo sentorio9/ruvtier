@@ -158,8 +158,11 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
 
   const confirmSelection = () => {
     if (!pendingCountry || !pendingLanguage) return;
-    setRegion(pendingCountry.code);
+    // Persist language BEFORE setRegion — setRegion triggers a full
+    // window.location.reload() once fresh FX rates load, and any pending
+    // localStorage write that hasn't flushed will be lost in the race.
     setLanguage(pendingLanguage);
+    setRegion(pendingCountry.code);
     onClose();
   };
 

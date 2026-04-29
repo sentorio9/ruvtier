@@ -261,6 +261,7 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
       <button
         key={`${c.code}-${c.name}-${i}`}
         onClick={() => openLanguagePanel(c)}
+        data-country-code={c.code}
         title={!supported ? "Pricing & locale not yet tailored — browse in English" : undefined}
         className={`group relative flex items-baseline justify-between gap-3 text-left text-[12.5px] tracking-[0.04em] py-1.5 pr-3 transition-colors duration-300 font-sans ${
           isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"

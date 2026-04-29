@@ -43,7 +43,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-y-10 gap-x-6 md:gap-x-10 max-w-4xl mx-auto mb-12 md:mb-16">
           {/* Services */}
           <div className="flex flex-col gap-3">
-            <h3 className={headingClass}>Services</h3>
+            <Editable kind="text_block" contentKey="footer_headings" field="services" label="Footer — Services heading" as="h3" className={headingClass}>{servicesHeading}</Editable>
             <Link to="/rituals-of-care" className={linkClass}>Rituals of Care & Restoration</Link>
             <Link to="/appointments" className={linkClass}>Book a Private Appointment</Link>
             <Link to="/boutique" className={linkClass}>Explore Online Boutique</Link>
@@ -52,7 +52,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
 
           {/* Company */}
           <div className="flex flex-col gap-3">
-            <h3 className={headingClass}>Company</h3>
+            <Editable kind="text_block" contentKey="footer_headings" field="company" label="Footer — Company heading" as="h3" className={headingClass}>{companyHeading}</Editable>
             <Link to="/the-house" className={linkClass}>House Philosophy</Link>
             <Link to="/craft-career" className={linkClass}>Craft Career</Link>
             <Link to="/find-boutique" className={linkClass}>Find a Boutique</Link>
@@ -60,24 +60,24 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
 
           {/* Get in Touch */}
           <div className="flex flex-col gap-3">
-            <h3 className={headingClass}>Get in touch</h3>
+            <Editable kind="text_block" contentKey="footer_headings" field="get_in_touch" label="Footer — Get in touch heading" as="h3" className={headingClass}>{touchHeading}</Editable>
             <Link to="/contact" className={linkClass}>Contact</Link>
             <Link to="/faq" className={linkClass}>FAQ</Link>
           </div>
 
           {/* Legal */}
           <div className="flex flex-col gap-3">
-            <h3 className={headingClass}>Legal</h3>
+            <Editable kind="text_block" contentKey="footer_headings" field="legal" label="Footer — Legal heading" as="h3" className={headingClass}>{legalHeading}</Editable>
             <Link to="/terms" className={linkClass}>Terms & Conditions</Link>
             <Link to="/privacy-policy" className={linkClass}>Privacy & Cookie</Link>
           </div>
 
           {/* Newsletter - right */}
           <div className="flex flex-col gap-3 col-span-2 md:col-span-1">
-            <h3 className={newsletterHeadingClass}>Newsletter</h3>
-            <p className="text-[10px] tracking-[0.06em] text-muted-foreground leading-relaxed mb-1">
-              Exclusive collections, heritage stories, and special events.
-            </p>
+            <Editable kind="text_block" contentKey="footer_headings" field="newsletter" label="Footer — Newsletter heading" as="h3" className={newsletterHeadingClass}>{newsletterHeading}</Editable>
+            <Editable kind="text_block" contentKey="footer_newsletter" field="blurb" label="Footer — Newsletter blurb" as="p" className="text-[10px] tracking-[0.06em] text-muted-foreground leading-relaxed mb-1">
+              {newsletterBlurb}
+            </Editable>
             <form onSubmit={handleNewsletterSubmit}>
               <div className="relative">
                 <input

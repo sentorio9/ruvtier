@@ -207,7 +207,7 @@ const Index = () => {
                 loading="lazy"
               />
               {/* Refined overlay — deeper at the base so type can glow */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/0 opacity-95 group-hover:opacity-100 transition-opacity duration-700" />
               {/* Soft luminous halo behind the title */}
               <div
                 aria-hidden

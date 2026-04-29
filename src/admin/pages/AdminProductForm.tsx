@@ -89,6 +89,7 @@ export default function AdminProductForm() {
     hero_image_url: form.hero_image_url || null,
     preorder_enabled: form.preorder_enabled,
     preorder_statement: form.preorder_statement || null,
+    availability: form.availability || "in_store",
     size_options: form.size_options as any,
     color_options: form.color_options as any,
     media_gallery: form.media_gallery as any,

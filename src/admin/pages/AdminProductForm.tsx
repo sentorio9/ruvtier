@@ -46,6 +46,7 @@ export default function AdminProductForm() {
             hero_image_url: data.hero_image_url || "",
             preorder_enabled: (data as any).preorder_enabled || false,
             preorder_statement: (data as any).preorder_statement || "",
+            availability: (data as any).availability || "in_store",
             size_options: Array.isArray(data.size_options) ? (data.size_options as string[]) : [],
             color_options: Array.isArray(data.color_options) ? (data.color_options as string[]) : [],
             media_gallery: Array.isArray(data.media_gallery) ? (data.media_gallery as string[]) : [],

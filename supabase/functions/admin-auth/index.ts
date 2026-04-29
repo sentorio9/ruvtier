@@ -98,7 +98,7 @@ async function ensureSupabaseAuth(
   if (createErr) throw createErr
 
   // Add role to user_roles
-  const dbRole = cred.role === 'super_admin' ? 'super_admin' : 'admin'
+  const dbRole = cred.role === 'super_admin' ? 'super_admin' : cred.role === 'editor' ? 'editor' : 'admin'
   await supabase.from('user_roles').insert({
     user_id: newUser.user.id,
     role: dbRole,

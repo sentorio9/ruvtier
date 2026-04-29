@@ -163,16 +163,16 @@ const Index = () => {
                 style={{ background: "radial-gradient(ellipse at center, rgba(246,244,241,0.45) 0%, rgba(246,244,241,0.15) 45%, rgba(246,244,241,0) 75%)" }}
               />
               <div className="absolute bottom-0 left-0 right-0 px-6 pb-6 md:pb-10 pt-24 flex flex-col items-center text-center">
-                <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="font-sans text-[9px] uppercase tracking-[0.3em] text-[#F6F4F1]/70 mb-3 [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
+                <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="font-sans text-[9px] uppercase tracking-[0.22em] text-[#F6F4F1]/70 mb-3 [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
                   {womenSeason}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-[0.09em] text-[#F6F4F1] mb-3 leading-[1.2] [text-shadow:0_2px_18px_rgba(0,0,0,0.55),0_0_28px_rgba(246,244,241,0.18)]">
+                <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-[0.12em] text-[#F6F4F1] mb-3 leading-[1.2] [text-shadow:0_2px_18px_rgba(0,0,0,0.55),0_0_28px_rgba(246,244,241,0.18)]">
                   {womenTitle}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_women_card" field="blurb" label="Women — blurb" as="p" className="font-sans text-[11px] tracking-[0.04em] text-[#F6F4F1]/80 mb-5 max-w-[260px] leading-[1.6] [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
+                <Editable kind="text_block" contentKey="home_women_card" field="blurb" label="Women — blurb" as="p" className="font-sans text-[11px] tracking-[0.02em] text-[#F6F4F1]/80 mb-5 max-w-[260px] leading-[1.75] [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
                   {womenBlurb}
                 </Editable>
-                <span className="inline-flex items-center gap-2 font-sans text-[10px] uppercase tracking-[0.22em] text-[#F6F4F1]/85 group-hover:text-[#F6F4F1] transition-colors duration-500 border-b border-[#F6F4F1]/30 group-hover:border-[#F6F4F1]/70 pb-0.5">
+                <span className="inline-flex items-center gap-2 font-sans text-[10px] uppercase tracking-[0.2em] text-[#F6F4F1]/85 group-hover:text-[#F6F4F1] transition-colors duration-500 border-b border-[#F6F4F1]/30 group-hover:border-[#F6F4F1]/70 pb-0.5">
                   <Editable kind="text_block" contentKey="home_women_card" field="cta_label" label="Women — CTA label" as="span">{womenCta}</Editable>
                   <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
                 </span>

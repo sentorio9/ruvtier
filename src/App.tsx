@@ -208,6 +208,7 @@ const App = () => (
             }
           />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/admin-approval" element={<AdminApproval />} />
           <Route
             path="/privacy-policy"
             element={

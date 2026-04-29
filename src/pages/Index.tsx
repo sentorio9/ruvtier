@@ -156,13 +156,13 @@ const Index = () => {
               {/* Image */}
               <ScrollFadeIn>
                 <Link to={featuredHref!} className="block group overflow-hidden">
-                  <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary">
+                  <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary flex items-center justify-center">
                     {featuredImage ? (
                       <img
                         src={featuredImage}
                         alt={featuredPreorder.name}
                         loading="lazy"
-                        className="w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
+                        className="w-full h-full object-contain object-center transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-muted-foreground font-serif italic">
@@ -263,11 +263,11 @@ const Index = () => {
         {/* Men */}
         <ScrollFadeIn delay={0.1}>
           <Link to="/boutique/men" className="group flex flex-col items-center text-center">
-            <div className="relative w-full aspect-[3/4] overflow-hidden">
+            <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary flex items-center justify-center">
               <img
                 src={menImage}
                 alt="Men's collection by RUVTIER"
-                className="w-full h-full object-cover object-[center_25%] transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                className="w-full h-full object-contain object-center transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
                 loading="lazy"
               />
               {/* Refined overlay — deeper at the base so type can glow */}

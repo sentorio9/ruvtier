@@ -188,6 +188,39 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
           </a>
         </div>
 
+        {/* ─── Quick region switch ─── */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center gap-y-3 gap-x-2 mb-8 md:mb-10">
+          <span className="text-[10px] tracking-[0.32em] uppercase text-muted-foreground/80 sm:mr-4 text-center sm:text-left">
+            Browse by region
+          </span>
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            {REGION_PRESETS.map((p) => {
+              const isActive = activeRegionId === p.id;
+              return (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => switchToPreset(p)}
+                  aria-pressed={isActive}
+                  className={`group relative font-sans text-[11px] tracking-[0.22em] uppercase pb-0.5 transition-colors duration-300 ${
+                    isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <span className="relative inline-block">
+                    {p.label}
+                    <span
+                      aria-hidden
+                      className={`absolute left-0 right-0 -bottom-0.5 h-px bg-foreground/70 origin-left transform transition-transform duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] ${
+                        isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                      }`}
+                    />
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {/* ─── Copyright + Shipping/Region ─── */}
         <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-4">
           <p className="text-muted-foreground text-[12px] tracking-[0.08em]">

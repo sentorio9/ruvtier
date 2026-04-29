@@ -50,9 +50,9 @@ const Index = () => {
         <div className="absolute inset-0 bg-background/40" />
         <div className="relative z-10 text-center px-6 -mt-8 md:-mt-12">
           <ScrollFadeIn>
-            <p className="font-serif font-light text-[clamp(20px,2.2vw,28px)] leading-[1.7] tracking-[0.08em] text-foreground mx-auto max-w-[var(--text-max)]">
+            <Editable kind="text_block" contentKey="home_hero" field="headline" label="Homepage hero text" as="p" className="font-serif font-light text-[clamp(20px,2.2vw,28px)] leading-[1.7] tracking-[0.08em] text-foreground mx-auto max-w-[var(--text-max)]">
               Permanence in garment form
-            </p>
+            </Editable>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.3}>
             <Link to="/collection" className="luxury-button mt-10 inline-block">

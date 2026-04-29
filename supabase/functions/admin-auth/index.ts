@@ -98,7 +98,7 @@ async function ensureSupabaseAuth(
   if (createErr) throw createErr
 
   // Add role to user_roles
-  const dbRole = cred.role === 'super_admin' ? 'super_admin' : 'admin'
+  const dbRole = cred.role === 'super_admin' ? 'super_admin' : cred.role === 'editor' ? 'editor' : 'admin'
   await supabase.from('user_roles').insert({
     user_id: newUser.user.id,
     role: dbRole,
@@ -396,9 +396,9 @@ Deno.serve(async (req) => {
       .eq('id', session.credential_id)
       .single()
 
-    // Refresh Supabase session using admin API (no stored passwords)
+    // Refresh (or lazily provision) the Supabase auth session so storage/db RLS works.
     let supabaseSession = null
-    if (cred?.supabase_user_id) {
+    if (cred) {
       try {
         supabaseSession = await ensureSupabaseAuth(supabase, cred, supabaseUrl)
       } catch (e) {

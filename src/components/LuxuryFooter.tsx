@@ -149,16 +149,27 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
           </a>
         </div>
 
-        {/* ─── Copyright + Region ─── */}
-        <div className="flex items-center justify-between">
-          <p className="text-muted-foreground text-[10px] tracking-[0.08em]">
+        {/* ─── Copyright + Shipping/Region ─── */}
+        <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-4">
+          <p className="text-muted-foreground text-[12px] tracking-[0.08em]">
             © {new Date().getFullYear()}{" "}
             <span className="font-serif tracking-[0.12em]">RUVTIER</span>
             . All rights reserved.
           </p>
-          <RegionSelector />
+          <button
+            onClick={() => setShippingOpen(true)}
+            className="flex items-center gap-2 text-[12px] tracking-[0.14em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300 self-start md:self-auto"
+            aria-label="Choose shipping country and language"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" />
+            </svg>
+            <span>Shipping to — {region.country} ({region.currency})</span>
+          </button>
         </div>
       </div>
+      <ShippingRegionModal open={shippingOpen} onClose={() => setShippingOpen(false)} />
     </footer>
   );
 };

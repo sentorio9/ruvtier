@@ -5,6 +5,8 @@ import SlideMenu from "./FullScreenMenu";
 import CartDrawer from "./CartDrawer";
 import ClientLoungeDrawer from "./ClientLoungeDrawer";
 import SearchOverlay from "./SearchOverlay";
+import ShippingRegionModal from "./ShippingRegionModal";
+import { useLanguage } from "@/hooks/useLanguage";
 
 const categories = [
   { label: "Women", to: "/boutique/women" },
@@ -18,7 +20,9 @@ const Navigation = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [loungeOpen, setLoungeOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [shippingOpen, setShippingOpen] = useState(false);
   const isMobile = useIsMobile();
+  const { language } = useLanguage();
 
   return (
     <>
@@ -58,6 +62,13 @@ const Navigation = () => {
 
           {/* Right */}
           <div className="flex items-center justify-end gap-5 md:gap-7">
+            <button
+              onClick={() => setShippingOpen(true)}
+              className="luxury-button !p-1.5 !text-[10.5px] tracking-[0.18em] uppercase"
+              aria-label={`Current language: ${language}. Change region or language`}
+            >
+              {language.toUpperCase()}
+            </button>
             <button
               onClick={() => setCartOpen(true)}
               className="luxury-button !p-1.5"
@@ -109,6 +120,7 @@ const Navigation = () => {
       <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
       <ClientLoungeDrawer isOpen={loungeOpen} onClose={() => setLoungeOpen(false)} />
       <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      <ShippingRegionModal open={shippingOpen} onClose={() => setShippingOpen(false)} />
     </>
   );
 };

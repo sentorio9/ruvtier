@@ -17,6 +17,21 @@ export default {
         serif: ['Cormorant Garamond', 'Georgia', 'serif'],
         sans: ['Jost', 'system-ui', 'sans-serif'],
       },
+      letterSpacing: {
+        'luxury-tight': 'var(--luxury-tracking-tight)',
+        'luxury-title': 'var(--luxury-tracking-title)',
+        luxury: 'var(--luxury-tracking)',
+        'luxury-wide': 'var(--luxury-tracking-wide)',
+        'luxury-eyebrow': 'var(--luxury-tracking-eyebrow)',
+        'luxury-widest': 'var(--luxury-tracking-widest)',
+      },
+      lineHeight: {
+        'luxury-display': 'var(--luxury-leading-display)',
+        'luxury-title': 'var(--luxury-leading-title)',
+        'luxury-snug': 'var(--luxury-leading-snug)',
+        'luxury-relaxed': 'var(--luxury-leading-relaxed)',
+        'luxury-body': 'var(--luxury-leading-body)',
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

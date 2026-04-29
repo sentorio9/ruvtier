@@ -41,6 +41,7 @@ const AdminLogs = lazy(() => import("./admin/pages/AdminLogs"));
 const AdminSettings = lazy(() => import("./admin/pages/AdminSettings"));
 const AdminPreorders = lazy(() => import("./admin/pages/AdminPreorders"));
 const AdminMaintenance = lazy(() => import("./admin/pages/AdminMaintenance"));
+const AdminWebsiteEditor = lazy(() => import("./admin/pages/AdminWebsiteEditor"));
 
 const queryClient = new QueryClient();
 

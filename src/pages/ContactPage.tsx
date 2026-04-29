@@ -4,6 +4,8 @@ import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
 import { usePageMeta } from "@/hooks/usePageMeta";
+import { Editable } from "@/editor/Editable";
+import { useSiteText } from "@/editor/useSiteContent";
 
 const ContactPage = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);

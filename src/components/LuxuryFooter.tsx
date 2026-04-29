@@ -21,6 +21,13 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
+  const servicesHeading = useSiteText("footer_headings", "services", "Services");
+  const companyHeading = useSiteText("footer_headings", "company", "Company");
+  const touchHeading = useSiteText("footer_headings", "get_in_touch", "Get in touch");
+  const legalHeading = useSiteText("footer_headings", "legal", "Legal");
+  const newsletterHeading = useSiteText("footer_headings", "newsletter", "Newsletter");
+  const newsletterBlurb = useSiteText("footer_newsletter", "blurb", "Exclusive collections, heritage stories, and special events.");
+
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return;

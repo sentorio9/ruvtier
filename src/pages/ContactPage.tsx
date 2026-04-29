@@ -33,17 +33,17 @@ const ContactPage = () => {
     <div className="relative">
       <Navigation />
 
-      <section className="min-h-[70vh] flex items-center justify-center pt-32 pb-20">
-        <div className="luxury-container flex flex-col items-center text-center max-w-xl mx-auto">
+      <section className="min-h-[70vh] flex items-center justify-center pt-32 pb-24">
+        <div className="luxury-container flex flex-col items-center text-center max-w-xl mx-auto px-6">
           <ScrollFadeIn>
-            <Editable kind="text_block" contentKey="contact_intro" field="headline" label="Contact — heading" as="h1" className="luxury-heading mb-10">
+            <Editable kind="text_block" contentKey="contact_intro" field="headline" label="Contact — heading" as="h1" className="luxury-heading mb-12">
               {heading}
             </Editable>
           </ScrollFadeIn>
 
           {/* Contact details */}
           <ScrollFadeIn delay={0.1}>
-            <div className="flex flex-col gap-4 mb-14">
+            <div className="flex flex-col gap-5 mb-16">
               <Editable kind="text_block" contentKey="contact_details" field="email" label="Contact — email" as="span" className="inline-block">
                 <a href={`mailto:${email}`} className="luxury-button !text-[13px] tracking-[0.1em]">{email}</a>
               </Editable>
@@ -58,7 +58,7 @@ const ContactPage = () => {
 
           {/* Divider */}
           <ScrollFadeIn delay={0.15}>
-            <div className="w-12 border-t border-border mb-14" />
+            <div className="w-10 border-t border-foreground/15 mb-16" />
           </ScrollFadeIn>
 
           {/* Contact form */}
@@ -68,8 +68,8 @@ const ContactPage = () => {
                 Thank you for reaching out. We will reply in due time.
               </p>
             ) : (
-              <form onSubmit={handleSubmit} className="w-full flex flex-col gap-6 text-left">
-                <div className="border-b border-foreground/20">
+              <form onSubmit={handleSubmit} className="w-full flex flex-col gap-10 text-left">
+                <div className="relative border-b border-foreground/15 transition-colors duration-500 focus-within:border-foreground/50">
                   <input
                     type="text"
                     required
@@ -77,10 +77,10 @@ const ContactPage = () => {
                     onChange={handleChange("name")}
                     placeholder="Name"
                     aria-label="Your name"
-                    className="w-full bg-transparent py-3 font-sans text-sm tracking-wide placeholder:text-muted-foreground/50 focus:outline-none"
+                    className="w-full bg-transparent pt-2 pb-3 font-sans text-[13px] tracking-[0.08em] placeholder:text-muted-foreground/40 focus:outline-none"
                   />
                 </div>
-                <div className="border-b border-foreground/20">
+                <div className="relative border-b border-foreground/15 transition-colors duration-500 focus-within:border-foreground/50">
                   <input
                     type="email"
                     required
@@ -88,21 +88,21 @@ const ContactPage = () => {
                     onChange={handleChange("email")}
                     placeholder="Email"
                     aria-label="Your email address"
-                    className="w-full bg-transparent py-3 font-sans text-sm tracking-wide placeholder:text-muted-foreground/50 focus:outline-none"
+                    className="w-full bg-transparent pt-2 pb-3 font-sans text-[13px] tracking-[0.08em] placeholder:text-muted-foreground/40 focus:outline-none"
                   />
                 </div>
-                <div className="border-b border-foreground/20">
+                <div className="relative border-b border-foreground/15 transition-colors duration-500 focus-within:border-foreground/50">
                   <textarea
                     required
                     value={form.message}
                     onChange={handleChange("message")}
                     placeholder="Message"
                     aria-label="Your message"
-                    rows={4}
-                    className="w-full bg-transparent py-3 font-sans text-sm tracking-wide placeholder:text-muted-foreground/50 focus:outline-none resize-none"
+                    rows={5}
+                    className="w-full bg-transparent pt-2 pb-3 font-sans text-[13px] tracking-[0.08em] leading-relaxed placeholder:text-muted-foreground/40 focus:outline-none resize-none"
                   />
                 </div>
-                <button type="submit" className="luxury-button mt-2 self-start !text-[13px]">
+                <button type="submit" className="luxury-button mt-4 self-start !text-[13px]">
                   Send
                 </button>
               </form>

@@ -335,14 +335,20 @@ export function RegionProvider({ children }: { children: ReactNode }) {
 
   const formatPrice = useCallback(
     (amountInBase: number) => {
+      if (amountInBase === 0) {
+        // Preserve quiet-luxury zero rendering, but in the active currency symbol.
+        return `${hasRate ? region.currencySymbol : "€"}0`;
+      }
       const displayCurrency = hasRate ? region.currency : BASE_CURRENCY;
-      const displayLocale = hasRate ? region.locale : "fr-FR";
+      const baseLocale = hasRate ? region.locale : "fr-FR";
+      const displayLocale = resolveDisplayLocale(language, baseLocale, region.countryCode);
       const converted = convert(amountInBase);
       const zeroDecimal = ["JPY", "KRW", "VND", "IDR", "HUF", "CLP", "TWD"].includes(displayCurrency);
       try {
         return new Intl.NumberFormat(displayLocale, {
           style: "currency",
           currency: displayCurrency,
+          currencyDisplay: "symbol",
           minimumFractionDigits: 0,
           maximumFractionDigits: zeroDecimal ? 0 : 2,
         }).format(converted);
@@ -350,7 +356,7 @@ export function RegionProvider({ children }: { children: ReactNode }) {
         return `${hasRate ? region.currencySymbol : "€"}${Math.round(converted).toLocaleString()}`;
       }
     },
-    [region, convert, hasRate]
+    [region, convert, hasRate, language]
   );
 
   return (

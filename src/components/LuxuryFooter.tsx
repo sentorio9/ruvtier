@@ -1,31 +1,36 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import RegionSelector from "./RegionSelector";
+import ShippingRegionModal from "./ShippingRegionModal";
 import { Editable } from "@/editor/Editable";
 import { useSiteText } from "@/editor/useSiteContent";
+import { useRegionCurrency } from "@/hooks/useRegionCurrency";
 
 interface LuxuryFooterProps {
   onSubscribeClick: () => void;
 }
 
+// Footer typography bumped ~12% to improve legibility while staying editorial.
 const linkClass =
-  "text-[11.5px] tracking-[0.08em] text-muted-foreground hover:text-foreground transition-colors duration-300 leading-relaxed font-sans";
+  "text-[13px] tracking-[0.08em] text-muted-foreground hover:text-foreground transition-colors duration-300 leading-relaxed font-sans";
 
 const headingClass =
-  "font-serif tracking-[0.14em] text-foreground mb-4 text-base font-medium";
+  "font-serif tracking-[0.14em] text-foreground mb-4 text-[18px] font-medium";
 
 const newsletterHeadingClass =
-  "tracking-[0.14em] font-light text-foreground mb-4 font-sans text-lg";
+  "tracking-[0.14em] font-light text-foreground mb-4 font-sans text-[22px]";
 
 const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const [shippingOpen, setShippingOpen] = useState(false);
+  const { region } = useRegionCurrency();
 
   const servicesHeading = useSiteText("footer_headings", "services", "Services");
   const companyHeading = useSiteText("footer_headings", "company", "Company");
   const touchHeading = useSiteText("footer_headings", "get_in_touch", "Get in touch");
   const legalHeading = useSiteText("footer_headings", "legal", "Legal");
-  const newsletterHeading = useSiteText("footer_headings", "newsletter", "Newsletter");
+  const newsletterHeading = useSiteText("footer_headings", "newsletter", "Sign up for newsletter");
   const newsletterBlurb = useSiteText("footer_newsletter", "blurb", "Exclusive collections, heritage stories, and special events.");
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
@@ -75,7 +80,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
           {/* Newsletter - right */}
           <div className="flex flex-col gap-3 col-span-2 md:col-span-1">
             <Editable kind="text_block" contentKey="footer_headings" field="newsletter" label="Footer — Newsletter heading" as="h3" className={newsletterHeadingClass}>{newsletterHeading}</Editable>
-            <Editable kind="text_block" contentKey="footer_newsletter" field="blurb" label="Footer — Newsletter blurb" as="p" className="text-[10px] tracking-[0.06em] text-muted-foreground leading-relaxed mb-1">
+            <Editable kind="text_block" contentKey="footer_newsletter" field="blurb" label="Footer — Newsletter blurb" as="p" className="text-[12px] tracking-[0.06em] text-muted-foreground leading-relaxed mb-1">
               {newsletterBlurb}
             </Editable>
             <form onSubmit={handleNewsletterSubmit}>
@@ -85,7 +90,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Your email address"
-                  className="w-full bg-transparent border-b border-border focus:border-foreground text-[11px] tracking-[0.08em] text-foreground placeholder:text-muted-foreground/60 pb-2 pr-7 outline-none transition-colors duration-300 font-sans"
+                  className="w-full bg-transparent border-b border-border focus:border-foreground text-[13px] tracking-[0.08em] text-foreground placeholder:text-muted-foreground/60 pb-2 pr-7 outline-none transition-colors duration-300 font-sans"
                   required
                 />
                 <button
@@ -98,8 +103,15 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
                   </svg>
                 </button>
               </div>
+              <p className="text-[11px] tracking-[0.04em] text-muted-foreground/80 leading-relaxed mt-3 font-sans">
+                I acknowledge that my email address will be processed by{" "}
+                <span className="font-serif tracking-[0.12em]">RUVTIER</span> in accordance with the provisions of the{" "}
+                <Link to="/privacy-policy" className="underline-offset-2 hover:underline hover:text-foreground transition-colors">
+                  Privacy Policy
+                </Link>.
+              </p>
               {subscribed && (
-                <p className="text-[10px] tracking-[0.06em] text-muted-foreground mt-2 animate-in fade-in">
+                <p className="text-[12px] tracking-[0.06em] text-muted-foreground mt-2 animate-in fade-in">
                   Thank you for your interest.
                 </p>
               )}
@@ -144,16 +156,27 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
           </a>
         </div>
 
-        {/* ─── Copyright + Region ─── */}
-        <div className="flex items-center justify-between">
-          <p className="text-muted-foreground text-[10px] tracking-[0.08em]">
+        {/* ─── Copyright + Shipping/Region ─── */}
+        <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-4">
+          <p className="text-muted-foreground text-[12px] tracking-[0.08em]">
             © {new Date().getFullYear()}{" "}
             <span className="font-serif tracking-[0.12em]">RUVTIER</span>
             . All rights reserved.
           </p>
-          <RegionSelector />
+          <button
+            onClick={() => setShippingOpen(true)}
+            className="flex items-center gap-2 text-[12px] tracking-[0.14em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300 self-start md:self-auto"
+            aria-label="Choose shipping country and language"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" />
+            </svg>
+            <span>Shipping to — {region.country} ({region.currency})</span>
+          </button>
         </div>
       </div>
+      <ShippingRegionModal open={shippingOpen} onClose={() => setShippingOpen(false)} />
     </footer>
   );
 };

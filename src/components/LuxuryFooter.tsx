@@ -45,7 +45,7 @@ const headingClass =
   "font-serif tracking-[0.14em] text-foreground mb-4 text-[18px] font-medium";
 
 const newsletterHeadingClass =
-  "tracking-[0.14em] font-light text-foreground mb-4 font-sans text-[22px]";
+  "font-serif font-light tracking-[0.04em] text-foreground mb-4 text-[clamp(26px,2.4vw,36px)] leading-[1.2]";
 
 const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const [email, setEmail] = useState("");
@@ -82,8 +82,8 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   return (
     <footer className="border-t border-border pt-16 md:pt-24 pb-10 md:pb-14">
       <div className="luxury-container">
-        {/* ─── 5-column grid: Newsletter + Nav ─── */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-y-10 gap-x-6 md:gap-x-10 max-w-4xl mx-auto mb-12 md:mb-16">
+        {/* ─── Nav columns: 4 across ─── */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6 md:gap-x-10 max-w-4xl mx-auto mb-14 md:mb-20">
           {/* Services */}
           <div className="flex flex-col gap-3">
             <Editable kind="text_block" contentKey="footer_headings" field="services" label="Footer — Services heading" as="h3" className={headingClass}>{servicesHeading}</Editable>
@@ -114,53 +114,65 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
             <Link to="/terms" className={linkClass}>{t("footer.legal.terms")}</Link>
             <Link to="/privacy-policy" className={linkClass}>{t("footer.legal.privacy")}</Link>
           </div>
-
-          {/* Newsletter - right */}
-          <div className="flex flex-col gap-3 col-span-2 md:col-span-1">
-            <Editable kind="text_block" contentKey="footer_headings" field="newsletter" label="Footer — Newsletter heading" as="h3" className={newsletterHeadingClass}>{newsletterHeading}</Editable>
-            <Editable kind="text_block" contentKey="footer_newsletter" field="blurb" label="Footer — Newsletter blurb" as="p" className="text-[12px] tracking-[0.06em] text-muted-foreground leading-relaxed mb-1">
-              {newsletterBlurb}
-            </Editable>
-            <form onSubmit={handleNewsletterSubmit}>
-              <div className="relative">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder={t("footer.email_placeholder")}
-                  className="w-full bg-transparent border-b border-border focus:border-foreground text-[13px] tracking-[0.08em] text-foreground placeholder:text-muted-foreground/60 pb-2 pr-7 outline-none transition-colors duration-300 font-sans"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="absolute right-0 bottom-2 text-muted-foreground hover:text-foreground transition-colors duration-300"
-                  aria-label={t("footer.subscribe")}
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </div>
-              <p className="text-[11px] tracking-[0.04em] text-muted-foreground/80 leading-relaxed mt-3 font-sans">
-                {t("footer.privacy_acknowledgement_pre")}{" "}
-                <span className="font-serif tracking-[0.12em]">RUVTIER</span>{" "}
-                {t("footer.privacy_acknowledgement_mid")}{" "}
-                <Link to="/privacy-policy" className="underline-offset-2 hover:underline hover:text-foreground transition-colors">
-                  {t("footer.privacy_policy")}
-                </Link>.
-              </p>
-              {subscribed && (
-                <p className="text-[12px] tracking-[0.06em] text-muted-foreground mt-2 animate-in fade-in">
-                  {t("footer.subscribed")}
-                </p>
-              )}
-            </form>
-          </div>
         </div>
 
-        {/* ─── Divider ─── */}
-        <div className="w-full max-w-4xl mx-auto mb-10 md:mb-12">
-          <div className="h-px bg-border/60" />
+        {/* ─── Newsletter — full-width editorial band ─── */}
+        <div className="max-w-3xl mx-auto mb-14 md:mb-20 px-2">
+          <Editable
+            kind="text_block"
+            contentKey="footer_headings"
+            field="newsletter"
+            label="Footer — Newsletter heading"
+            as="h3"
+            className={newsletterHeadingClass}
+          >
+            {newsletterHeading}
+          </Editable>
+          <Editable
+            kind="text_block"
+            contentKey="footer_newsletter"
+            field="blurb"
+            label="Footer — Newsletter blurb"
+            as="p"
+            className="text-[13px] md:text-[14px] tracking-[0.04em] text-muted-foreground leading-[1.7] mb-8 max-w-[560px] font-sans"
+          >
+            {newsletterBlurb}
+          </Editable>
+          <form onSubmit={handleNewsletterSubmit}>
+            <div className="relative">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={t("footer.email_placeholder")}
+                maxLength={255}
+                className="w-full bg-transparent border-b border-border focus:border-foreground text-[14px] tracking-[0.06em] text-foreground placeholder:text-muted-foreground/70 pb-3 pr-10 outline-none transition-colors duration-300 font-sans"
+                required
+              />
+              <button
+                type="submit"
+                className="absolute right-0 bottom-3 text-muted-foreground hover:text-foreground transition-colors duration-300"
+                aria-label={t("footer.subscribe")}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+            <p className="text-[11px] md:text-[12px] tracking-[0.04em] text-muted-foreground/80 leading-[1.7] mt-5 max-w-[560px] font-sans">
+              {t("footer.privacy_acknowledgement_pre")}{" "}
+              <span className="font-serif tracking-[0.12em]">RUVTIER</span>{" "}
+              {t("footer.privacy_acknowledgement_mid")}{" "}
+              <Link to="/privacy-policy" className="underline-offset-2 hover:underline hover:text-foreground transition-colors">
+                {t("footer.privacy_policy")}
+              </Link>.
+            </p>
+            {subscribed && (
+              <p className="text-[12px] tracking-[0.06em] text-muted-foreground mt-3 animate-in fade-in">
+                {t("footer.subscribed")}
+              </p>
+            )}
+          </form>
         </div>
 
         {/* ─── Social Links ─── */}

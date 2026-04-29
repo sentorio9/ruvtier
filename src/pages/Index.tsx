@@ -207,13 +207,23 @@ const Index = () => {
         </ScrollFadeIn>
       </section>
 
-      {/* Material is Memory — Static Section (video disabled) */}
+      {/* Material is Memory — Editorial section anchored by the silk scarf */}
       <section className="luxury-section">
-        <div className="luxury-container flex flex-col items-center text-center py-28 md:py-40">
+        <div className="luxury-container flex flex-col items-center text-center pt-20 md:pt-32 pb-24 md:pb-36">
           <ScrollFadeIn>
+            <div className="relative w-full max-w-[420px] md:max-w-[520px] mx-auto mb-10 md:mb-14 overflow-hidden">
+              <img
+                src={materialMemoryScarf}
+                alt="A RUVTIER silk scarf draped over a wooden chair — the quiet permanence of material."
+                className="w-full h-auto object-contain"
+                loading="lazy"
+              />
+            </div>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={0.12}>
             <Editable kind="text_block" contentKey="home_material_memory" field="headline" label="'Material is Memory' heading" as="h2" className="luxury-heading mb-6">{materialMemoryHeadline}</Editable>
           </ScrollFadeIn>
-          <ScrollFadeIn delay={0.15}>
+          <ScrollFadeIn delay={0.2}>
             <Editable kind="text_block" contentKey="home_material_memory" field="cta_label" label="'Material is Memory' button" as="span" className="inline-block">
               <Link to="/materials" className="luxury-button">{materialMemoryCta}</Link>
             </Editable>

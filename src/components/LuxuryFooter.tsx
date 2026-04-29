@@ -30,7 +30,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const companyHeading = useSiteText("footer_headings", "company", "Company");
   const touchHeading = useSiteText("footer_headings", "get_in_touch", "Get in touch");
   const legalHeading = useSiteText("footer_headings", "legal", "Legal");
-  const newsletterHeading = useSiteText("footer_headings", "newsletter", "Newsletter");
+  const newsletterHeading = useSiteText("footer_headings", "newsletter", "Sign up for newsletter");
   const newsletterBlurb = useSiteText("footer_newsletter", "blurb", "Exclusive collections, heritage stories, and special events.");
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {

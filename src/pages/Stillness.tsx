@@ -5,10 +5,18 @@ import SubscribePanel from "@/components/SubscribePanel";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Editable } from "@/editor/Editable";
+import { useSiteText } from "@/editor/useSiteContent";
 
 const Stillness = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   usePageMeta({ title: "Stillness", description: "Every fibre carries origin, landscape, and time. We begin there, in silence." });
+  const quote = useSiteText(
+    "stillness_quote",
+    "body",
+    "Every fibre carries origin, landscape, and time.\nWe begin there, in silence."
+  );
+  const cta = useSiteText("stillness_cta", "label", "Return");
 
   return (
     <div className="relative">
@@ -17,19 +25,22 @@ const Stillness = () => {
       <section className="min-h-[80vh] flex items-center justify-center pt-32 pb-20">
         <div className="luxury-container flex flex-col items-center text-center">
           <ScrollFadeIn>
-            <p className="luxury-body mx-auto mb-10 text-center italic text-lg">
-              "Every fibre carries origin, landscape, and time.
-              <br />
-              We begin there, in silence."
-            </p>
+            <Editable
+              kind="text_block"
+              contentKey="stillness_quote"
+              field="body"
+              label="Stillness — quote"
+              as="p"
+              className="luxury-body mx-auto mb-10 text-center italic text-lg whitespace-pre-line"
+            >
+              {`"${quote}"`}
+            </Editable>
           </ScrollFadeIn>
 
-          {/* Video removed per editorial direction */}
-
           <ScrollFadeIn delay={0.3}>
-            <Link to="/" className="luxury-button">
-              Return
-            </Link>
+            <Editable kind="text_block" contentKey="stillness_cta" field="label" label="Stillness — button" as="span" className="inline-block">
+              <Link to="/" className="luxury-button">{cta}</Link>
+            </Editable>
           </ScrollFadeIn>
         </div>
       </section>

@@ -571,6 +571,7 @@ export type Database = {
       }
       products: {
         Row: {
+          availability: string
           care_info: string | null
           collection: string | null
           color_options: Json | null
@@ -602,6 +603,7 @@ export type Database = {
           updated_by: string | null
         }
         Insert: {
+          availability?: string
           care_info?: string | null
           collection?: string | null
           color_options?: Json | null
@@ -633,6 +635,7 @@ export type Database = {
           updated_by?: string | null
         }
         Update: {
+          availability?: string
           care_info?: string | null
           collection?: string | null
           color_options?: Json | null

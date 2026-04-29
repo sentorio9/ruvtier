@@ -19,8 +19,21 @@ import materialMemoryScarf from "@/assets/material-memory-scarf.png";
 
 const Index = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
   usePageMeta({ title: "RUVTIER", description: "A luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition." });
   usePriceTick();
+
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Loro-Piana style inset: at top of page the image sits inside a margin (trimmed),
+  // as the user scrolls down the side margin eases toward 0 (image expands).
+  const heroProgress = Math.min(1, Math.max(0, scrollY / 600));
+  const heroInset = (1 - heroProgress) * 48; // px on each side at rest, 0 once scrolled
   const heroHeadline = useSiteText("home_hero", "headline", "Permanence in garment form");
   const heroPreorderWomen = useSiteText("home_hero", "preorder_women", "Pre-Order for Women");
   const heroPreorderMen = useSiteText("home_hero", "preorder_men", "Pre-Order for Men");

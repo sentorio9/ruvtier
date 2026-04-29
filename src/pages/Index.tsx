@@ -15,6 +15,7 @@ import menImage from "@/assets/collection-men.jpg";
 import knitwearImg from "@/assets/explore-knitwear.jpg";
 import lifestyleImg from "@/assets/explore-lifestyle.jpg";
 import appointmentImg from "@/assets/explore-appointment.png";
+import materialMemoryScarf from "@/assets/material-memory-scarf.png";
 
 const Index = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);

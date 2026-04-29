@@ -57,8 +57,9 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const activeRegionId = detectActiveRegion(region.countryCode);
 
   const switchToPreset = (preset: { country: string; id: string }) => {
-    setRegion(preset.country);
+    // Write language first — setRegion reloads the page once FX rates fetch.
     setLanguage(getDefaultLanguageForCountry(preset.country));
+    setRegion(preset.country);
   };
 
   // Admin overrides (useSiteText) take precedence; otherwise we use the

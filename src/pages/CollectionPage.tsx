@@ -123,11 +123,34 @@ const CollectionPage = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-20">
-              <p className="luxury-body text-muted-foreground">
-                No pieces are currently offered under this category.
-              </p>
-            </div>
+            (() => {
+              const placeholder = FILTERS.find((f) => f.value === active)!;
+              return (
+                <div
+                  key={active}
+                  className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-6 gap-y-10 md:gap-y-16"
+                >
+                  <ScrollFadeIn>
+                    <div className="group block">
+                      <div className="relative overflow-hidden mb-4 bg-secondary aspect-[3/4]">
+                        <img
+                          src={placeholder.placeholder}
+                          alt={placeholder.placeholderName}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                      </div>
+                      <h3 className="font-serif font-light text-base md:text-lg tracking-wide text-foreground mb-1">
+                        {placeholder.placeholderName}
+                      </h3>
+                      <p className="text-sm text-muted-foreground tracking-wide italic">
+                        Composed soon
+                      </p>
+                    </div>
+                  </ScrollFadeIn>
+                </div>
+              );
+            })()
           )}
         </div>
       </section>

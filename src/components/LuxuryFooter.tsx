@@ -5,7 +5,31 @@ import ShippingRegionModal from "./ShippingRegionModal";
 import { Editable } from "@/editor/Editable";
 import { useSiteText } from "@/editor/useSiteContent";
 import { useRegionCurrency } from "@/hooks/useRegionCurrency";
-import { useLanguage } from "@/hooks/useLanguage";
+import { useLanguage, getDefaultLanguageForCountry } from "@/hooks/useLanguage";
+
+// One-tap region presets — each preset sets a representative country
+// (drives currency + locale) and pairs it with the language most often used
+// for browsing that region.
+const REGION_PRESETS: { id: string; label: string; country: string }[] = [
+  { id: "europe", label: "Europe", country: "FR" },
+  { id: "americas", label: "Americas", country: "US" },
+  { id: "asia", label: "Asia Pacific", country: "JP" },
+  { id: "middle-east", label: "Middle East", country: "AE" },
+];
+
+const REGION_COUNTRIES: Record<string, string[]> = {
+  europe: ["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IE","IT","LV","LT","LU","MT","MC","NL","PL","PT","RO","SK","SI","ES","SE","CH","UA","GB"],
+  americas: ["US","CA","BR","MX"],
+  asia: ["HK","JP","KR","CN","SG","AU","TW"],
+  "middle-east": ["BH","KW","QA","SA","AE"],
+};
+
+function detectActiveRegion(countryCode: string): string | null {
+  for (const [id, codes] of Object.entries(REGION_COUNTRIES)) {
+    if (codes.includes(countryCode)) return id;
+  }
+  return null;
+}
 
 interface LuxuryFooterProps {
   onSubscribeClick: () => void;
@@ -25,8 +49,14 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const [shippingOpen, setShippingOpen] = useState(false);
-  const { region } = useRegionCurrency();
-  const { languageLabel } = useLanguage();
+  const { region, setRegion } = useRegionCurrency();
+  const { languageLabel, setLanguage } = useLanguage();
+  const activeRegionId = detectActiveRegion(region.countryCode);
+
+  const switchToPreset = (preset: { country: string; id: string }) => {
+    setRegion(preset.country);
+    setLanguage(getDefaultLanguageForCountry(preset.country));
+  };
 
   const servicesHeading = useSiteText("footer_headings", "services", "Services");
   const companyHeading = useSiteText("footer_headings", "company", "Company");
@@ -156,6 +186,39 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
             </svg>
             <span className={linkClass}>Pinterest</span>
           </a>
+        </div>
+
+        {/* ─── Quick region switch ─── */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center gap-y-3 gap-x-2 mb-8 md:mb-10">
+          <span className="text-[10px] tracking-[0.32em] uppercase text-muted-foreground/80 sm:mr-4 text-center sm:text-left">
+            Browse by region
+          </span>
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            {REGION_PRESETS.map((p) => {
+              const isActive = activeRegionId === p.id;
+              return (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => switchToPreset(p)}
+                  aria-pressed={isActive}
+                  className={`group relative font-sans text-[11px] tracking-[0.22em] uppercase pb-0.5 transition-colors duration-300 ${
+                    isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <span className="relative inline-block">
+                    {p.label}
+                    <span
+                      aria-hidden
+                      className={`absolute left-0 right-0 -bottom-0.5 h-px bg-foreground/70 origin-left transform transition-transform duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] ${
+                        isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                      }`}
+                    />
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* ─── Copyright + Shipping/Region ─── */}

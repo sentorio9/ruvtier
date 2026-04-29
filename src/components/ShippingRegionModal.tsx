@@ -339,7 +339,7 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Type a country name…"
+                  placeholder="Type a country name or ISO code…"
                   className="w-full bg-transparent border-b border-border focus:border-foreground text-[13px] tracking-[0.04em] text-foreground placeholder:text-muted-foreground/60 pb-2.5 pr-7 outline-none transition-colors duration-300 font-sans"
                 />
                 <svg

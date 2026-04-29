@@ -204,16 +204,16 @@ const Index = () => {
                 style={{ background: "radial-gradient(ellipse at center, rgba(246,244,241,0.45) 0%, rgba(246,244,241,0.15) 45%, rgba(246,244,241,0) 75%)" }}
               />
               <div className="absolute bottom-0 left-0 right-0 px-[clamp(20px,2.4vw,40px)] pb-[clamp(22px,2.6vw,44px)] pt-24 flex flex-col items-center text-center">
-                <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-[0.22em] text-[#F6F4F1]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
+                <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#F6F4F1]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
                   {womenSeason}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-[0.12em] text-[#F6F4F1] mb-[clamp(16px,1.6vw,26px)] leading-[1.2] [text-shadow:0_2px_18px_rgba(0,0,0,0.55),0_0_28px_rgba(246,244,241,0.18)]">
+                <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-luxury text-[#F6F4F1] mb-[clamp(16px,1.6vw,26px)] leading-luxury-title [text-shadow:0_2px_18px_rgba(0,0,0,0.55),0_0_28px_rgba(246,244,241,0.18)]">
                   {womenTitle}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_women_card" field="blurb" label="Women — blurb" as="p" className="font-sans text-[clamp(11px,0.84vw,13px)] tracking-[0.02em] text-[#F6F4F1]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] leading-[1.75] [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
+                <Editable kind="text_block" contentKey="home_women_card" field="blurb" label="Women — blurb" as="p" className="font-sans text-[clamp(11px,0.84vw,13px)] tracking-luxury-tight text-[#F6F4F1]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] leading-luxury-body [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
                   {womenBlurb}
                 </Editable>
-                <span className="inline-flex items-center gap-2 font-sans text-[clamp(10px,0.78vw,12px)] uppercase tracking-[0.2em] text-[#F6F4F1]/85 group-hover:text-[#F6F4F1] transition-colors duration-500">
+                <span className="inline-flex items-center gap-2 font-sans text-[clamp(10px,0.78vw,12px)] uppercase tracking-luxury-wide text-[#F6F4F1]/85 group-hover:text-[#F6F4F1] transition-colors duration-500">
                   <span className="relative inline-block pb-1">
                     <Editable kind="text_block" contentKey="home_women_card" field="cta_label" label="Women — CTA label" as="span">{womenCta}</Editable>
                     {/* Hairline underline */}
@@ -254,16 +254,16 @@ const Index = () => {
                 style={{ background: "radial-gradient(ellipse at center, rgba(246,244,241,0.45) 0%, rgba(246,244,241,0.15) 45%, rgba(246,244,241,0) 75%)" }}
               />
               <div className="absolute bottom-0 left-0 right-0 px-[clamp(20px,2.4vw,40px)] pb-[clamp(22px,2.6vw,44px)] pt-24 flex flex-col items-center text-center">
-                <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-[0.22em] text-[#F6F4F1]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
+                <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#F6F4F1]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
                   {menSeason}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-[0.12em] text-[#F6F4F1] mb-[clamp(16px,1.6vw,26px)] leading-[1.2] [text-shadow:0_2px_18px_rgba(0,0,0,0.55),0_0_28px_rgba(246,244,241,0.18)]">
+                <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-luxury text-[#F6F4F1] mb-[clamp(16px,1.6vw,26px)] leading-luxury-title [text-shadow:0_2px_18px_rgba(0,0,0,0.55),0_0_28px_rgba(246,244,241,0.18)]">
                   {menTitle}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_men_card" field="blurb" label="Men — blurb" as="p" className="font-sans text-[clamp(11px,0.84vw,13px)] tracking-[0.02em] text-[#F6F4F1]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] leading-[1.75] [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
+                <Editable kind="text_block" contentKey="home_men_card" field="blurb" label="Men — blurb" as="p" className="font-sans text-[clamp(11px,0.84vw,13px)] tracking-luxury-tight text-[#F6F4F1]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] leading-luxury-body [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
                   {menBlurb}
                 </Editable>
-                <span className="inline-flex items-center gap-2 font-sans text-[clamp(10px,0.78vw,12px)] uppercase tracking-[0.2em] text-[#F6F4F1]/85 group-hover:text-[#F6F4F1] transition-colors duration-500">
+                <span className="inline-flex items-center gap-2 font-sans text-[clamp(10px,0.78vw,12px)] uppercase tracking-luxury-wide text-[#F6F4F1]/85 group-hover:text-[#F6F4F1] transition-colors duration-500">
                   <span className="relative inline-block pb-1">
                     <Editable kind="text_block" contentKey="home_men_card" field="cta_label" label="Men — CTA label" as="span">{menCta}</Editable>
                     <span

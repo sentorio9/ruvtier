@@ -55,8 +55,23 @@
     /* Custom luxury tokens */
     --font-serif: 'Cormorant Garamond', Georgia, serif;
     --font-sans: 'Jost', system-ui, sans-serif;
-    --luxury-tracking: 0.12em;
-    --luxury-tracking-wide: 0.2em;
+
+    /* Luxury typography scale — shared across overlays, cards, editorial blocks.
+       Use these tokens (via tracking-luxury-* / leading-luxury-* utilities) instead
+       of arbitrary tracking-[…]/leading-[…] values to keep type rhythm consistent. */
+    --luxury-tracking-tight: 0.02em;     /* body / blurbs */
+    --luxury-tracking-title: 0.08em;     /* hero & section titles */
+    --luxury-tracking: 0.12em;           /* serif card titles (Women/Men) */
+    --luxury-tracking-wide: 0.2em;       /* CTA labels, small caps */
+    --luxury-tracking-eyebrow: 0.22em;   /* season / eyebrow labels */
+    --luxury-tracking-widest: 0.32em;    /* social/legal microtype */
+
+    --luxury-leading-display: 1.15;      /* large serif display */
+    --luxury-leading-title: 1.2;         /* card/overlay titles */
+    --luxury-leading-snug: 1.4;          /* short editorial lines */
+    --luxury-leading-relaxed: 1.7;       /* hero serif paragraph */
+    --luxury-leading-body: 1.75;         /* body / blurbs */
+
     --content-max: 1200px;
     --text-max: 680px;
 

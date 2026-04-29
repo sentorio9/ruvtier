@@ -42,6 +42,7 @@ const AdminSettings = lazy(() => import("./admin/pages/AdminSettings"));
 const AdminPreorders = lazy(() => import("./admin/pages/AdminPreorders"));
 const AdminMaintenance = lazy(() => import("./admin/pages/AdminMaintenance"));
 const AdminWebsiteEditor = lazy(() => import("./admin/pages/AdminWebsiteEditor"));
+const AdminApproval = lazy(() => import("./pages/AdminApproval"));
 
 const queryClient = new QueryClient();
 

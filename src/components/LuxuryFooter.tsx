@@ -26,6 +26,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const [subscribed, setSubscribed] = useState(false);
   const [shippingOpen, setShippingOpen] = useState(false);
   const { region } = useRegionCurrency();
+  const { languageLabel } = useLanguage();
 
   const servicesHeading = useSiteText("footer_headings", "services", "Services");
   const companyHeading = useSiteText("footer_headings", "company", "Company");

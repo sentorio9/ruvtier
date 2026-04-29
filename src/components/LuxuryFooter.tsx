@@ -5,7 +5,31 @@ import ShippingRegionModal from "./ShippingRegionModal";
 import { Editable } from "@/editor/Editable";
 import { useSiteText } from "@/editor/useSiteContent";
 import { useRegionCurrency } from "@/hooks/useRegionCurrency";
-import { useLanguage } from "@/hooks/useLanguage";
+import { useLanguage, getDefaultLanguageForCountry } from "@/hooks/useLanguage";
+
+// One-tap region presets — each preset sets a representative country
+// (drives currency + locale) and pairs it with the language most often used
+// for browsing that region.
+const REGION_PRESETS: { id: string; label: string; country: string }[] = [
+  { id: "europe", label: "Europe", country: "FR" },
+  { id: "americas", label: "Americas", country: "US" },
+  { id: "asia", label: "Asia Pacific", country: "JP" },
+  { id: "middle-east", label: "Middle East", country: "AE" },
+];
+
+const REGION_COUNTRIES: Record<string, string[]> = {
+  europe: ["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IE","IT","LV","LT","LU","MT","MC","NL","PL","PT","RO","SK","SI","ES","SE","CH","UA","GB"],
+  americas: ["US","CA","BR","MX"],
+  asia: ["HK","JP","KR","CN","SG","AU","TW"],
+  "middle-east": ["BH","KW","QA","SA","AE"],
+};
+
+function detectActiveRegion(countryCode: string): string | null {
+  for (const [id, codes] of Object.entries(REGION_COUNTRIES)) {
+    if (codes.includes(countryCode)) return id;
+  }
+  return null;
+}
 
 interface LuxuryFooterProps {
   onSubscribeClick: () => void;

@@ -23,7 +23,12 @@ function htmlPage(message: string, success: boolean) {
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Jost','Helvetica Neue',Arial,sans-serif;background:hsl(220,15%,6%);color:hsl(220,10%,75%);display:flex;align-items:center;justify-content:center;min-height:100vh}.c{text-align:center;max-width:400px;padding:40px}.logo{font-size:14px;letter-spacing:.3em;color:hsl(220,10%,40%);margin-bottom:40px;text-transform:uppercase}.s{font-size:16px;letter-spacing:.12em;color:${success?'hsl(140,30%,55%)':'hsl(0,50%,55%)'};margin-bottom:16px}.m{font-size:13px;color:hsl(220,10%,45%);line-height:1.6}</style></head>
 <body><div class="c"><div class="logo">R U V T I E R</div><div class="s">${success?'✓ GRANTED':'✕ DENIED'}</div><p class="m">${message}</p></div></body></html>`, {
     status: 200,
-    headers: { 'Content-Type': 'text/html; charset=utf-8' },
+    headers: {
+      ...corsHeaders,
+      'Content-Type': 'text/html; charset=utf-8',
+      'X-Content-Type-Options': 'nosniff',
+      'Cache-Control': 'no-store',
+    },
   })
 }
 

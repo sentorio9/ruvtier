@@ -33,27 +33,17 @@ const TheHousePage = () => {
           {/* Social links */}
           <ScrollFadeIn delay={0.15}>
             <div className="flex items-center justify-center gap-10 mb-16 md:mb-20">
-              <a href="https://www.instagram.com/ruvtier/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"
-                className="text-muted-foreground hover:text-foreground transition-colors duration-500">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="2" width="20" height="20" rx="5" />
-                  <circle cx="12" cy="12" r="5" />
-                  <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none" />
-                </svg>
+              <a href="https://www.instagram.com/ruvtier/" target="_blank" rel="noopener noreferrer"
+                className="font-sans text-[11px] tracking-[0.32em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-500">
+                Instagram
               </a>
-              <a href="https://www.youtube.com/@ruvtier" target="_blank" rel="noopener noreferrer" aria-label="YouTube"
-                className="text-muted-foreground hover:text-foreground transition-colors duration-500">
-                <svg width="22" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="4" width="20" height="16" rx="4" />
-                  <polygon points="10,8.5 16,12 10,15.5" fill="none" stroke="currentColor" strokeWidth="0.6" />
-                </svg>
+              <a href="https://www.youtube.com/@ruvtier" target="_blank" rel="noopener noreferrer"
+                className="font-sans text-[11px] tracking-[0.32em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-500">
+                YouTube
               </a>
-              <a href="https://uk.pinterest.com/RUVTIER/_created/" target="_blank" rel="noopener noreferrer" aria-label="Pinterest"
-                className="text-muted-foreground hover:text-foreground transition-colors duration-500">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 7c-3 0-5 2.2-5 4.8 0 1.8 1 3.2 2.6 3.2.4 0 .7-.4.5-1l-.3-1.2c-.1-.3 0-.6.2-.8.8-1 1.5-2.2 2-2.2 1.8 0 1.2 2.8 1.2 2.8s-.3 1.2-.5 2.2c-.2.8.5 1.5 1.3 1.5 2 0 3.3-2.5 3.3-5 0-2.5-2-4.3-4.3-4.3z" />
-                </svg>
+              <a href="https://uk.pinterest.com/RUVTIER/_created/" target="_blank" rel="noopener noreferrer"
+                className="font-sans text-[11px] tracking-[0.32em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-500">
+                Pinterest
               </a>
             </div>
           </ScrollFadeIn>

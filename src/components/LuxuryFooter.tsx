@@ -166,31 +166,15 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
         {/* ─── Social Links ─── */}
         <div className="flex items-center justify-center gap-10 md:gap-14 mb-10 md:mb-12">
           <a href="https://www.instagram.com/ruvtier/" target="_blank" rel="noopener noreferrer" aria-label="Follow RUVTIER on Instagram"
-            className="flex flex-col items-center gap-2 group">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"
-              className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-              <rect x="2" y="2" width="20" height="20" rx="5" />
-              <circle cx="12" cy="12" r="5" />
-              <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none" />
-            </svg>
+            className="group">
             <span className={linkClass}>Instagram</span>
           </a>
           <a href="https://www.youtube.com/@ruvtier" target="_blank" rel="noopener noreferrer" aria-label="Watch RUVTIER on YouTube"
-            className="flex flex-col items-center gap-2 group">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"
-              className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-              <rect x="2" y="4" width="20" height="16" rx="4" />
-              <polygon points="10,8.5 16,12 10,15.5" fill="currentColor" stroke="none" opacity="0.7" />
-            </svg>
+            className="group">
             <span className={linkClass}>YouTube</span>
           </a>
           <a href="https://uk.pinterest.com/RUVTIER/_created/" target="_blank" rel="noopener noreferrer" aria-label="Discover RUVTIER on Pinterest"
-            className="flex flex-col items-center gap-2 group">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"
-              className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M8 21c1.5-3 2-5.5 2.5-8 .5-2.5 1-3.5 1.5-3.5s1.5 1 1.5 3-1 4-1 4" />
-            </svg>
+            className="group">
             <span className={linkClass}>Pinterest</span>
           </a>
         </div>

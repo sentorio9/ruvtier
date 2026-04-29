@@ -55,14 +55,16 @@ const Index = () => {
 
       {/* Hero */}
       <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
-        <img
-          src={heroImage}
-          alt="RUVTIER luxury garment editorial"
-          className="absolute inset-0 w-full h-full object-cover object-[center_40%] md:object-[center_35%]"
-          fetchPriority="high"
-          decoding="async"
-        />
-        <div className="absolute inset-0 bg-background/40" />
+        <Editable kind="site_image" contentKey="site_image_home_hero" label="Homepage hero image" as="div" className="absolute inset-0">
+          <img
+            src={heroImageOverride || heroImage}
+            alt="RUVTIER luxury garment editorial"
+            className="absolute inset-0 w-full h-full object-cover object-[center_40%] md:object-[center_35%]"
+            fetchPriority="high"
+            decoding="async"
+          />
+        </Editable>
+        <div className="absolute inset-0 bg-background/40 pointer-events-none" />
         <div className="relative z-10 text-center px-6 -mt-8 md:-mt-12">
           <ScrollFadeIn>
             <Editable kind="text_block" contentKey="home_hero" field="headline" label="Homepage hero text" as="p" className="font-serif font-light text-[clamp(20px,2.2vw,28px)] leading-[1.7] tracking-[0.08em] text-foreground mx-auto max-w-[var(--text-max)]">
@@ -70,9 +72,11 @@ const Index = () => {
             </Editable>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.3}>
-            <Link to="/collection" className="luxury-button mt-10 inline-block">
-              Explore the Collection
-            </Link>
+            <Editable kind="text_block" contentKey="home_hero" field="cta_label" label="Hero button label" as="span" className="inline-block mt-10">
+              <Link to="/collection" className="luxury-button">
+                {heroCta}
+              </Link>
+            </Editable>
           </ScrollFadeIn>
         </div>
       </section>

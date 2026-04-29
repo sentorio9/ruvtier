@@ -126,27 +126,23 @@ const Index = () => {
 
       {/* Hero */}
       <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
-        <Editable
-          kind="site_image"
-          contentKey="site_image_home_hero"
-          label="Homepage hero image"
-          as="div"
-          className="absolute inset-0 overflow-hidden transition-[left,right,top,bottom] duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
-          style={{
-            left: `${heroInset}px`,
-            right: `${heroInset}px`,
-            top: `${heroInset * 0.5}px`,
-            bottom: `${heroInset * 0.5}px`,
-          }}
-        >
-          <img
-            src={heroImageOverride || heroImage}
-            alt="RUVTIER luxury garment editorial"
-            className="absolute inset-0 w-full h-full object-cover object-[center_30%] md:object-center"
-            fetchPriority="high"
-            decoding="async"
-          />
-        </Editable>
+        <div ref={heroFrameRef} className="absolute inset-0 overflow-hidden">
+          <Editable
+            kind="site_image"
+            contentKey="site_image_home_hero"
+            label="Homepage hero image"
+            as="div"
+            className="absolute inset-0 overflow-hidden"
+          >
+            <img
+              src={heroImageOverride || heroImage}
+              alt="RUVTIER luxury garment editorial"
+              className="absolute inset-0 w-full h-full object-cover object-[center_30%] md:object-center"
+              fetchPriority="high"
+              decoding="async"
+            />
+          </Editable>
+        </div>
         {/* Subtle full-frame veil for global legibility */}
         <div className="absolute inset-0 bg-black/15 pointer-events-none" />
         {/* Soft luminous halo centred behind the editorial line for legibility on imagery */}

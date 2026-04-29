@@ -151,17 +151,80 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
   const normalisedQuery = query.trim().toLowerCase();
   const isSearching = normalisedQuery.length > 0;
 
+  // ── Fuzzy + ISO-aware scoring ──
+  // Higher score = stronger match. Returns null when there is no plausible match.
+  const scoreCountry = (c: Country, q: string): number | null => {
+    const name = c.name.toLowerCase();
+    const code = c.code.toLowerCase();
+
+    // ISO code matches rank highest — exact, then prefix.
+    if (code === q) return 1000;
+    if (q.length <= 3 && code.startsWith(q)) return 900 - (code.length - q.length);
+
+    // Whole-word / start-of-name matches.
+    if (name === q) return 850;
+    if (name.startsWith(q)) return 800 - (name.length - q.length);
+
+    // Word-boundary match (e.g. "arab" → "United Arab Emirates").
+    const words = name.split(/\s+/);
+    if (words.some((w) => w.startsWith(q))) return 700;
+
+    // Substring anywhere in name.
+    const idx = name.indexOf(q);
+    if (idx !== -1) return 600 - idx;
+
+    // Subsequence fuzzy match: every char of q appears in order in name.
+    let i = 0;
+    let lastIdx = -1;
+    let gaps = 0;
+    for (let j = 0; j < name.length && i < q.length; j++) {
+      if (name[j] === q[i]) {
+        if (lastIdx !== -1) gaps += j - lastIdx - 1;
+        lastIdx = j;
+        i++;
+      }
+    }
+    if (i === q.length && q.length >= 2) return 400 - gaps;
+
+    // Tiny single-char Levenshtein tolerance for typos on short queries.
+    if (q.length >= 4) {
+      const lev = (a: string, b: string) => {
+        const dp = Array.from({ length: a.length + 1 }, (_, x) => [x, ...Array(b.length).fill(0)]);
+        for (let y = 1; y <= b.length; y++) dp[0][y] = y;
+        for (let x = 1; x <= a.length; x++)
+          for (let y = 1; y <= b.length; y++)
+            dp[x][y] = a[x - 1] === b[y - 1]
+              ? dp[x - 1][y - 1]
+              : 1 + Math.min(dp[x - 1][y - 1], dp[x - 1][y], dp[x][y - 1]);
+        return dp[a.length][b.length];
+      };
+      // Compare against name prefix of equal length to keep it cheap.
+      const prefix = name.slice(0, q.length);
+      if (lev(prefix, q) <= 1) return 350;
+    }
+
+    return null;
+  };
+
+  const rankEntries = (entries: Country[]): Country[] => {
+    const scored = entries
+      .map((c) => ({ c, s: scoreCountry(c, normalisedQuery) }))
+      .filter((x): x is { c: Country; s: number } => x.s !== null)
+      .sort((a, b) => b.s - a.s || a.c.name.localeCompare(b.c.name));
+    return scored.map((x) => x.c);
+  };
+
   const filteredGroups = useMemo(() => {
     if (!isSearching) return GROUPS;
-    return GROUPS.map((g) => ({
-      ...g,
-      entries: g.entries.filter((c) => c.name.toLowerCase().includes(normalisedQuery)),
-    })).filter((g) => g.entries.length > 0);
+    return GROUPS.map((g) => ({ ...g, entries: rankEntries(g.entries) }))
+      .filter((g) => g.entries.length > 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSearching, normalisedQuery]);
 
   const filteredBrowseOnly = useMemo(() => {
     if (!isSearching) return BROWSE_ONLY;
-    return BROWSE_ONLY.filter((c) => c.name.toLowerCase().includes(normalisedQuery));
+    return rankEntries(BROWSE_ONLY);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSearching, normalisedQuery]);
 
   const visibleGroup = isSearching
@@ -276,7 +339,7 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Type a country name…"
+                  placeholder="Type a country name or ISO code…"
                   className="w-full bg-transparent border-b border-border focus:border-foreground text-[13px] tracking-[0.04em] text-foreground placeholder:text-muted-foreground/60 pb-2.5 pr-7 outline-none transition-colors duration-300 font-sans"
                 />
                 <svg

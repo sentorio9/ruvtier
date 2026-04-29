@@ -5,6 +5,8 @@ import SubscribePanel from "@/components/SubscribePanel";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Editable } from "@/editor/Editable";
+import { useSiteText } from "@/editor/useSiteContent";
 
 const materials = [
   { name: "Vicuña", slug: "vicuna" },
@@ -18,6 +20,8 @@ const materials = [
 const Materials = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   usePageMeta({ title: "Materials", description: "Each fibre begins as landscape. We honour that origin — vicuña, cashmere, silk, linen." });
+  const heading = useSiteText("materials_intro", "headline", "Material is memory");
+  const body = useSiteText("materials_intro", "body", "Each fibre begins as landscape. We honour that origin.");
 
   return (
     <div className="relative">
@@ -26,12 +30,14 @@ const Materials = () => {
       <section className="min-h-[70vh] flex items-center justify-center pt-32 pb-20">
         <div className="luxury-container flex flex-col items-center text-center">
           <ScrollFadeIn>
-            <h1 className="luxury-heading mb-6">Material is memory</h1>
+            <Editable kind="text_block" contentKey="materials_intro" field="headline" label="Materials — heading" as="h1" className="luxury-heading mb-6">
+              {heading}
+            </Editable>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.15}>
-            <p className="luxury-body mx-auto mb-12 text-center">
-              Each fibre begins as landscape. We honour that origin.
-            </p>
+            <Editable kind="text_block" contentKey="materials_intro" field="body" label="Materials — intro" as="p" className="luxury-body mx-auto mb-12 text-center">
+              {body}
+            </Editable>
           </ScrollFadeIn>
           <div className="flex flex-col gap-6">
             {materials.map((m, i) => (

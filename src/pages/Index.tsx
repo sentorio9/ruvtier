@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import { Editable } from "@/editor/Editable";
-import { useSiteText } from "@/editor/useSiteContent";
+import { useSiteText, useSiteImage } from "@/editor/useSiteContent";
 
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
@@ -21,7 +21,19 @@ const Index = () => {
   usePageMeta({ title: "RUVTIER", description: "A luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition." });
   usePriceTick();
   const heroHeadline = useSiteText("home_hero", "headline", "Permanence in garment form");
+  const heroCta = useSiteText("home_hero", "cta_label", "Explore the Collection");
   const materialMemoryHeadline = useSiteText("home_material_memory", "headline", "Material is Memory");
+  const materialMemoryCta = useSiteText("home_material_memory", "cta_label", "Discover all material");
+  const womenSeason = useSiteText("home_women_card", "season", "Spring / Summer 2026");
+  const womenTitle = useSiteText("home_women_card", "title", "Women's Collection");
+  const womenBlurb = useSiteText("home_women_card", "blurb", "Refined silhouettes shaped by material devotion and quiet permanence.");
+  const womenCta = useSiteText("home_women_card", "cta_label", "Discover More");
+  const menSeason = useSiteText("home_men_card", "season", "Spring / Summer 2026");
+  const menTitle = useSiteText("home_men_card", "title", "Men's Collection");
+  const menBlurb = useSiteText("home_men_card", "blurb", "Understated forms built from heritage craft and enduring composition.");
+  const menCta = useSiteText("home_men_card", "cta_label", "Explore Collection");
+  const inYourKeepingHeading = useSiteText("home_in_your_keeping", "headline", "In Your Keeping");
+  const heroImageOverride = useSiteImage("site_image_home_hero");
 
   // Featured pre-order — pick the first featured product with preorder enabled, or any featured product
   const { data: featuredProducts } = useActiveProducts({ featured: true, limit: 5 });
@@ -43,14 +55,16 @@ const Index = () => {
 
       {/* Hero */}
       <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
-        <img
-          src={heroImage}
-          alt="RUVTIER luxury garment editorial"
-          className="absolute inset-0 w-full h-full object-cover object-[center_40%] md:object-[center_35%]"
-          fetchPriority="high"
-          decoding="async"
-        />
-        <div className="absolute inset-0 bg-background/40" />
+        <Editable kind="site_image" contentKey="site_image_home_hero" label="Homepage hero image" as="div" className="absolute inset-0">
+          <img
+            src={heroImageOverride || heroImage}
+            alt="RUVTIER luxury garment editorial"
+            className="absolute inset-0 w-full h-full object-cover object-[center_40%] md:object-[center_35%]"
+            fetchPriority="high"
+            decoding="async"
+          />
+        </Editable>
+        <div className="absolute inset-0 bg-background/40 pointer-events-none" />
         <div className="relative z-10 text-center px-6 -mt-8 md:-mt-12">
           <ScrollFadeIn>
             <Editable kind="text_block" contentKey="home_hero" field="headline" label="Homepage hero text" as="p" className="font-serif font-light text-[clamp(20px,2.2vw,28px)] leading-[1.7] tracking-[0.08em] text-foreground mx-auto max-w-[var(--text-max)]">
@@ -58,9 +72,11 @@ const Index = () => {
             </Editable>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.3}>
-            <Link to="/collection" className="luxury-button mt-10 inline-block">
-              Explore the Collection
-            </Link>
+            <Editable kind="text_block" contentKey="home_hero" field="cta_label" label="Hero button label" as="span" className="inline-block mt-10">
+              <Link to="/collection" className="luxury-button">
+                {heroCta}
+              </Link>
+            </Editable>
           </ScrollFadeIn>
         </div>
       </section>
@@ -140,17 +156,17 @@ const Index = () => {
               {/* Refined overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-700" />
               <div className="absolute bottom-0 left-0 right-0 px-6 pb-8 pt-20 flex flex-col items-center text-center">
-                <span className="font-sans text-[9px] uppercase tracking-[0.3em] text-[#12131C]/50 mb-2">
-                  Spring / Summer 2026
-                </span>
-                <h2 className="font-serif font-light text-[clamp(22px,2.2vw,32px)] tracking-[0.08em] text-[#12131C] mb-2 leading-[1.2]">
-                  Women's Collection
-                </h2>
-                <p className="font-sans text-[11px] tracking-[0.04em] text-[#12131C]/60 mb-4 max-w-[260px] leading-[1.6]">
-                  Refined silhouettes shaped by material devotion and quiet permanence.
-                </p>
+                <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="font-sans text-[9px] uppercase tracking-[0.3em] text-[#12131C]/50 mb-2">
+                  {womenSeason}
+                </Editable>
+                <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="font-serif font-light text-[clamp(22px,2.2vw,32px)] tracking-[0.08em] text-[#12131C] mb-2 leading-[1.2]">
+                  {womenTitle}
+                </Editable>
+                <Editable kind="text_block" contentKey="home_women_card" field="blurb" label="Women — blurb" as="p" className="font-sans text-[11px] tracking-[0.04em] text-[#12131C]/60 mb-4 max-w-[260px] leading-[1.6]">
+                  {womenBlurb}
+                </Editable>
                 <span className="inline-flex items-center gap-2 font-sans text-[10px] uppercase tracking-[0.22em] text-[#12131C]/70 group-hover:text-[#12131C] transition-colors duration-500 border-b border-[#12131C]/20 group-hover:border-[#12131C]/50 pb-0.5">
-                  Discover More
+                  <Editable kind="text_block" contentKey="home_women_card" field="cta_label" label="Women — CTA label" as="span">{womenCta}</Editable>
                   <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
                 </span>
               </div>
@@ -171,17 +187,17 @@ const Index = () => {
               {/* Refined overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-700" />
               <div className="absolute bottom-0 left-0 right-0 px-6 pb-8 pt-20 flex flex-col items-center text-center">
-                <span className="font-sans text-[9px] uppercase tracking-[0.3em] text-[#12131C]/50 mb-2">
-                  Spring / Summer 2026
-                </span>
-                <h2 className="font-serif font-light text-[clamp(22px,2.2vw,32px)] tracking-[0.08em] text-[#12131C] mb-2 leading-[1.2]">
-                  Men's Collection
-                </h2>
-                <p className="font-sans text-[11px] tracking-[0.04em] text-[#12131C]/60 mb-4 max-w-[260px] leading-[1.6]">
-                  Understated forms built from heritage craft and enduring composition.
-                </p>
+                <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="font-sans text-[9px] uppercase tracking-[0.3em] text-[#12131C]/50 mb-2">
+                  {menSeason}
+                </Editable>
+                <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="font-serif font-light text-[clamp(22px,2.2vw,32px)] tracking-[0.08em] text-[#12131C] mb-2 leading-[1.2]">
+                  {menTitle}
+                </Editable>
+                <Editable kind="text_block" contentKey="home_men_card" field="blurb" label="Men — blurb" as="p" className="font-sans text-[11px] tracking-[0.04em] text-[#12131C]/60 mb-4 max-w-[260px] leading-[1.6]">
+                  {menBlurb}
+                </Editable>
                 <span className="inline-flex items-center gap-2 font-sans text-[10px] uppercase tracking-[0.22em] text-[#12131C]/70 group-hover:text-[#12131C] transition-colors duration-500 border-b border-[#12131C]/20 group-hover:border-[#12131C]/50 pb-0.5">
-                  Explore Collection
+                  <Editable kind="text_block" contentKey="home_men_card" field="cta_label" label="Men — CTA label" as="span">{menCta}</Editable>
                   <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
                 </span>
               </div>
@@ -197,9 +213,9 @@ const Index = () => {
             <Editable kind="text_block" contentKey="home_material_memory" field="headline" label="'Material is Memory' heading" as="h2" className="luxury-heading mb-6">{materialMemoryHeadline}</Editable>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.15}>
-            <Link to="/materials" className="luxury-button">
-              Discover all material
-            </Link>
+            <Editable kind="text_block" contentKey="home_material_memory" field="cta_label" label="'Material is Memory' button" as="span" className="inline-block">
+              <Link to="/materials" className="luxury-button">{materialMemoryCta}</Link>
+            </Editable>
           </ScrollFadeIn>
         </div>
       </section>
@@ -209,9 +225,9 @@ const Index = () => {
       <section className="py-16 md:py-24">
         <div className="luxury-container">
           <ScrollFadeIn>
-            <h2 className="font-serif font-light text-[clamp(18px,1.6vw,22px)] tracking-[0.15em] text-foreground text-center mb-10 md:mb-14">
-              In Your Keeping
-            </h2>
+            <Editable kind="text_block" contentKey="home_in_your_keeping" field="headline" label="'In Your Keeping' heading" as="h2" className="font-serif font-light text-[clamp(18px,1.6vw,22px)] tracking-[0.15em] text-foreground text-center mb-10 md:mb-14">
+              {inYourKeepingHeading}
+            </Editable>
           </ScrollFadeIn>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-8 lg:gap-10 items-start">
             {[

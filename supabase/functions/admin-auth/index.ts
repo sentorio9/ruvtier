@@ -9,6 +9,7 @@ const corsHeaders = {
 const APPROVAL_EMAIL = 'frigatormark@gmail.com'
 const SENDER_DOMAIN = 'notify.ruvtier.com'
 const FROM_EMAIL = 'security@ruvtier.com'
+const SITE_URL = 'https://ruvtier.com'
 
 function jsonResponse(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {

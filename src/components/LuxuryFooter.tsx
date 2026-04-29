@@ -114,65 +114,65 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
             <Link to="/terms" className={linkClass}>{t("footer.legal.terms")}</Link>
             <Link to="/privacy-policy" className={linkClass}>{t("footer.legal.privacy")}</Link>
           </div>
-        </div>
 
-        {/* ─── Newsletter — full-width editorial band ─── */}
-        <div className="max-w-3xl mx-auto mb-14 md:mb-20 px-2">
-          <Editable
-            kind="text_block"
-            contentKey="footer_headings"
-            field="newsletter"
-            label="Footer — Newsletter heading"
-            as="h3"
-            className={newsletterHeadingClass}
-          >
-            {newsletterHeading}
-          </Editable>
-          <Editable
-            kind="text_block"
-            contentKey="footer_newsletter"
-            field="blurb"
-            label="Footer — Newsletter blurb"
-            as="p"
-            className="text-[13px] md:text-[14px] tracking-[0.04em] text-muted-foreground leading-[1.7] mb-8 max-w-[560px] font-sans"
-          >
-            {newsletterBlurb}
-          </Editable>
-          <form onSubmit={handleNewsletterSubmit}>
-            <div className="relative">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={t("footer.email_placeholder")}
-                maxLength={255}
-                className="w-full bg-transparent border-b border-border focus:border-foreground text-[14px] tracking-[0.06em] text-foreground placeholder:text-muted-foreground/70 pb-3 pr-10 outline-none transition-colors duration-300 font-sans"
-                required
-              />
-              <button
-                type="submit"
-                className="absolute right-0 bottom-3 text-muted-foreground hover:text-foreground transition-colors duration-300"
-                aria-label={t("footer.subscribe")}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-            <p className="text-[11px] md:text-[12px] tracking-[0.04em] text-muted-foreground/80 leading-[1.7] mt-5 max-w-[560px] font-sans">
-              {t("footer.privacy_acknowledgement_pre")}{" "}
-              <span className="font-serif tracking-[0.12em]">RUVTIER</span>{" "}
-              {t("footer.privacy_acknowledgement_mid")}{" "}
-              <Link to="/privacy-policy" className="underline-offset-2 hover:underline hover:text-foreground transition-colors">
-                {t("footer.privacy_policy")}
-              </Link>.
-            </p>
-            {subscribed && (
-              <p className="text-[12px] tracking-[0.06em] text-muted-foreground mt-3 animate-in fade-in">
-                {t("footer.subscribed")}
+          {/* Newsletter — sits in the same row, spans 2 cols on desktop */}
+          <div className="col-span-2 md:col-span-2 flex flex-col">
+            <Editable
+              kind="text_block"
+              contentKey="footer_headings"
+              field="newsletter"
+              label="Footer — Newsletter heading"
+              as="h3"
+              className={newsletterHeadingClass}
+            >
+              {newsletterHeading}
+            </Editable>
+            <Editable
+              kind="text_block"
+              contentKey="footer_newsletter"
+              field="blurb"
+              label="Footer — Newsletter blurb"
+              as="p"
+              className="text-[13px] tracking-[0.04em] text-muted-foreground leading-[1.7] mb-6 font-sans"
+            >
+              {newsletterBlurb}
+            </Editable>
+            <form onSubmit={handleNewsletterSubmit}>
+              <div className="relative">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={t("footer.email_placeholder")}
+                  maxLength={255}
+                  className="w-full bg-transparent border-b border-border focus:border-foreground text-[13px] tracking-[0.06em] text-foreground placeholder:text-muted-foreground/70 pb-3 pr-10 outline-none transition-colors duration-300 font-sans"
+                  required
+                />
+                <button
+                  type="submit"
+                  className="absolute right-0 bottom-3 text-muted-foreground hover:text-foreground transition-colors duration-300"
+                  aria-label={t("footer.subscribe")}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+              <p className="text-[11px] tracking-[0.04em] text-muted-foreground/80 leading-[1.7] mt-5 font-sans">
+                {t("footer.privacy_acknowledgement_pre")}{" "}
+                <span className="font-serif tracking-[0.12em]">RUVTIER</span>{" "}
+                {t("footer.privacy_acknowledgement_mid")}{" "}
+                <Link to="/privacy-policy" className="underline-offset-2 hover:underline hover:text-foreground transition-colors">
+                  {t("footer.privacy_policy")}
+                </Link>.
               </p>
-            )}
-          </form>
+              {subscribed && (
+                <p className="text-[12px] tracking-[0.06em] text-muted-foreground mt-3 animate-in fade-in">
+                  {t("footer.subscribed")}
+                </p>
+              )}
+            </form>
+          </div>
         </div>
 
         {/* ─── Social Links ─── */}

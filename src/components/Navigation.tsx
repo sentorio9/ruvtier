@@ -7,12 +7,14 @@ import ClientLoungeDrawer from "./ClientLoungeDrawer";
 import SearchOverlay from "./SearchOverlay";
 import ShippingRegionModal from "./ShippingRegionModal";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useT } from "@/i18n/useT";
+import type { TranslationKey } from "@/i18n/translations";
 
-const categories = [
-  { label: "Women", to: "/boutique/women" },
-  { label: "Men", to: "/boutique/men" },
-  { label: "Lifestyle", to: "/boutique/lifestyle" },
-  { label: "Book an Appointment", to: "/appointments" },
+const CATEGORY_ROUTES: { key: TranslationKey; to: string }[] = [
+  { key: "nav.women", to: "/boutique/women" },
+  { key: "nav.men", to: "/boutique/men" },
+  { key: "nav.lifestyle", to: "/boutique/lifestyle" },
+  { key: "nav.appointments", to: "/appointments" },
 ];
 
 const Navigation = () => {
@@ -23,6 +25,7 @@ const Navigation = () => {
   const [shippingOpen, setShippingOpen] = useState(false);
   const isMobile = useIsMobile();
   const { language } = useLanguage();
+  const { t } = useT();
 
   return (
     <>

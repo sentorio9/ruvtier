@@ -5,6 +5,8 @@ import SlideMenu from "./FullScreenMenu";
 import CartDrawer from "./CartDrawer";
 import ClientLoungeDrawer from "./ClientLoungeDrawer";
 import SearchOverlay from "./SearchOverlay";
+import ShippingRegionModal from "./ShippingRegionModal";
+import { useLanguage } from "@/hooks/useLanguage";
 
 const categories = [
   { label: "Women", to: "/boutique/women" },

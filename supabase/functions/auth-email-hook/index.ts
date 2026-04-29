@@ -36,10 +36,13 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 }
 
 // Configuration
-const SITE_NAME = "ruvtier"
+const SITE_NAME = "RUVTIER"
 const SENDER_DOMAIN = "notify.ruvtier.com"
 const ROOT_DOMAIN = "ruvtier.com"
-const FROM_DOMAIN = "ruvtier.com" // Domain shown in From address (may be root or sender subdomain)
+// Send From the DNS-verified subdomain so SPF/DKIM align — using the root
+// domain (ruvtier.com) causes Gmail to flag messages as spam because only
+// notify.ruvtier.com is authenticated.
+const FROM_DOMAIN = "notify.ruvtier.com"
 
 // Sample data for preview mode ONLY (not used in actual email sending).
 // URLs are baked in at scaffold time from the project's real data.

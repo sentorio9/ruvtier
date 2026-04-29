@@ -15,6 +15,7 @@ const EMPTY_PRODUCT = {
   price: "", compare_at_price: "", sku: "", stock_quantity: "0", status: "draft",
   featured: false, materials: "", care_info: "", seo_title: "", seo_description: "",
   thumbnail_url: "", hero_image_url: "", preorder_enabled: false, preorder_statement: "",
+  availability: "in_store",
   size_options: [] as string[], color_options: [] as string[], media_gallery: [] as string[],
 };
 

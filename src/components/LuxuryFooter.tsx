@@ -6,15 +6,17 @@ import { Editable } from "@/editor/Editable";
 import { useSiteText } from "@/editor/useSiteContent";
 import { useRegionCurrency } from "@/hooks/useRegionCurrency";
 import { useLanguage, getDefaultLanguageForCountry } from "@/hooks/useLanguage";
+import { useT } from "@/i18n/useT";
+import type { TranslationKey } from "@/i18n/translations";
 
 // One-tap region presets — each preset sets a representative country
 // (drives currency + locale) and pairs it with the language most often used
 // for browsing that region.
-const REGION_PRESETS: { id: string; label: string; country: string }[] = [
-  { id: "europe", label: "Europe", country: "FR" },
-  { id: "americas", label: "Americas", country: "US" },
-  { id: "asia", label: "Asia Pacific", country: "JP" },
-  { id: "middle-east", label: "Middle East", country: "AE" },
+const REGION_PRESETS: { id: string; labelKey: TranslationKey; country: string }[] = [
+  { id: "europe", labelKey: "footer.region.europe", country: "FR" },
+  { id: "americas", labelKey: "footer.region.americas", country: "US" },
+  { id: "asia", labelKey: "footer.region.asia", country: "JP" },
+  { id: "middle-east", labelKey: "footer.region.middle_east", country: "AE" },
 ];
 
 const REGION_COUNTRIES: Record<string, string[]> = {
@@ -51,6 +53,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const [shippingOpen, setShippingOpen] = useState(false);
   const { region, setRegion } = useRegionCurrency();
   const { languageLabel, setLanguage } = useLanguage();
+  const { t } = useT();
   const activeRegionId = detectActiveRegion(region.countryCode);
 
   const switchToPreset = (preset: { country: string; id: string }) => {
@@ -58,12 +61,14 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
     setLanguage(getDefaultLanguageForCountry(preset.country));
   };
 
-  const servicesHeading = useSiteText("footer_headings", "services", "Services");
-  const companyHeading = useSiteText("footer_headings", "company", "Company");
-  const touchHeading = useSiteText("footer_headings", "get_in_touch", "Get in touch");
-  const legalHeading = useSiteText("footer_headings", "legal", "Legal");
-  const newsletterHeading = useSiteText("footer_headings", "newsletter", "Sign up for newsletter");
-  const newsletterBlurb = useSiteText("footer_newsletter", "blurb", "Exclusive collections, heritage stories, and special events.");
+  // Admin overrides (useSiteText) take precedence; otherwise we use the
+  // localized label for the active language.
+  const servicesHeading = useSiteText("footer_headings", "services", t("footer.services"));
+  const companyHeading = useSiteText("footer_headings", "company", t("footer.company"));
+  const touchHeading = useSiteText("footer_headings", "get_in_touch", t("footer.get_in_touch"));
+  const legalHeading = useSiteText("footer_headings", "legal", t("footer.legal"));
+  const newsletterHeading = useSiteText("footer_headings", "newsletter", t("footer.newsletter"));
+  const newsletterBlurb = useSiteText("footer_newsletter", "blurb", t("footer.newsletter_blurb"));
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,32 +86,32 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
           {/* Services */}
           <div className="flex flex-col gap-3">
             <Editable kind="text_block" contentKey="footer_headings" field="services" label="Footer — Services heading" as="h3" className={headingClass}>{servicesHeading}</Editable>
-            <Link to="/rituals-of-care" className={linkClass}>Rituals of Care & Restoration</Link>
-            <Link to="/appointments" className={linkClass}>Book a Private Appointment</Link>
-            <Link to="/boutique" className={linkClass}>Explore Online Boutique</Link>
-            <Link to="/shipping" className={linkClass}>Shipping & Delivery</Link>
+            <Link to="/rituals-of-care" className={linkClass}>{t("footer.services.rituals")}</Link>
+            <Link to="/appointments" className={linkClass}>{t("footer.services.appointment")}</Link>
+            <Link to="/boutique" className={linkClass}>{t("footer.services.boutique")}</Link>
+            <Link to="/shipping" className={linkClass}>{t("footer.services.shipping")}</Link>
           </div>
 
           {/* Company */}
           <div className="flex flex-col gap-3">
             <Editable kind="text_block" contentKey="footer_headings" field="company" label="Footer — Company heading" as="h3" className={headingClass}>{companyHeading}</Editable>
-            <Link to="/the-house" className={linkClass}>House Philosophy</Link>
-            <Link to="/craft-career" className={linkClass}>Craft Career</Link>
-            <Link to="/find-boutique" className={linkClass}>Find a Boutique</Link>
+            <Link to="/the-house" className={linkClass}>{t("footer.company.house")}</Link>
+            <Link to="/craft-career" className={linkClass}>{t("footer.company.career")}</Link>
+            <Link to="/find-boutique" className={linkClass}>{t("footer.company.find_boutique")}</Link>
           </div>
 
           {/* Get in Touch */}
           <div className="flex flex-col gap-3">
             <Editable kind="text_block" contentKey="footer_headings" field="get_in_touch" label="Footer — Get in touch heading" as="h3" className={headingClass}>{touchHeading}</Editable>
-            <Link to="/contact" className={linkClass}>Contact</Link>
-            <Link to="/faq" className={linkClass}>FAQ</Link>
+            <Link to="/contact" className={linkClass}>{t("footer.touch.contact")}</Link>
+            <Link to="/faq" className={linkClass}>{t("footer.touch.faq")}</Link>
           </div>
 
           {/* Legal */}
           <div className="flex flex-col gap-3">
             <Editable kind="text_block" contentKey="footer_headings" field="legal" label="Footer — Legal heading" as="h3" className={headingClass}>{legalHeading}</Editable>
-            <Link to="/terms" className={linkClass}>Terms & Conditions</Link>
-            <Link to="/privacy-policy" className={linkClass}>Privacy & Cookie</Link>
+            <Link to="/terms" className={linkClass}>{t("footer.legal.terms")}</Link>
+            <Link to="/privacy-policy" className={linkClass}>{t("footer.legal.privacy")}</Link>
           </div>
 
           {/* Newsletter - right */}
@@ -121,14 +126,14 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Your email address"
+                  placeholder={t("footer.email_placeholder")}
                   className="w-full bg-transparent border-b border-border focus:border-foreground text-[13px] tracking-[0.08em] text-foreground placeholder:text-muted-foreground/60 pb-2 pr-7 outline-none transition-colors duration-300 font-sans"
                   required
                 />
                 <button
                   type="submit"
                   className="absolute right-0 bottom-2 text-muted-foreground hover:text-foreground transition-colors duration-300"
-                  aria-label="Subscribe"
+                  aria-label={t("footer.subscribe")}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M5 12h14M12 5l7 7-7 7" />
@@ -136,15 +141,16 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
                 </button>
               </div>
               <p className="text-[11px] tracking-[0.04em] text-muted-foreground/80 leading-relaxed mt-3 font-sans">
-                I acknowledge that my email address will be processed by{" "}
-                <span className="font-serif tracking-[0.12em]">RUVTIER</span> in accordance with the provisions of the{" "}
+                {t("footer.privacy_acknowledgement_pre")}{" "}
+                <span className="font-serif tracking-[0.12em]">RUVTIER</span>{" "}
+                {t("footer.privacy_acknowledgement_mid")}{" "}
                 <Link to="/privacy-policy" className="underline-offset-2 hover:underline hover:text-foreground transition-colors">
-                  Privacy Policy
+                  {t("footer.privacy_policy")}
                 </Link>.
               </p>
               {subscribed && (
                 <p className="text-[12px] tracking-[0.06em] text-muted-foreground mt-2 animate-in fade-in">
-                  Thank you for your interest.
+                  {t("footer.subscribed")}
                 </p>
               )}
             </form>
@@ -191,7 +197,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
         {/* ─── Quick region switch ─── */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center gap-y-3 gap-x-2 mb-8 md:mb-10">
           <span className="text-[10px] tracking-[0.32em] uppercase text-muted-foreground/80 sm:mr-4 text-center sm:text-left">
-            Browse by region
+            {t("footer.browse_region")}
           </span>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             {REGION_PRESETS.map((p) => {
@@ -207,7 +213,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
                   }`}
                 >
                   <span className="relative inline-block">
-                    {p.label}
+                    {t(p.labelKey)}
                     <span
                       aria-hidden
                       className={`absolute left-0 right-0 -bottom-0.5 h-px bg-foreground/70 origin-left transform transition-transform duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] ${
@@ -226,18 +232,18 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
           <p className="text-muted-foreground text-[12px] tracking-[0.08em]">
             © {new Date().getFullYear()}{" "}
             <span className="font-serif tracking-[0.12em]">RUVTIER</span>
-            . All rights reserved.
+            . {t("footer.rights")}
           </p>
           <button
             onClick={() => setShippingOpen(true)}
             className="flex items-center gap-2 text-[12px] tracking-[0.14em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300 self-start md:self-auto"
-            aria-label="Choose shipping country and language"
+            aria-label={t("footer.choose_country_lang")}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="10" />
               <path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" />
             </svg>
-            <span>Shipping to — {region.country} ({region.currency}) · {languageLabel}</span>
+            <span>{t("footer.shipping_to")} — {region.country} ({region.currency}) · {languageLabel}</span>
           </button>
         </div>
       </div>

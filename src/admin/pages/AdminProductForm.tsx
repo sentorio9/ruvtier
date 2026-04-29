@@ -307,7 +307,39 @@ export default function AdminProductForm() {
               <p className="text-[10px] text-[hsl(220,10%,35%)] mt-1" style={fontStyle}>
                 When enabled, the public product link redirects to /preorder/{form.slug || "..."}
               </p>
-            </div>
+        </div>
+
+        {/* Availability */}
+        <div className="bg-[hsl(220,15%,9%)] border border-[hsl(220,10%,14%)] p-5 space-y-4">
+          <h2 className="text-[12px] tracking-[0.12em] uppercase text-[hsl(220,10%,55%)] mb-2" style={fontStyle}>Availability</h2>
+          <p className="text-[10px] text-[hsl(220,10%,35%)]" style={fontStyle}>
+            Determines which filter on the public Collection page surfaces this piece.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {[
+              { value: "in_store", label: "In Store Only" },
+              { value: "made_to_measure", label: "Made-to-Measure Only" },
+              { value: "by_allocation", label: "By Allocation Only" },
+            ].map((opt) => {
+              const active = form.availability === opt.value;
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => handleChange("availability", opt.value)}
+                  className={`text-left p-3 border transition-colors ${
+                    active
+                      ? "border-[hsl(220,10%,55%)] bg-[hsl(220,15%,12%)] text-[hsl(220,10%,85%)]"
+                      : "border-[hsl(220,10%,14%)] text-[hsl(220,10%,55%)] hover:text-[hsl(220,10%,75%)]"
+                  }`}
+                  style={fontStyle}
+                >
+                  <span className="text-[11px] tracking-[0.08em]">{opt.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
           )}
         </div>
 

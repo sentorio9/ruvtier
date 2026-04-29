@@ -54,7 +54,7 @@ const Index = () => {
         <div className="relative z-10 text-center px-6 -mt-8 md:-mt-12">
           <ScrollFadeIn>
             <Editable kind="text_block" contentKey="home_hero" field="headline" label="Homepage hero text" as="p" className="font-serif font-light text-[clamp(20px,2.2vw,28px)] leading-[1.7] tracking-[0.08em] text-foreground mx-auto max-w-[var(--text-max)]">
-              Permanence in garment form
+              {heroHeadline}
             </Editable>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.3}>

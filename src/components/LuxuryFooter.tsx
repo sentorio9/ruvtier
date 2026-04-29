@@ -82,8 +82,8 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   return (
     <footer className="border-t border-border pt-16 md:pt-24 pb-10 md:pb-14">
       <div className="luxury-container">
-        {/* ─── Nav columns: 4 across ─── */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6 md:gap-x-10 max-w-4xl mx-auto mb-14 md:mb-20">
+        {/* ─── Nav columns + Newsletter: editorial 6-col grid ─── */}
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-y-10 gap-x-6 md:gap-x-10 mb-14 md:mb-20">
           {/* Services */}
           <div className="flex flex-col gap-3">
             <Editable kind="text_block" contentKey="footer_headings" field="services" label="Footer — Services heading" as="h3" className={headingClass}>{servicesHeading}</Editable>

@@ -20,6 +20,8 @@ const Index = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   usePageMeta({ title: "RUVTIER", description: "A luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition." });
   usePriceTick();
+  const heroHeadline = useSiteText("home_hero", "headline", "Permanence in garment form");
+  const materialMemoryHeadline = useSiteText("home_material_memory", "headline", "Material is Memory");
 
   // Featured pre-order — pick the first featured product with preorder enabled, or any featured product
   const { data: featuredProducts } = useActiveProducts({ featured: true, limit: 5 });

@@ -49,8 +49,14 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const [shippingOpen, setShippingOpen] = useState(false);
-  const { region } = useRegionCurrency();
-  const { languageLabel } = useLanguage();
+  const { region, setRegion } = useRegionCurrency();
+  const { languageLabel, setLanguage } = useLanguage();
+  const activeRegionId = detectActiveRegion(region.countryCode);
+
+  const switchToPreset = (preset: { country: string; id: string }) => {
+    setRegion(preset.country);
+    setLanguage(getDefaultLanguageForCountry(preset.country));
+  };
 
   const servicesHeading = useSiteText("footer_headings", "services", "Services");
   const companyHeading = useSiteText("footer_headings", "company", "Company");

@@ -151,18 +151,32 @@ function readCachedRates(): FxCache | null {
 }
 
 async function fetchRates(): Promise<FxCache | null> {
-  // Free, no-key endpoints. Try primary, fallback to secondary.
+  // Free, no-key endpoints. Ordered by reliability.
+  // Note: api.exchangerate.host now requires an access key and returns 200 OK
+  // with `success:false` and no `rates`, so it's intentionally excluded.
   const endpoints = [
-    `https://api.exchangerate.host/latest?base=${BASE_CURRENCY}`,
     `https://open.er-api.com/v6/latest/${BASE_CURRENCY}`,
+    `https://cdn.jsdelivr.net/npm/@fawazahmed/currency-api@latest/v1/currencies/${BASE_CURRENCY.toLowerCase()}.json`,
+    `https://latest.currency-api.pages.dev/v1/currencies/${BASE_CURRENCY.toLowerCase()}.json`,
   ];
   for (const url of endpoints) {
     try {
       const res = await fetch(url, { cache: "no-store" });
       if (!res.ok) continue;
       const json = await res.json();
-      const rates: Record<string, number> | undefined = json?.rates;
-      if (rates && typeof rates === "object" && Object.keys(rates).length > 0) {
+      // open.er-api.com → { rates: { USD: 1.17, ... } }
+      // currency-api    → { eur: { usd: 1.17, ... } }
+      let rates: Record<string, number> | undefined = json?.rates;
+      if (!rates) {
+        const inner = json?.[BASE_CURRENCY.toLowerCase()];
+        if (inner && typeof inner === "object") {
+          rates = {};
+          for (const [k, v] of Object.entries(inner)) {
+            if (typeof v === "number") rates[k.toUpperCase()] = v;
+          }
+        }
+      }
+      if (rates && typeof rates === "object" && Object.keys(rates).length > 5) {
         const cache: FxCache = { base: BASE_CURRENCY, fetchedAt: Date.now(), rates };
         try { localStorage.setItem(RATES_KEY, JSON.stringify(cache)); } catch { /* ignore quota */ }
         return cache;

@@ -1,21 +1,24 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import RegionSelector from "./RegionSelector";
+import ShippingRegionModal from "./ShippingRegionModal";
 import { Editable } from "@/editor/Editable";
 import { useSiteText } from "@/editor/useSiteContent";
+import { useRegionCurrency } from "@/hooks/useRegionCurrency";
 
 interface LuxuryFooterProps {
   onSubscribeClick: () => void;
 }
 
+// Footer typography bumped ~12% to improve legibility while staying editorial.
 const linkClass =
-  "text-[11.5px] tracking-[0.08em] text-muted-foreground hover:text-foreground transition-colors duration-300 leading-relaxed font-sans";
+  "text-[13px] tracking-[0.08em] text-muted-foreground hover:text-foreground transition-colors duration-300 leading-relaxed font-sans";
 
 const headingClass =
-  "font-serif tracking-[0.14em] text-foreground mb-4 text-base font-medium";
+  "font-serif tracking-[0.14em] text-foreground mb-4 text-[18px] font-medium";
 
 const newsletterHeadingClass =
-  "tracking-[0.14em] font-light text-foreground mb-4 font-sans text-lg";
+  "tracking-[0.14em] font-light text-foreground mb-4 font-sans text-[22px]";
 
 const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const [email, setEmail] = useState("");

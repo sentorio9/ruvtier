@@ -242,12 +242,15 @@ export function RegionProvider({ children }: { children: ReactNode }) {
   const setRegion = useCallback(
     (code: string) => {
       const r = getRegionFromCode(code);
-      setRegionState(r);
       persistRegion(r);
-      // Always refresh on currency switch so the user sees market price.
-      ensureFreshRates(true).then(() => {
+      // Refresh rates first so the reloaded page shows accurate market prices,
+      // then perform a full reload so every price/format updates instantly.
+      (async () => {
+        try { await ensureFreshRates(true); } catch { /* ignore */ }
         try { window.dispatchEvent(new CustomEvent("ruvtier:rates-updated")); } catch { /* ignore */ }
-      });
+        setRegionState(r);
+        try { window.location.reload(); } catch { /* ignore */ }
+      })();
     },
     [ensureFreshRates]
   );

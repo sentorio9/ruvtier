@@ -9,6 +9,7 @@ const corsHeaders = {
 const APPROVAL_EMAIL = 'frigatormark@gmail.com'
 const SENDER_DOMAIN = 'notify.ruvtier.com'
 const FROM_EMAIL = 'security@ruvtier.com'
+const SITE_URL = 'https://ruvtier.com'
 
 function jsonResponse(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -23,7 +24,12 @@ function htmlPage(message: string, success: boolean) {
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Jost','Helvetica Neue',Arial,sans-serif;background:hsl(220,15%,6%);color:hsl(220,10%,75%);display:flex;align-items:center;justify-content:center;min-height:100vh}.c{text-align:center;max-width:400px;padding:40px}.logo{font-size:14px;letter-spacing:.3em;color:hsl(220,10%,40%);margin-bottom:40px;text-transform:uppercase}.s{font-size:16px;letter-spacing:.12em;color:${success?'hsl(140,30%,55%)':'hsl(0,50%,55%)'};margin-bottom:16px}.m{font-size:13px;color:hsl(220,10%,45%);line-height:1.6}</style></head>
 <body><div class="c"><div class="logo">R U V T I E R</div><div class="s">${success?'✓ GRANTED':'✕ DENIED'}</div><p class="m">${message}</p></div></body></html>`, {
     status: 200,
-    headers: { 'Content-Type': 'text/html; charset=utf-8' },
+    headers: {
+      ...corsHeaders,
+      'Content-Type': 'text/html; charset=utf-8',
+      'X-Content-Type-Options': 'nosniff',
+      'Cache-Control': 'no-store',
+    },
   })
 }
 
@@ -180,6 +186,40 @@ Deno.serve(async (req) => {
 
   const body = await req.json()
 
+  // --- RESOLVE APPROVAL REQUEST (from email link via /admin-approval page) ---
+  if (body.action === 'resolve_request') {
+    const { token, decision } = body
+    if (!token || (decision !== 'approve' && decision !== 'deny')) {
+      return jsonResponse({ error: 'Invalid request' }, 400)
+    }
+
+    const { data: request } = await supabase
+      .from('admin_login_requests')
+      .select('*')
+      .eq('token', token)
+      .eq('status', 'pending')
+      .gt('expires_at', new Date().toISOString())
+      .maybeSingle()
+
+    if (!request) {
+      return jsonResponse({ error: 'Request expired or already processed.' }, 410)
+    }
+
+    const newStatus = decision === 'approve' ? 'approved' : 'denied'
+    await supabase
+      .from('admin_login_requests')
+      .update({ status: newStatus, resolved_at: new Date().toISOString() })
+      .eq('id', request.id)
+
+    await supabase.from('audit_logs').insert({
+      action: `admin_login_${newStatus}`,
+      actor_email: APPROVAL_EMAIL,
+      details: { request_id: request.id },
+    })
+
+    return jsonResponse({ status: newStatus })
+  }
+
   // --- LOGIN ---
   if (body.action === 'login') {
     const { username, password, rememberMe } = body
@@ -217,8 +257,8 @@ Deno.serve(async (req) => {
 
     if (insertErr) return jsonResponse({ error: 'Server error' }, 500)
 
-    const approveUrl = `${functionUrl}?action=approve&token=${token}`
-    const denyUrl = `${functionUrl}?action=deny&token=${token}`
+    const approveUrl = `${SITE_URL}/admin-approval?action=approve&token=${token}`
+    const denyUrl = `${SITE_URL}/admin-approval?action=deny&token=${token}`
 
     try {
       const messageId = `admin-approval-${loginReq.id}`

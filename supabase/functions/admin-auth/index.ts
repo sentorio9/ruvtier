@@ -223,8 +223,8 @@ Deno.serve(async (req) => {
 
     if (insertErr) return jsonResponse({ error: 'Server error' }, 500)
 
-    const approveUrl = `${functionUrl}?action=approve&token=${token}`
-    const denyUrl = `${functionUrl}?action=deny&token=${token}`
+    const approveUrl = `${SITE_URL}/admin-approval?action=approve&token=${token}`
+    const denyUrl = `${SITE_URL}/admin-approval?action=deny&token=${token}`
 
     try {
       const messageId = `admin-approval-${loginReq.id}`

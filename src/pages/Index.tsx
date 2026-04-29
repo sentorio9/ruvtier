@@ -65,16 +65,31 @@ const Index = () => {
             decoding="async"
           />
         </Editable>
-        <div className="absolute inset-0 bg-background/40 pointer-events-none" />
+        {/* Subtle full-frame veil for global legibility */}
+        <div className="absolute inset-0 bg-background/25 pointer-events-none" />
+        {/* Adaptive luminous halo behind the editorial line — works on bright cream
+            and darker scenes alike without darkening the imagery. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(78vw,820px)] h-[min(46vh,360px)] rounded-[50%] blur-3xl opacity-90"
+          style={{ background: "radial-gradient(ellipse at center, hsl(var(--background) / 0.85) 0%, hsl(var(--background) / 0.55) 35%, hsl(var(--background) / 0.18) 60%, transparent 78%)" }}
+        />
         <div className="relative z-10 text-center px-6 -mt-8 md:-mt-12">
           <ScrollFadeIn>
-            <Editable kind="text_block" contentKey="home_hero" field="headline" label="Homepage hero text" as="p" className="font-serif font-light text-[clamp(20px,2.2vw,28px)] leading-[1.7] tracking-[0.08em] text-foreground mx-auto max-w-[var(--text-max)]">
+            <Editable
+              kind="text_block"
+              contentKey="home_hero"
+              field="headline"
+              label="Homepage hero text"
+              as="p"
+              className="font-serif font-light text-[clamp(20px,2.2vw,28px)] leading-[1.7] tracking-[0.08em] text-foreground mx-auto max-w-[var(--text-max)] [text-shadow:0_1px_2px_hsl(var(--background)/0.55),0_0_18px_hsl(var(--background)/0.4)]"
+            >
               {heroHeadline}
             </Editable>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.3}>
             <Editable kind="text_block" contentKey="home_hero" field="cta_label" label="Hero button label" as="span" className="inline-block mt-10">
-              <Link to="/collection" className="luxury-button">
+              <Link to="/collection" className="luxury-button [text-shadow:0_1px_2px_hsl(var(--background)/0.5)]">
                 {heroCta}
               </Link>
             </Editable>

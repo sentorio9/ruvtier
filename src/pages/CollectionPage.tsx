@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
@@ -8,11 +8,30 @@ import { useActiveProducts, formatPrice, usePriceTick } from "@/hooks/useProduct
 import { usePageMeta } from "@/hooks/usePageMeta";
 import garmentImage from "@/assets/garment-single.jpg";
 
+type Availability = "in_store" | "made_to_measure" | "by_allocation";
+
+const FILTERS: { value: Availability; label: string }[] = [
+  { value: "in_store", label: "In Store Only" },
+  { value: "made_to_measure", label: "Made-to-Measure Only" },
+  { value: "by_allocation", label: "By Allocation Only" },
+];
+
 const CollectionPage = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
+  const [active, setActive] = useState<Availability>("in_store");
   const { data: products, isLoading } = useActiveProducts();
-  usePageMeta({ title: "The Collection", description: "Curated garments composed with care, intention, and the finest materials." });
+  usePageMeta({
+    title: "The Collection",
+    description: "Curated garments composed with care, intention, and the finest materials.",
+  });
   usePriceTick();
+
+  const filtered = useMemo(() => {
+    if (!products) return [];
+    return products.filter(
+      (p) => ((p as any).availability ?? "in_store") === active
+    );
+  }, [products, active]);
 
   return (
     <div className="relative">
@@ -31,6 +50,37 @@ const CollectionPage = () => {
         </div>
       </section>
 
+      {/* Filter tabs */}
+      <section className="pb-8 md:pb-14">
+        <div className="luxury-container">
+          <ScrollFadeIn>
+            <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 md:gap-x-16">
+              {FILTERS.map((f) => {
+                const isActive = active === f.value;
+                return (
+                  <button
+                    key={f.value}
+                    type="button"
+                    onClick={() => setActive(f.value)}
+                    aria-pressed={isActive}
+                    className="group relative pb-1 font-serif font-light text-[15px] md:text-[17px] tracking-wide transition-colors duration-500 text-foreground"
+                  >
+                    <span className={isActive ? "opacity-100" : "opacity-60 group-hover:opacity-100 transition-opacity duration-500"}>
+                      {f.label}
+                    </span>
+                    <span
+                      className={`pointer-events-none absolute left-0 right-0 -bottom-0.5 h-px bg-foreground origin-center transition-transform duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)] ${
+                        isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                      }`}
+                    />
+                  </button>
+                );
+              })}
+            </div>
+          </ScrollFadeIn>
+        </div>
+      </section>
+
       <section className="luxury-section" style={{ paddingTop: 0 }}>
         <div className="luxury-container">
           {isLoading ? (
@@ -43,10 +93,13 @@ const CollectionPage = () => {
                 </div>
               ))}
             </div>
-          ) : products && products.length > 0 ? (
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-6 gap-y-10 md:gap-y-16">
-              {products.map((product, i) => (
-                <ScrollFadeIn key={product.id} delay={i * 0.08}>
+          ) : filtered.length > 0 ? (
+            <div
+              key={active}
+              className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-6 gap-y-10 md:gap-y-16"
+            >
+              {filtered.map((product, i) => (
+                <ScrollFadeIn key={product.id} delay={i * 0.06}>
                   <Link to={`/product/${product.slug}`} className="group block">
                     <div className="relative overflow-hidden mb-4 bg-secondary aspect-[3/4]">
                       <img
@@ -69,7 +122,7 @@ const CollectionPage = () => {
           ) : (
             <div className="text-center py-20">
               <p className="luxury-body text-muted-foreground">
-                The collection is being composed. Please return soon.
+                No pieces are currently offered under this category.
               </p>
             </div>
           )}

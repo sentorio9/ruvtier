@@ -1,4 +1,22 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from "react";
+import { useLanguage, type LanguageCode } from "./useLanguage";
+
+// Build an Intl locale tag combining the active UI language with the region's
+// country, so e.g. selecting "English" in France formats as "en-FR" (English
+// language conventions, French currency placement). Falls back gracefully when
+// the runtime can't resolve the combined tag.
+function resolveDisplayLocale(language: LanguageCode, regionLocale: string, countryCode: string): string {
+  const country = countryCode || regionLocale.split("-")[1] || "";
+  const candidates = country ? [`${language}-${country}`, language, regionLocale] : [language, regionLocale];
+  try {
+    if (typeof (Intl as unknown as { Locale?: unknown }).Locale === "function") {
+      for (const c of candidates) {
+        try { new (Intl as unknown as { Locale: new (s: string) => unknown }).Locale(c); return c; } catch { /* try next */ }
+      }
+    }
+  } catch { /* ignore */ }
+  return candidates[0];
+}
 
 export interface RegionConfig {
   country: string;
@@ -189,12 +207,18 @@ async function fetchRates(): Promise<FxCache | null> {
 }
 
 export function RegionProvider({ children }: { children: ReactNode }) {
+  const { language } = useLanguage();
   const [region, setRegionState] = useState<RegionConfig>(DEFAULT_REGION);
   const [loading, setLoading] = useState(true);
   const [fx, setFx] = useState<FxCache | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [needsLocationConsent, setNeedsLocationConsent] = useState(false);
   const initialized = useRef(false);
+
+  // Broadcast on language change so non-React `formatPrice` callers re-render via usePriceTick.
+  useEffect(() => {
+    try { window.dispatchEvent(new CustomEvent("ruvtier:region-changed")); } catch { /* ignore */ }
+  }, [language]);
 
   // Persist region + broadcast so static helpers (outside React) can react.
   const persistRegion = (r: RegionConfig) => {
@@ -259,13 +283,11 @@ export function RegionProvider({ children }: { children: ReactNode }) {
     (code: string) => {
       const r = getRegionFromCode(code);
       persistRegion(r);
-      // Refresh rates first so the reloaded page shows accurate market prices,
-      // then perform a full reload so every price/format updates instantly.
+      setRegionState(r);
+      // Refresh rates in the background so prices update live without a reload.
       (async () => {
         try { await ensureFreshRates(true); } catch { /* ignore */ }
         try { window.dispatchEvent(new CustomEvent("ruvtier:rates-updated")); } catch { /* ignore */ }
-        setRegionState(r);
-        try { window.location.reload(); } catch { /* ignore */ }
       })();
     },
     [ensureFreshRates]
@@ -313,14 +335,20 @@ export function RegionProvider({ children }: { children: ReactNode }) {
 
   const formatPrice = useCallback(
     (amountInBase: number) => {
+      if (amountInBase === 0) {
+        // Preserve quiet-luxury zero rendering, but in the active currency symbol.
+        return `${hasRate ? region.currencySymbol : "€"}0`;
+      }
       const displayCurrency = hasRate ? region.currency : BASE_CURRENCY;
-      const displayLocale = hasRate ? region.locale : "fr-FR";
+      const baseLocale = hasRate ? region.locale : "fr-FR";
+      const displayLocale = resolveDisplayLocale(language, baseLocale, region.countryCode);
       const converted = convert(amountInBase);
       const zeroDecimal = ["JPY", "KRW", "VND", "IDR", "HUF", "CLP", "TWD"].includes(displayCurrency);
       try {
         return new Intl.NumberFormat(displayLocale, {
           style: "currency",
           currency: displayCurrency,
+          currencyDisplay: "symbol",
           minimumFractionDigits: 0,
           maximumFractionDigits: zeroDecimal ? 0 : 2,
         }).format(converted);
@@ -328,7 +356,7 @@ export function RegionProvider({ children }: { children: ReactNode }) {
         return `${hasRate ? region.currencySymbol : "€"}${Math.round(converted).toLocaleString()}`;
       }
     },
-    [region, convert, hasRate]
+    [region, convert, hasRate, language]
   );
 
   return (

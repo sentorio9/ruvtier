@@ -56,12 +56,13 @@ const ZERO_DECIMAL = new Set(["JPY", "KRW", "VND", "IDR", "HUF", "CLP", "TWD"]);
 
 export const formatPrice = (price: number | null | undefined) => {
   if (price == null) return "—";
-  if (price === 0) return "€0";
 
-  let locale = "en-US";
+  let locale = "fr-FR";
   let currency = "EUR";
   let symbol = "€";
+  let countryCode = "FR";
   let rate = 1;
+  let language = "en";
 
   try {
     const savedRegion = localStorage.getItem("ruvtier_region");
@@ -70,9 +71,14 @@ export const formatPrice = (price: number | null | undefined) => {
       locale = r.locale || locale;
       currency = r.currency || currency;
       symbol = r.currencySymbol || symbol;
+      countryCode = r.countryCode || countryCode;
     }
+    const savedLang = localStorage.getItem("ruvtier_language");
+    if (savedLang) language = savedLang;
+
     if (currency !== "EUR") {
-      const savedRates = localStorage.getItem("ruvtier_fx_rates");
+      // Use the v2 cache key written by useRegionCurrency.
+      const savedRates = localStorage.getItem("ruvtier_fx_rates_v2");
       if (savedRates) {
         const fx = JSON.parse(savedRates);
         if (fx?.base === "EUR" && typeof fx?.rates?.[currency] === "number") {
@@ -82,12 +88,27 @@ export const formatPrice = (price: number | null | undefined) => {
     }
   } catch { /* keep defaults */ }
 
+  if (price === 0) return `${symbol}0`;
+
+  // Combine UI language with country for natural formatting (e.g. "en-FR").
+  const candidates = [`${language}-${countryCode}`, language, locale];
+  let displayLocale = candidates[0];
+  try {
+    const LocaleCtor = (Intl as unknown as { Locale?: new (s: string) => unknown }).Locale;
+    if (typeof LocaleCtor === "function") {
+      for (const c of candidates) {
+        try { new LocaleCtor(c); displayLocale = c; break; } catch { /* try next */ }
+      }
+    }
+  } catch { /* ignore */ }
+
   const converted = price * rate;
   const zd = ZERO_DECIMAL.has(currency);
   try {
-    return new Intl.NumberFormat(locale, {
+    return new Intl.NumberFormat(displayLocale, {
       style: "currency",
       currency,
+      currencyDisplay: "symbol",
       minimumFractionDigits: 0,
       maximumFractionDigits: zd ? 0 : 2,
     }).format(converted);

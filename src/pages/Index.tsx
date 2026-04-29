@@ -159,10 +159,10 @@ const Index = () => {
               {/* Soft luminous halo behind the title */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-[18%] w-[70%] h-[38%] rounded-[50%] blur-3xl opacity-70 group-hover:opacity-90 transition-opacity duration-700"
+                className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-[8%] md:bottom-[10%] w-[70%] h-[38%] rounded-[50%] blur-3xl opacity-70 group-hover:opacity-90 transition-opacity duration-700"
                 style={{ background: "radial-gradient(ellipse at center, rgba(246,244,241,0.45) 0%, rgba(246,244,241,0.15) 45%, rgba(246,244,241,0) 75%)" }}
               />
-              <div className="absolute bottom-0 left-0 right-0 px-6 pb-14 md:pb-20 pt-24 flex flex-col items-center text-center">
+              <div className="absolute bottom-0 left-0 right-0 px-6 pb-6 md:pb-10 pt-24 flex flex-col items-center text-center">
                 <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="font-sans text-[9px] uppercase tracking-[0.3em] text-[#F6F4F1]/70 mb-3 [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
                   {womenSeason}
                 </Editable>
@@ -196,10 +196,10 @@ const Index = () => {
               {/* Soft luminous halo behind the title */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-[18%] w-[70%] h-[38%] rounded-[50%] blur-3xl opacity-70 group-hover:opacity-90 transition-opacity duration-700"
+                className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-[8%] md:bottom-[10%] w-[70%] h-[38%] rounded-[50%] blur-3xl opacity-70 group-hover:opacity-90 transition-opacity duration-700"
                 style={{ background: "radial-gradient(ellipse at center, rgba(246,244,241,0.45) 0%, rgba(246,244,241,0.15) 45%, rgba(246,244,241,0) 75%)" }}
               />
-              <div className="absolute bottom-0 left-0 right-0 px-6 pb-14 md:pb-20 pt-24 flex flex-col items-center text-center">
+              <div className="absolute bottom-0 left-0 right-0 px-6 pb-6 md:pb-10 pt-24 flex flex-col items-center text-center">
                 <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="font-sans text-[9px] uppercase tracking-[0.3em] text-[#F6F4F1]/70 mb-3 [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
                   {menSeason}
                 </Editable>

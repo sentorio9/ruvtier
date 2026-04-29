@@ -1,101 +1,87 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRegionCurrency, REGIONS } from "@/hooks/useRegionCurrency";
+import {
+  useLanguage,
+  COUNTRY_LANGUAGES,
+  LANGUAGE_LABELS,
+  getDefaultLanguageForCountry,
+  type LanguageCode,
+} from "@/hooks/useLanguage";
 
 interface ShippingRegionModalProps {
   open: boolean;
   onClose: () => void;
 }
 
-// Each entry maps a localised label to an ISO country code that the region
-// hook understands. Several locales can resolve to the same ISO code.
-type Entry = { code: string; label: string };
+// Country entries are deduplicated — language is now picked separately
+// inside the slide-in language panel.
+type Country = { code: string; name: string };
 
-const EUROPE: Entry[] = [
-  { code: "AT", label: "Österreich (Deutsch)" },
-  { code: "AT", label: "Austria (English)" },
-  { code: "BE", label: "Belgique (Français)" },
-  { code: "BE", label: "Belgium (English)" },
-  { code: "BG", label: "Bulgaria (English)" },
-  { code: "HR", label: "Croatia (English)" },
-  { code: "CY", label: "Cyprus (English)" },
-  { code: "CZ", label: "Czech Republic (English)" },
-  { code: "DK", label: "Denmark (English)" },
-  { code: "EE", label: "Estonia (English)" },
-  { code: "FI", label: "Finland (English)" },
-  { code: "FR", label: "France (Français)" },
-  { code: "FR", label: "France (English)" },
-  { code: "DE", label: "Deutschland (Deutsch)" },
-  { code: "DE", label: "Germany (English)" },
-  { code: "GR", label: "Greece (English)" },
-  { code: "HU", label: "Hungary (English)" },
-  { code: "IE", label: "Ireland (English)" },
-  { code: "IT", label: "Italia (Italiano)" },
-  { code: "IT", label: "Italy (English)" },
-  { code: "LV", label: "Latvia (English)" },
-  { code: "LT", label: "Lithuania (English)" },
-  { code: "LU", label: "Luxembourg (Français)" },
-  { code: "LU", label: "Luxemburg (Deutsch)" },
-  { code: "LU", label: "Luxembourg (English)" },
-  { code: "MT", label: "Malta (English)" },
-  { code: "MC", label: "Monaco (Français)" },
-  { code: "MC", label: "Monaco (English)" },
-  { code: "NL", label: "Netherlands (English)" },
-  { code: "PL", label: "Poland (English)" },
-  { code: "PT", label: "Portugal (English)" },
-  { code: "RO", label: "Romania (English)" },
-  { code: "SK", label: "Slovakia (English)" },
-  { code: "SI", label: "Slovenia (English)" },
-  { code: "ES", label: "Spain (English)" },
-  { code: "SE", label: "Sweden (English)" },
-  { code: "CH", label: "Schweiz (Deutsch)" },
-  { code: "CH", label: "Switzerland (English)" },
-  { code: "CH", label: "Svizzera (Italiano)" },
-  { code: "CH", label: "Suisse (Français)" },
-  { code: "UA", label: "Ukraine (English)" },
-  { code: "GB", label: "United Kingdom (English)" },
+const EUROPE: Country[] = [
+  { code: "AT", name: "Austria" },
+  { code: "BE", name: "Belgium" },
+  { code: "BG", name: "Bulgaria" },
+  { code: "HR", name: "Croatia" },
+  { code: "CY", name: "Cyprus" },
+  { code: "CZ", name: "Czech Republic" },
+  { code: "DK", name: "Denmark" },
+  { code: "EE", name: "Estonia" },
+  { code: "FI", name: "Finland" },
+  { code: "FR", name: "France" },
+  { code: "DE", name: "Germany" },
+  { code: "GR", name: "Greece" },
+  { code: "HU", name: "Hungary" },
+  { code: "IE", name: "Ireland" },
+  { code: "IT", name: "Italy" },
+  { code: "LV", name: "Latvia" },
+  { code: "LT", name: "Lithuania" },
+  { code: "LU", name: "Luxembourg" },
+  { code: "MT", name: "Malta" },
+  { code: "MC", name: "Monaco" },
+  { code: "NL", name: "Netherlands" },
+  { code: "PL", name: "Poland" },
+  { code: "PT", name: "Portugal" },
+  { code: "RO", name: "Romania" },
+  { code: "SK", name: "Slovakia" },
+  { code: "SI", name: "Slovenia" },
+  { code: "ES", name: "Spain" },
+  { code: "SE", name: "Sweden" },
+  { code: "CH", name: "Switzerland" },
+  { code: "UA", name: "Ukraine" },
+  { code: "GB", name: "United Kingdom" },
 ];
 
-const AMERICAS: Entry[] = [
-  { code: "US", label: "United States (English)" },
-  { code: "CA", label: "Canada (English)" },
-  { code: "CA", label: "Canada (Français)" },
-  { code: "BR", label: "Brasil (Português)" },
-  { code: "MX", label: "México (Español)" },
+const AMERICAS: Country[] = [
+  { code: "US", name: "United States" },
+  { code: "CA", name: "Canada" },
+  { code: "BR", name: "Brazil" },
+  { code: "MX", name: "Mexico" },
 ];
 
-const ASIA_PACIFIC: Entry[] = [
-  { code: "HK", label: "Hong Kong S.A.R (English)" },
-  { code: "HK", label: "香港特別行政區 (繁體中文)" },
-  { code: "JP", label: "日本 (日本語)" },
-  { code: "JP", label: "Japan (English)" },
-  { code: "KR", label: "한국 (한국어)" },
-  { code: "KR", label: "Korea, Republic of (English)" },
-  { code: "CN", label: "中国大陆 (简体中文)" },
-  { code: "SG", label: "Singapore (English)" },
-  { code: "AU", label: "Australia (English)" },
+const ASIA_PACIFIC: Country[] = [
+  { code: "HK", name: "Hong Kong S.A.R" },
+  { code: "JP", name: "Japan" },
+  { code: "KR", name: "Korea, Republic of" },
+  { code: "CN", name: "China" },
+  { code: "SG", name: "Singapore" },
+  { code: "AU", name: "Australia" },
 ];
 
-const MIDDLE_EAST: Entry[] = [
-  { code: "BH", label: "Bahrain (English)" },
-  { code: "BH", label: "البحرين (عربي)" },
-  { code: "KW", label: "Kuwait (English)" },
-  { code: "KW", label: "الكويت (عربي)" },
-  { code: "QA", label: "Qatar (English)" },
-  { code: "QA", label: "دولة قطر (عربي)" },
-  { code: "SA", label: "Saudi Arabia (English)" },
-  { code: "SA", label: "المملكة العربية السعودية (عربي)" },
-  { code: "AE", label: "United Arab Emirates (English)" },
-  { code: "AE", label: "الإمارات العربية المتحدة (عربي)" },
+const MIDDLE_EAST: Country[] = [
+  { code: "BH", name: "Bahrain" },
+  { code: "KW", name: "Kuwait" },
+  { code: "QA", name: "Qatar" },
+  { code: "SA", name: "Saudi Arabia" },
+  { code: "AE", name: "United Arab Emirates" },
 ];
 
-const BROWSE_ONLY: Entry[] = [
-  { code: "FR", label: "International (English)" },
-  { code: "TW", label: "台灣 (繁體中文)" },
-  { code: "TW", label: "Taiwan (English)" },
+const BROWSE_ONLY: Country[] = [
+  { code: "FR", name: "International" },
+  { code: "TW", name: "Taiwan" },
 ];
 
-type RegionGroup = { id: string; label: string; entries: Entry[] };
+type RegionGroup = { id: string; label: string; entries: Country[] };
 
 const GROUPS: RegionGroup[] = [
   { id: "europe", label: "Europe", entries: EUROPE },
@@ -106,13 +92,26 @@ const GROUPS: RegionGroup[] = [
 
 export default function ShippingRegionModal({ open, onClose }: ShippingRegionModalProps) {
   const { region, setRegion } = useRegionCurrency();
+  const { language, setLanguage } = useLanguage();
+
   const [activeGroup, setActiveGroup] = useState<string>("europe");
   const [query, setQuery] = useState("");
+
+  // Two-step selection state
+  const [pendingCountry, setPendingCountry] = useState<Country | null>(null);
+  const [pendingLanguage, setPendingLanguage] = useState<LanguageCode | null>(null);
 
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        if (pendingCountry) {
+          setPendingCountry(null);
+          setPendingLanguage(null);
+        } else {
+          onClose();
+        }
+      }
     };
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
@@ -120,18 +119,32 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-  }, [open, onClose]);
+  }, [open, onClose, pendingCountry]);
 
   // Reset transient state every time the modal opens.
   useEffect(() => {
     if (open) {
       setQuery("");
       setActiveGroup("europe");
+      setPendingCountry(null);
+      setPendingLanguage(null);
     }
   }, [open]);
 
-  const select = (code: string) => {
-    setRegion(code);
+  const openLanguagePanel = (country: Country) => {
+    setPendingCountry(country);
+    // Pre-select the user's current language if it's offered for this country,
+    // otherwise the country's default.
+    const offered = COUNTRY_LANGUAGES[country.code] ?? ["en"];
+    setPendingLanguage(
+      offered.includes(language) ? language : getDefaultLanguageForCountry(country.code)
+    );
+  };
+
+  const confirmSelection = () => {
+    if (!pendingCountry || !pendingLanguage) return;
+    setRegion(pendingCountry.code);
+    setLanguage(pendingLanguage);
     onClose();
   };
 
@@ -142,52 +155,51 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
     if (!isSearching) return GROUPS;
     return GROUPS.map((g) => ({
       ...g,
-      entries: g.entries.filter((e) => e.label.toLowerCase().includes(normalisedQuery)),
+      entries: g.entries.filter((c) => c.name.toLowerCase().includes(normalisedQuery)),
     })).filter((g) => g.entries.length > 0);
   }, [isSearching, normalisedQuery]);
 
   const filteredBrowseOnly = useMemo(() => {
     if (!isSearching) return BROWSE_ONLY;
-    return BROWSE_ONLY.filter((e) => e.label.toLowerCase().includes(normalisedQuery));
+    return BROWSE_ONLY.filter((c) => c.name.toLowerCase().includes(normalisedQuery));
   }, [isSearching, normalisedQuery]);
 
   const visibleGroup = isSearching
     ? null
     : GROUPS.find((g) => g.id === activeGroup) ?? GROUPS[0];
 
-  // Split a list of entries into balanced columns.
-  const splitColumns = (entries: Entry[], columns: number): Entry[][] => {
+  const splitColumns = (entries: Country[], columns: number): Country[][] => {
     const perCol = Math.ceil(entries.length / columns);
     return Array.from({ length: columns }, (_, i) =>
       entries.slice(i * perCol, (i + 1) * perCol)
     );
   };
 
-  const renderEntry = (e: Entry, i: number) => {
-    const active = region.countryCode === e.code;
-    const supported = REGIONS.some((r) => r.code === e.code);
+  const renderCountry = (c: Country, i: number) => {
+    const isActive = region.countryCode === c.code;
+    const supported = REGIONS.some((r) => r.code === c.code);
+    const langs = COUNTRY_LANGUAGES[c.code] ?? ["en"];
     return (
       <button
-        key={`${e.code}-${e.label}-${i}`}
-        onClick={() => select(e.code)}
-        className={`group relative block text-left text-[12.5px] tracking-[0.04em] py-1.5 pr-3 transition-colors duration-300 font-sans ${
-          active ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+        key={`${c.code}-${c.name}-${i}`}
+        onClick={() => openLanguagePanel(c)}
+        className={`group relative flex items-baseline justify-between gap-3 text-left text-[12.5px] tracking-[0.04em] py-1.5 pr-3 transition-colors duration-300 font-sans ${
+          isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
         }`}
       >
         <span className="relative inline-block">
-          {e.label}
+          {c.name}
           <span
             aria-hidden
             className={`absolute left-0 right-0 -bottom-0.5 h-px bg-foreground/70 origin-left transform transition-transform duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] ${
-              active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+              isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
             }`}
           />
         </span>
-        {!supported && (
-          <span className="ml-2 text-[10px] tracking-[0.18em] uppercase text-muted-foreground/50">
-            EN
-          </span>
-        )}
+        <span className="text-[10px] tracking-[0.18em] uppercase text-muted-foreground/50 shrink-0">
+          {langs.length > 1 ? `${langs.length} langs` : langs[0].toUpperCase()}
+          {!supported && <span className="ml-1 opacity-60">·</span>}
+        </span>
       </button>
     );
   };
@@ -203,7 +215,7 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
           className="fixed inset-0 z-[1000] bg-background overflow-y-auto"
           role="dialog"
           aria-modal="true"
-          aria-label="Shipping country and region"
+          aria-label="Shipping country and language"
         >
           {/* ─── Header bar ─── */}
           <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border/50">
@@ -246,10 +258,10 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
               </div>
               <div className="md:col-span-5 md:text-right flex md:flex-col items-start md:items-end gap-2">
                 <span className="text-[10px] tracking-[0.32em] uppercase text-muted-foreground/80">
-                  Currently shipping to
+                  Currently
                 </span>
                 <span className="font-serif font-light text-[18px] md:text-[20px] tracking-[0.04em] text-foreground">
-                  {region.country} · {region.currency}
+                  {region.country} · {region.currency} · {LANGUAGE_LABELS[language]}
                 </span>
               </div>
             </div>
@@ -264,7 +276,7 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Type a country or language…"
+                  placeholder="Type a country name…"
                   className="w-full bg-transparent border-b border-border focus:border-foreground text-[13px] tracking-[0.04em] text-foreground placeholder:text-muted-foreground/60 pb-2.5 pr-7 outline-none transition-colors duration-300 font-sans"
                 />
                 <svg
@@ -278,11 +290,10 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
             </div>
 
             {isSearching ? (
-              // ─── Search results ───
               <div className="space-y-12">
                 {filteredGroups.length === 0 && filteredBrowseOnly.length === 0 ? (
                   <p className="font-serif font-light text-[16px] text-muted-foreground italic">
-                    No destinations match “{query}”.
+                    No destinations match "{query}".
                   </p>
                 ) : (
                   <>
@@ -292,7 +303,7 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
                           {g.label}
                         </h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8">
-                          {g.entries.map(renderEntry)}
+                          {g.entries.map(renderCountry)}
                         </div>
                       </section>
                     ))}
@@ -302,7 +313,7 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
                           Browse only
                         </h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8">
-                          {filteredBrowseOnly.map(renderEntry)}
+                          {filteredBrowseOnly.map(renderCountry)}
                         </div>
                       </section>
                     )}
@@ -310,7 +321,6 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
                 )}
               </div>
             ) : (
-              // ─── Region rail (left) + entries (right) ───
               <div className="grid grid-cols-1 md:grid-cols-12 gap-y-10 gap-x-10 md:gap-x-16">
                 {/* Left rail */}
                 <nav className="md:col-span-3" aria-label="Regions">
@@ -370,7 +380,7 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
                             visibleGroup.entries.length > 18 ? 3 : visibleGroup.entries.length > 8 ? 2 : 1
                           ).map((col, ci) => (
                             <div key={ci} className="flex flex-col">
-                              {col.map(renderEntry)}
+                              {col.map(renderCountry)}
                             </div>
                           ))}
                         </div>
@@ -381,7 +391,6 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
               </div>
             )}
 
-            {/* Browse only — always visible at the bottom when not searching */}
             {!isSearching && (
               <div className="mt-16 pt-8 border-t border-border/60">
                 <div className="flex flex-col md:flex-row md:items-center gap-y-3 gap-x-10">
@@ -389,12 +398,120 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
                     Browse only
                   </span>
                   <div className="flex flex-wrap gap-x-8 gap-y-1">
-                    {BROWSE_ONLY.map(renderEntry)}
+                    {BROWSE_ONLY.map(renderCountry)}
                   </div>
                 </div>
               </div>
             )}
           </div>
+
+          {/* ─── Language sub-panel (slides over from the right) ─── */}
+          <AnimatePresence>
+            {pendingCountry && (
+              <>
+                <motion.div
+                  key="lang-scrim"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.35, ease: [0.22, 0.61, 0.36, 1] }}
+                  className="fixed inset-0 z-[1001] bg-foreground/20"
+                  onClick={() => { setPendingCountry(null); setPendingLanguage(null); }}
+                />
+                <motion.aside
+                  key="lang-panel"
+                  initial={{ x: "100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "100%" }}
+                  transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
+                  className="fixed top-0 right-0 z-[1002] h-full w-full sm:w-[440px] bg-background border-l border-border/60 flex flex-col"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label={`Choose language for ${pendingCountry.name}`}
+                >
+                  {/* Sub-panel header */}
+                  <div className="flex items-center justify-between px-7 md:px-9 py-6 border-b border-border/50">
+                    <button
+                      onClick={() => { setPendingCountry(null); setPendingLanguage(null); }}
+                      className="group flex items-center gap-2 text-[11px] tracking-[0.22em] uppercase text-muted-foreground hover:text-foreground transition-colors"
+                      aria-label="Back to country list"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M15 6l-6 6 6 6" />
+                      </svg>
+                      <span>Back</span>
+                    </button>
+                    <button
+                      onClick={onClose}
+                      aria-label="Close"
+                      className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M6 6l12 12M18 6L6 18" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  {/* Sub-panel body */}
+                  <div className="flex-1 overflow-y-auto px-7 md:px-9 py-10">
+                    <span className="block text-[10px] tracking-[0.32em] uppercase text-muted-foreground/80 mb-3">
+                      Shipping to
+                    </span>
+                    <h3 className="font-serif font-light text-[26px] md:text-[30px] tracking-[0.02em] text-foreground mb-10">
+                      {pendingCountry.name}
+                    </h3>
+
+                    <span className="block text-[10px] tracking-[0.32em] uppercase text-muted-foreground/80 mb-5">
+                      Choose a language
+                    </span>
+                    <ul className="flex flex-col">
+                      {(COUNTRY_LANGUAGES[pendingCountry.code] ?? ["en"]).map((lc) => {
+                        const isActive = pendingLanguage === lc;
+                        return (
+                          <li key={lc}>
+                            <button
+                              onClick={() => setPendingLanguage(lc)}
+                              className={`group w-full flex items-center justify-between py-3 border-b border-border/50 transition-colors duration-300 ${
+                                isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                              }`}
+                              aria-pressed={isActive}
+                            >
+                              <span className="font-serif font-light text-[18px] tracking-[0.03em]">
+                                {LANGUAGE_LABELS[lc]}
+                              </span>
+                              <span
+                                aria-hidden
+                                className={`relative w-3 h-3 rounded-full border border-foreground/60 transition-all duration-300 ${
+                                  isActive ? "bg-foreground" : "bg-transparent group-hover:bg-foreground/30"
+                                }`}
+                              />
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+
+                  {/* Sub-panel footer */}
+                  <div className="px-7 md:px-9 py-6 border-t border-border/50">
+                    <button
+                      onClick={confirmSelection}
+                      disabled={!pendingLanguage}
+                      className="group relative w-full text-[11px] tracking-[0.32em] uppercase text-foreground py-3 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
+                    >
+                      <span className="relative inline-block">
+                        Confirm Selection
+                        <span
+                          aria-hidden
+                          className="absolute left-0 right-0 -bottom-0.5 h-px bg-foreground/70 origin-left transform scale-x-0 group-hover:scale-x-100 group-disabled:scale-x-0 transition-transform duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                        />
+                      </span>
+                    </button>
+                  </div>
+                </motion.aside>
+              </>
+            )}
+          </AnimatePresence>
         </motion.div>
       )}
     </AnimatePresence>

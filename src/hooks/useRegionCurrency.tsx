@@ -9,7 +9,9 @@ export interface RegionConfig {
 }
 
 const REGION_KEY = "ruvtier_region";
-const RATES_KEY = "ruvtier_fx_rates";
+// Bumped cache key to invalidate any stale/empty rate caches written by the
+// previous (now key-protected) exchangerate.host endpoint.
+const RATES_KEY = "ruvtier_fx_rates_v2";
 const CONSENT_KEY = "ruvtier_location_consent";
 const RATES_TTL_MS = 60 * 60 * 1000; // 1h
 // Prices are authored in EUR — this is the base currency for FX conversion.
@@ -149,18 +151,32 @@ function readCachedRates(): FxCache | null {
 }
 
 async function fetchRates(): Promise<FxCache | null> {
-  // Free, no-key endpoints. Try primary, fallback to secondary.
+  // Free, no-key endpoints. Ordered by reliability.
+  // Note: api.exchangerate.host now requires an access key and returns 200 OK
+  // with `success:false` and no `rates`, so it's intentionally excluded.
   const endpoints = [
-    `https://api.exchangerate.host/latest?base=${BASE_CURRENCY}`,
     `https://open.er-api.com/v6/latest/${BASE_CURRENCY}`,
+    `https://cdn.jsdelivr.net/npm/@fawazahmed/currency-api@latest/v1/currencies/${BASE_CURRENCY.toLowerCase()}.json`,
+    `https://latest.currency-api.pages.dev/v1/currencies/${BASE_CURRENCY.toLowerCase()}.json`,
   ];
   for (const url of endpoints) {
     try {
       const res = await fetch(url, { cache: "no-store" });
       if (!res.ok) continue;
       const json = await res.json();
-      const rates: Record<string, number> | undefined = json?.rates;
-      if (rates && typeof rates === "object" && Object.keys(rates).length > 0) {
+      // open.er-api.com → { rates: { USD: 1.17, ... } }
+      // currency-api    → { eur: { usd: 1.17, ... } }
+      let rates: Record<string, number> | undefined = json?.rates;
+      if (!rates) {
+        const inner = json?.[BASE_CURRENCY.toLowerCase()];
+        if (inner && typeof inner === "object") {
+          rates = {};
+          for (const [k, v] of Object.entries(inner)) {
+            if (typeof v === "number") rates[k.toUpperCase()] = v;
+          }
+        }
+      }
+      if (rates && typeof rates === "object" && Object.keys(rates).length > 5) {
         const cache: FxCache = { base: BASE_CURRENCY, fetchedAt: Date.now(), rates };
         try { localStorage.setItem(RATES_KEY, JSON.stringify(cache)); } catch { /* ignore quota */ }
         return cache;
@@ -280,33 +296,39 @@ export function RegionProvider({ children }: { children: ReactNode }) {
     setNeedsLocationConsent(false);
   }, []);
 
-  const rate = fx?.rates?.[region.currency] ?? (region.currency === BASE_CURRENCY ? 1 : 1);
+  // If we don't have a rate yet for the selected currency, fall back to EUR (base)
+  // rather than silently rendering "10 USD" for €10 — which is what produces the
+  // "wrong amount" the user is seeing.
+  const hasRate = region.currency === BASE_CURRENCY || typeof fx?.rates?.[region.currency] === "number";
+  const rate = hasRate ? (region.currency === BASE_CURRENCY ? 1 : (fx!.rates[region.currency] as number)) : 1;
 
   const convert = useCallback(
     (amountInBase: number) => {
+      if (!hasRate) return amountInBase; // EUR amount
       if (region.currency === BASE_CURRENCY) return amountInBase;
       return amountInBase * rate;
     },
-    [region.currency, rate]
+    [region.currency, rate, hasRate]
   );
 
   const formatPrice = useCallback(
     (amountInBase: number) => {
+      const displayCurrency = hasRate ? region.currency : BASE_CURRENCY;
+      const displayLocale = hasRate ? region.locale : "fr-FR";
       const converted = convert(amountInBase);
-      // Round sensibly: zero-decimal currencies (JPY/KRW/VND/etc.) get whole numbers; others keep up to 2.
-      const zeroDecimal = ["JPY", "KRW", "VND", "IDR", "HUF", "CLP", "TWD"].includes(region.currency);
+      const zeroDecimal = ["JPY", "KRW", "VND", "IDR", "HUF", "CLP", "TWD"].includes(displayCurrency);
       try {
-        return new Intl.NumberFormat(region.locale, {
+        return new Intl.NumberFormat(displayLocale, {
           style: "currency",
-          currency: region.currency,
+          currency: displayCurrency,
           minimumFractionDigits: 0,
           maximumFractionDigits: zeroDecimal ? 0 : 2,
         }).format(converted);
       } catch {
-        return `${region.currencySymbol}${Math.round(converted).toLocaleString()}`;
+        return `${hasRate ? region.currencySymbol : "€"}${Math.round(converted).toLocaleString()}`;
       }
     },
-    [region, convert]
+    [region, convert, hasRate]
   );
 
   return (

@@ -63,6 +63,13 @@ const Navigation = () => {
           {/* Right */}
           <div className="flex items-center justify-end gap-5 md:gap-7">
             <button
+              onClick={() => setShippingOpen(true)}
+              className="luxury-button !p-1.5 !text-[10.5px] tracking-[0.18em] uppercase"
+              aria-label={`Current language: ${language}. Change region or language`}
+            >
+              {language.toUpperCase()}
+            </button>
+            <button
               onClick={() => setCartOpen(true)}
               className="luxury-button !p-1.5"
               aria-label="Shopping bag"

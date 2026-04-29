@@ -36,32 +36,23 @@ const ContactPage = () => {
       <section className="min-h-[70vh] flex items-center justify-center pt-32 pb-20">
         <div className="luxury-container flex flex-col items-center text-center max-w-xl mx-auto">
           <ScrollFadeIn>
-            <h1 className="luxury-heading mb-10">Contact</h1>
+            <Editable kind="text_block" contentKey="contact_intro" field="headline" label="Contact — heading" as="h1" className="luxury-heading mb-10">
+              {heading}
+            </Editable>
           </ScrollFadeIn>
 
           {/* Contact details */}
           <ScrollFadeIn delay={0.1}>
             <div className="flex flex-col gap-4 mb-14">
-              <a
-                href="mailto:theruvtier@gmail.com"
-                className="luxury-button !text-[13px] tracking-[0.1em]"
-              >
-                theruvtier@gmail.com
-              </a>
-              <a
-                href="tel:+447881967338"
-                className="luxury-button !text-[13px] tracking-[0.1em]"
-              >
-                +44 7881 967338
-              </a>
-              <a
-                href="https://www.instagram.com/ruvtier"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="luxury-button !text-[13px] tracking-[0.1em]"
-              >
-                Instagram
-              </a>
+              <Editable kind="text_block" contentKey="contact_details" field="email" label="Contact — email" as="span" className="inline-block">
+                <a href={`mailto:${email}`} className="luxury-button !text-[13px] tracking-[0.1em]">{email}</a>
+              </Editable>
+              <Editable kind="text_block" contentKey="contact_details" field="phone" label="Contact — phone" as="span" className="inline-block">
+                <a href={`tel:${phone.replace(/\s+/g, "")}`} className="luxury-button !text-[13px] tracking-[0.1em]">{phone}</a>
+              </Editable>
+              <Editable kind="text_block" contentKey="contact_details" field="instagram_label" label="Contact — Instagram label" as="span" className="inline-block">
+                <a href="https://www.instagram.com/ruvtier" target="_blank" rel="noopener noreferrer" className="luxury-button !text-[13px] tracking-[0.1em]">{instagram}</a>
+              </Editable>
             </div>
           </ScrollFadeIn>
 

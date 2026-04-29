@@ -94,7 +94,11 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
   const { region, setRegion } = useRegionCurrency();
   const { language, setLanguage } = useLanguage();
 
-  const [activeGroup, setActiveGroup] = useState<string>("europe");
+  // Locate which group currently holds the saved region — falls back to Europe.
+  const groupForCountry = (code: string): string =>
+    GROUPS.find((g) => g.entries.some((c) => c.code === code))?.id ?? "europe";
+
+  const [activeGroup, setActiveGroup] = useState<string>(() => groupForCountry(region.countryCode));
   const [query, setQuery] = useState("");
 
   // Two-step selection state
@@ -121,14 +125,25 @@ export default function ShippingRegionModal({ open, onClose }: ShippingRegionMod
     };
   }, [open, onClose, pendingCountry]);
 
-  // Reset transient state every time the modal opens.
+  // Re-sync transient state every time the modal opens — pre-select the
+  // region group that contains the user's persisted country so they land
+  // directly on the correct continent, with their selection already lit.
   useEffect(() => {
     if (open) {
       setQuery("");
-      setActiveGroup("europe");
+      setActiveGroup(groupForCountry(region.countryCode));
       setPendingCountry(null);
       setPendingLanguage(null);
+      // Smoothly scroll the active country row into view after the modal
+      // mount animation settles.
+      window.setTimeout(() => {
+        const el = document.querySelector<HTMLElement>(
+          `[data-country-code="${region.countryCode}"]`
+        );
+        el?.scrollIntoView({ block: "center", behavior: "smooth" });
+      }, 350);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   const openLanguagePanel = (country: Country) => {

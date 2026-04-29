@@ -187,8 +187,21 @@ const Index = () => {
                 <Editable kind="text_block" contentKey="home_women_card" field="blurb" label="Women — blurb" as="p" className="font-sans text-[11px] tracking-[0.02em] text-[#F6F4F1]/80 mb-5 max-w-[260px] leading-[1.75] [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
                   {womenBlurb}
                 </Editable>
-                <span className="inline-flex items-center gap-2 font-sans text-[10px] uppercase tracking-[0.2em] text-[#F6F4F1]/85 group-hover:text-[#F6F4F1] transition-colors duration-500 border-b border-[#F6F4F1]/30 group-hover:border-[#F6F4F1]/70 pb-0.5">
-                  <Editable kind="text_block" contentKey="home_women_card" field="cta_label" label="Women — CTA label" as="span">{womenCta}</Editable>
+                <span className="inline-flex items-center gap-2 font-sans text-[10px] uppercase tracking-[0.2em] text-[#F6F4F1]/85 group-hover:text-[#F6F4F1] transition-colors duration-500">
+                  <span className="relative inline-block pb-1">
+                    <Editable kind="text_block" contentKey="home_women_card" field="cta_label" label="Women — CTA label" as="span">{womenCta}</Editable>
+                    {/* Hairline underline */}
+                    <span
+                      aria-hidden
+                      className="absolute left-0 right-0 -bottom-px h-px bg-[#F6F4F1]/80 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                    />
+                    {/* Soft glowing halo beneath the underline */}
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-[120%] h-2 rounded-full blur-md opacity-0 group-hover:opacity-90 transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                      style={{ background: "radial-gradient(ellipse at center, rgba(246,244,241,0.7) 0%, rgba(246,244,241,0.25) 45%, rgba(246,244,241,0) 80%)" }}
+                    />
+                  </span>
                   <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
                 </span>
               </div>
@@ -224,8 +237,19 @@ const Index = () => {
                 <Editable kind="text_block" contentKey="home_men_card" field="blurb" label="Men — blurb" as="p" className="font-sans text-[11px] tracking-[0.02em] text-[#F6F4F1]/80 mb-5 max-w-[260px] leading-[1.75] [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
                   {menBlurb}
                 </Editable>
-                <span className="inline-flex items-center gap-2 font-sans text-[10px] uppercase tracking-[0.2em] text-[#F6F4F1]/85 group-hover:text-[#F6F4F1] transition-colors duration-500 border-b border-[#F6F4F1]/30 group-hover:border-[#F6F4F1]/70 pb-0.5">
-                  <Editable kind="text_block" contentKey="home_men_card" field="cta_label" label="Men — CTA label" as="span">{menCta}</Editable>
+                <span className="inline-flex items-center gap-2 font-sans text-[10px] uppercase tracking-[0.2em] text-[#F6F4F1]/85 group-hover:text-[#F6F4F1] transition-colors duration-500">
+                  <span className="relative inline-block pb-1">
+                    <Editable kind="text_block" contentKey="home_men_card" field="cta_label" label="Men — CTA label" as="span">{menCta}</Editable>
+                    <span
+                      aria-hidden
+                      className="absolute left-0 right-0 -bottom-px h-px bg-[#F6F4F1]/80 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                    />
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-[120%] h-2 rounded-full blur-md opacity-0 group-hover:opacity-90 transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                      style={{ background: "radial-gradient(ellipse at center, rgba(246,244,241,0.7) 0%, rgba(246,244,241,0.25) 45%, rgba(246,244,241,0) 80%)" }}
+                    />
+                  </span>
                   <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
                 </span>
               </div>

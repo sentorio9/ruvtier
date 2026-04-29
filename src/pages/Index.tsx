@@ -70,7 +70,19 @@ const Index = () => {
 
       {/* Hero */}
       <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
-        <Editable kind="site_image" contentKey="site_image_home_hero" label="Homepage hero image" as="div" className="absolute inset-0">
+        <Editable
+          kind="site_image"
+          contentKey="site_image_home_hero"
+          label="Homepage hero image"
+          as="div"
+          className="absolute inset-0 overflow-hidden transition-[left,right,top,bottom] duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+          style={{
+            left: `${heroInset}px`,
+            right: `${heroInset}px`,
+            top: `${heroInset * 0.5}px`,
+            bottom: `${heroInset * 0.5}px`,
+          }}
+        >
           <img
             src={heroImageOverride || heroImage}
             alt="RUVTIER luxury garment editorial"

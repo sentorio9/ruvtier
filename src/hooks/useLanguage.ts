@@ -84,30 +84,62 @@ function readStoredLanguage(): LanguageCode | null {
   }
 }
 
+// ─── Cross-component reactive store ───────────────────────────────────────
+// useState is local to each component, so calling setLanguage in one place
+// (e.g. the modal) wouldn't re-render the footer or nav. We back the hook
+// with a tiny pub/sub so every consumer subscribes to the same source of
+// truth and updates instantly — no provider, no refresh.
+
+let currentLanguage: LanguageCode = (() => {
+  if (typeof window === "undefined") return "en";
+  return readStoredLanguage() ?? "en";
+})();
+
+const listeners = new Set<(lang: LanguageCode) => void>();
+
+function emit(lang: LanguageCode) {
+  currentLanguage = lang;
+  listeners.forEach((l) => l(lang));
+}
+
+export function setLanguageGlobal(code: LanguageCode) {
+  if (!(code in LANGUAGE_LABELS)) return;
+  try { localStorage.setItem(LANG_KEY, code); } catch { /* ignore */ }
+  try { document.documentElement.lang = code; } catch { /* ignore */ }
+  emit(code);
+}
+
+if (typeof window !== "undefined") {
+  // Sync across browser tabs / external writes.
+  window.addEventListener("storage", (e: StorageEvent) => {
+    if (e.key === LANG_KEY && e.newValue && e.newValue in LANGUAGE_LABELS) {
+      emit(e.newValue as LanguageCode);
+    }
+  });
+  // Reflect initial value on <html lang>.
+  try { document.documentElement.lang = currentLanguage; } catch { /* ignore */ }
+}
+
 /**
- * Lightweight language store. Persists a single ISO-style language code in
- * localStorage. Wired alongside the region selector so the modal can offer
- * country + language together. Translation pipelines can read this hook later.
+ * Subscribe to the global language store. Every consumer re-renders the
+ * moment any other consumer (or the modal) calls `setLanguage`.
  */
 export function useLanguage() {
-  const [language, setLanguageState] = useState<LanguageCode>(() => readStoredLanguage() ?? "en");
+  const [language, setLanguageState] = useState<LanguageCode>(currentLanguage);
 
   useEffect(() => {
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === LANG_KEY && e.newValue && e.newValue in LANGUAGE_LABELS) {
-        setLanguageState(e.newValue as LanguageCode);
-      }
-    };
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
+    // Catch any change that happened between module load and mount.
+    if (currentLanguage !== language) setLanguageState(currentLanguage);
+    const listener = (lang: LanguageCode) => setLanguageState(lang);
+    listeners.add(listener);
+    return () => { listeners.delete(listener); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setLanguage = useCallback((code: LanguageCode) => {
-    setLanguageState(code);
-    try { localStorage.setItem(LANG_KEY, code); } catch { /* ignore */ }
-    // Reflect on the document for downstream tooling.
-    try { document.documentElement.lang = code; } catch { /* ignore */ }
+    setLanguageGlobal(code);
   }, []);
 
   return { language, setLanguage, languageLabel: LANGUAGE_LABELS[language] };
 }
+

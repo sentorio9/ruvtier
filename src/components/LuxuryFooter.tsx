@@ -5,6 +5,7 @@ import ShippingRegionModal from "./ShippingRegionModal";
 import { Editable } from "@/editor/Editable";
 import { useSiteText } from "@/editor/useSiteContent";
 import { useRegionCurrency } from "@/hooks/useRegionCurrency";
+import { useLanguage } from "@/hooks/useLanguage";
 
 interface LuxuryFooterProps {
   onSubscribeClick: () => void;
@@ -25,6 +26,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const [subscribed, setSubscribed] = useState(false);
   const [shippingOpen, setShippingOpen] = useState(false);
   const { region } = useRegionCurrency();
+  const { languageLabel } = useLanguage();
 
   const servicesHeading = useSiteText("footer_headings", "services", "Services");
   const companyHeading = useSiteText("footer_headings", "company", "Company");
@@ -172,7 +174,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
               <circle cx="12" cy="12" r="10" />
               <path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" />
             </svg>
-            <span>Shipping to — {region.country} ({region.currency})</span>
+            <span>Shipping to — {region.country} ({region.currency}) · {languageLabel}</span>
           </button>
         </div>
       </div>

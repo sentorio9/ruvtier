@@ -103,8 +103,15 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
                   </svg>
                 </button>
               </div>
+              <p className="text-[11px] tracking-[0.04em] text-muted-foreground/80 leading-relaxed mt-3 font-sans">
+                I acknowledge that my email address will be processed by{" "}
+                <span className="font-serif tracking-[0.12em]">RUVTIER</span> in accordance with the provisions of the{" "}
+                <Link to="/privacy-policy" className="underline-offset-2 hover:underline hover:text-foreground transition-colors">
+                  Privacy Policy
+                </Link>.
+              </p>
               {subscribed && (
-                <p className="text-[10px] tracking-[0.06em] text-muted-foreground mt-2 animate-in fade-in">
+                <p className="text-[12px] tracking-[0.06em] text-muted-foreground mt-2 animate-in fade-in">
                   Thank you for your interest.
                 </p>
               )}

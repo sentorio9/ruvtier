@@ -148,7 +148,7 @@ export default function AdminCarts() {
                     {new Date(c.updated_at).toLocaleString()}
                   </td>
                   <td className="px-4 py-3">
-                    <button onClick={() => deleteCart(c.id)} className="text-[hsl(220,10%,30%)] hover:text-[hsl(0,50%,55%)] transition-colors">
+                    <button onClick={() => setPendingDelete(c)} aria-label="Delete cart" className="text-[hsl(220,10%,30%)] hover:text-[hsl(0,50%,55%)] transition-colors">
                       <Trash2 size={13} />
                     </button>
                   </td>

@@ -93,10 +93,17 @@ const ContactPage = () => {
               </p>
             ) : (
               <form onSubmit={handleSubmit} className="w-full flex flex-col gap-10 text-left">
+                {/* Honeypot — hidden from humans, attractive to bots */}
+                <input
+                  {...honeypotInputProps}
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
                 <div className="relative border-b border-foreground/15 transition-colors duration-500 focus-within:border-foreground/50">
                   <input
                     type="text"
                     required
+                    maxLength={100}
                     value={form.name}
                     onChange={handleChange("name")}
                     placeholder="Name"
@@ -108,6 +115,7 @@ const ContactPage = () => {
                   <input
                     type="email"
                     required
+                    maxLength={255}
                     value={form.email}
                     onChange={handleChange("email")}
                     placeholder="Email"
@@ -118,6 +126,7 @@ const ContactPage = () => {
                 <div className="relative border-b border-foreground/15 transition-colors duration-500 focus-within:border-foreground/50">
                   <textarea
                     required
+                    maxLength={1500}
                     value={form.message}
                     onChange={handleChange("message")}
                     placeholder="Message"
@@ -126,6 +135,9 @@ const ContactPage = () => {
                     className="w-full bg-transparent pt-2 pb-3 font-sans text-[13px] tracking-[0.08em] leading-relaxed placeholder:text-muted-foreground/40 focus:outline-none resize-none"
                   />
                 </div>
+                {error && (
+                  <p role="alert" className="text-[12px] text-muted-foreground tracking-wide">{error}</p>
+                )}
                 <button type="submit" className="luxury-button mt-4 self-start !text-[13px]">
                   Send
                 </button>

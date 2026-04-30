@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "../components/AdminLayout";
 import { useAdminAuth } from "../hooks/useAdminAuth";
@@ -9,6 +10,40 @@ import ImageUpload from "../components/ImageUpload";
 import MediaGalleryUpload from "../components/MediaGalleryUpload";
 import TagListEditor from "../components/TagListEditor";
 import { toast } from "sonner";
+
+// Schema enforced before any DB write. Mirrors the public product contract:
+// no negative price/stock, URL-safe slug, clean SKU, sensible length caps.
+const productSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(160, "Name too long"),
+  slug: z
+    .string()
+    .trim()
+    .min(1, "Slug is required")
+    .max(120, "Slug too long")
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must be lowercase letters, numbers and dashes only"),
+  collection: z.string().trim().max(120).optional().or(z.literal("")),
+  description: z.string().trim().max(500).optional().or(z.literal("")),
+  long_description: z.string().trim().max(4000).optional().or(z.literal("")),
+  price: z
+    .union([z.literal(""), z.coerce.number().min(0, "Price cannot be negative").max(1_000_000)])
+    .optional(),
+  compare_at_price: z
+    .union([z.literal(""), z.coerce.number().min(0, "Compare-at price cannot be negative").max(1_000_000)])
+    .optional(),
+  sku: z
+    .string()
+    .trim()
+    .max(64, "SKU too long")
+    .regex(/^[A-Za-z0-9._\-\/]*$/, "SKU may only contain letters, numbers, . _ - /")
+    .optional()
+    .or(z.literal("")),
+  stock_quantity: z.coerce.number().int("Stock must be whole").min(0, "Stock cannot be negative").max(1_000_000),
+  materials: z.string().trim().max(240).optional().or(z.literal("")),
+  care_info: z.string().trim().max(240).optional().or(z.literal("")),
+  seo_title: z.string().trim().max(60).optional().or(z.literal("")),
+  seo_description: z.string().trim().max(160).optional().or(z.literal("")),
+  preorder_statement: z.string().trim().max(240).optional().or(z.literal("")),
+});
 
 const EMPTY_PRODUCT = {
   name: "", slug: "", collection: "", gender_segment: "", description: "", long_description: "",
@@ -97,9 +132,29 @@ export default function AdminProductForm() {
 
   const handleSave = async (opts?: { stay?: boolean }) => {
     setError(null);
-    if (!form.name.trim() || !form.slug.trim()) {
-      setError("Name and slug are required");
-      toast.error("Name and slug are required");
+
+    const validation = productSchema.safeParse({
+      name: form.name,
+      slug: form.slug,
+      collection: form.collection,
+      description: form.description,
+      long_description: form.long_description,
+      price: form.price,
+      compare_at_price: form.compare_at_price,
+      sku: form.sku,
+      stock_quantity: form.stock_quantity,
+      materials: form.materials,
+      care_info: form.care_info,
+      seo_title: form.seo_title,
+      seo_description: form.seo_description,
+      preorder_statement: form.preorder_statement,
+    });
+
+    if (!validation.success) {
+      const first = validation.error.issues[0];
+      const msg = first ? `${first.path.join(".")}: ${first.message}` : "Please check the form";
+      setError(msg);
+      toast.error(msg);
       return;
     }
 

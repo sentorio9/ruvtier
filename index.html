@@ -7,8 +7,29 @@
     <meta name="description" content="RUVTIER. A luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition.">
     <meta name="author" content="RUVTIER" />
 
+    <!--
+      Pragmatic security headers (meta-tag form). True HTTP headers are configured
+      on Lovable hosting; these provide defence-in-depth for the static shell.
+
+      CSP notes:
+       - 'unsafe-inline' on style is required by Tailwind / Radix runtime styles
+       - 'unsafe-inline' + 'unsafe-eval' on script keep Lovable preview / Vite HMR working
+       - https://*.supabase.co covers REST, Realtime (wss) and Edge Functions
+       - https://fonts.googleapis.com / fonts.gstatic.com are required by our type stack
+       - frame-ancestors 'self' allows the Lovable preview iframe; tighten to 'none'
+         once preview is no longer needed
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.exchangerate.host https://api.frankfurter.app https://ipapi.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' mailto:; frame-ancestors 'self'" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(self), payment=(), usb=(), accelerometer=(), gyroscope=()" />
+
     <!-- Canonical -->
-    <link rel="canonical" href="https://ruvtier.lovable.app/" />
+    <link rel="canonical" href="https://ruvtier.com/" />
+
+    <!-- Preconnect hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <!-- Preconnect hints -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -19,8 +40,8 @@
     <meta property="og:site_name" content="RUVTIER" />
     <meta property="og:title" content="RUVTIER — A Whisper of Luxury" />
     <meta property="og:description" content="A luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition." />
-    <meta property="og:url" content="https://ruvtier.lovable.app/" />
-    <meta property="og:image" content="https://ruvtier.lovable.app/og-image.jpg" />
+    <meta property="og:url" content="https://ruvtier.com/" />
+    <meta property="og:image" content="https://ruvtier.com/og-image.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
@@ -28,7 +49,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="RUVTIER — A Whisper of Luxury" />
     <meta name="twitter:description" content="A luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition." />
-    <meta name="twitter:image" content="https://ruvtier.lovable.app/og-image.jpg" />
+    <meta name="twitter:image" content="https://ruvtier.com/og-image.jpg" />
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
@@ -36,13 +57,17 @@
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "RUVTIER",
-      "url": "https://ruvtier.lovable.app",
+      "url": "https://ruvtier.com",
       "description": "A luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition.",
       "brand": {
         "@type": "Brand",
         "name": "RUVTIER"
       },
-      "sameAs": []
+      "sameAs": [
+        "https://www.instagram.com/ruvtier/",
+        "https://www.youtube.com/@ruvtier",
+        "https://uk.pinterest.com/RUVTIER/_created/"
+      ]
     }
     </script>
   </head>

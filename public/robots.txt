@@ -1,11 +1,9 @@
 # RUVTIER — Robots policy
-# Public marketing site. Admin and recovery routes are excluded.
+# Public marketing site. Private routes are not listed here on purpose
+# (listing them would broadcast their existence). Access is enforced
+# server-side via authentication.
 
 User-agent: *
 Allow: /
-Disallow: /123vhtg241s
-Disallow: /123vhtg241s/
-Disallow: /admin-approval
-Disallow: /reset-password
 
 Sitemap: https://ruvtier.com/sitemap.xml

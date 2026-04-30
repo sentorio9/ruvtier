@@ -39,7 +39,7 @@ interface LuxuryFooterProps {
 
 // Footer typography bumped ~12% to improve legibility while staying editorial.
 const linkClass =
-  "text-[13px] tracking-[0.08em] text-muted-foreground hover:text-foreground transition-colors duration-300 leading-relaxed font-sans";
+  "text-[14px] tracking-[0.08em] text-muted-foreground hover:text-foreground transition-colors duration-300 leading-relaxed font-sans";
 
 const headingClass =
   "font-serif tracking-[0.14em] text-foreground mb-4 text-[18px] font-medium";

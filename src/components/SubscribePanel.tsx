@@ -2,6 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import {
+  honeypotInputProps,
+  checkFormGuard,
+  isValidEmail,
+  FORM_ERRORS,
+} from "@/lib/formProtection";
 
 interface SubscribePanelProps {
   isOpen: boolean;
@@ -11,12 +17,16 @@ interface SubscribePanelProps {
 const SubscribePanel = ({ isOpen, onClose }: SubscribePanelProps) => {
   useBodyScrollLock(isOpen);
   const [form, setForm] = useState({ email: "", firstName: "", lastName: "" });
+  const [honeypot, setHoneypot] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
+  const startedAtRef = useRef<number>(Date.now());
 
   // Escape key dismiss + focus restore on close (a11y).
   useEffect(() => {
     if (isOpen) {
       triggerRef.current = (document.activeElement as HTMLElement) ?? null;
+      startedAtRef.current = Date.now();
       const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
       window.addEventListener("keydown", handleKey);
       return () => window.removeEventListener("keydown", handleKey);
@@ -32,14 +42,36 @@ const SubscribePanel = ({ isOpen, onClose }: SubscribePanelProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+
+    const guard = checkFormGuard({ honeypot, startedAt: startedAtRef.current });
+    if (!guard.ok) {
+      setSubmitted(true);
+      return;
+    }
+
+    if (!isValidEmail(form.email)) {
+      setError(FORM_ERRORS.invalidEmail);
+      return;
+    }
+    if (form.firstName.length > 80 || form.lastName.length > 80) {
+      setError(FORM_ERRORS.tooLong);
+      return;
+    }
+
     const subject = encodeURIComponent("Newsletter Subscription");
-    const body = encodeURIComponent(`New subscriber:\n\nEmail: ${form.email}\nFirst Name: ${form.firstName}\nLast Name: ${form.lastName}`);
+    const body = encodeURIComponent(
+      `New subscriber:\n\nEmail: ${form.email.trim()}\nFirst Name: ${form.firstName.trim()}\nLast Name: ${form.lastName.trim()}`
+    );
     window.open(`mailto:theruvtier@gmail.com?subject=${subject}&body=${body}`, "_self");
     setSubmitted(true);
   };
 
   const handleClose = () => {
     setSubmitted(false);
+    setError(null);
+    setForm({ email: "", firstName: "", lastName: "" });
+    setHoneypot("");
     onClose();
   };
 

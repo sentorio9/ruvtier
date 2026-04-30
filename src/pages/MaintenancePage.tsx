@@ -1,5 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  honeypotInputProps,
+  checkFormGuard,
+  isValidEmail,
+  FORM_ERRORS,
+} from "@/lib/formProtection";
 
 interface Props {
   headline: string;
@@ -9,8 +15,10 @@ interface Props {
 
 export default function MaintenancePage({ headline, subline, collectEmail }: Props) {
   const [email, setEmail] = useState("");
+  const [honeypot, setHoneypot] = useState("");
   const [status, setStatus] = useState<"idle" | "submitting" | "done" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const startedAtRef = useRef<number>(Date.now());
 
   useEffect(() => {
     document.title = "RUVTIER — In quiet preparation";
@@ -18,9 +26,17 @@ export default function MaintenancePage({ headline, subline, collectEmail }: Pro
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+
+    const guard = checkFormGuard({ honeypot, startedAt: startedAtRef.current });
+    if (!guard.ok) {
+      // Silent acceptance — don't reveal protection.
+      setStatus("done");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
       setStatus("error");
-      setErrorMsg("Please enter a valid email.");
+      setErrorMsg(FORM_ERRORS.invalidEmail);
       return;
     }
     setStatus("submitting");
@@ -32,7 +48,7 @@ export default function MaintenancePage({ headline, subline, collectEmail }: Pro
 
     if (error && !error.message?.toLowerCase().includes("duplicate")) {
       setStatus("error");
-      setErrorMsg("Something went quiet. Please try again.");
+      setErrorMsg(FORM_ERRORS.generic);
       return;
     }
     setStatus("done");
@@ -79,9 +95,15 @@ export default function MaintenancePage({ headline, subline, collectEmail }: Pro
               </p>
             ) : (
               <form onSubmit={handleSubmit} className="flex flex-col items-center gap-3">
+                <input
+                  {...honeypotInputProps}
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
                 <div className="flex items-center w-full max-w-[380px] border-b border-[#3A3A3A]/30 focus-within:border-[#3A3A3A] transition-colors">
                   <input
                     type="email"
+                    maxLength={255}
                     value={email}
                     onChange={(e) => {
                       setEmail(e.target.value);

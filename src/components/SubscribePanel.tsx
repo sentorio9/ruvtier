@@ -2,6 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import {
+  honeypotInputProps,
+  checkFormGuard,
+  isValidEmail,
+  FORM_ERRORS,
+} from "@/lib/formProtection";
 
 interface SubscribePanelProps {
   isOpen: boolean;
@@ -11,12 +17,16 @@ interface SubscribePanelProps {
 const SubscribePanel = ({ isOpen, onClose }: SubscribePanelProps) => {
   useBodyScrollLock(isOpen);
   const [form, setForm] = useState({ email: "", firstName: "", lastName: "" });
+  const [honeypot, setHoneypot] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
+  const startedAtRef = useRef<number>(Date.now());
 
   // Escape key dismiss + focus restore on close (a11y).
   useEffect(() => {
     if (isOpen) {
       triggerRef.current = (document.activeElement as HTMLElement) ?? null;
+      startedAtRef.current = Date.now();
       const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
       window.addEventListener("keydown", handleKey);
       return () => window.removeEventListener("keydown", handleKey);
@@ -32,14 +42,36 @@ const SubscribePanel = ({ isOpen, onClose }: SubscribePanelProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+
+    const guard = checkFormGuard({ honeypot, startedAt: startedAtRef.current });
+    if (!guard.ok) {
+      setSubmitted(true);
+      return;
+    }
+
+    if (!isValidEmail(form.email)) {
+      setError(FORM_ERRORS.invalidEmail);
+      return;
+    }
+    if (form.firstName.length > 80 || form.lastName.length > 80) {
+      setError(FORM_ERRORS.tooLong);
+      return;
+    }
+
     const subject = encodeURIComponent("Newsletter Subscription");
-    const body = encodeURIComponent(`New subscriber:\n\nEmail: ${form.email}\nFirst Name: ${form.firstName}\nLast Name: ${form.lastName}`);
+    const body = encodeURIComponent(
+      `New subscriber:\n\nEmail: ${form.email.trim()}\nFirst Name: ${form.firstName.trim()}\nLast Name: ${form.lastName.trim()}`
+    );
     window.open(`mailto:theruvtier@gmail.com?subject=${subject}&body=${body}`, "_self");
     setSubmitted(true);
   };
 
   const handleClose = () => {
     setSubmitted(false);
+    setError(null);
+    setForm({ email: "", firstName: "", lastName: "" });
+    setHoneypot("");
     onClose();
   };
 
@@ -89,15 +121,22 @@ const SubscribePanel = ({ isOpen, onClose }: SubscribePanelProps) => {
                   </p>
 
                   <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                    {/* Honeypot */}
+                    <input
+                      {...honeypotInputProps}
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
+                    />
                     {[
-                      { key: "email", label: "Email", type: "email" },
-                      { key: "firstName", label: "First Name", type: "text" },
-                      { key: "lastName", label: "Last Name", type: "text" },
-                    ].map(({ key, label, type }) => (
+                      { key: "email", label: "Email", type: "email", maxLength: 255 },
+                      { key: "firstName", label: "First Name", type: "text", maxLength: 80 },
+                      { key: "lastName", label: "Last Name", type: "text", maxLength: 80 },
+                    ].map(({ key, label, type, maxLength }) => (
                       <div key={key} className="border-b border-foreground/20">
                         <input
                           type={type}
                           required={key === "email"}
+                          maxLength={maxLength}
                           value={form[key as keyof typeof form]}
                           onChange={handleChange(key)}
                         placeholder={label}
@@ -106,6 +145,10 @@ const SubscribePanel = ({ isOpen, onClose }: SubscribePanelProps) => {
                         />
                       </div>
                     ))}
+
+                    {error && (
+                      <p role="alert" className="text-xs text-muted-foreground tracking-wide">{error}</p>
+                    )}
 
                     <button type="submit" className="luxury-button mt-4 self-start !text-[13px]">
                       Subscribe

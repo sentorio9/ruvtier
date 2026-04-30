@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
@@ -6,6 +6,12 @@ import SubscribePanel from "@/components/SubscribePanel";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { Editable } from "@/editor/Editable";
 import { useSiteText } from "@/editor/useSiteContent";
+import {
+  honeypotInputProps,
+  checkFormGuard,
+  isValidEmail,
+  FORM_ERRORS,
+} from "@/lib/formProtection";
 
 const ContactPage = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
@@ -15,7 +21,10 @@ const ContactPage = () => {
   const phone = useSiteText("contact_details", "phone", "+44 7881 967338");
   const instagram = useSiteText("contact_details", "instagram_label", "Instagram");
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [honeypot, setHoneypot] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const startedAtRef = useRef<number>(Date.now());
 
   const handleChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
@@ -23,8 +32,23 @@ const ContactPage = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Contact from ${form.name}`);
-    const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`);
+    setError(null);
+
+    const guard = checkFormGuard({ honeypot, startedAt: startedAtRef.current });
+    if (!guard.ok) {
+      // Silent success — do not signal protection to bots.
+      setSubmitted(true);
+      return;
+    }
+
+    const name = form.name.trim();
+    const message = form.message.trim();
+    if (!name || !message) { setError(FORM_ERRORS.required); return; }
+    if (name.length > 100 || message.length > 1500) { setError(FORM_ERRORS.tooLong); return; }
+    if (!isValidEmail(form.email)) { setError(FORM_ERRORS.invalidEmail); return; }
+
+    const subject = encodeURIComponent(`Contact from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${form.email.trim()}\n\n${message}`);
     window.location.href = `mailto:theruvtier@gmail.com?subject=${subject}&body=${body}`;
     setSubmitted(true);
   };
@@ -69,10 +93,17 @@ const ContactPage = () => {
               </p>
             ) : (
               <form onSubmit={handleSubmit} className="w-full flex flex-col gap-10 text-left">
+                {/* Honeypot — hidden from humans, attractive to bots */}
+                <input
+                  {...honeypotInputProps}
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
                 <div className="relative border-b border-foreground/15 transition-colors duration-500 focus-within:border-foreground/50">
                   <input
                     type="text"
                     required
+                    maxLength={100}
                     value={form.name}
                     onChange={handleChange("name")}
                     placeholder="Name"
@@ -84,6 +115,7 @@ const ContactPage = () => {
                   <input
                     type="email"
                     required
+                    maxLength={255}
                     value={form.email}
                     onChange={handleChange("email")}
                     placeholder="Email"
@@ -94,6 +126,7 @@ const ContactPage = () => {
                 <div className="relative border-b border-foreground/15 transition-colors duration-500 focus-within:border-foreground/50">
                   <textarea
                     required
+                    maxLength={1500}
                     value={form.message}
                     onChange={handleChange("message")}
                     placeholder="Message"
@@ -102,6 +135,9 @@ const ContactPage = () => {
                     className="w-full bg-transparent pt-2 pb-3 font-sans text-[13px] tracking-[0.08em] leading-relaxed placeholder:text-muted-foreground/40 focus:outline-none resize-none"
                   />
                 </div>
+                {error && (
+                  <p role="alert" className="text-[12px] text-muted-foreground tracking-wide">{error}</p>
+                )}
                 <button type="submit" className="luxury-button mt-4 self-start !text-[13px]">
                   Send
                 </button>

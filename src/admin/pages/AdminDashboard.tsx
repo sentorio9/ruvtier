@@ -235,6 +235,24 @@ export default function AdminDashboard() {
             </div>
           </div>
 
+          {/* Launch checklist */}
+          <div className="bg-[hsl(40,30%,8%)] border border-[hsl(40,40%,18%)] p-5 mb-8">
+            <h2 className="text-[13px] tracking-[0.12em] uppercase text-[hsl(40,50%,65%)] mb-3" style={{ fontFamily: "var(--font-sans)" }}>
+              Launch Checklist
+            </h2>
+            <div className="flex items-start gap-3">
+              <AlertCircle size={14} className="text-[hsl(40,60%,55%)] mt-0.5 shrink-0" />
+              <div className="space-y-1">
+                <p className="text-[12px] text-[hsl(40,30%,80%)] leading-[1.6]" style={{ fontFamily: "var(--font-sans)" }}>
+                  Legal pages are placeholder copy and must be reviewed before full commercial launch.
+                </p>
+                <p className="text-[11px] text-[hsl(40,20%,55%)] leading-[1.6]" style={{ fontFamily: "var(--font-sans)" }}>
+                  Replace [insert legal business name], [insert business address] and [insert contact email] across Privacy, Terms, Cookie, Shipping, Returns and Refund policies, and have copy reviewed by a qualified legal advisor before enabling live checkout.
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Recent activity */}
           <div className="bg-[hsl(220,15%,9%)] border border-[hsl(220,10%,14%)] p-5">
             <h2 className="text-[13px] tracking-[0.12em] uppercase text-[hsl(220,10%,60%)] mb-4" style={{ fontFamily: "var(--font-sans)" }}>

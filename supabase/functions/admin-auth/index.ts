@@ -458,8 +458,9 @@ Deno.serve(async (req) => {
 
   // --- CHECK STATUS ---
   if (action === 'check-status') {
-    const { requestId } = (rawBody as any)
-    if (!requestId) return jsonResponse({ error: 'Request ID required' }, 400)
+    const parsed = CheckStatusSchema.safeParse(rawBody)
+    if (!parsed.success) return jsonResponse({ error: 'Invalid request' }, 400)
+    const requestId = parsed.data.requestId
 
     const { data: request } = await supabase
       .from('admin_login_requests')

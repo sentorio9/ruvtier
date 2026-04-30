@@ -457,8 +457,8 @@ Deno.serve(async (req) => {
   }
 
   // --- CHECK STATUS ---
-  if (body.action === 'check-status') {
-    const { requestId } = body
+  if (action === 'check-status') {
+    const { requestId } = (rawBody as any)
     if (!requestId) return jsonResponse({ error: 'Request ID required' }, 400)
 
     const { data: request } = await supabase
@@ -525,8 +525,8 @@ Deno.serve(async (req) => {
   }
 
   // --- VALIDATE SESSION ---
-  if (body.action === 'validate') {
-    const { sessionToken } = body
+  if (action === 'validate') {
+    const { sessionToken } = (rawBody as any)
     if (!sessionToken) return jsonResponse({ valid: false })
 
     const { data: session } = await supabase
@@ -577,8 +577,8 @@ Deno.serve(async (req) => {
   }
 
   // --- REVOKE SESSION (super_admin only) ---
-  if (body.action === 'revoke-session') {
-    const { sessionToken: callerToken, targetSessionId } = body
+  if (action === 'revoke-session') {
+    const { sessionToken: callerToken, targetSessionId } = (rawBody as any)
     if (!callerToken || !targetSessionId) return jsonResponse({ error: 'Missing parameters' }, 400)
 
     // Verify caller is super_admin
@@ -618,9 +618,9 @@ Deno.serve(async (req) => {
   }
 
   // --- LOGOUT ---
-  if (body.action === 'logout') {
-    if (body.sessionToken) {
-      await supabase.from('admin_sessions').delete().eq('session_token', body.sessionToken)
+  if (action === 'logout') {
+    if ((rawBody as any).sessionToken) {
+      await supabase.from('admin_sessions').delete().eq('session_token', (rawBody as any).sessionToken)
     }
     return jsonResponse({ success: true })
   }

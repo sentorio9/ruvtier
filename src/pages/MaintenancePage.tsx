@@ -103,6 +103,7 @@ export default function MaintenancePage({ headline, subline, collectEmail }: Pro
                 <div className="flex items-center w-full max-w-[380px] border-b border-[#3A3A3A]/30 focus-within:border-[#3A3A3A] transition-colors">
                   <input
                     type="email"
+                    maxLength={255}
                     value={email}
                     onChange={(e) => {
                       setEmail(e.target.value);

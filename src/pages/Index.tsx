@@ -127,7 +127,7 @@ const Index = () => {
       <Navigation />
 
       {/* Hero */}
-      <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-background">
         <div ref={heroFrameRef} className="absolute inset-0 overflow-hidden">
           <Editable
             kind="site_image"

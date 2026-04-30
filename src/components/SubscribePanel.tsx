@@ -121,15 +121,22 @@ const SubscribePanel = ({ isOpen, onClose }: SubscribePanelProps) => {
                   </p>
 
                   <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                    {/* Honeypot */}
+                    <input
+                      {...honeypotInputProps}
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
+                    />
                     {[
-                      { key: "email", label: "Email", type: "email" },
-                      { key: "firstName", label: "First Name", type: "text" },
-                      { key: "lastName", label: "Last Name", type: "text" },
-                    ].map(({ key, label, type }) => (
+                      { key: "email", label: "Email", type: "email", maxLength: 255 },
+                      { key: "firstName", label: "First Name", type: "text", maxLength: 80 },
+                      { key: "lastName", label: "Last Name", type: "text", maxLength: 80 },
+                    ].map(({ key, label, type, maxLength }) => (
                       <div key={key} className="border-b border-foreground/20">
                         <input
                           type={type}
                           required={key === "email"}
+                          maxLength={maxLength}
                           value={form[key as keyof typeof form]}
                           onChange={handleChange(key)}
                         placeholder={label}
@@ -138,6 +145,10 @@ const SubscribePanel = ({ isOpen, onClose }: SubscribePanelProps) => {
                         />
                       </div>
                     ))}
+
+                    {error && (
+                      <p role="alert" className="text-xs text-muted-foreground tracking-wide">{error}</p>
+                    )}
 
                     <button type="submit" className="luxury-button mt-4 self-start !text-[13px]">
                       Subscribe

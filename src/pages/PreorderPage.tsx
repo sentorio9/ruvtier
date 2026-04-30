@@ -53,6 +53,8 @@ const PreorderPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState("");
+  const startedAtRef = useRef<number>(Date.now());
 
   const handleChange = (key: string, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -62,13 +64,25 @@ const PreorderPage = () => {
     e.preventDefault();
     setError(null);
 
-    if (!form.full_name.trim() || !form.email.trim()) {
-      setError("Name and email are required.");
+    const guard = checkFormGuard({ honeypot, startedAt: startedAtRef.current });
+    if (!guard.ok) {
+      // Silent acceptance — present a friendly success state.
+      setSubmitted(true);
       return;
     }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
-      setError("Please enter a valid email address.");
+    if (!form.full_name.trim() || !form.email.trim()) {
+      setError(FORM_ERRORS.required);
+      return;
+    }
+
+    if (!isValidEmail(form.email)) {
+      setError(FORM_ERRORS.invalidEmail);
+      return;
+    }
+
+    if (form.full_name.length > 100 || form.message.length > 500) {
+      setError(FORM_ERRORS.tooLong);
       return;
     }
 
@@ -93,9 +107,9 @@ const PreorderPage = () => {
 
     if (dbError) {
       if (dbError.code === "23505") {
-        setError("You have already submitted a request for this piece.");
+        setError(FORM_ERRORS.duplicate);
       } else {
-        setError("Something went wrong. Please try again.");
+        setError(FORM_ERRORS.generic);
       }
       return;
     }

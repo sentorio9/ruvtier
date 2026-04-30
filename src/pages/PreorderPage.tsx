@@ -200,6 +200,12 @@ const PreorderPage = () => {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-5">
+                    {/* Honeypot */}
+                    <input
+                      {...honeypotInputProps}
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
+                    />
                     <div>
                       <label className={labelClass}>Full name</label>
                       <input

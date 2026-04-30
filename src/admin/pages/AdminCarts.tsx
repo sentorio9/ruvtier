@@ -158,6 +158,28 @@ export default function AdminCarts() {
           </table>
         </div>
       )}
+
+      <ConfirmModal
+        open={!!pendingDelete}
+        title="Delete this cart?"
+        description={
+          pendingDelete
+            ? `This will permanently remove the cart for ${
+                pendingDelete.email ||
+                (pendingDelete.session_id ? `session ${pendingDelete.session_id.slice(0, 12)}…` : "an anonymous visitor")
+              }. This action cannot be undone.`
+            : undefined
+        }
+        confirmLabel="Delete cart"
+        cancelLabel="Keep"
+        destructive
+        onCancel={() => setPendingDelete(null)}
+        onConfirm={async () => {
+          if (!pendingDelete) return;
+          await deleteCart(pendingDelete.id);
+          setPendingDelete(null);
+        }}
+      />
     </AdminLayout>
   );
 }

@@ -442,7 +442,7 @@ const Index = () => {
               <ScrollFadeIn key={item.label} delay={i * 0.08}>
                 <Link
                   to={item.to}
-                  className="group grid h-full grid-rows-[auto_auto_auto] content-start justify-items-center gap-0 text-center"
+                  className="group grid h-full grid-rows-[auto_auto_auto_auto] content-start justify-items-center gap-0 text-center"
                 >
                   <div className="flex w-full aspect-[4/5] items-center justify-center overflow-hidden bg-background px-[10%] py-[10%]">
                     <img
@@ -455,7 +455,10 @@ const Index = () => {
                   <h3 className="mt-6 min-h-[2.75rem] self-start font-serif text-[clamp(15px,1.4vw,18px)] font-light tracking-[0.12em] text-foreground flex items-start justify-center text-center leading-[1.35] md:min-h-[3rem]">
                     {item.label}
                   </h3>
-                  <span className="mt-1.5 font-sans text-[10px] uppercase tracking-[0.2em] text-muted-foreground transition-colors duration-500 group-hover:text-foreground">
+                  <span className="mt-2 font-serif italic font-light text-[13px] tracking-[0.02em] text-muted-foreground leading-none">
+                    {item.caption}
+                  </span>
+                  <span className="mt-3 font-sans text-[10px] uppercase tracking-[0.2em] text-muted-foreground transition-colors duration-500 group-hover:text-foreground">
                     Explore
                   </span>
                 </Link>

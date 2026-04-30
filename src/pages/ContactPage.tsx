@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
@@ -6,6 +6,12 @@ import SubscribePanel from "@/components/SubscribePanel";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { Editable } from "@/editor/Editable";
 import { useSiteText } from "@/editor/useSiteContent";
+import {
+  honeypotInputProps,
+  checkFormGuard,
+  isValidEmail,
+  FORM_ERRORS,
+} from "@/lib/formProtection";
 
 const ContactPage = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
@@ -15,7 +21,10 @@ const ContactPage = () => {
   const phone = useSiteText("contact_details", "phone", "+44 7881 967338");
   const instagram = useSiteText("contact_details", "instagram_label", "Instagram");
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [honeypot, setHoneypot] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const startedAtRef = useRef<number>(Date.now());
 
   const handleChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
@@ -23,8 +32,23 @@ const ContactPage = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Contact from ${form.name}`);
-    const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`);
+    setError(null);
+
+    const guard = checkFormGuard({ honeypot, startedAt: startedAtRef.current });
+    if (!guard.ok) {
+      // Silent success — do not signal protection to bots.
+      setSubmitted(true);
+      return;
+    }
+
+    const name = form.name.trim();
+    const message = form.message.trim();
+    if (!name || !message) { setError(FORM_ERRORS.required); return; }
+    if (name.length > 100 || message.length > 1500) { setError(FORM_ERRORS.tooLong); return; }
+    if (!isValidEmail(form.email)) { setError(FORM_ERRORS.invalidEmail); return; }
+
+    const subject = encodeURIComponent(`Contact from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${form.email.trim()}\n\n${message}`);
     window.location.href = `mailto:theruvtier@gmail.com?subject=${subject}&body=${body}`;
     setSubmitted(true);
   };

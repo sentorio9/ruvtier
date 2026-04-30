@@ -144,9 +144,9 @@ const Index = () => {
               decoding="async"
             />
           </Editable>
+          {/* Subtle veil clipped to the image frame so revealed edges stay background-white */}
+          <div className="absolute inset-0 bg-foreground/15 pointer-events-none" />
         </div>
-        {/* Subtle full-frame veil for global legibility */}
-        <div className="absolute inset-0 bg-black/15 pointer-events-none" />
         {/* Soft luminous halo centred behind the editorial line for legibility on imagery */}
         <div
           aria-hidden

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import LuxuryFooter from "@/components/LuxuryFooter";
@@ -7,6 +7,12 @@ import ScrollFadeIn from "@/components/ScrollFadeIn";
 import { useProductBySlug, formatPrice, usePriceTick } from "@/hooks/useProducts";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  honeypotInputProps,
+  checkFormGuard,
+  isValidEmail,
+  FORM_ERRORS,
+} from "@/lib/formProtection";
 import garmentImage from "@/assets/garment-single.jpg";
 
 const COUNTRIES = [

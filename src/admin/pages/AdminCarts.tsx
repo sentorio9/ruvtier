@@ -59,6 +59,13 @@ export default function AdminCarts() {
         <p className="text-[12px] text-[hsl(220,10%,40%)] mt-1" style={fontStyle}>Active & abandoned cart tracking</p>
       </div>
 
+      <div className="mb-6 px-4 py-3 bg-[hsl(40,30%,8%)] border border-[hsl(40,40%,18%)] flex items-start gap-3">
+        <span className="text-[10px] tracking-[0.2em] uppercase text-[hsl(40,55%,60%)] mt-0.5" style={fontStyle}>Notice</span>
+        <p className="text-[12px] text-[hsl(40,30%,75%)] leading-[1.6]" style={fontStyle}>
+          Preorder-only mode active · No live checkout connected · Future Shopify integration. Cart data will appear once a public cart experience is live.
+        </p>
+      </div>
+
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         {[

@@ -1,10 +1,96 @@
 import { sendLovableEmail } from 'npm:@lovable.dev/email-js'
 import { createClient } from 'npm:@supabase/supabase-js@2'
+import { z } from 'npm:zod@3.23.8'
 
+// NOTE: This function runs with verify_jwt = false. That is INTENTIONAL —
+// admin login is unauthenticated by definition (no JWT exists yet) and the
+// approval-link click from email also has no auth context. All inputs are
+// validated below with zod, and credential verification + rate limiting are
+// enforced server-side. Do NOT add new actions here without their own
+// signature/credential check.
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
+
+// ---------- Rate limiting ----------
+// 5 failed attempts per identifier per 15 minutes blocks further attempts.
+// Identifier = sha256(client IP) so we never persist raw IPs in plain text.
+const RATE_LIMIT_WINDOW_MIN = 15
+const RATE_LIMIT_MAX_FAILURES = 5
+
+async function sha256Hex(input: string): Promise<string> {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(input))
+  return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, '0')).join('')
+}
+
+function getClientIp(req: Request): string {
+  return (
+    req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+    req.headers.get('cf-connecting-ip') ||
+    'unknown'
+  )
+}
+
+async function isRateLimited(
+  // deno-lint-ignore no-explicit-any
+  supabase: any,
+  scope: string,
+  identifier: string
+): Promise<boolean> {
+  const since = new Date(Date.now() - RATE_LIMIT_WINDOW_MIN * 60 * 1000).toISOString()
+  const { count } = await supabase
+    .from('rate_limit_attempts')
+    .select('id', { count: 'exact', head: true })
+    .eq('scope', scope)
+    .eq('identifier', identifier)
+    .eq('success', false)
+    .gte('attempted_at', since)
+  return (count ?? 0) >= RATE_LIMIT_MAX_FAILURES
+}
+
+async function recordAttempt(
+  // deno-lint-ignore no-explicit-any
+  supabase: any,
+  scope: string,
+  identifier: string,
+  success: boolean
+): Promise<void> {
+  await supabase.from('rate_limit_attempts').insert({ scope, identifier, success })
+  // Opportunistic cleanup — fire-and-forget, no await on the result handling.
+  if (Math.random() < 0.05) {
+    supabase.rpc('cleanup_rate_limit_attempts', { _older_than_hours: 24 }).then(() => {}).catch(() => {})
+  }
+}
+
+// ---------- Input validation ----------
+const LoginSchema = z.object({
+  action: z.literal('login'),
+  username: z.string().trim().min(1).max(120),
+  password: z.string().min(1).max(200),
+  rememberMe: z.boolean().optional(),
+})
+
+const CheckStatusSchema = z.object({
+  action: z.literal('check-status'),
+  requestId: z.string().uuid(),
+})
+
+const ValidateSchema = z.object({
+  action: z.literal('validate'),
+  sessionToken: z.string().min(20).max(200),
+})
+
+const LogoutSchema = z.object({
+  action: z.literal('logout'),
+  sessionToken: z.string().min(20).max(200),
+})
+
+const ResolveSchema = z.object({
+  action: z.literal('resolve_request'),
+  token: z.string().min(20).max(200),
+  decision: z.enum(['approve', 'deny']),
+})
 
 const APPROVAL_EMAIL = 'frigatormark@gmail.com'
 const SENDER_DOMAIN = 'notify.ruvtier.com'

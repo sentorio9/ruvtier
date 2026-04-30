@@ -52,10 +52,10 @@ export default function CookieConsent() {
                 Essential only
               </button>
               <a
-                href="/privacy-policy"
+                href="/cookie-policy"
                 className="ml-auto text-[10px] tracking-[0.12em] uppercase text-primary-foreground/50 hover:text-primary-foreground/80 transition-colors hidden md:block"
               >
-                Privacy policy
+                Cookie policy
               </a>
             </div>
           </div>

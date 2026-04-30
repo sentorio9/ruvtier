@@ -111,8 +111,12 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
           {/* Legal */}
           <div className="flex flex-col gap-3">
             <Editable kind="text_block" contentKey="footer_headings" field="legal" label="Footer — Legal heading" as="h3" className={headingClass}>{legalHeading}</Editable>
-            <Link to="/terms" className={linkClass}>{t("footer.legal.terms")}</Link>
+            <Link to="/terms-and-conditions" className={linkClass}>{t("footer.legal.terms")}</Link>
             <Link to="/privacy-policy" className={linkClass}>{t("footer.legal.privacy")}</Link>
+            <Link to="/cookie-policy" className={linkClass}>Cookie Policy</Link>
+            <Link to="/shipping-policy" className={linkClass}>Shipping Policy</Link>
+            <Link to="/returns-policy" className={linkClass}>Returns Policy</Link>
+            <Link to="/refund-policy" className={linkClass}>Refund Policy</Link>
           </div>
 
           {/* Newsletter — sits in the same row, spans 2 cols on desktop */}

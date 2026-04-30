@@ -29,6 +29,7 @@ const Index = () => {
   const heroFrameRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     const HERO_INSET_PX = 88;        // deeper trim at rest — generous editorial frame
+    const HERO_MIN_INSET_PX = 28;    // permanent residual inset — frame never fully dissolves (Loro Piana)
     const SCROLL_RANGE = 1200;       // longer distance before fully expanded — Loro Piana pacing
     // Brand easing: cubic-bezier(0.22, 0.61, 0.36, 1) — calm "ease-out-quint" feel.
     const ease = (t: number) => {

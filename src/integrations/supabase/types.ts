@@ -743,6 +743,33 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limit_attempts: {
+        Row: {
+          attempted_at: string
+          id: string
+          identifier: string
+          metadata: Json | null
+          scope: string
+          success: boolean
+        }
+        Insert: {
+          attempted_at?: string
+          id?: string
+          identifier: string
+          metadata?: Json | null
+          scope: string
+          success?: boolean
+        }
+        Update: {
+          attempted_at?: string
+          id?: string
+          identifier?: string
+          metadata?: Json | null
+          scope?: string
+          success?: boolean
+        }
+        Relationships: []
+      }
       site_content: {
         Row: {
           content_key: string
@@ -889,6 +916,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      cleanup_rate_limit_attempts: {
+        Args: { _older_than_hours?: number }
+        Returns: undefined
+      }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean

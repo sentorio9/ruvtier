@@ -1,10 +1,96 @@
 import { sendLovableEmail } from 'npm:@lovable.dev/email-js'
 import { createClient } from 'npm:@supabase/supabase-js@2'
+import { z } from 'npm:zod@3.23.8'
 
+// NOTE: This function runs with verify_jwt = false. That is INTENTIONAL —
+// admin login is unauthenticated by definition (no JWT exists yet) and the
+// approval-link click from email also has no auth context. All inputs are
+// validated below with zod, and credential verification + rate limiting are
+// enforced server-side. Do NOT add new actions here without their own
+// signature/credential check.
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
+
+// ---------- Rate limiting ----------
+// 5 failed attempts per identifier per 15 minutes blocks further attempts.
+// Identifier = sha256(client IP) so we never persist raw IPs in plain text.
+const RATE_LIMIT_WINDOW_MIN = 15
+const RATE_LIMIT_MAX_FAILURES = 5
+
+async function sha256Hex(input: string): Promise<string> {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(input))
+  return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, '0')).join('')
+}
+
+function getClientIp(req: Request): string {
+  return (
+    req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+    req.headers.get('cf-connecting-ip') ||
+    'unknown'
+  )
+}
+
+async function isRateLimited(
+  // deno-lint-ignore no-explicit-any
+  supabase: any,
+  scope: string,
+  identifier: string
+): Promise<boolean> {
+  const since = new Date(Date.now() - RATE_LIMIT_WINDOW_MIN * 60 * 1000).toISOString()
+  const { count } = await supabase
+    .from('rate_limit_attempts')
+    .select('id', { count: 'exact', head: true })
+    .eq('scope', scope)
+    .eq('identifier', identifier)
+    .eq('success', false)
+    .gte('attempted_at', since)
+  return (count ?? 0) >= RATE_LIMIT_MAX_FAILURES
+}
+
+async function recordAttempt(
+  // deno-lint-ignore no-explicit-any
+  supabase: any,
+  scope: string,
+  identifier: string,
+  success: boolean
+): Promise<void> {
+  await supabase.from('rate_limit_attempts').insert({ scope, identifier, success })
+  // Opportunistic cleanup — fire-and-forget, no await on the result handling.
+  if (Math.random() < 0.05) {
+    supabase.rpc('cleanup_rate_limit_attempts', { _older_than_hours: 24 }).then(() => {}).catch(() => {})
+  }
+}
+
+// ---------- Input validation ----------
+const LoginSchema = z.object({
+  action: z.literal('login'),
+  username: z.string().trim().min(1).max(120),
+  password: z.string().min(1).max(200),
+  rememberMe: z.boolean().optional(),
+})
+
+const CheckStatusSchema = z.object({
+  action: z.literal('check-status'),
+  requestId: z.string().uuid(),
+})
+
+const ValidateSchema = z.object({
+  action: z.literal('validate'),
+  sessionToken: z.string().min(20).max(200),
+})
+
+const LogoutSchema = z.object({
+  action: z.literal('logout'),
+  sessionToken: z.string().min(20).max(200),
+})
+
+const ResolveSchema = z.object({
+  action: z.literal('resolve_request'),
+  token: z.string().min(20).max(200),
+  decision: z.enum(['approve', 'deny']),
+})
 
 const APPROVAL_EMAIL = 'frigatormark@gmail.com'
 const SENDER_DOMAIN = 'notify.ruvtier.com'
@@ -184,14 +270,30 @@ Deno.serve(async (req) => {
     return jsonResponse({ error: 'Method not allowed' }, 405)
   }
 
-  const body = await req.json()
+  let rawBody: unknown
+  try {
+    rawBody = await req.json()
+  } catch {
+    return jsonResponse({ error: 'Invalid request' }, 400)
+  }
+
+  const action = (rawBody as { action?: string })?.action
+  const clientIp = getClientIp(req)
+  const ipHash = await sha256Hex(clientIp)
 
   // --- RESOLVE APPROVAL REQUEST (from email link via /admin-approval page) ---
-  if (body.action === 'resolve_request') {
-    const { token, decision } = body
-    if (!token || (decision !== 'approve' && decision !== 'deny')) {
+  if (action === 'resolve_request') {
+    // Rate-limit token-based resolution to prevent brute-forcing tokens.
+    if (await isRateLimited(supabase, 'admin_resolve', ipHash)) {
+      return jsonResponse({ error: 'Too many requests. Please try again later.' }, 429)
+    }
+
+    const parsed = ResolveSchema.safeParse(rawBody)
+    if (!parsed.success) {
+      await recordAttempt(supabase, 'admin_resolve', ipHash, false)
       return jsonResponse({ error: 'Invalid request' }, 400)
     }
+    const { token, decision } = parsed.data
 
     const { data: request } = await supabase
       .from('admin_login_requests')
@@ -202,6 +304,7 @@ Deno.serve(async (req) => {
       .maybeSingle()
 
     if (!request) {
+      await recordAttempt(supabase, 'admin_resolve', ipHash, false)
       return jsonResponse({ error: 'Request expired or already processed.' }, 410)
     }
 
@@ -217,13 +320,29 @@ Deno.serve(async (req) => {
       details: { request_id: request.id },
     })
 
+    await recordAttempt(supabase, 'admin_resolve', ipHash, true)
     return jsonResponse({ status: newStatus })
   }
 
   // --- LOGIN ---
-  if (body.action === 'login') {
-    const { username, password, rememberMe } = body
-    if (!username || !password) return jsonResponse({ error: 'Credentials required' }, 400)
+  if (action === 'login') {
+    // Block if too many failed attempts from this IP recently.
+    if (await isRateLimited(supabase, 'admin_login', ipHash)) {
+      await supabase.from('audit_logs').insert({
+        action: 'admin_login_rate_limited',
+        details: { ip_hash: ipHash.slice(0, 16) },
+      })
+      // Generic message — never reveal whether the username exists or
+      // whether the lockout is per-account vs per-IP.
+      return jsonResponse({ error: 'Too many attempts. Please try again later.' }, 429)
+    }
+
+    const parsed = LoginSchema.safeParse(rawBody)
+    if (!parsed.success) {
+      await recordAttempt(supabase, 'admin_login', ipHash, false)
+      return jsonResponse({ error: 'Invalid credentials' }, 401)
+    }
+    const { username, password, rememberMe } = parsed.data
 
     const { data: creds } = await supabase.rpc('verify_admin_credentials', {
       p_username: username,
@@ -231,12 +350,15 @@ Deno.serve(async (req) => {
     })
 
     if (!creds || creds.length === 0) {
+      await recordAttempt(supabase, 'admin_login', ipHash, false)
       await supabase.from('audit_logs').insert({
         action: 'admin_login_failed',
-        details: { username, ip: req.headers.get('x-forwarded-for') || 'unknown' },
+        details: { username, ip_hash: ipHash.slice(0, 16) },
       })
       return jsonResponse({ error: 'Invalid credentials' }, 401)
     }
+
+    await recordAttempt(supabase, 'admin_login', ipHash, true)
 
     const cred = creds[0]
     const token = crypto.randomUUID() + '-' + crypto.randomUUID()
@@ -335,9 +457,10 @@ Deno.serve(async (req) => {
   }
 
   // --- CHECK STATUS ---
-  if (body.action === 'check-status') {
-    const { requestId } = body
-    if (!requestId) return jsonResponse({ error: 'Request ID required' }, 400)
+  if (action === 'check-status') {
+    const parsed = CheckStatusSchema.safeParse(rawBody)
+    if (!parsed.success) return jsonResponse({ error: 'Invalid request' }, 400)
+    const requestId = parsed.data.requestId
 
     const { data: request } = await supabase
       .from('admin_login_requests')
@@ -403,8 +526,8 @@ Deno.serve(async (req) => {
   }
 
   // --- VALIDATE SESSION ---
-  if (body.action === 'validate') {
-    const { sessionToken } = body
+  if (action === 'validate') {
+    const { sessionToken } = (rawBody as any)
     if (!sessionToken) return jsonResponse({ valid: false })
 
     const { data: session } = await supabase
@@ -455,8 +578,8 @@ Deno.serve(async (req) => {
   }
 
   // --- REVOKE SESSION (super_admin only) ---
-  if (body.action === 'revoke-session') {
-    const { sessionToken: callerToken, targetSessionId } = body
+  if (action === 'revoke-session') {
+    const { sessionToken: callerToken, targetSessionId } = (rawBody as any)
     if (!callerToken || !targetSessionId) return jsonResponse({ error: 'Missing parameters' }, 400)
 
     // Verify caller is super_admin
@@ -496,9 +619,9 @@ Deno.serve(async (req) => {
   }
 
   // --- LOGOUT ---
-  if (body.action === 'logout') {
-    if (body.sessionToken) {
-      await supabase.from('admin_sessions').delete().eq('session_token', body.sessionToken)
+  if (action === 'logout') {
+    if ((rawBody as any).sessionToken) {
+      await supabase.from('admin_sessions').delete().eq('session_token', (rawBody as any).sessionToken)
     }
     return jsonResponse({ success: true })
   }

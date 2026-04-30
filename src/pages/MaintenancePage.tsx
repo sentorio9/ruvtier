@@ -1,5 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  honeypotInputProps,
+  checkFormGuard,
+  isValidEmail,
+  FORM_ERRORS,
+} from "@/lib/formProtection";
 
 interface Props {
   headline: string;
@@ -9,8 +15,10 @@ interface Props {
 
 export default function MaintenancePage({ headline, subline, collectEmail }: Props) {
   const [email, setEmail] = useState("");
+  const [honeypot, setHoneypot] = useState("");
   const [status, setStatus] = useState<"idle" | "submitting" | "done" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const startedAtRef = useRef<number>(Date.now());
 
   useEffect(() => {
     document.title = "RUVTIER — In quiet preparation";
@@ -18,9 +26,17 @@ export default function MaintenancePage({ headline, subline, collectEmail }: Pro
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+
+    const guard = checkFormGuard({ honeypot, startedAt: startedAtRef.current });
+    if (!guard.ok) {
+      // Silent acceptance — don't reveal protection.
+      setStatus("done");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
       setStatus("error");
-      setErrorMsg("Please enter a valid email.");
+      setErrorMsg(FORM_ERRORS.invalidEmail);
       return;
     }
     setStatus("submitting");
@@ -32,7 +48,7 @@ export default function MaintenancePage({ headline, subline, collectEmail }: Pro
 
     if (error && !error.message?.toLowerCase().includes("duplicate")) {
       setStatus("error");
-      setErrorMsg("Something went quiet. Please try again.");
+      setErrorMsg(FORM_ERRORS.generic);
       return;
     }
     setStatus("done");

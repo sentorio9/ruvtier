@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "../components/AdminLayout";
+import ConfirmModal from "../components/ConfirmModal";
 import { useAdminAuth } from "../hooks/useAdminAuth";
 import { Plus, Search, Archive, Trash2, ExternalLink, Copy, Image as ImageIcon } from "lucide-react";
 import { ADMIN_PREFIX } from "../config";
@@ -16,7 +17,7 @@ export default function AdminProducts() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<Product | null>(null);
 
   const fetchProducts = async () => {
     let query = supabase.from("products").select("*").is("deleted_at", null).order("created_at", { ascending: false });
@@ -40,7 +41,7 @@ export default function AdminProducts() {
     await supabase.from("products").update({ deleted_at: new Date().toISOString() }).eq("id", id);
     await supabase.from("audit_logs").insert({ action: "product_deleted", actor_email: displayLabel, target_type: "product", target_id: id });
     toast.success(`${name} deleted`);
-    setConfirmDelete(null);
+    setPendingDelete(null);
     fetchProducts();
   };
 
@@ -207,16 +208,14 @@ export default function AdminProducts() {
                         <Archive size={14} />
                       </button>
                       {isSuperAdmin && (
-                        confirmDelete === p.id ? (
-                          <div className="flex items-center gap-1">
-                            <button onClick={() => softDelete(p.id, p.name)} className="text-[10px] text-[hsl(0,60%,55%)] hover:text-[hsl(0,60%,65%)]" style={{ fontFamily: "var(--font-sans)" }}>Confirm</button>
-                            <button onClick={() => setConfirmDelete(null)} className="text-[10px] text-[hsl(220,10%,40%)]" style={{ fontFamily: "var(--font-sans)" }}>Cancel</button>
-                          </div>
-                        ) : (
-                          <button onClick={() => setConfirmDelete(p.id)} title="Delete" className="text-[hsl(220,10%,35%)] hover:text-[hsl(0,50%,55%)] transition-colors">
-                            <Trash2 size={14} />
-                          </button>
-                        )
+                        <button
+                          onClick={() => setPendingDelete(p)}
+                          title="Delete"
+                          className="text-[hsl(220,10%,35%)] hover:text-[hsl(0,50%,55%)] transition-colors"
+                          aria-label={`Delete ${p.name}`}
+                        >
+                          <Trash2 size={14} />
+                        </button>
                       )}
                     </div>
                   </td>

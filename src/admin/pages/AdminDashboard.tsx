@@ -240,7 +240,8 @@ export default function AdminDashboard() {
             <h2 className="text-[13px] tracking-[0.12em] uppercase text-[hsl(40,50%,65%)] mb-3" style={{ fontFamily: "var(--font-sans)" }}>
               Launch Checklist
             </h2>
-            <div className="flex items-start gap-3">
+
+            <div className="flex items-start gap-3 mb-5">
               <AlertCircle size={14} className="text-[hsl(40,60%,55%)] mt-0.5 shrink-0" />
               <div className="space-y-1">
                 <p className="text-[12px] text-[hsl(40,30%,80%)] leading-[1.6]" style={{ fontFamily: "var(--font-sans)" }}>
@@ -250,6 +251,47 @@ export default function AdminDashboard() {
                   Replace [insert legal business name], [insert business address] and [insert contact email] across Privacy, Terms, Cookie, Shipping, Returns and Refund policies, and have copy reviewed by a qualified legal advisor before enabling live checkout.
                 </p>
               </div>
+            </div>
+
+            <div className="flex items-start gap-3 mb-5 pt-4 border-t border-[hsl(40,40%,18%)]">
+              <AlertCircle size={14} className="text-[hsl(40,60%,55%)] mt-0.5 shrink-0" />
+              <div className="space-y-1">
+                <p className="text-[12px] text-[hsl(40,30%,80%)] leading-[1.6]" style={{ fontFamily: "var(--font-sans)" }}>
+                  Add a backup admin approver before launch.
+                </p>
+                <p className="text-[11px] text-[hsl(40,20%,55%)] leading-[1.6]" style={{ fontFamily: "var(--font-sans)" }}>
+                  A second super admin protects against lockout if the primary approver is unreachable. Add a new row to <span className="text-[hsl(40,30%,80%)]">admin_credentials</span> via a secure migration (hashed password, role <span className="text-[hsl(40,30%,80%)]">super_admin</span>), then mirror the user_id into <span className="text-[hsl(40,30%,80%)]">user_roles</span> with role <span className="text-[hsl(40,30%,80%)]">super_admin</span>. Never hardcode personal emails into the codebase.
+                </p>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-[hsl(40,40%,18%)]">
+              <p className="text-[11px] tracking-[0.14em] uppercase text-[hsl(40,50%,60%)] mb-3" style={{ fontFamily: "var(--font-sans)" }}>
+                Production smoke test
+              </p>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5">
+                {[
+                  "Contact form tested",
+                  "Subscribe form tested",
+                  "Maintenance form tested",
+                  "Preorder form tested",
+                  "Admin login tested",
+                  "Product delete confirmation tested",
+                  "Cart delete confirmation tested",
+                  "Policy links tested",
+                  "sitemap.xml reachable",
+                  "robots.txt reachable",
+                  "CookieConsent tested",
+                  "Mobile menu tested",
+                  "Search overlay tested",
+                  "OG image renders on share preview",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-[11px] text-[hsl(40,25%,72%)] leading-[1.7]" style={{ fontFamily: "var(--font-sans)" }}>
+                    <span className="text-[hsl(40,40%,40%)] mt-0.5">·</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
 

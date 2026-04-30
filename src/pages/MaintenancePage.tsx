@@ -95,6 +95,11 @@ export default function MaintenancePage({ headline, subline, collectEmail }: Pro
               </p>
             ) : (
               <form onSubmit={handleSubmit} className="flex flex-col items-center gap-3">
+                <input
+                  {...honeypotInputProps}
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
                 <div className="flex items-center w-full max-w-[380px] border-b border-[#3A3A3A]/30 focus-within:border-[#3A3A3A] transition-colors">
                   <input
                     type="email"

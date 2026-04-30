@@ -270,14 +270,30 @@ Deno.serve(async (req) => {
     return jsonResponse({ error: 'Method not allowed' }, 405)
   }
 
-  const body = await req.json()
+  let rawBody: unknown
+  try {
+    rawBody = await req.json()
+  } catch {
+    return jsonResponse({ error: 'Invalid request' }, 400)
+  }
+
+  const action = (rawBody as { action?: string })?.action
+  const clientIp = getClientIp(req)
+  const ipHash = await sha256Hex(clientIp)
 
   // --- RESOLVE APPROVAL REQUEST (from email link via /admin-approval page) ---
-  if (body.action === 'resolve_request') {
-    const { token, decision } = body
-    if (!token || (decision !== 'approve' && decision !== 'deny')) {
+  if (action === 'resolve_request') {
+    // Rate-limit token-based resolution to prevent brute-forcing tokens.
+    if (await isRateLimited(supabase, 'admin_resolve', ipHash)) {
+      return jsonResponse({ error: 'Too many requests. Please try again later.' }, 429)
+    }
+
+    const parsed = ResolveSchema.safeParse(rawBody)
+    if (!parsed.success) {
+      await recordAttempt(supabase, 'admin_resolve', ipHash, false)
       return jsonResponse({ error: 'Invalid request' }, 400)
     }
+    const { token, decision } = parsed.data
 
     const { data: request } = await supabase
       .from('admin_login_requests')
@@ -288,6 +304,7 @@ Deno.serve(async (req) => {
       .maybeSingle()
 
     if (!request) {
+      await recordAttempt(supabase, 'admin_resolve', ipHash, false)
       return jsonResponse({ error: 'Request expired or already processed.' }, 410)
     }
 
@@ -303,13 +320,29 @@ Deno.serve(async (req) => {
       details: { request_id: request.id },
     })
 
+    await recordAttempt(supabase, 'admin_resolve', ipHash, true)
     return jsonResponse({ status: newStatus })
   }
 
   // --- LOGIN ---
-  if (body.action === 'login') {
-    const { username, password, rememberMe } = body
-    if (!username || !password) return jsonResponse({ error: 'Credentials required' }, 400)
+  if (action === 'login') {
+    // Block if too many failed attempts from this IP recently.
+    if (await isRateLimited(supabase, 'admin_login', ipHash)) {
+      await supabase.from('audit_logs').insert({
+        action: 'admin_login_rate_limited',
+        details: { ip_hash: ipHash.slice(0, 16) },
+      })
+      // Generic message — never reveal whether the username exists or
+      // whether the lockout is per-account vs per-IP.
+      return jsonResponse({ error: 'Too many attempts. Please try again later.' }, 429)
+    }
+
+    const parsed = LoginSchema.safeParse(rawBody)
+    if (!parsed.success) {
+      await recordAttempt(supabase, 'admin_login', ipHash, false)
+      return jsonResponse({ error: 'Invalid credentials' }, 401)
+    }
+    const { username, password, rememberMe } = parsed.data
 
     const { data: creds } = await supabase.rpc('verify_admin_credentials', {
       p_username: username,
@@ -317,12 +350,15 @@ Deno.serve(async (req) => {
     })
 
     if (!creds || creds.length === 0) {
+      await recordAttempt(supabase, 'admin_login', ipHash, false)
       await supabase.from('audit_logs').insert({
         action: 'admin_login_failed',
-        details: { username, ip: req.headers.get('x-forwarded-for') || 'unknown' },
+        details: { username, ip_hash: ipHash.slice(0, 16) },
       })
       return jsonResponse({ error: 'Invalid credentials' }, 401)
     }
+
+    await recordAttempt(supabase, 'admin_login', ipHash, true)
 
     const cred = creds[0]
     const token = crypto.randomUUID() + '-' + crypto.randomUUID()

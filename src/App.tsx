@@ -43,6 +43,12 @@ const AdminPreorders = lazy(() => import("./admin/pages/AdminPreorders"));
 const AdminMaintenance = lazy(() => import("./admin/pages/AdminMaintenance"));
 const AdminWebsiteEditor = lazy(() => import("./admin/pages/AdminWebsiteEditor"));
 const AdminApproval = lazy(() => import("./pages/AdminApproval"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
+const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
+const ShippingPolicy = lazy(() => import("./pages/ShippingPolicy"));
+const ReturnsPolicy = lazy(() => import("./pages/ReturnsPolicy"));
+const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
 
 const queryClient = new QueryClient();
 
@@ -185,17 +191,11 @@ const App = () => (
           />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/rituals-of-care" element={<RitualsOfCarePage />} />
-          <Route
-            path="/shipping"
-            element={
-              <EditorialPage
-                title="Shipping & Delivery"
-                body="Each order is prepared and dispatched with the same care applied to its creation."
-                actionLabel="Return"
-                actionTo="/"
-              />
-            }
-          />
+          <Route path="/shipping" element={<ShippingPolicy />} />
+          <Route path="/shipping-policy" element={<ShippingPolicy />} />
+          <Route path="/returns-policy" element={<ReturnsPolicy />} />
+          <Route path="/refund-policy" element={<RefundPolicy />} />
+          <Route path="/cookie-policy" element={<CookiePolicy />} />
           <Route
             path="/faq"
             element={
@@ -209,28 +209,9 @@ const App = () => (
           />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/admin-approval" element={<AdminApproval />} />
-          <Route
-            path="/privacy-policy"
-            element={
-              <EditorialPage
-                title="Privacy Policy"
-                body="Your privacy is sacred to us. This policy is being finalised and will be published shortly."
-                actionLabel="Return"
-                actionTo="/"
-              />
-            }
-          />
-          <Route
-            path="/terms"
-            element={
-              <EditorialPage
-                title="Terms & Conditions"
-                body="Our terms of service are being composed with the same care we apply to our garments."
-                actionLabel="Return"
-                actionTo="/"
-              />
-            }
-          />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsAndConditions />} />
+          <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
           <Route
             path="/garment"
             element={

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { AlertTriangle } from "lucide-react";
 
@@ -51,7 +51,8 @@ export default function ConfirmModal({
     }
   }, [open, onCancel, requirePhrase]);
 
-  const [typed, setTyped] = useStateLike(requirePhrase ? "" : "OK", open);
+  const [typed, setTyped] = useState(requirePhrase ? "" : "OK");
+  useEffect(() => { setTyped(requirePhrase ? "" : "OK"); }, [open, requirePhrase]);
   const phraseOk = !requirePhrase || typed.trim() === requirePhrase.trim();
 
   return (
@@ -139,15 +140,4 @@ export default function ConfirmModal({
       )}
     </AnimatePresence>
   );
-}
-
-// Tiny local helper so the "typed" value resets when the dialog reopens
-// without polluting the public API.
-function useStateLike(initial: string, resetSignal: boolean) {
-  const [v, set] = (require("react") as typeof import("react")).useState(initial);
-  (require("react") as typeof import("react")).useEffect(() => {
-    set(initial);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resetSignal]);
-  return [v, set] as const;
 }

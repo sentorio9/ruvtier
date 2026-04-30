@@ -225,6 +225,16 @@ export default function AdminProducts() {
           </table>
         </div>
       )}
+
+      <ConfirmModal
+        open={!!pendingDelete}
+        title={`Delete ${pendingDelete?.name ?? "product"}?`}
+        description="This soft-deletes the product. It will be hidden from the public site and can be restored from the database."
+        confirmLabel="Delete product"
+        requirePhrase={pendingDelete?.name}
+        onCancel={() => setPendingDelete(null)}
+        onConfirm={() => pendingDelete && softDelete(pendingDelete.id, pendingDelete.name)}
+      />
     </AdminLayout>
   );
 }

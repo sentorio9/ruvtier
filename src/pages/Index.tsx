@@ -29,6 +29,7 @@ const Index = () => {
   const heroFrameRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     const HERO_INSET_PX = 88;        // deeper trim at rest — generous editorial frame
+    const HERO_MIN_INSET_PX = 28;    // permanent residual inset — frame never fully dissolves (Loro Piana)
     const SCROLL_RANGE = 1200;       // longer distance before fully expanded — Loro Piana pacing
     // Brand easing: cubic-bezier(0.22, 0.61, 0.36, 1) — calm "ease-out-quint" feel.
     const ease = (t: number) => {
@@ -55,7 +56,8 @@ const Index = () => {
 
     const apply = (progress: number) => {
       const eased = ease(progress);
-      const inset = (1 - eased) * HERO_INSET_PX;
+      // Lerp between the resting inset and the minimum residual inset — never reaches 0.
+      const inset = HERO_MIN_INSET_PX + (1 - eased) * (HERO_INSET_PX - HERO_MIN_INSET_PX);
       const el = heroFrameRef.current;
       if (!el) return;
       el.style.left = `${inset}px`;
@@ -125,7 +127,7 @@ const Index = () => {
       <Navigation />
 
       {/* Hero */}
-      <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-background">
         <div ref={heroFrameRef} className="absolute inset-0 overflow-hidden">
           <Editable
             kind="site_image"

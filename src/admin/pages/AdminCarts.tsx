@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "../components/AdminLayout";
+import ConfirmModal from "../components/ConfirmModal";
 import { ShoppingBag, Search, Trash2 } from "lucide-react";
 
 interface Cart {
@@ -22,6 +23,7 @@ export default function AdminCarts() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [pendingDelete, setPendingDelete] = useState<Cart | null>(null);
 
   const fontStyle = { fontFamily: "var(--font-sans)" };
 

@@ -16,13 +16,19 @@ const SearchOverlay = ({ isOpen, onClose }: SearchOverlayProps) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<{ name: string; slug: string; thumbnail_url: string | null }[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
   const navigate = useNavigate();
 
+  // Capture the element that opened the overlay so focus can return there on close.
   useEffect(() => {
     if (isOpen) {
+      triggerRef.current = (document.activeElement as HTMLElement) ?? null;
       setTimeout(() => inputRef.current?.focus(), 100);
       setQuery("");
       setResults([]);
+    } else if (triggerRef.current) {
+      // Restore focus to the trigger when the overlay closes.
+      triggerRef.current.focus?.();
     }
   }, [isOpen]);
 

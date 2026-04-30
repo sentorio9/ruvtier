@@ -7,7 +7,7 @@ interface PageMeta {
 }
 
 const BASE_TITLE = "RUVTIER";
-const BASE_URL = "https://ruvtier.lovable.app";
+const BASE_URL = "https://ruvtier.com";
 
 export function usePageMeta({ title, description }: PageMeta) {
   const { pathname } = useLocation();

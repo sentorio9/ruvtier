@@ -1,15 +1,11 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
+# RUVTIER — Robots policy
+# Public marketing site. Admin and recovery routes are excluded.
 
 User-agent: *
 Allow: /
 Disallow: /123vhtg241s
+Disallow: /123vhtg241s/
+Disallow: /admin-approval
+Disallow: /reset-password
+
+Sitemap: https://ruvtier.com/sitemap.xml

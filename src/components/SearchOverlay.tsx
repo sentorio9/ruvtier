@@ -16,13 +16,19 @@ const SearchOverlay = ({ isOpen, onClose }: SearchOverlayProps) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<{ name: string; slug: string; thumbnail_url: string | null }[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
   const navigate = useNavigate();
 
+  // Capture the element that opened the overlay so focus can return there on close.
   useEffect(() => {
     if (isOpen) {
+      triggerRef.current = (document.activeElement as HTMLElement) ?? null;
       setTimeout(() => inputRef.current?.focus(), 100);
       setQuery("");
       setResults([]);
+    } else if (triggerRef.current) {
+      // Restore focus to the trigger when the overlay closes.
+      triggerRef.current.focus?.();
     }
   }, [isOpen]);
 
@@ -57,10 +63,13 @@ const SearchOverlay = ({ isOpen, onClose }: SearchOverlayProps) => {
           transition={overlayTransition}
           className="fixed inset-0 z-[110] bg-background/95 backdrop-blur-sm flex flex-col items-center pt-[20vh]"
           onClick={onClose}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Search"
         >
           <div className="w-full max-w-lg px-6" onClick={(e) => e.stopPropagation()}>
             <div className="border-b border-foreground/20 pb-2 flex items-center gap-3">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-muted-foreground shrink-0">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-muted-foreground shrink-0" aria-hidden="true">
                 <circle cx="7" cy="7" r="5.5" />
                 <line x1="11" y1="11" x2="15" y2="15" />
               </svg>

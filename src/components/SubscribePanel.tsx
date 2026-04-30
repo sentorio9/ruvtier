@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
@@ -11,12 +11,18 @@ interface SubscribePanelProps {
 const SubscribePanel = ({ isOpen, onClose }: SubscribePanelProps) => {
   useBodyScrollLock(isOpen);
   const [form, setForm] = useState({ email: "", firstName: "", lastName: "" });
+  const triggerRef = useRef<HTMLElement | null>(null);
 
-  // Escape key dismiss
+  // Escape key dismiss + focus restore on close (a11y).
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
-    if (isOpen) window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
+    if (isOpen) {
+      triggerRef.current = (document.activeElement as HTMLElement) ?? null;
+      const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+      window.addEventListener("keydown", handleKey);
+      return () => window.removeEventListener("keydown", handleKey);
+    } else if (triggerRef.current) {
+      triggerRef.current.focus?.();
+    }
   }, [isOpen, onClose]);
   const [submitted, setSubmitted] = useState(false);
 

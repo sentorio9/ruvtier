@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { X, ChevronRight, ArrowLeft } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -68,6 +68,25 @@ const SlideMenu = ({ isOpen, onClose, onOpenSearch, onOpenLounge }: SlideMenuPro
   const [activeSubMenu, setActiveSubMenu] = useState<SubMenuKey>(null);
   const isMobile = useIsMobile();
   useBodyScrollLock(isOpen);
+  const triggerRef = useRef<HTMLElement | null>(null);
+
+  // Capture trigger so focus can be restored when the menu closes (a11y).
+  useEffect(() => {
+    if (isOpen) {
+      triggerRef.current = (document.activeElement as HTMLElement) ?? null;
+    } else if (triggerRef.current) {
+      triggerRef.current.focus?.();
+    }
+  }, [isOpen]);
+
+  // Escape closes the menu.
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") handleClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   const handleClose = () => {
     setActiveSubMenu(null);

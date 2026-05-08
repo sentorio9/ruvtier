@@ -213,13 +213,13 @@ const Index = () => {
                 style={{ background: "radial-gradient(ellipse at center, rgba(250,247,242,0.55) 0%, rgba(250,247,242,0.22) 45%, rgba(250,247,242,0) 75%)" }}
               />
               <div className="absolute bottom-0 left-0 right-0 px-[clamp(20px,2.4vw,40px)] pb-[clamp(22px,2.6vw,44px)] pt-24 flex flex-col items-center text-center">
-                <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#3A3A3A]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
+                <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#3A3A3A]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_10px_rgba(250,247,242,0.65)]">
                   {womenSeason}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-luxury-card text-[#3A3A3A] mb-[clamp(16px,1.6vw,26px)] leading-luxury-card [text-shadow:0_2px_18px_rgba(0,0,0,0.55),0_0_28px_rgba(58,58,58,0.18)]">
+                <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-luxury-card text-[#3A3A3A] mb-[clamp(16px,1.6vw,26px)] leading-luxury-card [text-shadow:0_1px_14px_rgba(250,247,242,0.7),0_0_24px_rgba(250,247,242,0.4)]">
                   {womenTitle}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_women_card" field="blurb" label="Women — blurb" as="p" className="font-sans text-[clamp(11px,0.84vw,13px)] tracking-luxury-tight text-[#3A3A3A]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] leading-luxury-body [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
+                <Editable kind="text_block" contentKey="home_women_card" field="blurb" label="Women — blurb" as="p" className="font-sans text-[clamp(11px,0.84vw,13px)] tracking-luxury-tight text-[#3A3A3A]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] leading-luxury-body [text-shadow:0_1px_12px_rgba(250,247,242,0.6)]">
                   {womenBlurb}
                 </Editable>
                 <span className="inline-flex items-center gap-2 font-sans text-[clamp(10px,0.78vw,12px)] uppercase tracking-luxury-wide text-[#3A3A3A]/85 group-hover:text-[#3A3A3A] transition-colors duration-500">
@@ -263,13 +263,13 @@ const Index = () => {
                 style={{ background: "radial-gradient(ellipse at center, rgba(250,247,242,0.55) 0%, rgba(250,247,242,0.22) 45%, rgba(250,247,242,0) 75%)" }}
               />
               <div className="absolute bottom-0 left-0 right-0 px-[clamp(20px,2.4vw,40px)] pb-[clamp(22px,2.6vw,44px)] pt-24 flex flex-col items-center text-center">
-                <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#3A3A3A]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
+                <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#3A3A3A]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_10px_rgba(250,247,242,0.65)]">
                   {menSeason}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-luxury-card text-[#3A3A3A] mb-[clamp(16px,1.6vw,26px)] leading-luxury-card [text-shadow:0_2px_18px_rgba(0,0,0,0.55),0_0_28px_rgba(58,58,58,0.18)]">
+                <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-luxury-card text-[#3A3A3A] mb-[clamp(16px,1.6vw,26px)] leading-luxury-card [text-shadow:0_1px_14px_rgba(250,247,242,0.7),0_0_24px_rgba(250,247,242,0.4)]">
                   {menTitle}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_men_card" field="blurb" label="Men — blurb" as="p" className="font-sans text-[clamp(11px,0.84vw,13px)] tracking-luxury-tight text-[#3A3A3A]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] leading-luxury-body [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
+                <Editable kind="text_block" contentKey="home_men_card" field="blurb" label="Men — blurb" as="p" className="font-sans text-[clamp(11px,0.84vw,13px)] tracking-luxury-tight text-[#3A3A3A]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] leading-luxury-body [text-shadow:0_1px_12px_rgba(250,247,242,0.6)]">
                   {menBlurb}
                 </Editable>
                 <span className="inline-flex items-center gap-2 font-sans text-[clamp(10px,0.78vw,12px)] uppercase tracking-luxury-wide text-[#3A3A3A]/85 group-hover:text-[#3A3A3A] transition-colors duration-500">

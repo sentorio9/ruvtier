@@ -81,10 +81,10 @@ const Index = () => {
         <div
           aria-hidden
           className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(78vw,820px)] h-[min(38vh,300px)] rounded-[50%] blur-3xl opacity-70"
-          style={{ background: "radial-gradient(ellipse at center, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0) 75%)" }}
+          style={{ background: "radial-gradient(ellipse at center, rgba(250,247,242,0.55) 0%, rgba(250,247,242,0.28) 40%, rgba(250,247,242,0) 75%)" }}
         />
-        {/* Centred editorial line */}
-        <div className="relative z-10 text-center px-6 hero-glow">
+        {/* Centred editorial line — nudged slightly lower for calmer composition */}
+        <div className="relative z-10 text-center px-6 hero-glow translate-y-8 md:translate-y-12">
           <ScrollFadeIn>
             <Editable
               kind="text_block"
@@ -92,7 +92,7 @@ const Index = () => {
               field="headline"
               label="Homepage hero text"
               as="p"
-              className="hero-title font-serif font-light text-[clamp(20px,2.2vw,28px)] leading-[1.7] tracking-[0.08em] mx-auto max-w-[var(--text-max)]"
+              className="hero-title font-serif font-light text-[clamp(22px,2.42vw,31px)] leading-[1.7] tracking-[0.08em] mx-auto max-w-[var(--text-max)]"
             >
               {heroHeadline}
             </Editable>

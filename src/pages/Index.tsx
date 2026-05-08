@@ -80,8 +80,8 @@ const Index = () => {
         {/* Soft luminous halo centred behind the editorial line for legibility on imagery */}
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(78vw,820px)] h-[min(38vh,300px)] rounded-[50%] blur-3xl opacity-70"
-          style={{ background: "radial-gradient(ellipse at center, rgba(250,247,242,0.55) 0%, rgba(250,247,242,0.28) 40%, rgba(250,247,242,0) 75%)" }}
+          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(82vw,880px)] h-[min(40vh,320px)] rounded-[50%] blur-3xl"
+          style={{ background: "radial-gradient(ellipse at center, rgba(245,241,235,0.28) 0%, rgba(245,241,235,0.14) 42%, rgba(245,241,235,0) 75%)" }}
         />
         {/* Centred editorial line — nudged slightly lower for calmer composition */}
         <div className="relative z-10 text-center px-6 hero-glow translate-y-8 md:translate-y-12">

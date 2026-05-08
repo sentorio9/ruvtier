@@ -119,7 +119,20 @@ function htmlPage(message: string, success: boolean) {
   })
 }
 
+function escapeHtml(s: string): string {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function approvalEmailHtml(label: string, role: string, ip: string, ua: string, approveUrl: string, denyUrl: string) {
+  const safeLabel = escapeHtml(label);
+  const safeRole = escapeHtml(role);
+  const safeIp = escapeHtml(ip).slice(0, 64);
+  const safeUa = escapeHtml(ua).slice(0, 200);
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;background:#ffffff;font-family:'Jost','Helvetica Neue',Arial,sans-serif">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff"><tr><td align="center" style="padding:40px 20px">

@@ -142,10 +142,10 @@ function approvalEmailHtml(label: string, role: string, ip: string, ua: string, 
 <h1 style="font-size:18px;font-weight:300;color:#3b3b3b;margin:0 0 20px;letter-spacing:.15em;text-transform:uppercase">Admin Login Request</h1>
 <p style="font-size:13px;color:#737373;line-height:1.7;margin:0 0 20px;letter-spacing:.03em">An operator is requesting access to the admin panel.</p>
 <table width="100%" style="margin:0 0 24px;border:1px solid #e0dbd4">
-<tr><td style="padding:12px 16px;border-bottom:1px solid #e0dbd4;font-size:11px;color:#a8a29e;letter-spacing:.1em;text-transform:uppercase;width:120px">Operator</td><td style="padding:12px 16px;border-bottom:1px solid #e0dbd4;font-size:13px;color:#3b3b3b">${label}</td></tr>
-<tr><td style="padding:12px 16px;border-bottom:1px solid #e0dbd4;font-size:11px;color:#a8a29e;letter-spacing:.1em;text-transform:uppercase">Role</td><td style="padding:12px 16px;border-bottom:1px solid #e0dbd4;font-size:13px;color:#3b3b3b">${role}</td></tr>
-<tr><td style="padding:12px 16px;border-bottom:1px solid #e0dbd4;font-size:11px;color:#a8a29e;letter-spacing:.1em;text-transform:uppercase">IP Address</td><td style="padding:12px 16px;border-bottom:1px solid #e0dbd4;font-size:13px;color:#3b3b3b">${ip}</td></tr>
-<tr><td style="padding:12px 16px;font-size:11px;color:#a8a29e;letter-spacing:.1em;text-transform:uppercase">Device</td><td style="padding:12px 16px;font-size:13px;color:#3b3b3b;word-break:break-all">${ua}</td></tr>
+<tr><td style="padding:12px 16px;border-bottom:1px solid #e0dbd4;font-size:11px;color:#a8a29e;letter-spacing:.1em;text-transform:uppercase;width:120px">Operator</td><td style="padding:12px 16px;border-bottom:1px solid #e0dbd4;font-size:13px;color:#3b3b3b">${safeLabel}</td></tr>
+<tr><td style="padding:12px 16px;border-bottom:1px solid #e0dbd4;font-size:11px;color:#a8a29e;letter-spacing:.1em;text-transform:uppercase">Role</td><td style="padding:12px 16px;border-bottom:1px solid #e0dbd4;font-size:13px;color:#3b3b3b">${safeRole}</td></tr>
+<tr><td style="padding:12px 16px;border-bottom:1px solid #e0dbd4;font-size:11px;color:#a8a29e;letter-spacing:.1em;text-transform:uppercase">IP Address</td><td style="padding:12px 16px;border-bottom:1px solid #e0dbd4;font-size:13px;color:#3b3b3b">${safeIp}</td></tr>
+<tr><td style="padding:12px 16px;font-size:11px;color:#a8a29e;letter-spacing:.1em;text-transform:uppercase">Device</td><td style="padding:12px 16px;font-size:13px;color:#3b3b3b;word-break:break-all">${safeUa}</td></tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px"><tr>
 <td width="48%" align="center"><a href="${approveUrl}" style="display:inline-block;padding:14px 32px;background:#3b3b3b;color:#ffffff;font-size:12px;letter-spacing:.15em;text-transform:uppercase;text-decoration:none">Grant Access</a></td>

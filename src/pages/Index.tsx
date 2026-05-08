@@ -101,8 +101,13 @@ const Index = () => {
 
         {/* Pre-order links anchored near the bottom */}
         <div className="absolute z-10 left-0 right-0 bottom-[clamp(48px,8vh,96px)] px-6">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(72vw,640px)] h-[120px] rounded-[50%] blur-2xl"
+            style={{ background: "radial-gradient(ellipse at center, rgba(245,241,235,0.22) 0%, rgba(245,241,235,0.10) 45%, rgba(245,241,235,0) 78%)" }}
+          />
           <ScrollFadeIn delay={0.25}>
-            <div className="flex items-center justify-center gap-[clamp(40px,8vw,120px)]">
+            <div className="relative flex items-center justify-center gap-[clamp(40px,8vw,120px)]">
               <Link
                 to="/boutique/women"
                 className="group relative inline-block font-sans text-[clamp(13px,1vw,15px)] tracking-[0.08em] text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]"

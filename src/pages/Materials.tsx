@@ -30,9 +30,11 @@ const Materials = () => {
       <section className="min-h-[70vh] flex items-center justify-center pt-32 pb-20">
         <div className="luxury-container flex flex-col items-center text-center">
           <ScrollFadeIn>
-            <Editable kind="text_block" contentKey="materials_intro" field="headline" label="Materials — heading" as="h1" className="luxury-heading mb-6">
-              {heading}
-            </Editable>
+            <div className="hero-glow inline-block">
+              <Editable kind="text_block" contentKey="materials_intro" field="headline" label="Materials — heading" as="h1" className="hero-title luxury-heading mb-6">
+                {heading}
+              </Editable>
+            </div>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.15}>
             <Editable kind="text_block" contentKey="materials_intro" field="body" label="Materials — intro" as="p" className="luxury-body mx-auto mb-12 text-center">

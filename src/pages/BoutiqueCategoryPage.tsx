@@ -27,7 +27,9 @@ const BoutiqueCategoryPage = ({ title, gender, subtitle }: BoutiqueCategoryPageP
       <section className="pt-28 md:pt-36 pb-8 md:pb-12">
         <div className="luxury-container text-center">
           <ScrollFadeIn>
-            <h1 className="luxury-heading mb-4">{title}</h1>
+            <div className="hero-glow inline-block">
+              <h1 className="hero-title luxury-heading mb-4">{title}</h1>
+            </div>
           </ScrollFadeIn>
           {subtitle && (
             <ScrollFadeIn delay={0.15}>

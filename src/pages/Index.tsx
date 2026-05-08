@@ -205,7 +205,7 @@ const Index = () => {
                 loading="lazy"
               />
               {/* Static base gradient — no opacity flicker on hover, keeps the frame calm */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/0" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[rgba(250,247,242,0.85)] via-[rgba(250,247,242,0.45)] to-transparent" />
               {/* Soft luminous halo behind the title — anchored to the title row across breakpoints */}
               <div
                 aria-hidden
@@ -255,7 +255,7 @@ const Index = () => {
                 loading="lazy"
               />
               {/* Static base gradient — no opacity flicker on hover, keeps the frame calm */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/0" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[rgba(250,247,242,0.85)] via-[rgba(250,247,242,0.45)] to-transparent" />
               {/* Soft luminous halo behind the title — anchored to the title row across breakpoints */}
               <div
                 aria-hidden

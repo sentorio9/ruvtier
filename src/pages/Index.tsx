@@ -84,7 +84,7 @@ const Index = () => {
           style={{ background: "radial-gradient(ellipse at center, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0) 75%)" }}
         />
         {/* Centred editorial line */}
-        <div className="relative z-10 text-center px-6">
+        <div className="relative z-10 text-center px-6 hero-glow">
           <ScrollFadeIn>
             <Editable
               kind="text_block"
@@ -92,7 +92,7 @@ const Index = () => {
               field="headline"
               label="Homepage hero text"
               as="p"
-              className="font-serif font-light text-[clamp(20px,2.2vw,28px)] leading-[1.7] tracking-[0.08em] text-[#3A3A3A] mx-auto max-w-[var(--text-max)] [text-shadow:0_1px_2px_rgba(0,0,0,0.55),0_0_18px_rgba(0,0,0,0.4)]"
+              className="hero-title font-serif font-light text-[clamp(20px,2.2vw,28px)] leading-[1.7] tracking-[0.08em] mx-auto max-w-[var(--text-max)]"
             >
               {heroHeadline}
             </Editable>

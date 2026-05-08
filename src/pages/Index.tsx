@@ -80,8 +80,8 @@ const Index = () => {
         {/* Soft luminous halo centred behind the editorial line for legibility on imagery */}
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(78vw,820px)] h-[min(38vh,300px)] rounded-[50%] blur-3xl opacity-70"
-          style={{ background: "radial-gradient(ellipse at center, rgba(250,247,242,0.55) 0%, rgba(250,247,242,0.28) 40%, rgba(250,247,242,0) 75%)" }}
+          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(82vw,880px)] h-[min(40vh,320px)] rounded-[50%] blur-3xl"
+          style={{ background: "radial-gradient(ellipse at center, rgba(245,241,235,0.28) 0%, rgba(245,241,235,0.14) 42%, rgba(245,241,235,0) 75%)" }}
         />
         {/* Centred editorial line — nudged slightly lower for calmer composition */}
         <div className="relative z-10 text-center px-6 hero-glow translate-y-8 md:translate-y-12">
@@ -101,11 +101,16 @@ const Index = () => {
 
         {/* Pre-order links anchored near the bottom */}
         <div className="absolute z-10 left-0 right-0 bottom-[clamp(48px,8vh,96px)] px-6">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(72vw,640px)] h-[120px] rounded-[50%] blur-2xl"
+            style={{ background: "radial-gradient(ellipse at center, rgba(245,241,235,0.22) 0%, rgba(245,241,235,0.10) 45%, rgba(245,241,235,0) 78%)" }}
+          />
           <ScrollFadeIn delay={0.25}>
-            <div className="flex items-center justify-center gap-[clamp(40px,8vw,120px)]">
+            <div className="relative flex items-center justify-center gap-[clamp(40px,8vw,120px)]">
               <Link
                 to="/boutique/women"
-                className="group relative inline-block font-sans text-[clamp(13px,1vw,15px)] tracking-[0.08em] text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_10px_rgba(250,247,242,0.65)]"
+                className="group relative inline-block font-sans text-[clamp(13px,1vw,15px)] tracking-[0.08em] text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]"
               >
                 <Editable kind="text_block" contentKey="home_hero" field="preorder_women" label="Hero — Pre-Order Women" as="span">
                   {heroPreorderWomen}
@@ -117,7 +122,7 @@ const Index = () => {
               </Link>
               <Link
                 to="/boutique/men"
-                className="group relative inline-block font-sans text-[clamp(13px,1vw,15px)] tracking-[0.08em] text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_10px_rgba(250,247,242,0.65)]"
+                className="group relative inline-block font-sans text-[clamp(13px,1vw,15px)] tracking-[0.08em] text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]"
               >
                 <Editable kind="text_block" contentKey="home_hero" field="preorder_men" label="Hero — Pre-Order Men" as="span">
                   {heroPreorderMen}
@@ -213,7 +218,7 @@ const Index = () => {
                 style={{ background: "radial-gradient(ellipse at center, rgba(250,247,242,0.55) 0%, rgba(250,247,242,0.22) 45%, rgba(250,247,242,0) 75%)" }}
               />
               <div className="absolute bottom-0 left-0 right-0 px-[clamp(20px,2.4vw,40px)] pb-[clamp(22px,2.6vw,44px)] pt-24 flex flex-col items-center text-center">
-                <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#3A3A3A]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_10px_rgba(250,247,242,0.65)]">
+                <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#3A3A3A]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]">
                   {womenSeason}
                 </Editable>
                 <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-luxury-card text-[#3A3A3A] mb-[clamp(16px,1.6vw,26px)] leading-luxury-card [text-shadow:0_1px_14px_rgba(250,247,242,0.7),0_0_24px_rgba(250,247,242,0.4)]">
@@ -263,7 +268,7 @@ const Index = () => {
                 style={{ background: "radial-gradient(ellipse at center, rgba(250,247,242,0.55) 0%, rgba(250,247,242,0.22) 45%, rgba(250,247,242,0) 75%)" }}
               />
               <div className="absolute bottom-0 left-0 right-0 px-[clamp(20px,2.4vw,40px)] pb-[clamp(22px,2.6vw,44px)] pt-24 flex flex-col items-center text-center">
-                <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#3A3A3A]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_10px_rgba(250,247,242,0.65)]">
+                <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#3A3A3A]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]">
                   {menSeason}
                 </Editable>
                 <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-luxury-card text-[#3A3A3A] mb-[clamp(16px,1.6vw,26px)] leading-luxury-card [text-shadow:0_1px_14px_rgba(250,247,242,0.7),0_0_24px_rgba(250,247,242,0.4)]">

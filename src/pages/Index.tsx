@@ -105,7 +105,7 @@ const Index = () => {
             <div className="flex items-center justify-center gap-[clamp(40px,8vw,120px)]">
               <Link
                 to="/boutique/women"
-                className="group relative inline-block font-sans text-[clamp(13px,1vw,15px)] tracking-[0.08em] text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_8px_rgba(0,0,0,0.55)]"
+                className="group relative inline-block font-sans text-[clamp(13px,1vw,15px)] tracking-[0.08em] text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_10px_rgba(250,247,242,0.65)]"
               >
                 <Editable kind="text_block" contentKey="home_hero" field="preorder_women" label="Hero — Pre-Order Women" as="span">
                   {heroPreorderWomen}
@@ -117,7 +117,7 @@ const Index = () => {
               </Link>
               <Link
                 to="/boutique/men"
-                className="group relative inline-block font-sans text-[clamp(13px,1vw,15px)] tracking-[0.08em] text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_8px_rgba(0,0,0,0.55)]"
+                className="group relative inline-block font-sans text-[clamp(13px,1vw,15px)] tracking-[0.08em] text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_10px_rgba(250,247,242,0.65)]"
               >
                 <Editable kind="text_block" contentKey="home_hero" field="preorder_men" label="Hero — Pre-Order Men" as="span">
                   {heroPreorderMen}

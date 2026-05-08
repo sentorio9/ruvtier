@@ -201,19 +201,34 @@
   }
 }
 
-/* Hero legibility — tight luminous outline on the glyphs themselves so dark
-   editorial text reads cleanly over dark imagery without altering text colour,
-   imagery, or layout. No halo box, no overlay — only a soft light bloom that
-   hugs each letter. */
+/* Hero legibility — a very subtle cream halo sits behind dark editorial text
+   so it reads against imagery without changing the text colour or layout.
+   No outline, no box, no heavy shadow. */
 .hero-glow {
-  /* kept as a no-op wrapper so existing markup continues to work */
+  position: relative;
+  isolation: isolate;
+}
+.hero-glow::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 150%;
+  height: 220%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(250, 247, 242, 0.55) 0%,
+    rgba(250, 247, 242, 0.32) 28%,
+    rgba(250, 247, 242, 0.12) 55%,
+    transparent 78%
+  );
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(8px);
 }
 .hero-title {
-  text-shadow:
-    0 0 1px rgba(250, 247, 242, 0.9),
-    0 0 4px rgba(250, 247, 242, 0.75),
-    0 0 10px rgba(250, 247, 242, 0.55),
-    0 0 22px rgba(250, 247, 242, 0.35);
+  text-shadow: 0 1px 14px rgba(250, 247, 242, 0.5);
 }
 
 /* Hide Lovable edit badge */

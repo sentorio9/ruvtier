@@ -210,7 +210,7 @@ const Index = () => {
               <div
                 aria-hidden
                 className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-[20%] md:bottom-[22%] lg:bottom-[24%] w-[72%] md:w-[64%] lg:w-[58%] h-[26%] md:h-[24%] lg:h-[22%] rounded-[50%] blur-3xl opacity-70 group-hover:opacity-90 transition-opacity duration-700"
-                style={{ background: "radial-gradient(ellipse at center, rgba(58,58,58,0.45) 0%, rgba(58,58,58,0.15) 45%, rgba(58,58,58,0) 75%)" }}
+                style={{ background: "radial-gradient(ellipse at center, rgba(250,247,242,0.55) 0%, rgba(250,247,242,0.22) 45%, rgba(250,247,242,0) 75%)" }}
               />
               <div className="absolute bottom-0 left-0 right-0 px-[clamp(20px,2.4vw,40px)] pb-[clamp(22px,2.6vw,44px)] pt-24 flex flex-col items-center text-center">
                 <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#3A3A3A]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">

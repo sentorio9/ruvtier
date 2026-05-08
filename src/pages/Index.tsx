@@ -92,7 +92,7 @@ const Index = () => {
               field="headline"
               label="Homepage hero text"
               as="p"
-              className="font-serif font-light text-[clamp(20px,2.2vw,28px)] leading-[1.7] tracking-[0.08em] text-[#F6F4F1] mx-auto max-w-[var(--text-max)] [text-shadow:0_1px_2px_rgba(0,0,0,0.55),0_0_18px_rgba(0,0,0,0.4)]"
+              className="font-serif font-light text-[clamp(20px,2.2vw,28px)] leading-[1.7] tracking-[0.08em] text-[#3A3A3A] mx-auto max-w-[var(--text-max)] [text-shadow:0_1px_2px_rgba(0,0,0,0.55),0_0_18px_rgba(0,0,0,0.4)]"
             >
               {heroHeadline}
             </Editable>
@@ -105,26 +105,26 @@ const Index = () => {
             <div className="flex items-center justify-center gap-[clamp(40px,8vw,120px)]">
               <Link
                 to="/boutique/women"
-                className="group relative inline-block font-sans text-[clamp(13px,1vw,15px)] tracking-[0.08em] text-[#F6F4F1]/95 hover:text-[#F6F4F1] transition-colors duration-500 [text-shadow:0_1px_8px_rgba(0,0,0,0.55)]"
+                className="group relative inline-block font-sans text-[clamp(13px,1vw,15px)] tracking-[0.08em] text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_8px_rgba(0,0,0,0.55)]"
               >
                 <Editable kind="text_block" contentKey="home_hero" field="preorder_women" label="Hero — Pre-Order Women" as="span">
                   {heroPreorderWomen}
                 </Editable>
                 <span
                   aria-hidden
-                  className="absolute left-0 right-0 -bottom-1 h-px bg-[#F6F4F1]/80 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                  className="absolute left-0 right-0 -bottom-1 h-px bg-[#3A3A3A]/80 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
                 />
               </Link>
               <Link
                 to="/boutique/men"
-                className="group relative inline-block font-sans text-[clamp(13px,1vw,15px)] tracking-[0.08em] text-[#F6F4F1]/95 hover:text-[#F6F4F1] transition-colors duration-500 [text-shadow:0_1px_8px_rgba(0,0,0,0.55)]"
+                className="group relative inline-block font-sans text-[clamp(13px,1vw,15px)] tracking-[0.08em] text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_8px_rgba(0,0,0,0.55)]"
               >
                 <Editable kind="text_block" contentKey="home_hero" field="preorder_men" label="Hero — Pre-Order Men" as="span">
                   {heroPreorderMen}
                 </Editable>
                 <span
                   aria-hidden
-                  className="absolute left-0 right-0 -bottom-1 h-px bg-[#F6F4F1]/80 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                  className="absolute left-0 right-0 -bottom-1 h-px bg-[#3A3A3A]/80 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
                 />
               </Link>
             </div>
@@ -210,31 +210,31 @@ const Index = () => {
               <div
                 aria-hidden
                 className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-[20%] md:bottom-[22%] lg:bottom-[24%] w-[72%] md:w-[64%] lg:w-[58%] h-[26%] md:h-[24%] lg:h-[22%] rounded-[50%] blur-3xl opacity-70 group-hover:opacity-90 transition-opacity duration-700"
-                style={{ background: "radial-gradient(ellipse at center, rgba(246,244,241,0.45) 0%, rgba(246,244,241,0.15) 45%, rgba(246,244,241,0) 75%)" }}
+                style={{ background: "radial-gradient(ellipse at center, rgba(58,58,58,0.45) 0%, rgba(58,58,58,0.15) 45%, rgba(58,58,58,0) 75%)" }}
               />
               <div className="absolute bottom-0 left-0 right-0 px-[clamp(20px,2.4vw,40px)] pb-[clamp(22px,2.6vw,44px)] pt-24 flex flex-col items-center text-center">
-                <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#F6F4F1]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
+                <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#3A3A3A]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
                   {womenSeason}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-luxury-card text-[#F6F4F1] mb-[clamp(16px,1.6vw,26px)] leading-luxury-card [text-shadow:0_2px_18px_rgba(0,0,0,0.55),0_0_28px_rgba(246,244,241,0.18)]">
+                <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-luxury-card text-[#3A3A3A] mb-[clamp(16px,1.6vw,26px)] leading-luxury-card [text-shadow:0_2px_18px_rgba(0,0,0,0.55),0_0_28px_rgba(58,58,58,0.18)]">
                   {womenTitle}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_women_card" field="blurb" label="Women — blurb" as="p" className="font-sans text-[clamp(11px,0.84vw,13px)] tracking-luxury-tight text-[#F6F4F1]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] leading-luxury-body [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
+                <Editable kind="text_block" contentKey="home_women_card" field="blurb" label="Women — blurb" as="p" className="font-sans text-[clamp(11px,0.84vw,13px)] tracking-luxury-tight text-[#3A3A3A]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] leading-luxury-body [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
                   {womenBlurb}
                 </Editable>
-                <span className="inline-flex items-center gap-2 font-sans text-[clamp(10px,0.78vw,12px)] uppercase tracking-luxury-wide text-[#F6F4F1]/85 group-hover:text-[#F6F4F1] transition-colors duration-500">
+                <span className="inline-flex items-center gap-2 font-sans text-[clamp(10px,0.78vw,12px)] uppercase tracking-luxury-wide text-[#3A3A3A]/85 group-hover:text-[#3A3A3A] transition-colors duration-500">
                   <span className="relative inline-block pb-1">
                     <Editable kind="text_block" contentKey="home_women_card" field="cta_label" label="Women — CTA label" as="span">{womenCta}</Editable>
                     {/* Hairline underline */}
                     <span
                       aria-hidden
-                      className="absolute left-0 right-0 -bottom-px h-px bg-[#F6F4F1]/80 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                      className="absolute left-0 right-0 -bottom-px h-px bg-[#3A3A3A]/80 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
                     />
                     {/* Soft glowing halo beneath the underline */}
                     <span
                       aria-hidden
                       className="pointer-events-none absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-[120%] h-2 rounded-full blur-md opacity-0 group-hover:opacity-90 transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
-                      style={{ background: "radial-gradient(ellipse at center, rgba(246,244,241,0.7) 0%, rgba(246,244,241,0.25) 45%, rgba(246,244,241,0) 80%)" }}
+                      style={{ background: "radial-gradient(ellipse at center, rgba(58,58,58,0.7) 0%, rgba(58,58,58,0.25) 45%, rgba(58,58,58,0) 80%)" }}
                     />
                   </span>
                   <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
@@ -260,29 +260,29 @@ const Index = () => {
               <div
                 aria-hidden
                 className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-[20%] md:bottom-[22%] lg:bottom-[24%] w-[72%] md:w-[64%] lg:w-[58%] h-[26%] md:h-[24%] lg:h-[22%] rounded-[50%] blur-3xl opacity-70 group-hover:opacity-90 transition-opacity duration-700"
-                style={{ background: "radial-gradient(ellipse at center, rgba(246,244,241,0.45) 0%, rgba(246,244,241,0.15) 45%, rgba(246,244,241,0) 75%)" }}
+                style={{ background: "radial-gradient(ellipse at center, rgba(58,58,58,0.45) 0%, rgba(58,58,58,0.15) 45%, rgba(58,58,58,0) 75%)" }}
               />
               <div className="absolute bottom-0 left-0 right-0 px-[clamp(20px,2.4vw,40px)] pb-[clamp(22px,2.6vw,44px)] pt-24 flex flex-col items-center text-center">
-                <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#F6F4F1]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
+                <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#3A3A3A]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
                   {menSeason}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-luxury-card text-[#F6F4F1] mb-[clamp(16px,1.6vw,26px)] leading-luxury-card [text-shadow:0_2px_18px_rgba(0,0,0,0.55),0_0_28px_rgba(246,244,241,0.18)]">
+                <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-luxury-card text-[#3A3A3A] mb-[clamp(16px,1.6vw,26px)] leading-luxury-card [text-shadow:0_2px_18px_rgba(0,0,0,0.55),0_0_28px_rgba(58,58,58,0.18)]">
                   {menTitle}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_men_card" field="blurb" label="Men — blurb" as="p" className="font-sans text-[clamp(11px,0.84vw,13px)] tracking-luxury-tight text-[#F6F4F1]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] leading-luxury-body [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
+                <Editable kind="text_block" contentKey="home_men_card" field="blurb" label="Men — blurb" as="p" className="font-sans text-[clamp(11px,0.84vw,13px)] tracking-luxury-tight text-[#3A3A3A]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] leading-luxury-body [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
                   {menBlurb}
                 </Editable>
-                <span className="inline-flex items-center gap-2 font-sans text-[clamp(10px,0.78vw,12px)] uppercase tracking-luxury-wide text-[#F6F4F1]/85 group-hover:text-[#F6F4F1] transition-colors duration-500">
+                <span className="inline-flex items-center gap-2 font-sans text-[clamp(10px,0.78vw,12px)] uppercase tracking-luxury-wide text-[#3A3A3A]/85 group-hover:text-[#3A3A3A] transition-colors duration-500">
                   <span className="relative inline-block pb-1">
                     <Editable kind="text_block" contentKey="home_men_card" field="cta_label" label="Men — CTA label" as="span">{menCta}</Editable>
                     <span
                       aria-hidden
-                      className="absolute left-0 right-0 -bottom-px h-px bg-[#F6F4F1]/80 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                      className="absolute left-0 right-0 -bottom-px h-px bg-[#3A3A3A]/80 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
                     />
                     <span
                       aria-hidden
                       className="pointer-events-none absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-[120%] h-2 rounded-full blur-md opacity-0 group-hover:opacity-90 transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
-                      style={{ background: "radial-gradient(ellipse at center, rgba(246,244,241,0.7) 0%, rgba(246,244,241,0.25) 45%, rgba(246,244,241,0) 80%)" }}
+                      style={{ background: "radial-gradient(ellipse at center, rgba(58,58,58,0.7) 0%, rgba(58,58,58,0.25) 45%, rgba(58,58,58,0) 80%)" }}
                     />
                   </span>
                   <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>

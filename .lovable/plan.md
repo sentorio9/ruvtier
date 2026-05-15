@@ -1,63 +1,88 @@
-## Audit — what's actually inconsistent
+## Reference read — what Loro Piana actually does
 
-The two font families are already correct everywhere: **Cormorant Garamond** (serif, weight 300) for display/titles, **Jost** (sans, weight 300/400) for eyebrows, blurbs, CTAs. So this isn't a font-family problem — it's a **type-scale problem**. Sizes, tracking and line-heights are hand-tuned per block, which is why the landing page feels visually jittery next to the rest of the site.
+Looking at ii.loropiana.com:
 
-Examples found on the landing page alone:
-- Hero title: `text-[clamp(22px,2.42vw,31px)] tracking-[0.08em] leading-[1.7]`
-- Women/Men card title: `text-[clamp(26px,2.6vw,38px)] tracking-luxury-card`
-- Material is Memory title: `text-[clamp(28px,3.2vw,44px)] tracking-[0.04em]`
-- "In Your Keeping" heading: `text-[clamp(18px,1.6vw,22px)] tracking-[0.15em]`
-- Eyebrows: a mix of `tracking-[0.22em]`, `tracking-[0.3em]`, `tracking-luxury-eyebrow`
-- Blurbs: `text-[clamp(11px,0.84vw,13px)]` vs `text-[clamp(14px,1.05vw,16px)]` vs global `luxury-body` (15–18px)
-- CTAs: `tracking-[0.08em]`, `tracking-[0.2em]`, `tracking-luxury-wide` all coexist
+- Text is **never the thin, low-contrast layer** it currently is on RUVTIER. Headings sit at a solid weight (~400, not 300), in a warm dark colour, at full opacity.
+- Critical text (titles, "Women", "Men") **lives on cream chrome, not on the imagery**. The Resort 2026 card is a solid cream block beside the image, not an overlay on top of it.
+- Microtype (top-bar "Discover our Gift Card", nav) is small but **dark and crisp**, no opacity dimming, modest letter-spacing, never `/70`.
+- Letter-spacing is restrained on body/titles; only small-cap labels get wide tracking.
+- Sizes are comfortable: nav ~13–14px, card title ~28px, no feathery clamp values.
 
-Other pages (Materials, Collection, Boutique, Preorder) each invent their own sizes too (`text-base md:text-lg`, `text-2xl md:text-3xl`, `!text-[clamp(16px,1.5vw,20px)]`).
+## What's hurting visibility on RUVTIER today
 
-There already are luxury tokens in `index.css` (`--luxury-tracking-*`, `--luxury-leading-*`, `luxury-heading`, `luxury-body`, `luxury-button`) — they're just under-used.
+After the last pass we have one shared scale, but it's tuned **toward whisper, not toward read**:
 
-## Plan — one shared type system, applied first to the landing page
+1. **Weights are all 300 (light).** Cormorant 300 + Jost 300 disappear on cream backgrounds, especially the body/eyebrow.
+2. **Colour opacities are stacked on top of muted tokens.** Card text is `text-[#3A3A3A]/70`–`/85`, blurbs use `text-muted-foreground`. Two layers of dimming = grey-on-cream.
+3. **Hero/Women/Men titles sit directly on imagery,** propped up by cream halos and shadows. That's the opposite of the Loro Piana approach — they take the text off the image.
+4. **Type sizes are small at the low end of every clamp** (eyebrow 10px, body 14px, cta 11px), so on the typical 1080–1280px viewport everything renders near the floor of the scale.
+5. Some places still pile shadows + glow on text to compensate for low contrast (Material is Memory headline, hero pre-order links).
 
-### 1. Lock a 5-step type scale (in `src/index.css`)
+## Plan — visibility pass, fonts unchanged
 
-Extend the existing luxury tokens into a single, named scale used everywhere:
+### 1. Re-tune the 6-step scale in `src/index.css`
+
+Same six classes (`type-display / title / subtitle / body / eyebrow / cta`), same families (Cormorant Garamond + Jost), but:
 
 ```text
-display   serif 300  clamp(34px, 3.4vw, 46px)  track 0.08em  leading 1.15  → Women/Men/Material titles
-title     serif 300  clamp(22px, 2.2vw, 30px)  track 0.10em  leading 1.25  → Hero title, "In Your Keeping"
-subtitle  serif 300  clamp(16px, 1.3vw, 19px)  track 0.06em  leading 1.4   → product titles, card subheads
-body      sans  300  clamp(14px, 1.0vw, 16px)  track 0.02em  leading 1.75  → blurbs, paragraphs
-eyebrow   sans  400  clamp(10px, 0.78vw, 12px) uppercase track 0.22em      → season labels, small caps
-cta       sans  400  clamp(11px, 0.85vw, 13px) uppercase track 0.20em      → all text-only buttons / links
+display   serif 400  clamp(38px, 3.6vw, 52px)  track 0.04em  leading 1.15
+title     serif 400  clamp(24px, 2.2vw, 32px)  track 0.06em  leading 1.25
+subtitle  serif 400  clamp(17px, 1.3vw, 20px)  track 0.04em  leading 1.4
+body      sans  400  clamp(15px, 1.05vw, 17px) track 0.01em  leading 1.7
+eyebrow   sans  500  clamp(11px, 0.82vw, 13px) UPPER track 0.18em
+cta       sans  500  clamp(12px, 0.9vw, 14px)  UPPER track 0.16em
 ```
 
-Expose them as component classes: `.type-display`, `.type-title`, `.type-subtitle`, `.type-body`, `.type-eyebrow`, `.type-cta`. Refresh the existing `.luxury-heading` / `.luxury-body` / `.luxury-button` to alias these so older pages keep working.
+Key changes vs. now: weights move 300→400 (display/title/subtitle/body) and 400→500 (eyebrow/cta), minimum sizes go up ~1–2px, letter-spacing tightens. Memory rule "light/regular weights only — never bold" is respected: 400 = regular, 500 = medium, no 600/700.
 
-### 2. Refactor the landing page (`src/pages/Index.tsx`) to use only those classes
+`color` on every class becomes the full token (`hsl(var(--foreground))` for display/title/subtitle/cta, `hsl(var(--foreground))` at full strength for body too — we drop `--muted-foreground` from the body class and use it only on truly secondary captions). Eyebrow stays muted but at the new heavier weight.
 
-- Hero title → `type-title` (keeps the `hero-title` halo class for legibility, removes the inline clamp/tracking/leading).
-- Pre-order links under the hero → `type-cta`.
-- Women's & Men's card season label → `type-eyebrow`; title → `type-display`; blurb → `type-body`; "Discover" link → `type-cta`.
-- "Material is Memory" eyebrow / title / paragraph / pull-quote → `type-eyebrow` / `type-display` / `type-body` / `type-subtitle italic`.
-- "In Your Keeping" heading → `type-title`; item titles → `type-subtitle`; price → `type-body italic`; "View" → `type-cta`.
+### 2. Strip the dimming wrappers
 
-Strip every `text-[clamp(...)]`, `tracking-[...]`, `leading-[...]` on text nodes in `Index.tsx`. Colour, spacing and the existing glow/shadow utilities stay untouched — this is a typography-only pass.
+Across `Index.tsx`, `Materials.tsx`, `CollectionPage.tsx`, `BoutiqueCategoryPage.tsx`, `PreorderPage.tsx`:
 
-### 3. Bring the rest of the site in line (smaller follow-up edits, same classes)
+- Remove `text-[#3A3A3A]/70`, `/80`, `/85`, `/95` — text is full `#3A3A3A`.
+- Remove `text-muted-foreground` from primary read-paths (product names, blurbs, prices). Keep it only for genuine secondary metadata (image captions, "Available by allocation").
+- Remove every `[text-shadow:...]` and `drop-shadow-[...]` on text — the new weight + position make them unnecessary.
 
-- `Materials.tsx`, `CollectionPage.tsx`, `BoutiqueCategoryPage.tsx` product/category titles → `type-subtitle`; prices → `type-body`.
-- `PreorderPage.tsx` heading → `type-title`, labels → `type-eyebrow`, submit button → `type-cta`.
-- Anywhere else still using ad-hoc sizes gets swept in the same pass.
+### 3. Lift titles **off** the imagery (the Loro Piana move)
 
-### 4. Verify
+Currently Women/Men card titles, blurbs and CTA float over the photo, propped up by cream gradients + halos. New layout:
 
-After changes: load `/`, `/material-is-memory`, `/collection/women`, `/collection/men`, `/preorder` in the preview and confirm hero, card, section and CTA type all share the same rhythm; check mobile (≤768px) and desktop.
+- Photo stays the photo. Aspect, zoom-on-hover and shadow stay.
+- Below the photo, a thin cream caption block: eyebrow (season) — title — blurb — CTA arrow. All `type-eyebrow / type-display / type-body / type-cta`, full colour, no shadows, no halos, no overlay gradient.
+- Drop the inner `bg-gradient-to-t from-cream`, the `radial-gradient` halo div behind the title, and the cream text-shadows on the card text. Hover affordance on the photo is preserved.
+- Same treatment for **Material is Memory**: keep the silk-scarf image, but render the headline + CTA in a centred cream block underneath, not over the image.
+- **In Your Keeping**: already off-image, just adopt the new heavier classes.
 
-## What does NOT change
+### 4. Hero — keep over image, but make it carry
 
-- Font families (Cormorant Garamond + Jost) — already correct.
-- Colours, spacing tokens, layout, images, glow/halo effects.
-- Admin panel typography (intentionally a different system per memory).
+The hero ("Permanence in garment form") stays centred on the image because the composition depends on it. To make it visible without the current shadow-stack:
 
-## Scope of this task
+- Promote the headline to `type-display` (was `type-title`) and full `text-foreground`.
+- Replace the layered `text-shadow` + halo div with a single, calmer cream backdrop: a soft ~140% × 220% radial cream wash (`rgba(245,241,235,0.45) → 0`) sitting in `.hero-glow::before`. Same `hero-glow` hook, simpler implementation.
+- Pre-order links under the hero adopt `type-cta` at full `text-foreground`, no shadow.
 
-Step 1 + Step 2 (tokens + landing page) are the core deliverable the user asked for. Step 3 is included so the landing page doesn't drift away from the rest of the site again; I'll do it in the same pass unless you'd rather keep it landing-only.
+### 5. Sweep the rest
+
+- Navigation, footer, cart drawer, client lounge, search overlay: replace ad-hoc `text-[Npx] tracking-[Nem]` with the six tokens. No restyle, just consistency — same families, the new weights/sizes carry through.
+- Filter chips on `CollectionPage` (currently `type-subtitle`) become `type-cta` to match Loro Piana's small-cap tab feel.
+
+### 6. Verify
+
+Reload `/`, `/material-is-memory`, `/collection/women`, `/collection/men`, `/preorder`, `/boutique/women` at desktop **and** the current 1075px viewport, plus mobile. Confirm:
+- All text sits at full strength dark grey on cream — no greyed-out bodies.
+- Titles are clearly readable without halos / shadows.
+- Hero line reads at a glance against the image.
+- Family + light/regular discipline preserved (no bold anywhere).
+
+## What does **not** change
+
+- Font families: Cormorant Garamond + Jost.
+- Brand colours, off-white #F6F4F1 / dark grey #3A3A3A.
+- Layouts, images, scroll behaviour, animations.
+- Admin panel typography (separate system).
+
+## Scope
+
+Steps 1–4 are the visible upgrade. Step 5 is the consistency sweep so the site stops drifting back; step 6 is verification. I'll do all of it in one pass unless you'd rather I land 1–4 first and check it before the sweep.

@@ -68,7 +68,7 @@ const CollectionPage = () => {
                     type="button"
                     onClick={() => setActive(f.value)}
                     aria-pressed={isActive}
-                    className="group relative inline-flex flex-col items-center pb-2 type-cta normal-case"
+                    className="group relative inline-flex flex-col items-center pb-2 type-subtitle"
                   >
                     <span
                       className={`transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] ${

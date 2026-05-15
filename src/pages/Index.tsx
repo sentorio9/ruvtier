@@ -92,7 +92,7 @@ const Index = () => {
               field="headline"
               label="Homepage hero text"
               as="p"
-              className="hero-title type-title mx-auto max-w-[var(--text-max)]"
+              className="hero-title type-display mx-auto max-w-[var(--text-max)]"
             >
               {heroHeadline}
             </Editable>

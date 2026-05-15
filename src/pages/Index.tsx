@@ -110,7 +110,7 @@ const Index = () => {
             <div className="relative flex items-center justify-center gap-[clamp(40px,8vw,120px)]">
               <Link
                 to="/boutique/women"
-                className="group relative inline-block type-cta text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]"
+                className="group relative inline-block type-cta text-foreground transition-colors duration-500"
               >
                 <Editable kind="text_block" contentKey="home_hero" field="preorder_women" label="Hero — Pre-Order Women" as="span">
                   {heroPreorderWomen}

@@ -64,10 +64,10 @@ const BoutiqueCategoryPage = ({ title, gender, subtitle }: BoutiqueCategoryPageP
                         loading="lazy"
                       />
                     </div>
-                    <h3 className="font-serif font-light text-base md:text-lg tracking-wide text-foreground mb-1">
+                    <h3 className="type-subtitle mb-1">
                       {product.name}
                     </h3>
-                    <p className="text-sm text-muted-foreground tracking-wide">
+                    <p className="type-body">
                       {formatPrice(product.price)}
                     </p>
                   </Link>

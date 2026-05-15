@@ -92,7 +92,7 @@ const Index = () => {
               field="headline"
               label="Homepage hero text"
               as="p"
-              className="hero-title font-serif font-light text-[clamp(22px,2.42vw,31px)] leading-[1.7] tracking-[0.08em] mx-auto max-w-[var(--text-max)]"
+              className="hero-title type-title mx-auto max-w-[var(--text-max)]"
             >
               {heroHeadline}
             </Editable>
@@ -110,7 +110,7 @@ const Index = () => {
             <div className="relative flex items-center justify-center gap-[clamp(40px,8vw,120px)]">
               <Link
                 to="/boutique/women"
-                className="group relative inline-block font-sans text-[clamp(13px,1vw,15px)] tracking-[0.08em] text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]"
+                className="group relative inline-block type-cta text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]"
               >
                 <Editable kind="text_block" contentKey="home_hero" field="preorder_women" label="Hero — Pre-Order Women" as="span">
                   {heroPreorderWomen}
@@ -122,7 +122,7 @@ const Index = () => {
               </Link>
               <Link
                 to="/boutique/men"
-                className="group relative inline-block font-sans text-[clamp(13px,1vw,15px)] tracking-[0.08em] text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]"
+                className="group relative inline-block type-cta text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]"
               >
                 <Editable kind="text_block" contentKey="home_hero" field="preorder_men" label="Hero — Pre-Order Men" as="span">
                   {heroPreorderMen}
@@ -166,24 +166,24 @@ const Index = () => {
               <ScrollFadeIn delay={0.1}>
                 <div className="flex flex-col items-start text-left max-w-[460px]">
                   {(featuredPreorder as any).preorder_enabled && (
-                    <span className="font-sans text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-5">
+                    <span className="type-eyebrow mb-5">
                       Private Access — Pre-Register
                     </span>
                   )}
-                  <h2 className="font-serif font-light text-[clamp(28px,3.2vw,44px)] leading-[1.15] tracking-[0.04em] text-foreground mb-5">
+                  <h2 className="type-display mb-5">
                     {featuredPreorder.name}
                   </h2>
                   {featuredPreorder.description && (
-                    <p className="font-sans font-light text-[clamp(14px,1.05vw,16px)] leading-[1.9] text-muted-foreground mb-6">
+                    <p className="type-body mb-6">
                       {featuredPreorder.description}
                     </p>
                   )}
                   {(featuredPreorder as any).preorder_enabled ? (
-                    <p className="font-sans text-[11px] uppercase tracking-[0.22em] text-muted-foreground mb-8">
+                    <p className="type-eyebrow mb-8">
                       Available by allocation — not open purchase
                     </p>
                   ) : featuredPreorder.price != null ? (
-                    <p className="font-serif font-light text-[clamp(16px,1.3vw,20px)] text-foreground mb-8">
+                    <p className="type-subtitle mb-8">
                       {formatPrice(featuredPreorder.price)}
                     </p>
                   ) : null}
@@ -218,16 +218,16 @@ const Index = () => {
                 style={{ background: "radial-gradient(ellipse at center, rgba(250,247,242,0.55) 0%, rgba(250,247,242,0.22) 45%, rgba(250,247,242,0) 75%)" }}
               />
               <div className="absolute bottom-0 left-0 right-0 px-[clamp(20px,2.4vw,40px)] pb-[clamp(22px,2.6vw,44px)] pt-24 flex flex-col items-center text-center">
-                <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#3A3A3A]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]">
+                <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="type-eyebrow text-[#3A3A3A]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]">
                   {womenSeason}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-luxury-card text-[#3A3A3A] mb-[clamp(16px,1.6vw,26px)] leading-luxury-card [text-shadow:0_1px_14px_rgba(250,247,242,0.7),0_0_24px_rgba(250,247,242,0.4)]">
+                <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="type-display text-[#3A3A3A] mb-[clamp(16px,1.6vw,26px)] [text-shadow:0_1px_14px_rgba(250,247,242,0.7),0_0_24px_rgba(250,247,242,0.4)]">
                   {womenTitle}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_women_card" field="blurb" label="Women — blurb" as="p" className="font-sans text-[clamp(11px,0.84vw,13px)] tracking-luxury-tight text-[#3A3A3A]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] leading-luxury-body [text-shadow:0_1px_12px_rgba(250,247,242,0.6)]">
+                <Editable kind="text_block" contentKey="home_women_card" field="blurb" label="Women — blurb" as="p" className="type-body text-[#3A3A3A]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] [text-shadow:0_1px_12px_rgba(250,247,242,0.6)]">
                   {womenBlurb}
                 </Editable>
-                <span className="inline-flex items-center gap-2 font-sans text-[clamp(10px,0.78vw,12px)] uppercase tracking-luxury-wide text-[#3A3A3A]/85 group-hover:text-[#3A3A3A] transition-colors duration-500">
+                <span className="inline-flex items-center gap-2 type-cta text-[#3A3A3A]/85 group-hover:text-[#3A3A3A] transition-colors duration-500">
                   <span className="relative inline-block pb-1">
                     <Editable kind="text_block" contentKey="home_women_card" field="cta_label" label="Women — CTA label" as="span">{womenCta}</Editable>
                     {/* Hairline underline */}
@@ -268,16 +268,16 @@ const Index = () => {
                 style={{ background: "radial-gradient(ellipse at center, rgba(250,247,242,0.55) 0%, rgba(250,247,242,0.22) 45%, rgba(250,247,242,0) 75%)" }}
               />
               <div className="absolute bottom-0 left-0 right-0 px-[clamp(20px,2.4vw,40px)] pb-[clamp(22px,2.6vw,44px)] pt-24 flex flex-col items-center text-center">
-                <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="font-sans text-[clamp(9px,0.72vw,11px)] uppercase tracking-luxury-eyebrow text-[#3A3A3A]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]">
+                <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="type-eyebrow text-[#3A3A3A]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]">
                   {menSeason}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="font-serif font-light text-[clamp(26px,2.6vw,38px)] tracking-luxury-card text-[#3A3A3A] mb-[clamp(16px,1.6vw,26px)] leading-luxury-card [text-shadow:0_1px_14px_rgba(250,247,242,0.7),0_0_24px_rgba(250,247,242,0.4)]">
+                <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="type-display text-[#3A3A3A] mb-[clamp(16px,1.6vw,26px)] [text-shadow:0_1px_14px_rgba(250,247,242,0.7),0_0_24px_rgba(250,247,242,0.4)]">
                   {menTitle}
                 </Editable>
-                <Editable kind="text_block" contentKey="home_men_card" field="blurb" label="Men — blurb" as="p" className="font-sans text-[clamp(11px,0.84vw,13px)] tracking-luxury-tight text-[#3A3A3A]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] leading-luxury-body [text-shadow:0_1px_12px_rgba(250,247,242,0.6)]">
+                <Editable kind="text_block" contentKey="home_men_card" field="blurb" label="Men — blurb" as="p" className="type-body text-[#3A3A3A]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] [text-shadow:0_1px_12px_rgba(250,247,242,0.6)]">
                   {menBlurb}
                 </Editable>
-                <span className="inline-flex items-center gap-2 font-sans text-[clamp(10px,0.78vw,12px)] uppercase tracking-luxury-wide text-[#3A3A3A]/85 group-hover:text-[#3A3A3A] transition-colors duration-500">
+                <span className="inline-flex items-center gap-2 type-cta text-[#3A3A3A]/85 group-hover:text-[#3A3A3A] transition-colors duration-500">
                   <span className="relative inline-block pb-1">
                     <Editable kind="text_block" contentKey="home_men_card" field="cta_label" label="Men — CTA label" as="span">{menCta}</Editable>
                     <span
@@ -323,7 +323,7 @@ const Index = () => {
                     field="headline"
                     label="'Material is Memory' heading"
                     as="h2"
-                    className="relative luxury-heading text-foreground drop-shadow-[0_0_18px_rgba(255,255,255,0.45)]"
+                    className="relative type-display drop-shadow-[0_0_18px_rgba(255,255,255,0.45)]"
                   >
                     {materialMemoryHeadline}
                   </Editable>
@@ -364,7 +364,7 @@ const Index = () => {
       <section className="py-16 md:py-24">
         <div className="luxury-container">
           <ScrollFadeIn>
-            <Editable kind="text_block" contentKey="home_in_your_keeping" field="headline" label="'In Your Keeping' heading" as="h2" className="font-serif font-light text-[clamp(18px,1.6vw,22px)] tracking-[0.15em] text-foreground text-center mb-10 md:mb-14">
+            <Editable kind="text_block" contentKey="home_in_your_keeping" field="headline" label="'In Your Keeping' heading" as="h2" className="type-title text-center mb-10 md:mb-14">
               {inYourKeepingHeading}
             </Editable>
           </ScrollFadeIn>
@@ -387,13 +387,13 @@ const Index = () => {
                       className={`object-contain object-center transition-transform duration-700 ease-out group-hover:scale-[1.02] ${item.imgClass}`}
                     />
                   </div>
-                  <h3 className="mt-6 min-h-[2.75rem] self-start font-serif text-[clamp(15px,1.4vw,18px)] font-light tracking-[0.12em] text-foreground flex items-start justify-center text-center leading-[1.35] md:min-h-[3rem]">
+                  <h3 className="mt-6 min-h-[2.75rem] self-start type-subtitle flex items-start justify-center text-center md:min-h-[3rem]">
                     {item.label}
                   </h3>
-                  <span className="mt-2 font-serif italic font-light text-[14px] tracking-[0.02em] text-muted-foreground leading-none">
+                  <span className="mt-2 type-body italic font-light leading-none">
                     {item.caption}
                   </span>
-                  <span className="mt-3 font-sans text-[10px] uppercase tracking-[0.2em] text-muted-foreground transition-colors duration-500 group-hover:text-foreground">
+                  <span className="mt-3 type-cta text-muted-foreground transition-colors duration-500 group-hover:text-foreground">
                     Explore
                   </span>
                 </Link>

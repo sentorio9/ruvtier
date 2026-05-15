@@ -274,58 +274,39 @@ const Index = () => {
       <section className="luxury-section">
         <div className="luxury-container flex flex-col items-center text-center pt-20 md:pt-32 pb-24 md:pb-36">
           <ScrollFadeIn>
-            <div className="relative w-full max-w-[420px] md:max-w-[520px] mx-auto overflow-hidden">
+            <div className="w-full max-w-[420px] md:max-w-[520px] mx-auto overflow-hidden">
               <img
                 src={materialMemoryScarf}
                 alt="A RUVTIER silk scarf draped over a wooden chair — the quiet permanence of material."
                 className="w-full h-auto object-contain"
                 loading="lazy"
               />
-
-              {/* Centered headline with a soft luminous halo behind it */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-6">
-                <div className="relative">
-                  <span
-                    aria-hidden
-                    className="absolute inset-0 -m-10 rounded-full blur-3xl bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.55),rgba(255,255,255,0.18)_45%,transparent_70%)]"
-                  />
-                  <Editable
-                    kind="text_block"
-                    contentKey="home_material_memory"
-                    field="headline"
-                    label="'Material is Memory' heading"
-                    as="h2"
-                    className="relative type-display drop-shadow-[0_0_18px_rgba(255,255,255,0.45)]"
-                  >
-                    {materialMemoryHeadline}
-                  </Editable>
-                </div>
-              </div>
-
-              {/* CTA anchored toward the bottom of the scarf image */}
-              <div className="absolute inset-x-0 bottom-[6%] md:bottom-[8%] flex items-center justify-center pointer-events-none">
-                <div className="relative pointer-events-auto">
-                  <span
-                    aria-hidden
-                    className="absolute inset-0 -m-6 rounded-full blur-2xl bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.45),rgba(255,255,255,0.12)_50%,transparent_75%)]"
-                  />
-                  <Editable
-                    kind="text_block"
-                    contentKey="home_material_memory"
-                    field="cta_label"
-                    label="'Material is Memory' button"
-                    as="span"
-                    className="relative inline-block"
-                  >
-                    <Link
-                      to="/materials"
-                      className="luxury-button text-foreground drop-shadow-[0_0_12px_rgba(255,255,255,0.4)]"
-                    >
-                      {materialMemoryCta}
-                    </Link>
-                  </Editable>
-                </div>
-              </div>
+            </div>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={0.1}>
+            <div className="mt-10 md:mt-14 flex flex-col items-center text-center">
+              <Editable
+                kind="text_block"
+                contentKey="home_material_memory"
+                field="headline"
+                label="'Material is Memory' heading"
+                as="h2"
+                className="type-display mb-6 md:mb-8"
+              >
+                {materialMemoryHeadline}
+              </Editable>
+              <Editable
+                kind="text_block"
+                contentKey="home_material_memory"
+                field="cta_label"
+                label="'Material is Memory' button"
+                as="span"
+                className="inline-block"
+              >
+                <Link to="/materials" className="luxury-button type-cta">
+                  {materialMemoryCta}
+                </Link>
+              </Editable>
             </div>
           </ScrollFadeIn>
         </div>

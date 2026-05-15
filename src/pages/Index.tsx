@@ -323,7 +323,7 @@ const Index = () => {
                     field="headline"
                     label="'Material is Memory' heading"
                     as="h2"
-                    className="relative luxury-heading text-foreground drop-shadow-[0_0_18px_rgba(255,255,255,0.45)]"
+                    className="relative type-display drop-shadow-[0_0_18px_rgba(255,255,255,0.45)]"
                   >
                     {materialMemoryHeadline}
                   </Editable>

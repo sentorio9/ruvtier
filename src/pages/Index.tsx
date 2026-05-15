@@ -166,24 +166,24 @@ const Index = () => {
               <ScrollFadeIn delay={0.1}>
                 <div className="flex flex-col items-start text-left max-w-[460px]">
                   {(featuredPreorder as any).preorder_enabled && (
-                    <span className="font-sans text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-5">
+                    <span className="type-eyebrow mb-5">
                       Private Access — Pre-Register
                     </span>
                   )}
-                  <h2 className="font-serif font-light text-[clamp(28px,3.2vw,44px)] leading-[1.15] tracking-[0.04em] text-foreground mb-5">
+                  <h2 className="type-display mb-5">
                     {featuredPreorder.name}
                   </h2>
                   {featuredPreorder.description && (
-                    <p className="font-sans font-light text-[clamp(14px,1.05vw,16px)] leading-[1.9] text-muted-foreground mb-6">
+                    <p className="type-body mb-6">
                       {featuredPreorder.description}
                     </p>
                   )}
                   {(featuredPreorder as any).preorder_enabled ? (
-                    <p className="font-sans text-[11px] uppercase tracking-[0.22em] text-muted-foreground mb-8">
+                    <p className="type-eyebrow mb-8">
                       Available by allocation — not open purchase
                     </p>
                   ) : featuredPreorder.price != null ? (
-                    <p className="font-serif font-light text-[clamp(16px,1.3vw,20px)] text-foreground mb-8">
+                    <p className="type-subtitle mb-8">
                       {formatPrice(featuredPreorder.price)}
                     </p>
                   ) : null}

@@ -92,7 +92,7 @@ const Index = () => {
               field="headline"
               label="Homepage hero text"
               as="p"
-              className="hero-title type-title mx-auto max-w-[var(--text-max)]"
+              className="hero-title type-display mx-auto max-w-[var(--text-max)]"
             >
               {heroHeadline}
             </Editable>
@@ -110,7 +110,7 @@ const Index = () => {
             <div className="relative flex items-center justify-center gap-[clamp(40px,8vw,120px)]">
               <Link
                 to="/boutique/women"
-                className="group relative inline-block type-cta text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]"
+                className="group relative inline-block type-cta text-foreground transition-colors duration-500"
               >
                 <Editable kind="text_block" contentKey="home_hero" field="preorder_women" label="Hero — Pre-Order Women" as="span">
                   {heroPreorderWomen}
@@ -122,7 +122,7 @@ const Index = () => {
               </Link>
               <Link
                 to="/boutique/men"
-                className="group relative inline-block type-cta text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]"
+                className="group relative inline-block type-cta text-foreground transition-colors duration-500"
               >
                 <Editable kind="text_block" contentKey="home_hero" field="preorder_men" label="Hero — Pre-Order Men" as="span">
                   {heroPreorderMen}
@@ -198,53 +198,38 @@ const Index = () => {
       )}
 
       {/* Split Collection — Women / Men */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 py-16 md:py-24 luxury-container">
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-6 py-16 md:py-24 luxury-container">
         {/* Women */}
         <ScrollFadeIn>
           <Link to="/boutique/women" className="group flex flex-col items-center text-center">
-            <div className="relative w-full aspect-[3/4] overflow-hidden transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:shadow-[0_30px_70px_-32px_rgba(0,0,0,0.35)]">
+            <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:shadow-[0_30px_70px_-32px_rgba(0,0,0,0.35)]">
               <img
                 src={womenImage}
                 alt="Women's collection by RUVTIER"
                 className="w-full h-full object-cover object-[center_25%] transition-[transform,filter] duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.02] group-hover:brightness-[1.03]"
                 loading="lazy"
               />
-              {/* Static base gradient — no opacity flicker on hover, keeps the frame calm */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[rgba(250,247,242,0.85)] via-[rgba(250,247,242,0.45)] to-transparent" />
-              {/* Soft luminous halo behind the title — anchored to the title row across breakpoints */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-[20%] md:bottom-[22%] lg:bottom-[24%] w-[72%] md:w-[64%] lg:w-[58%] h-[26%] md:h-[24%] lg:h-[22%] rounded-[50%] blur-3xl opacity-70 group-hover:opacity-90 transition-opacity duration-700"
-                style={{ background: "radial-gradient(ellipse at center, rgba(250,247,242,0.55) 0%, rgba(250,247,242,0.22) 45%, rgba(250,247,242,0) 75%)" }}
-              />
-              <div className="absolute bottom-0 left-0 right-0 px-[clamp(20px,2.4vw,40px)] pb-[clamp(22px,2.6vw,44px)] pt-24 flex flex-col items-center text-center">
-                <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="type-eyebrow text-[#3A3A3A]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]">
-                  {womenSeason}
-                </Editable>
-                <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="type-display text-[#3A3A3A] mb-[clamp(16px,1.6vw,26px)] [text-shadow:0_1px_14px_rgba(250,247,242,0.7),0_0_24px_rgba(250,247,242,0.4)]">
-                  {womenTitle}
-                </Editable>
-                <Editable kind="text_block" contentKey="home_women_card" field="blurb" label="Women — blurb" as="p" className="type-body text-[#3A3A3A]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] [text-shadow:0_1px_12px_rgba(250,247,242,0.6)]">
-                  {womenBlurb}
-                </Editable>
-                <span className="inline-flex items-center gap-2 type-cta text-[#3A3A3A]/85 group-hover:text-[#3A3A3A] transition-colors duration-500">
-                  <span className="relative inline-block pb-1">
-                    <Editable kind="text_block" contentKey="home_women_card" field="cta_label" label="Women — CTA label" as="span">{womenCta}</Editable>
-                    {/* Hairline underline */}
-                    <span
-                      aria-hidden
-                      className="absolute left-0 right-0 -bottom-px h-px bg-[#3A3A3A]/80 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
-                    />
-                    {/* Soft glowing halo beneath the underline */}
-                    <span
-                      aria-hidden
-                      className="pointer-events-none absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-[120%] h-2 rounded-full blur-md opacity-0 group-hover:opacity-90 transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
-                      style={{ background: "radial-gradient(ellipse at center, rgba(58,58,58,0.7) 0%, rgba(58,58,58,0.25) 45%, rgba(58,58,58,0) 80%)" }}
-                    />
-                  </span>
-                  <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
+            </div>
+            <div className="mt-8 md:mt-10 flex flex-col items-center text-center px-4">
+              <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="type-eyebrow mb-3 md:mb-4">
+                {womenSeason}
+              </Editable>
+              <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="type-display mb-4 md:mb-5">
+                {womenTitle}
+              </Editable>
+              <Editable kind="text_block" contentKey="home_women_card" field="blurb" label="Women — blurb" as="p" className="type-body mb-6 md:mb-7 max-w-[clamp(260px,28vw,360px)]">
+                {womenBlurb}
+              </Editable>
+              <span className="inline-flex items-center gap-2 type-cta">
+                <span className="relative inline-block pb-1">
+                  <Editable kind="text_block" contentKey="home_women_card" field="cta_label" label="Women — CTA label" as="span">{womenCta}</Editable>
+                  <span
+                    aria-hidden
+                    className="absolute left-0 right-0 -bottom-px h-px bg-foreground origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                  />
                 </span>
-              </div>
+                <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
+              </span>
             </div>
           </Link>
         </ScrollFadeIn>
@@ -259,40 +244,27 @@ const Index = () => {
                 className="w-full h-full object-contain object-center transition-[transform,filter] duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.02] group-hover:brightness-[1.03]"
                 loading="lazy"
               />
-              {/* Static base gradient — no opacity flicker on hover, keeps the frame calm */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[rgba(250,247,242,0.85)] via-[rgba(250,247,242,0.45)] to-transparent" />
-              {/* Soft luminous halo behind the title — anchored to the title row across breakpoints */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-[20%] md:bottom-[22%] lg:bottom-[24%] w-[72%] md:w-[64%] lg:w-[58%] h-[26%] md:h-[24%] lg:h-[22%] rounded-[50%] blur-3xl opacity-70 group-hover:opacity-90 transition-opacity duration-700"
-                style={{ background: "radial-gradient(ellipse at center, rgba(250,247,242,0.55) 0%, rgba(250,247,242,0.22) 45%, rgba(250,247,242,0) 75%)" }}
-              />
-              <div className="absolute bottom-0 left-0 right-0 px-[clamp(20px,2.4vw,40px)] pb-[clamp(22px,2.6vw,44px)] pt-24 flex flex-col items-center text-center">
-                <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="type-eyebrow text-[#3A3A3A]/70 mb-[clamp(8px,0.85vw,14px)] [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]">
-                  {menSeason}
-                </Editable>
-                <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="type-display text-[#3A3A3A] mb-[clamp(16px,1.6vw,26px)] [text-shadow:0_1px_14px_rgba(250,247,242,0.7),0_0_24px_rgba(250,247,242,0.4)]">
-                  {menTitle}
-                </Editable>
-                <Editable kind="text_block" contentKey="home_men_card" field="blurb" label="Men — blurb" as="p" className="type-body text-[#3A3A3A]/80 mb-[clamp(18px,1.7vw,28px)] max-w-[clamp(240px,22vw,300px)] [text-shadow:0_1px_12px_rgba(250,247,242,0.6)]">
-                  {menBlurb}
-                </Editable>
-                <span className="inline-flex items-center gap-2 type-cta text-[#3A3A3A]/85 group-hover:text-[#3A3A3A] transition-colors duration-500">
-                  <span className="relative inline-block pb-1">
-                    <Editable kind="text_block" contentKey="home_men_card" field="cta_label" label="Men — CTA label" as="span">{menCta}</Editable>
-                    <span
-                      aria-hidden
-                      className="absolute left-0 right-0 -bottom-px h-px bg-[#3A3A3A]/80 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
-                    />
-                    <span
-                      aria-hidden
-                      className="pointer-events-none absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-[120%] h-2 rounded-full blur-md opacity-0 group-hover:opacity-90 transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
-                      style={{ background: "radial-gradient(ellipse at center, rgba(58,58,58,0.7) 0%, rgba(58,58,58,0.25) 45%, rgba(58,58,58,0) 80%)" }}
-                    />
-                  </span>
-                  <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
+            </div>
+            <div className="mt-8 md:mt-10 flex flex-col items-center text-center px-4">
+              <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="type-eyebrow mb-3 md:mb-4">
+                {menSeason}
+              </Editable>
+              <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="type-display mb-4 md:mb-5">
+                {menTitle}
+              </Editable>
+              <Editable kind="text_block" contentKey="home_men_card" field="blurb" label="Men — blurb" as="p" className="type-body mb-6 md:mb-7 max-w-[clamp(260px,28vw,360px)]">
+                {menBlurb}
+              </Editable>
+              <span className="inline-flex items-center gap-2 type-cta">
+                <span className="relative inline-block pb-1">
+                  <Editable kind="text_block" contentKey="home_men_card" field="cta_label" label="Men — CTA label" as="span">{menCta}</Editable>
+                  <span
+                    aria-hidden
+                    className="absolute left-0 right-0 -bottom-px h-px bg-foreground origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                  />
                 </span>
-              </div>
+                <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
+              </span>
             </div>
           </Link>
         </ScrollFadeIn>
@@ -302,58 +274,39 @@ const Index = () => {
       <section className="luxury-section">
         <div className="luxury-container flex flex-col items-center text-center pt-20 md:pt-32 pb-24 md:pb-36">
           <ScrollFadeIn>
-            <div className="relative w-full max-w-[420px] md:max-w-[520px] mx-auto overflow-hidden">
+            <div className="w-full max-w-[420px] md:max-w-[520px] mx-auto overflow-hidden">
               <img
                 src={materialMemoryScarf}
                 alt="A RUVTIER silk scarf draped over a wooden chair — the quiet permanence of material."
                 className="w-full h-auto object-contain"
                 loading="lazy"
               />
-
-              {/* Centered headline with a soft luminous halo behind it */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-6">
-                <div className="relative">
-                  <span
-                    aria-hidden
-                    className="absolute inset-0 -m-10 rounded-full blur-3xl bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.55),rgba(255,255,255,0.18)_45%,transparent_70%)]"
-                  />
-                  <Editable
-                    kind="text_block"
-                    contentKey="home_material_memory"
-                    field="headline"
-                    label="'Material is Memory' heading"
-                    as="h2"
-                    className="relative type-display drop-shadow-[0_0_18px_rgba(255,255,255,0.45)]"
-                  >
-                    {materialMemoryHeadline}
-                  </Editable>
-                </div>
-              </div>
-
-              {/* CTA anchored toward the bottom of the scarf image */}
-              <div className="absolute inset-x-0 bottom-[6%] md:bottom-[8%] flex items-center justify-center pointer-events-none">
-                <div className="relative pointer-events-auto">
-                  <span
-                    aria-hidden
-                    className="absolute inset-0 -m-6 rounded-full blur-2xl bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.45),rgba(255,255,255,0.12)_50%,transparent_75%)]"
-                  />
-                  <Editable
-                    kind="text_block"
-                    contentKey="home_material_memory"
-                    field="cta_label"
-                    label="'Material is Memory' button"
-                    as="span"
-                    className="relative inline-block"
-                  >
-                    <Link
-                      to="/materials"
-                      className="luxury-button text-foreground drop-shadow-[0_0_12px_rgba(255,255,255,0.4)]"
-                    >
-                      {materialMemoryCta}
-                    </Link>
-                  </Editable>
-                </div>
-              </div>
+            </div>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={0.1}>
+            <div className="mt-10 md:mt-14 flex flex-col items-center text-center">
+              <Editable
+                kind="text_block"
+                contentKey="home_material_memory"
+                field="headline"
+                label="'Material is Memory' heading"
+                as="h2"
+                className="type-display mb-6 md:mb-8"
+              >
+                {materialMemoryHeadline}
+              </Editable>
+              <Editable
+                kind="text_block"
+                contentKey="home_material_memory"
+                field="cta_label"
+                label="'Material is Memory' button"
+                as="span"
+                className="inline-block"
+              >
+                <Link to="/materials" className="luxury-button type-cta">
+                  {materialMemoryCta}
+                </Link>
+              </Editable>
             </div>
           </ScrollFadeIn>
         </div>

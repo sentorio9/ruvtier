@@ -44,7 +44,7 @@ const Materials = () => {
           <div className="flex flex-col gap-6">
             {materials.map((m, i) => (
               <ScrollFadeIn key={m.slug} delay={0.2 + i * 0.08}>
-                <Link to={`/materials/${m.slug}`} className="luxury-button !text-[clamp(16px,1.5vw,20px)] font-serif font-light tracking-wider">
+                <Link to={`/materials/${m.slug}`} className="luxury-button type-subtitle">
                   {m.name}
                 </Link>
               </ScrollFadeIn>

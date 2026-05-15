@@ -92,7 +92,7 @@ const Index = () => {
               field="headline"
               label="Homepage hero text"
               as="p"
-              className="hero-title font-serif font-light text-[clamp(22px,2.42vw,31px)] leading-[1.7] tracking-[0.08em] mx-auto max-w-[var(--text-max)]"
+              className="hero-title type-title mx-auto max-w-[var(--text-max)]"
             >
               {heroHeadline}
             </Editable>

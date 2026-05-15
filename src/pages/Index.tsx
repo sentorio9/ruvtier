@@ -122,7 +122,7 @@ const Index = () => {
               </Link>
               <Link
                 to="/boutique/men"
-                className="group relative inline-block type-cta text-[#3A3A3A]/95 hover:text-[#3A3A3A] transition-colors duration-500 [text-shadow:0_1px_12px_rgba(245,241,235,0.45)]"
+                className="group relative inline-block type-cta text-foreground transition-colors duration-500"
               >
                 <Editable kind="text_block" contentKey="home_hero" field="preorder_men" label="Hero — Pre-Order Men" as="span">
                   {heroPreorderMen}

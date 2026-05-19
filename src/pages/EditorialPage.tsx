@@ -31,7 +31,13 @@ const EditorialPage = ({
   actionTo = "/",
 }: EditorialPageProps) => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
-  usePageMeta({ title, description: subtitle || body });
+  usePageMeta({
+    title,
+    description: subtitle && subtitle.length >= 50
+      ? subtitle
+      : `${title} — a chapter of the RUVTIER house, composed in the quiet art of garment permanence, rare materials, and enduring craft. ${subtitle || body}`.slice(0, 300),
+    ogType: "article",
+  });
   const key = `editorial_${slugify(title)}`;
   const titleVal = useSiteText(key, "title", title);
   const subtitleVal = useSiteText(key, "subtitle", subtitle || "");

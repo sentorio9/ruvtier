@@ -8,28 +8,18 @@
     <meta name="author" content="RUVTIER" />
 
     <!--
-      Pragmatic security headers (meta-tag form). True HTTP headers are configured
-      on Lovable hosting; these provide defence-in-depth for the static shell.
-
-      CSP notes:
-       - 'unsafe-inline' on style is required by Tailwind / Radix runtime styles
-       - 'unsafe-inline' + 'unsafe-eval' on script keep Lovable preview / Vite HMR working
-       - https://*.supabase.co covers REST, Realtime (wss) and Edge Functions
-       - https://fonts.googleapis.com / fonts.gstatic.com are required by our type stack
-       - frame-ancestors 'self' allows the Lovable preview iframe; tighten to 'none'
-         once preview is no longer needed
+      Browser-enforced security headers must be configured by the hosting layer.
+      This meta CSP is a static-shell fallback only; directives such as
+      frame-ancestors are intentionally documented in docs/security-hardening.md
+      because browsers ignore them in meta CSP.
     -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.exchangerate.host https://api.frankfurter.app https://ipapi.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' mailto:; frame-ancestors 'self'" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://*.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://open.er-api.com https://cdn.jsdelivr.net https://latest.currency-api.pages.dev https://ipapi.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' mailto:; upgrade-insecure-requests" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(self), payment=(), usb=(), accelerometer=(), gyroscope=()" />
 
     <!-- Canonical -->
     <link rel="canonical" href="https://ruvtier.com/" />
-
-    <!-- Preconnect hints -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <!-- Preconnect hints -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

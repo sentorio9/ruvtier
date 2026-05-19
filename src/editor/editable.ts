@@ -40,11 +40,32 @@ export interface EditableTarget {
   rect: { x: number; y: number; width: number; height: number };
 }
 
+function getHandshakeOrigin() {
+  const fromHandshake = new URLSearchParams(window.location.search).get("editorOrigin");
+  if (!fromHandshake) return null;
+
+  try {
+    const origin = new URL(fromHandshake).origin;
+    return origin === window.location.origin ? origin : null;
+  } catch {
+    return null;
+  }
+}
+
+function getTrustedParentOrigin() {
+  const storedOrigin = sessionStorage.getItem(PARENT_ORIGIN_KEY);
+  return storedOrigin === window.location.origin ? storedOrigin : null;
+}
+
 export function isEditMode(): boolean {
   if (typeof window === "undefined") return false;
-  if (sessionStorage.getItem(EDIT_FLAG_KEY) === "1") return true;
+
   const params = new URLSearchParams(window.location.search);
-  return params.get("edit") === "1";
+  if (params.get("edit") === "1") {
+    return getHandshakeOrigin() === window.location.origin;
+  }
+
+  return sessionStorage.getItem(EDIT_FLAG_KEY) === "1" && getTrustedParentOrigin() === window.location.origin;
 }
 
 let initialised = false;
@@ -53,14 +74,16 @@ export function initEditableRuntime() {
   if (initialised || typeof window === "undefined") return;
   if (!isEditMode()) return;
 
-  // Persist edit mode for subsequent navigations within the iframe
-  sessionStorage.setItem(EDIT_FLAG_KEY, "1");
-
-  // Capture the parent origin once so we only ever postMessage back to admin
-  const fromHandshake = new URLSearchParams(window.location.search).get("editorOrigin");
-  if (fromHandshake) {
-    sessionStorage.setItem(PARENT_ORIGIN_KEY, fromHandshake);
+  const handshakeOrigin = getHandshakeOrigin();
+  if (handshakeOrigin) {
+    sessionStorage.setItem(PARENT_ORIGIN_KEY, handshakeOrigin);
   }
+
+  const parentOrigin = getTrustedParentOrigin();
+  if (!parentOrigin) return;
+
+  // Persist edit mode for subsequent same-origin navigations within the iframe.
+  sessionStorage.setItem(EDIT_FLAG_KEY, "1");
 
   initialised = true;
 
@@ -102,7 +125,7 @@ export function initEditableRuntime() {
   document.body.classList.add("ruvtier-edit-mode");
   const banner = document.createElement("div");
   banner.className = "ruvtier-edit-banner";
-  banner.textContent = "Editor Mode — click any highlighted element to edit";
+  banner.textContent = "Editor Mode - click any highlighted element to edit";
   document.body.appendChild(banner);
 
   // Click interception
@@ -133,8 +156,6 @@ export function initEditableRuntime() {
       editable.classList.add("ruvtier-edit-pulse");
       setTimeout(() => editable.classList.remove("ruvtier-edit-pulse"), 700);
 
-      // Notify parent
-      const parentOrigin = sessionStorage.getItem(PARENT_ORIGIN_KEY) || "*";
       window.parent?.postMessage({ type: "ruvtier:edit:select", payload }, parentOrigin);
     },
     true // capture phase so we beat React onClick handlers
@@ -142,11 +163,15 @@ export function initEditableRuntime() {
 
   // Listen for messages from parent (e.g. force a navigation)
   window.addEventListener("message", (event) => {
+    if (event.origin !== parentOrigin) return;
+
     const data = event.data;
     if (!data || typeof data !== "object") return;
     if (data.type === "ruvtier:edit:navigate" && typeof data.path === "string") {
       const url = new URL(data.path, window.location.origin);
+      if (url.origin !== window.location.origin) return;
       url.searchParams.set("edit", "1");
+      url.searchParams.set("editorOrigin", parentOrigin);
       window.location.href = url.toString();
     }
     if (data.type === "ruvtier:edit:reload") {
@@ -155,7 +180,6 @@ export function initEditableRuntime() {
   });
 
   // Announce ready so the parent can start listening
-  const parentOrigin = sessionStorage.getItem(PARENT_ORIGIN_KEY) || "*";
   window.parent?.postMessage(
     { type: "ruvtier:edit:ready", path: window.location.pathname },
     parentOrigin

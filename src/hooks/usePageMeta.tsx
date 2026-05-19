@@ -39,7 +39,7 @@ export function usePageMeta({ title, description, ogType = "website", jsonLd }: 
       el.setAttribute("content", value);
     };
 
-    const fullTitle = title === BASE_TITLE ? title : `${title} — ${BASE_TITLE}`;
+    
     setMeta("property", "og:title", fullTitle);
     setMeta("name", "twitter:title", fullTitle);
     setMeta("property", "og:url", `${BASE_URL}${pathname}`);

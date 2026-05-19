@@ -4,6 +4,8 @@ import { useLocation } from "react-router-dom";
 interface PageMeta {
   title: string;
   description?: string;
+  ogType?: string;
+  jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
 const BASE_TITLE = "RUVTIER";

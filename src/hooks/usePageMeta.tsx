@@ -4,17 +4,20 @@ import { useLocation } from "react-router-dom";
 interface PageMeta {
   title: string;
   description?: string;
+  ogType?: string;
+  jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
 const BASE_TITLE = "RUVTIER";
 const BASE_URL = "https://ruvtier.com";
 
-export function usePageMeta({ title, description }: PageMeta) {
+export function usePageMeta({ title, description, ogType = "website", jsonLd }: PageMeta) {
   const { pathname } = useLocation();
 
   useEffect(() => {
     // Title
-    document.title = title === BASE_TITLE ? title : `${title} — ${BASE_TITLE}`;
+    const fullTitle = title === BASE_TITLE || title.includes(BASE_TITLE) ? title : `${title} — ${BASE_TITLE}`;
+    document.title = fullTitle;
 
     // Canonical
     let canonical = document.querySelector<HTMLLinkElement>("link[rel='canonical']");
@@ -36,15 +39,30 @@ export function usePageMeta({ title, description }: PageMeta) {
       el.setAttribute("content", value);
     };
 
-    const fullTitle = title === BASE_TITLE ? title : `${title} — ${BASE_TITLE}`;
+    
     setMeta("property", "og:title", fullTitle);
     setMeta("name", "twitter:title", fullTitle);
     setMeta("property", "og:url", `${BASE_URL}${pathname}`);
+    setMeta("property", "og:type", ogType);
 
     if (description) {
       setMeta("name", "description", description);
       setMeta("property", "og:description", description);
       setMeta("name", "twitter:description", description);
     }
-  }, [title, description, pathname]);
+
+    // Per-page JSON-LD (tagged so we can replace on route change)
+    const existing = document.querySelectorAll("script[data-page-jsonld='true']");
+    existing.forEach((n) => n.remove());
+    if (jsonLd) {
+      const blocks = Array.isArray(jsonLd) ? jsonLd : [jsonLd];
+      blocks.forEach((block) => {
+        const s = document.createElement("script");
+        s.type = "application/ld+json";
+        s.setAttribute("data-page-jsonld", "true");
+        s.text = JSON.stringify(block);
+        document.head.appendChild(s);
+      });
+    }
+  }, [title, description, ogType, pathname, jsonLd]);
 }

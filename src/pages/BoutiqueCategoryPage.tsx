@@ -17,7 +17,7 @@ interface BoutiqueCategoryPageProps {
 const BoutiqueCategoryPage = ({ title, gender, subtitle }: BoutiqueCategoryPageProps) => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   const { data: products, isLoading } = useActiveProducts({ gender });
-  usePageMeta({ title: `${title} — Boutique`, description: subtitle || `Curated ${title.toLowerCase()} pieces by RUVTIER.` });
+  usePageMeta({ title: `${title} — Boutique`, description: subtitle || `Discover curated ${title.toLowerCase()} pieces by RUVTIER — luxury garments composed from rare fibres, heritage craft, and a devotion to material origin and permanence.` });
   usePriceTick();
 
   return (

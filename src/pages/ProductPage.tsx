@@ -26,9 +26,43 @@ const ProductPage = () => {
     }
   }, [product, slug, navigate]);
 
+  const productImageForMeta = (product as any)?.hero_image_url || (product as any)?.thumbnail_url || undefined;
+  const productJsonLd = product
+    ? {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: product.name,
+        description:
+          product.description ||
+          `${product.name} by RUVTIER — a luxury garment composed with intention, material devotion, and the quiet art of permanence.`,
+        image: productImageForMeta ? [productImageForMeta] : undefined,
+        sku: (product as any).sku || undefined,
+        brand: { "@type": "Brand", name: "RUVTIER" },
+        offers: {
+          "@type": "Offer",
+          price: product.price ?? 0,
+          priceCurrency: "EUR",
+          availability:
+            product.stock_quantity && product.stock_quantity > 0
+              ? "https://schema.org/InStock"
+              : (product as any).preorder_enabled
+                ? "https://schema.org/PreOrder"
+                : "https://schema.org/OutOfStock",
+          url: `https://ruvtier.com/product/${product.slug}`,
+        },
+      }
+    : undefined;
+
   usePageMeta({
     title: product?.name ?? "Product",
-    description: product?.description ?? "A RUVTIER garment composed with intention.",
+    description:
+      product?.seo_description ||
+      product?.description ||
+      (product?.name
+        ? `${product.name} by RUVTIER — a luxury garment composed from rare fibres and enduring craft, devoted to permanence and material origin.`
+        : "A RUVTIER garment composed with intention, material devotion, and the quiet permanence of true luxury."),
+    ogType: "product",
+    jsonLd: productJsonLd,
   });
   usePriceTick();
 

@@ -16,7 +16,7 @@ export function usePageMeta({ title, description, ogType = "website", jsonLd }: 
 
   useEffect(() => {
     // Title
-    const fullTitle = title === BASE_TITLE || title.startsWith(`${BASE_TITLE} `) || title.includes(`— ${BASE_TITLE}`) ? title : `${title} — ${BASE_TITLE}`;
+    
     document.title = fullTitle;
 
     // Canonical

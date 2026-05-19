@@ -1,61 +1,104 @@
-
+-- Create admin credentials table with hashed passwords
 CREATE TABLE public.admin_credentials (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  username text NOT NULL UNIQUE,
-  password_hash text NOT NULL,
-  role text NOT NULL DEFAULT 'admin',
-  display_label text,
-  supabase_email text,
-  supabase_password text,
-  supabase_user_id uuid,
-  created_at timestamptz NOT NULL DEFAULT now()
+  id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
+  username TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL,
+  role TEXT NOT NULL DEFAULT 'admin',
+  display_label TEXT NOT NULL,
+  is_active BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+  last_login_at TIMESTAMP WITH TIME ZONE,
+  failed_attempts INTEGER NOT NULL DEFAULT 0,
+  locked_until TIMESTAMP WITH TIME ZONE
 );
 
-CREATE TABLE public.admin_login_requests (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  credential_id uuid NOT NULL REFERENCES public.admin_credentials(id) ON DELETE CASCADE,
-  token text NOT NULL UNIQUE,
-  status text NOT NULL DEFAULT 'pending',
-  remember_me boolean NOT NULL DEFAULT false,
-  ip_address text,
-  user_agent text,
-  created_at timestamptz NOT NULL DEFAULT now(),
-  expires_at timestamptz NOT NULL DEFAULT (now() + interval '10 minutes'),
-  resolved_at timestamptz
-);
-
-CREATE TABLE public.admin_sessions (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  credential_id uuid NOT NULL REFERENCES public.admin_credentials(id) ON DELETE CASCADE,
-  session_token text NOT NULL UNIQUE,
-  expires_at timestamptz NOT NULL,
-  created_at timestamptz NOT NULL DEFAULT now()
-);
-
+-- Enable RLS
 ALTER TABLE public.admin_credentials ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.admin_login_requests ENABLE ROW LEVEL SECURITY;
+
+-- Only service role can access admin credentials
+CREATE POLICY "Service role can manage admin credentials"
+ON public.admin_credentials
+FOR ALL
+USING (auth.role() = 'service_role')
+WITH CHECK (auth.role() = 'service_role');
+
+-- Create admin sessions table
+CREATE TABLE public.admin_sessions (
+  id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
+  credential_id UUID NOT NULL REFERENCES public.admin_credentials(id) ON DELETE CASCADE,
+  session_token TEXT NOT NULL UNIQUE,
+  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+  expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+  last_activity_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
+);
+
 ALTER TABLE public.admin_sessions ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "svc_admin_credentials" ON public.admin_credentials FOR ALL TO public
-  USING (auth.role() = 'service_role') WITH CHECK (auth.role() = 'service_role');
-CREATE POLICY "svc_admin_login_requests" ON public.admin_login_requests FOR ALL TO public
-  USING (auth.role() = 'service_role') WITH CHECK (auth.role() = 'service_role');
-CREATE POLICY "svc_admin_sessions" ON public.admin_sessions FOR ALL TO public
-  USING (auth.role() = 'service_role') WITH CHECK (auth.role() = 'service_role');
+CREATE POLICY "Service role can manage admin sessions"
+ON public.admin_sessions
+FOR ALL
+USING (auth.role() = 'service_role')
+WITH CHECK (auth.role() = 'service_role');
 
-CREATE OR REPLACE FUNCTION public.verify_admin_credentials(p_username text, p_password text)
-RETURNS TABLE(id uuid, role text, display_label text)
-LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+-- Function to verify admin credentials
+CREATE OR REPLACE FUNCTION public.verify_admin_credentials(p_username TEXT, p_password TEXT)
+RETURNS TABLE(
+  credential_id UUID,
+  admin_role TEXT,
+  display_label TEXT,
+  is_valid BOOLEAN
+)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+  v_credential RECORD;
 BEGIN
-  RETURN QUERY
-  SELECT ac.id, ac.role, ac.display_label
-  FROM public.admin_credentials ac
-  WHERE ac.username = p_username
-    AND ac.password_hash = extensions.crypt(p_password, ac.password_hash);
+  SELECT * INTO v_credential
+  FROM public.admin_credentials
+  WHERE username = p_username AND is_active = true;
+
+  IF v_credential.id IS NULL THEN
+    RETURN QUERY SELECT NULL::UUID, NULL::TEXT, NULL::TEXT, false;
+    RETURN;
+  END IF;
+
+  -- Check if account is locked
+  IF v_credential.locked_until IS NOT NULL AND v_credential.locked_until > now() THEN
+    RETURN QUERY SELECT NULL::UUID, NULL::TEXT, NULL::TEXT, false;
+    RETURN;
+  END IF;
+
+  -- Verify password
+  IF v_credential.password_hash = extensions.crypt(p_password, v_credential.password_hash) THEN
+    -- Reset failed attempts and update last login
+    UPDATE public.admin_credentials
+    SET failed_attempts = 0, locked_until = NULL, last_login_at = now()
+    WHERE id = v_credential.id;
+
+    RETURN QUERY SELECT v_credential.id, v_credential.role, v_credential.display_label, true;
+  ELSE
+    -- Increment failed attempts
+    UPDATE public.admin_credentials
+    SET failed_attempts = failed_attempts + 1,
+        locked_until = CASE WHEN failed_attempts >= 4 THEN now() + interval '15 minutes' ELSE locked_until END
+    WHERE id = v_credential.id;
+
+    RETURN QUERY SELECT NULL::UUID, NULL::TEXT, NULL::TEXT, false;
+  END IF;
 END;
 $$;
 
-INSERT INTO public.admin_credentials (username, password_hash, role, display_label) VALUES
-('Rv8xQm3kWnZ7', extensions.crypt('Kx9hpLm2wQzT4rVn', extensions.gen_salt('bf', 12)), 'super_admin', 'Operator Alpha'),
-('Jt5yHp7bLsX2', extensions.crypt('Hv7nJtF4xBsK2eMq', extensions.gen_salt('bf', 12)), 'super_admin', 'Operator Beta'),
-('Nc4wFd9gAeR5', extensions.crypt('Yw3dKcN8gMrP6bXj', extensions.gen_salt('bf', 12)), 'admin', 'Operator Gamma');
+-- Function to cleanup expired sessions
+CREATE OR REPLACE FUNCTION public.cleanup_expired_admin_sessions()
+RETURNS void
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  DELETE FROM public.admin_sessions WHERE expires_at < now();
+$$;
+
+-- Admin credentials must be created out-of-band after deployment.
+-- Do not seed usernames or passwords in migrations.

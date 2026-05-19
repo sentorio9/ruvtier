@@ -19,6 +19,7 @@ const AdminAuthContext = createContext<AdminAuthState | null>(null);
 const ADMIN_AUTH_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-auth`;
 const API_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 const SESSION_KEY = "ruvtier_admin_session";
+const REMEMBER_KEY = "ruvtier_admin_remember";
 
 async function callAdminAuth(body: Record<string, unknown>) {
   const res = await fetch(ADMIN_AUTH_URL, {
@@ -27,6 +28,24 @@ async function callAdminAuth(body: Record<string, unknown>) {
     body: JSON.stringify(body),
   });
   return res.json();
+}
+
+function getStoredSession() {
+  try {
+    return sessionStorage.getItem(SESSION_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function storeSession(token: string) {
+  sessionStorage.setItem(SESSION_KEY, token);
+}
+
+function clearStoredSession() {
+  sessionStorage.removeItem(SESSION_KEY);
+  localStorage.removeItem(SESSION_KEY);
+  localStorage.removeItem(REMEMBER_KEY);
 }
 
 export function AdminAuthProvider({ children }: { children: ReactNode }) {
@@ -43,10 +62,12 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // Validate existing session on mount
+  // Validate existing session on mount. Admin sessions are intentionally limited
+  // to sessionStorage so they are not persisted after the browser session ends.
   useEffect(() => {
-    const token = localStorage.getItem(SESSION_KEY) || sessionStorage.getItem(SESSION_KEY);
+    const token = getStoredSession();
     if (!token) {
+      clearStoredSession();
       setLoading(false);
       return;
     }
@@ -60,19 +81,17 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
             await setSupabaseSession(data.supabaseSession);
           }
         } else {
-          localStorage.removeItem(SESSION_KEY);
-          sessionStorage.removeItem(SESSION_KEY);
+          clearStoredSession();
         }
       })
       .catch(() => {
-        localStorage.removeItem(SESSION_KEY);
-        sessionStorage.removeItem(SESSION_KEY);
+        clearStoredSession();
       })
       .finally(() => setLoading(false));
   }, [setSupabaseSession]);
 
-  const login = async (username: string, password: string, rememberMe: boolean) => {
-    const data = await callAdminAuth({ action: "login", username, password, rememberMe });
+  const login = async (username: string, password: string, _rememberMe: boolean) => {
+    const data = await callAdminAuth({ action: "login", username, password, rememberMe: false });
     if (data.error) return { error: data.error, requestId: null };
     return { error: null, requestId: data.requestId as string };
   };
@@ -81,13 +100,8 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     const data = await callAdminAuth({ action: "check-status", requestId });
 
     if (data.status === "approved" && data.sessionToken) {
-      // Store session
-      const rememberMe = !!localStorage.getItem("ruvtier_admin_remember");
-      if (rememberMe) {
-        localStorage.setItem(SESSION_KEY, data.sessionToken);
-      } else {
-        sessionStorage.setItem(SESSION_KEY, data.sessionToken);
-      }
+      storeSession(data.sessionToken);
+      localStorage.removeItem(REMEMBER_KEY);
 
       setRole(data.role as AdminRole);
       setDisplayLabel(data.displayLabel);
@@ -101,13 +115,11 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
-    const token = localStorage.getItem(SESSION_KEY) || sessionStorage.getItem(SESSION_KEY);
+    const token = getStoredSession();
     if (token) {
       await callAdminAuth({ action: "logout", sessionToken: token }).catch(() => {});
     }
-    localStorage.removeItem(SESSION_KEY);
-    sessionStorage.removeItem(SESSION_KEY);
-    localStorage.removeItem("ruvtier_admin_remember");
+    clearStoredSession();
     await supabase.auth.signOut();
     setRole(null);
     setDisplayLabel(null);

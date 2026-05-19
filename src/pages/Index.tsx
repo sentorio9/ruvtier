@@ -19,7 +19,7 @@ import materialMemoryScarf from "@/assets/material-memory-scarf.png";
 
 const Index = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
-  usePageMeta({ title: "RUVTIER", description: "A luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition." });
+  usePageMeta({ title: "RUVTIER — A Whisper of Luxury", description: "RUVTIER is a luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition. Discover the Spring/Summer 2026 collection." });
   usePriceTick();
 
   const heroHeadline = useSiteText("home_hero", "headline", "Permanence in garment form");

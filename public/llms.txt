@@ -1,0 +1,36 @@
+# RUVTIER
+
+> RUVTIER is a luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition.
+
+RUVTIER composes garments from rare fibres — vicuña, cashmere, merino wool, silk, French linen, and selvedge denim — with an editorial sensibility inspired by the heritage of quiet luxury. The house publishes seasonal collections, material studies, and rituals of care alongside its online boutique.
+
+## Pages
+
+- [Home](/): Introduction to the house and the current season.
+- [The House](/the-house): The manifesto and philosophy of RUVTIER.
+- [Collection](/collection): The current Spring / Summer 2026 collection.
+- [Boutique](/boutique): The online boutique entry point.
+- [Materials](/materials): Material studies — origin, fibre, and provenance.
+- [Rituals of Care](/rituals-of-care): How to care for RUVTIER garments.
+- [Stillness](/stillness): A meditation on the house's approach to time and craft.
+- [Contact](/contact): Reach the house directly.
+- [Private Appointments](/appointments): Reserve a personal appointment.
+- [Find a Boutique](/find-boutique): Physical boutique locations.
+
+## Materials
+
+- [Vicuña](/materials/vicuna): The rarest fibre on earth, gathered once a year from the high Andes.
+- [Cashmere](/materials/cashmere): Highland goat underfleece.
+- [Merino Wool](/materials/merino-wool): Fine-gauge merino bred for softness.
+- [Silk](/materials/silk): A filament born from stillness.
+- [French Linen](/materials/french-linen): Linen grown in the fields of Normandy.
+- [Denim](/materials/denim): Selvedge denim woven on heritage shuttle looms.
+
+## Optional
+
+- [FAQ](/faq): Frequently asked questions.
+- [Craft Career](/craft-career): Working with the house.
+- [Shipping Policy](/shipping-policy): Shipping terms.
+- [Returns Policy](/returns-policy): Return and exchange terms.
+- [Privacy Policy](/privacy-policy): Privacy practices.
+- [Terms & Conditions](/terms-and-conditions): Site terms.

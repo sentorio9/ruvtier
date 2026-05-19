@@ -5,11 +5,19 @@
   <url><loc>https://ruvtier.com/collection</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://ruvtier.com/stillness</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ruvtier.com/materials</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ruvtier.com/materials/vicuna</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ruvtier.com/materials/cashmere</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ruvtier.com/materials/merino-wool</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ruvtier.com/materials/silk</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ruvtier.com/materials/french-linen</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ruvtier.com/materials/denim</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://ruvtier.com/rituals-of-care</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://ruvtier.com/boutique</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ruvtier.com/boutique/women</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ruvtier.com/boutique/men</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ruvtier.com/boutique/lifestyle</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ruvtier.com/product/silk-meridian-blazer</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ruvtier.com/product/cashmere-shirt</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ruvtier.com/preorder/Theia-Sweater</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ruvtier.com/home-interior</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://ruvtier.com/shipping</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://ruvtier.com/contact</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
   <url><loc>https://ruvtier.com/appointments</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://ruvtier.com/find-boutique</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>

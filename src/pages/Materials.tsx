@@ -21,7 +21,6 @@ import { Link } from "react-router-dom";
 import { Editable } from "@/editor/Editable";
 import { useSiteText } from "@/editor/useSiteContent";
 import { MATERIALS_INTRO } from "@/content/brand";
-import { useSiteText } from "@/editor/useSiteContent";
 
 const materials = [
   { name: "Vicuña", slug: "vicuna" },
@@ -35,8 +34,8 @@ const materials = [
 const Materials = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   usePageMeta({ title: "Materials", description: "Each fibre begins as landscape. We honour that origin — vicuña, cashmere, silk, linen." });
-  const heading = useSiteText("materials_intro", "headline", "Material is memory");
-  const body = useSiteText("materials_intro", "body", "Each fibre begins as landscape. We honour that origin.");
+  const heading = useSiteText("materials_intro", "headline", MATERIALS_INTRO.headline);
+  const body = useSiteText("materials_intro", "body", MATERIALS_INTRO.body);
 
   return (
     <div className="relative">

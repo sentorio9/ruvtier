@@ -271,7 +271,7 @@ const Index = () => {
       <section className="luxury-section min-h-[100svh] md:snap-start flex items-center">
         <div className="luxury-container w-full flex flex-col items-center text-center py-[clamp(48px,8vh,96px)]">
           <ScrollFadeIn>
-            <div className="w-full max-w-[420px] md:max-w-[520px] mx-auto overflow-hidden max-h-[55svh]">
+            <div className="w-full max-w-[320px] md:max-w-[400px] mx-auto aspect-[3/4] max-h-[48svh]">
               <img
                 src={materialMemoryScarf}
                 alt="A RUVTIER silk scarf draped over a wooden chair — the quiet permanence of material."

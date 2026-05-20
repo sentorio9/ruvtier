@@ -201,7 +201,7 @@ const Index = () => {
       <section className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-6 py-16 md:py-24 luxury-container">
         {/* Women */}
         <ScrollFadeIn>
-          <Link to="/boutique/women" className="group block">
+          <Link to="/boutique/women" className="group relative block pb-32 md:pb-36">
             <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:shadow-[0_30px_70px_-32px_rgba(0,0,0,0.35)]">
               <img
                 src={womenImage}
@@ -211,33 +211,33 @@ const Index = () => {
               />
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/45 via-black/15 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:opacity-100 transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/50 via-black/20 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
               />
-              <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center text-center px-6 pb-6 md:pb-10 text-[#F6F4F1]">
-                <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="type-eyebrow mb-3 md:mb-4 motion-safe:opacity-0 motion-safe:translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 transition-[opacity,transform] duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]">
-                  {womenSeason}
-                </Editable>
-                <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="type-display mb-4 md:mb-5 motion-safe:opacity-90 motion-safe:translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 transition-[opacity,transform] duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]">
-                  {womenTitle}
-                </Editable>
-                <span className="inline-flex items-center gap-2 type-cta motion-safe:opacity-0 motion-safe:translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 transition-[opacity,transform] duration-[700ms] delay-100 ease-[cubic-bezier(0.22,0.61,0.36,1)]">
-                  <span className="relative inline-block pb-1">
-                    <Editable kind="text_block" contentKey="home_women_card" field="cta_label" label="Women — CTA label" as="span">{womenCta}</Editable>
-                    <span
-                      aria-hidden
-                      className="absolute left-0 right-0 -bottom-px h-px bg-[#F6F4F1] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
-                    />
-                  </span>
-                  <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
+            </div>
+            <div className="absolute inset-x-0 top-full z-10 flex flex-col items-center text-center px-6 pt-5 md:pt-6 text-foreground motion-safe:group-hover:-translate-y-[110%] md:motion-safe:group-hover:-translate-y-[115%] motion-safe:group-focus-visible:-translate-y-[110%] md:motion-safe:group-focus-visible:-translate-y-[115%] motion-safe:group-hover:text-[#F6F4F1] motion-safe:group-focus-visible:text-[#F6F4F1] transition-[transform,color] duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]">
+              <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="type-eyebrow mb-3 md:mb-4">
+                {womenSeason}
+              </Editable>
+              <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="type-display mb-4 md:mb-5">
+                {womenTitle}
+              </Editable>
+              <span className="inline-flex items-center gap-2 type-cta">
+                <span className="relative inline-block pb-1">
+                  <Editable kind="text_block" contentKey="home_women_card" field="cta_label" label="Women — CTA label" as="span">{womenCta}</Editable>
+                  <span
+                    aria-hidden
+                    className="absolute left-0 right-0 -bottom-px h-px bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                  />
                 </span>
-              </div>
+                <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
+              </span>
             </div>
           </Link>
         </ScrollFadeIn>
 
         {/* Men */}
         <ScrollFadeIn delay={0.1}>
-          <Link to="/boutique/men" className="group block">
+          <Link to="/boutique/men" className="group relative block pb-32 md:pb-36">
             <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary flex items-center justify-center transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:shadow-[0_30px_70px_-32px_rgba(0,0,0,0.35)]">
               <img
                 src={menImage}
@@ -247,26 +247,26 @@ const Index = () => {
               />
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/45 via-black/15 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:opacity-100 transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/50 via-black/20 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
               />
-              <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center text-center px-6 pb-6 md:pb-10 text-[#F6F4F1]">
-                <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="type-eyebrow mb-3 md:mb-4 motion-safe:opacity-0 motion-safe:translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 transition-[opacity,transform] duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]">
-                  {menSeason}
-                </Editable>
-                <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="type-display mb-4 md:mb-5 motion-safe:opacity-90 motion-safe:translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 transition-[opacity,transform] duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]">
-                  {menTitle}
-                </Editable>
-                <span className="inline-flex items-center gap-2 type-cta motion-safe:opacity-0 motion-safe:translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 transition-[opacity,transform] duration-[700ms] delay-100 ease-[cubic-bezier(0.22,0.61,0.36,1)]">
-                  <span className="relative inline-block pb-1">
-                    <Editable kind="text_block" contentKey="home_men_card" field="cta_label" label="Men — CTA label" as="span">{menCta}</Editable>
-                    <span
-                      aria-hidden
-                      className="absolute left-0 right-0 -bottom-px h-px bg-[#F6F4F1] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
-                    />
-                  </span>
-                  <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
+            </div>
+            <div className="absolute inset-x-0 top-full z-10 flex flex-col items-center text-center px-6 pt-5 md:pt-6 text-foreground motion-safe:group-hover:-translate-y-[110%] md:motion-safe:group-hover:-translate-y-[115%] motion-safe:group-focus-visible:-translate-y-[110%] md:motion-safe:group-focus-visible:-translate-y-[115%] motion-safe:group-hover:text-[#F6F4F1] motion-safe:group-focus-visible:text-[#F6F4F1] transition-[transform,color] duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]">
+              <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="type-eyebrow mb-3 md:mb-4">
+                {menSeason}
+              </Editable>
+              <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="type-display mb-4 md:mb-5">
+                {menTitle}
+              </Editable>
+              <span className="inline-flex items-center gap-2 type-cta">
+                <span className="relative inline-block pb-1">
+                  <Editable kind="text_block" contentKey="home_men_card" field="cta_label" label="Men — CTA label" as="span">{menCta}</Editable>
+                  <span
+                    aria-hidden
+                    className="absolute left-0 right-0 -bottom-px h-px bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                  />
                 </span>
-              </div>
+                <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
+                </span>
             </div>
           </Link>
         </ScrollFadeIn>

@@ -88,7 +88,17 @@ const App = () => (
         <RegionProvider>
         <TitleSetter />
         <ScrollToTop />
-        <Suspense fallback={<div className="min-h-screen bg-background" />}>
+        <Suspense fallback={
+          <div className="min-h-screen bg-background flex items-center justify-center">
+            <span
+              className="font-serif tracking-[0.4em] text-foreground/40 text-sm md:text-base animate-pulse"
+              aria-label="Loading"
+            >
+              RUVTIER
+            </span>
+          </div>
+        }>
+
         <MaintenanceGate>
         <Routes>
           <Route path="/" element={<Index />} />

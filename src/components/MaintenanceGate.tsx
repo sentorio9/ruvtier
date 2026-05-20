@@ -37,14 +37,32 @@ export default function MaintenanceGate({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let alive = true;
-    (async () => {
-      const { data } = await (supabase.from("site_settings" as any) as any)
-        .select("maintenance_enabled, maintenance_headline, maintenance_subline, maintenance_collect_email")
-        .eq("id", 1)
-        .maybeSingle();
+    // Safety timeout: never block the entire site behind this query.
+    // If the settings fetch hasn't resolved within 1.5s, fall through with
+    // defaults (maintenance off). The realtime subscription below will still
+    // pick up the real value once it arrives.
+    const timeoutId = window.setTimeout(() => {
       if (!alive) return;
-      setSettings(data || DEFAULTS);
+      setSettings((prev) => prev ?? DEFAULTS);
       setLoading(false);
+    }, 1500);
+
+    (async () => {
+      try {
+        const { data } = await (supabase.from("site_settings" as any) as any)
+          .select("maintenance_enabled, maintenance_headline, maintenance_subline, maintenance_collect_email")
+          .eq("id", 1)
+          .maybeSingle();
+        if (!alive) return;
+        setSettings(data || DEFAULTS);
+      } catch (err) {
+        console.warn("MaintenanceGate: settings fetch failed, using defaults", err);
+        if (!alive) return;
+        setSettings((prev) => prev ?? DEFAULTS);
+      } finally {
+        if (alive) setLoading(false);
+        window.clearTimeout(timeoutId);
+      }
     })();
 
     // Live sync — if admin toggles maintenance, public reflects within seconds
@@ -67,9 +85,11 @@ export default function MaintenanceGate({ children }: { children: ReactNode }) {
 
     return () => {
       alive = false;
+      window.clearTimeout(timeoutId);
       supabase.removeChannel(channel);
     };
   }, []);
+
 
   // Admin routes always render — admins must always reach the panel
   const isAdminRoute = location.pathname.startsWith(ADMIN_PREFIX);

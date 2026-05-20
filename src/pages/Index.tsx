@@ -210,7 +210,7 @@ const Index = () => {
                 loading="lazy"
               />
             </div>
-            <div className="absolute left-1/2 top-full z-10 flex w-[calc(100%-3rem)] max-w-[460px] -translate-x-1/2 flex-col items-center bg-background px-6 py-5 md:py-6 text-center text-foreground shadow-none will-change-transform transition-[transform,box-shadow] duration-[850ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] motion-safe:group-hover:-translate-y-[60%] motion-safe:group-focus-visible:-translate-y-[60%] motion-safe:group-hover:shadow-[0_18px_55px_-38px_rgba(0,0,0,0.45)] motion-safe:group-focus-visible:shadow-[0_18px_55px_-38px_rgba(0,0,0,0.45)]">
+            <div className="absolute left-1/2 top-full z-10 flex w-[92%] max-w-[460px] -translate-x-1/2 flex-col items-center bg-background px-6 py-5 md:py-6 text-center text-foreground shadow-none will-change-transform transition-[transform,box-shadow] duration-[850ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] motion-safe:group-hover:-translate-y-[60%] motion-safe:group-focus-visible:-translate-y-[60%] motion-safe:group-hover:shadow-[0_18px_55px_-38px_rgba(0,0,0,0.45)] motion-safe:group-focus-visible:shadow-[0_18px_55px_-38px_rgba(0,0,0,0.45)]">
               <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="type-eyebrow mb-3 md:mb-4">
                 {womenSeason}
               </Editable>
@@ -245,7 +245,7 @@ const Index = () => {
                 loading="lazy"
               />
             </div>
-            <div className="absolute left-1/2 top-full z-10 flex w-[calc(100%-3rem)] max-w-[460px] -translate-x-1/2 flex-col items-center bg-background px-6 py-5 md:py-6 text-center text-foreground shadow-none will-change-transform transition-[transform,box-shadow] duration-[850ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] motion-safe:group-hover:-translate-y-[60%] motion-safe:group-focus-visible:-translate-y-[60%] motion-safe:group-hover:shadow-[0_18px_55px_-38px_rgba(0,0,0,0.45)] motion-safe:group-focus-visible:shadow-[0_18px_55px_-38px_rgba(0,0,0,0.45)]">
+            <div className="absolute left-1/2 top-full z-10 flex w-[92%] max-w-[460px] -translate-x-1/2 flex-col items-center bg-background px-6 py-5 md:py-6 text-center text-foreground shadow-none will-change-transform transition-[transform,box-shadow] duration-[850ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] motion-safe:group-hover:-translate-y-[60%] motion-safe:group-focus-visible:-translate-y-[60%] motion-safe:group-hover:shadow-[0_18px_55px_-38px_rgba(0,0,0,0.45)] motion-safe:group-focus-visible:shadow-[0_18px_55px_-38px_rgba(0,0,0,0.45)]">
               <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="type-eyebrow mb-3 md:mb-4">
                 {menSeason}
               </Editable>
@@ -340,7 +340,7 @@ const Index = () => {
                       className={`object-contain object-center transition-[transform,filter] duration-[1000ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.02] group-hover:brightness-[0.98] group-focus-visible:scale-[1.02] group-focus-visible:brightness-[0.98] ${item.imgClass}`}
                     />
                   </div>
-                  <div className="absolute left-1/2 top-full z-10 flex w-[calc(100%-2rem)] max-w-[280px] -translate-x-1/2 flex-col items-center bg-background px-4 py-4 text-center text-foreground shadow-none will-change-transform transition-[transform,box-shadow] duration-[850ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] motion-safe:group-hover:-translate-y-[60%] motion-safe:group-focus-visible:-translate-y-[60%] motion-safe:group-hover:shadow-[0_18px_45px_-34px_rgba(0,0,0,0.42)] motion-safe:group-focus-visible:shadow-[0_18px_45px_-34px_rgba(0,0,0,0.42)]">
+                  <div className="absolute left-1/2 top-full z-10 flex w-[88%] max-w-[280px] -translate-x-1/2 flex-col items-center bg-background px-4 py-4 text-center text-foreground shadow-none will-change-transform transition-[transform,box-shadow] duration-[850ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] motion-safe:group-hover:-translate-y-[60%] motion-safe:group-focus-visible:-translate-y-[60%] motion-safe:group-hover:shadow-[0_18px_45px_-34px_rgba(0,0,0,0.42)] motion-safe:group-focus-visible:shadow-[0_18px_45px_-34px_rgba(0,0,0,0.42)]">
                     <h3 className="type-subtitle">
                       {item.label}
                     </h3>

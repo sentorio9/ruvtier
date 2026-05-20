@@ -131,7 +131,7 @@ const CollectionPage = () => {
             ) : (
               <div
                 key={`grid-${active}`}
-                className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-6 gap-y-12 md:gap-y-18"
+                className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-6 gap-y-12 md:gap-y-20"
               >
                 {filtered.map((product, i) => (
                   <ScrollFadeIn key={product.id} delay={i * 0.06}>
@@ -144,7 +144,7 @@ const CollectionPage = () => {
                           loading="lazy"
                         />
                       </div>
-                      <div className="absolute left-1/2 top-full z-10 flex w-[calc(100%-1.5rem)] max-w-[280px] -translate-x-1/2 flex-col items-center bg-background px-4 py-3 text-center text-foreground shadow-none will-change-transform transition-[transform,box-shadow] duration-[850ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] motion-safe:group-hover:-translate-y-[62%] motion-safe:group-focus-visible:-translate-y-[62%] motion-safe:group-hover:shadow-[0_18px_45px_-34px_rgba(0,0,0,0.45)] motion-safe:group-focus-visible:shadow-[0_18px_45px_-34px_rgba(0,0,0,0.45)]">
+                      <div className="absolute left-1/2 top-full z-10 flex w-[88%] max-w-[280px] -translate-x-1/2 flex-col items-center bg-background px-4 py-3 text-center text-foreground shadow-none will-change-transform transition-[transform,box-shadow] duration-[850ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] motion-safe:group-hover:-translate-y-[62%] motion-safe:group-focus-visible:-translate-y-[62%] motion-safe:group-hover:shadow-[0_18px_45px_-34px_rgba(0,0,0,0.45)] motion-safe:group-focus-visible:shadow-[0_18px_45px_-34px_rgba(0,0,0,0.45)]">
                         <h3 className="type-subtitle mb-1">
                           {product.name}
                         </h3>

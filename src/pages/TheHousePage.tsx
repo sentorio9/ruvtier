@@ -25,14 +25,15 @@ import { usePageMeta } from "@/hooks/usePageMeta";
 import { useState } from "react";
 import { Editable } from "@/editor/Editable";
 import { useSiteText } from "@/editor/useSiteContent";
+import { HOUSE_MANIFESTO } from "@/content/brand";
 
 const PARAGRAPHS: { key: string; label: string; fallback: string; closing?: boolean }[] = [
-  { key: "discipline", label: "Manifesto — Discipline", fallback: "At Ruvtier, stillness is a discipline. It governs cut, material, proportion. Silence is treated as material — measured, protected, never filled." },
-  { key: "craft", label: "Manifesto — Craft", fallback: "Work proceeds without audience. Decisions are slow and final. What is unresolved is not released. Craft is continuity. Seams dissolve into structure. Weight is calibrated. Drape is held, not performed. Materials are refined until their presence becomes quiet, revealing themselves only through time and wear." },
-  { key: "garments", label: "Manifesto — Garments", fallback: "Garments conceived between motion and rest. Composed in movement. Stable in stillness." },
-  { key: "philosophy", label: "Manifesto — Philosophy", fallback: "The house extends beyond clothing — dry scent, matte surface, spaces shaped by proportion, light, absence. Ruvtier is for those who recognize restraint without explanation, whose precision is a form of respect." },
-  { key: "founder", label: "Manifesto — Founder", fallback: "Founded by Rexford Joon Valenttier. He serves as custodian." },
-  { key: "closing", label: "Manifesto — Closing", fallback: "Ruvtier does not persuade. It remains.", closing: true },
+  { key: "discipline", label: "Manifesto — Discipline", fallback: HOUSE_MANIFESTO.discipline },
+  { key: "craft", label: "Manifesto — Craft", fallback: HOUSE_MANIFESTO.craft },
+  { key: "garments", label: "Manifesto — Garments", fallback: HOUSE_MANIFESTO.garments },
+  { key: "philosophy", label: "Manifesto — Philosophy", fallback: HOUSE_MANIFESTO.philosophy },
+  { key: "founder", label: "Manifesto — Founder", fallback: HOUSE_MANIFESTO.founder },
+  { key: "closing", label: "Manifesto — Closing", fallback: HOUSE_MANIFESTO.closing, closing: true },
 ];
 
 const TheHousePage = () => {

@@ -1,3 +1,17 @@
+/**
+ * Product detail page (`/product/:slug`).
+ *
+ * A single garment composed in editorial silence: large image, name,
+ * description, material, price. If the product has `preorder_enabled`
+ * the page transparently redirects to `/preorder/:slug`.
+ *
+ * Section order: Navigation · image + intent column · related
+ * products · LuxuryFooter.
+ *
+ * Design-system dependencies: `.luxury-container`,
+ * `.type-display` / `.type-body`, `.luxury-button`. Emits Product
+ * JSON-LD for SEO.
+ */
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";

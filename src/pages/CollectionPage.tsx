@@ -1,3 +1,16 @@
+/**
+ * The Collection (`/collection`).
+ *
+ * Curated grid filtered by availability — the three quiet registers:
+ * `In Store Only`, `Made-to-Measure Only`, `By Allocation Only`.
+ *
+ * Section order: Navigation · filter band with images · filtered
+ * product grid · LuxuryFooter.
+ *
+ * Design-system dependencies: `.luxury-container`, `.type-display`,
+ * `.type-cta`, `.luxury-button`. Product cards source live data from
+ * Supabase via `useActiveProducts`.
+ */
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";

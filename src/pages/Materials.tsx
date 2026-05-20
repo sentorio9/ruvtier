@@ -1,3 +1,16 @@
+/**
+ * Materials index (`/materials`).
+ *
+ * Index of every house material. Opens with the editorial line
+ * `Material is memory`, then lists each fibre as a quiet link.
+ *
+ * Section order: Navigation · headline + intro · material list ·
+ * LuxuryFooter.
+ *
+ * Design-system dependencies: `.luxury-container`, `.luxury-heading`,
+ * `.luxury-body`, `.hero-glow`. Copy fallbacks mirror `MATERIALS_INTRO`
+ * in `src/content/brand.ts`.
+ */
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
@@ -7,6 +20,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Editable } from "@/editor/Editable";
 import { useSiteText } from "@/editor/useSiteContent";
+import { MATERIALS_INTRO } from "@/content/brand";
 
 const materials = [
   { name: "Vicuña", slug: "vicuna" },
@@ -20,8 +34,8 @@ const materials = [
 const Materials = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   usePageMeta({ title: "Materials", description: "Each fibre begins as landscape. We honour that origin — vicuña, cashmere, silk, linen." });
-  const heading = useSiteText("materials_intro", "headline", "Material is memory");
-  const body = useSiteText("materials_intro", "body", "Each fibre begins as landscape. We honour that origin.");
+  const heading = useSiteText("materials_intro", "headline", MATERIALS_INTRO.headline);
+  const body = useSiteText("materials_intro", "body", MATERIALS_INTRO.body);
 
   return (
     <div className="relative">

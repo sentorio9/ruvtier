@@ -1,3 +1,17 @@
+/**
+ * Material detail page (`/materials/:slug`).
+ *
+ * A single material treated as a subject — vicuña, cashmere, silk,
+ * linen, denim. One descriptive paragraph in italic, one CTA back to
+ * the index.
+ *
+ * Section order: Navigation · centred heading + italic description ·
+ * "Explore all materials" link · LuxuryFooter.
+ *
+ * Design-system dependencies: `.luxury-container`, `.luxury-heading`,
+ * `.luxury-body`, `.luxury-button`. Copy sourced from
+ * `MATERIAL_DESCRIPTIONS` in `src/content/brand.ts`.
+ */
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
@@ -5,15 +19,7 @@ import SubscribePanel from "@/components/SubscribePanel";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-
-const materialDescriptions: Record<string, string> = {
-  vicuna: "The rarest fibre on earth, gathered once a year from the high Andes. A material that carries silence in its warmth.",
-  cashmere: "Gathered from the underfleece of highland goats. A fabric that remembers the cold and answers with gentleness.",
-  "merino-wool": "Fine-gauge merino, bred for softness beyond measure. Each fibre a quiet act of precision.",
-  silk: "A filament born from stillness. Silk carries light the way memory carries time.",
-  "french-linen": "Grown in the fields of Normandy. Linen that softens with every season, never losing its character.",
-  denim: "Selvedge denim woven on heritage shuttle looms. A weight that earns its memory through wear, fading into the rhythm of a life.",
-};
+import { MATERIAL_DESCRIPTIONS, MATERIAL_FALLBACK_DESCRIPTION } from "@/content/brand";
 
 const formatName = (slug: string) =>
   slug.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
@@ -22,7 +28,7 @@ const MaterialPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   const name = formatName(slug || "");
-  const description = materialDescriptions[slug || ""] || "The first pieces are in quiet preparation.";
+  const description = MATERIAL_DESCRIPTIONS[slug || ""] || MATERIAL_FALLBACK_DESCRIPTION;
   usePageMeta({ title: name || "Material", description: `RUVTIER ${name} — ${description}` });
 
   return (

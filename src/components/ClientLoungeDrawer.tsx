@@ -1,3 +1,18 @@
+/**
+ * ClientLoungeDrawer — right-anchored drawer holding the four auth
+ * views: login · register · profile · forgot-password.
+ *
+ * Props:
+ *   - `isOpen: boolean` · `onClose(): void`
+ *
+ * Used by: `Navigation.tsx` (desktop only; mobile opens via
+ * `FullScreenMenu`).
+ *
+ * Design-system dependencies: shared client-lounge form elements
+ * (`FormElements.tsx`, `PasswordStrengthIndicator.tsx`,
+ * `AddressFields.tsx`); 12-char min password rule; body scroll locks
+ * while open.
+ */
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";

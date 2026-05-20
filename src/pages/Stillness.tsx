@@ -7,16 +7,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Editable } from "@/editor/Editable";
 import { useSiteText } from "@/editor/useSiteContent";
+import { STILLNESS_QUOTE, STILLNESS_CTA } from "@/content/brand";
 
 const Stillness = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   usePageMeta({ title: "Stillness", description: "Every fibre carries origin, landscape, and time. We begin there, in silence." });
-  const quote = useSiteText(
-    "stillness_quote",
-    "body",
-    "Every fibre carries origin, landscape, and time.\nWe begin there, in silence."
-  );
-  const cta = useSiteText("stillness_cta", "label", "Return");
+  const quote = useSiteText("stillness_quote", "body", STILLNESS_QUOTE);
+  const cta = useSiteText("stillness_cta", "label", STILLNESS_CTA);
 
   return (
     <div className="relative">

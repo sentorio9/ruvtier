@@ -1,3 +1,18 @@
+/**
+ * LuxuryFooter — five-column architectural grid plus the newsletter
+ * panel, social row, region quick-switch, and copyright line.
+ *
+ * Props:
+ *   - `onSubscribeClick(): void` — called on successful newsletter
+ *     submit to open the host page's SubscribePanel.
+ *
+ * Used by: every public page that includes a footer.
+ *
+ * Design-system dependencies: `.luxury-container`, hairline border
+ * `--border`, the 0.6-stroke globe + arrow SVG icons,
+ * `tracking-[0.32em]` for social microtype. Footer copy fallbacks come
+ * from `useT()` (i18n) overridden by `useSiteText` for admin overrides.
+ */
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import RegionSelector from "./RegionSelector";

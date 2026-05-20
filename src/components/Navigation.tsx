@@ -1,3 +1,17 @@
+/**
+ * Navigation — fixed two-row header on desktop, single utility row on
+ * mobile. Holds the wordmark and opens every chrome drawer.
+ *
+ * Triggers: SlideMenu (`FullScreenMenu`), CartDrawer,
+ * ClientLoungeDrawer, SearchOverlay, ShippingRegionModal.
+ *
+ * Used by: every page via `<Navigation />` at the top of the layout.
+ *
+ * Design-system dependencies: `.luxury-button`, `.luxury-heading-lg`
+ * for the wordmark at `tracking-[0.28em]`, hairline border `--border`,
+ * 0.6-stroke custom SVG icons (menu, search, cart). No props — all
+ * chrome state is local.
+ */
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";

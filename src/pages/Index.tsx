@@ -37,26 +37,36 @@ import knitwearImg from "@/assets/explore-knitwear.jpg";
 import lifestyleImg from "@/assets/explore-lifestyle.jpg";
 import appointmentImg from "@/assets/explore-appointment.png";
 import materialMemoryScarf from "@/assets/material-memory-scarf.png";
+import {
+  HOME_HERO_HEADLINE,
+  HOME_HERO_PREORDER_WOMEN,
+  HOME_HERO_PREORDER_MEN,
+  HOME_MATERIAL_MEMORY_HEADLINE,
+  HOME_MATERIAL_MEMORY_CTA,
+  HOME_WOMEN_CARD,
+  HOME_MEN_CARD,
+  HOME_IN_YOUR_KEEPING_HEADLINE,
+} from "@/content/brand";
 
 const Index = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   usePageMeta({ title: "RUVTIER — A Whisper of Luxury", description: "RUVTIER is a luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition. Discover the Spring/Summer 2026 collection." });
   usePriceTick();
 
-  const heroHeadline = useSiteText("home_hero", "headline", "Permanence in garment form");
-  const heroPreorderWomen = useSiteText("home_hero", "preorder_women", "Pre-Order for Women");
-  const heroPreorderMen = useSiteText("home_hero", "preorder_men", "Pre-Order for Men");
-  const materialMemoryHeadline = useSiteText("home_material_memory", "headline", "Material is Memory");
-  const materialMemoryCta = useSiteText("home_material_memory", "cta_label", "Discover all material");
-  const womenSeason = useSiteText("home_women_card", "season", "Spring / Summer 2026");
-  const womenTitle = useSiteText("home_women_card", "title", "Women's Collection");
-  const womenBlurb = useSiteText("home_women_card", "blurb", "Refined silhouettes shaped by material devotion and quiet permanence.");
-  const womenCta = useSiteText("home_women_card", "cta_label", "Discover More");
-  const menSeason = useSiteText("home_men_card", "season", "Spring / Summer 2026");
-  const menTitle = useSiteText("home_men_card", "title", "Men's Collection");
-  const menBlurb = useSiteText("home_men_card", "blurb", "Understated forms built from heritage craft and enduring composition.");
-  const menCta = useSiteText("home_men_card", "cta_label", "Explore Collection");
-  const inYourKeepingHeading = useSiteText("home_in_your_keeping", "headline", "In Your Keeping");
+  const heroHeadline = useSiteText("home_hero", "headline", HOME_HERO_HEADLINE);
+  const heroPreorderWomen = useSiteText("home_hero", "preorder_women", HOME_HERO_PREORDER_WOMEN);
+  const heroPreorderMen = useSiteText("home_hero", "preorder_men", HOME_HERO_PREORDER_MEN);
+  const materialMemoryHeadline = useSiteText("home_material_memory", "headline", HOME_MATERIAL_MEMORY_HEADLINE);
+  const materialMemoryCta = useSiteText("home_material_memory", "cta_label", HOME_MATERIAL_MEMORY_CTA);
+  const womenSeason = useSiteText("home_women_card", "season", HOME_WOMEN_CARD.season);
+  const womenTitle = useSiteText("home_women_card", "title", HOME_WOMEN_CARD.title);
+  const womenBlurb = useSiteText("home_women_card", "blurb", HOME_WOMEN_CARD.blurb);
+  const womenCta = useSiteText("home_women_card", "cta_label", HOME_WOMEN_CARD.cta);
+  const menSeason = useSiteText("home_men_card", "season", HOME_MEN_CARD.season);
+  const menTitle = useSiteText("home_men_card", "title", HOME_MEN_CARD.title);
+  const menBlurb = useSiteText("home_men_card", "blurb", HOME_MEN_CARD.blurb);
+  const menCta = useSiteText("home_men_card", "cta_label", HOME_MEN_CARD.cta);
+  const inYourKeepingHeading = useSiteText("home_in_your_keeping", "headline", HOME_IN_YOUR_KEEPING_HEADLINE);
   const heroImageOverride = useSiteImage("site_image_home_hero");
 
   // Featured pre-order

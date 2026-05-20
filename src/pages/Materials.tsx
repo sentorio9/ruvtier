@@ -20,6 +20,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Editable } from "@/editor/Editable";
 import { useSiteText } from "@/editor/useSiteContent";
+import { MATERIALS_INTRO } from "@/content/brand";
+import { useSiteText } from "@/editor/useSiteContent";
 
 const materials = [
   { name: "Vicuña", slug: "vicuna" },

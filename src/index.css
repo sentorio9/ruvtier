@@ -29,18 +29,22 @@
 
 @layer base {
   :root {
+    /* Paper grounds — warm cream canvas. */
     --background: 30 23% 95%;
     --foreground: 0 0% 23%;
 
+    /* Card / popover — identical to the page canvas. */
     --card: 30 23% 95%;
     --card-foreground: 0 0% 23%;
 
     --popover: 30 23% 95%;
     --popover-foreground: 0 0% 23%;
 
+    /* Ink — warm charcoal, never pure black. */
     --primary: 0 0% 23%;
     --primary-foreground: 30 23% 95%;
 
+    /* Quiet wells — soft cream chips for image frames and secondary surfaces. */
     --secondary: 30 15% 90%;
     --secondary-foreground: 0 0% 23%;
 
@@ -50,9 +54,11 @@
     --accent: 30 15% 88%;
     --accent-foreground: 0 0% 23%;
 
+    /* Destructive — blocking errors only. */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
+    /* Semantic statuses — sage success, soft caution, high-attention warning. */
     --success: 152 44% 34%;
     --success-foreground: 152 44% 96%;
     --caution: 38 70% 45%;
@@ -60,10 +66,12 @@
     --warning: 22 70% 50%;
     --warning-foreground: 22 70% 96%;
 
+    /* Hairlines — single 1px stroke; never thicker. */
     --border: 30 15% 85%;
     --input: 30 15% 85%;
     --ring: 0 0% 23%;
 
+    /* No rounded corners on the public site. */
     --radius: 0px;
 
     --sidebar-background: 30 23% 95%;

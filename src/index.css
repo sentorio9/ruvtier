@@ -83,7 +83,7 @@
     --sidebar-border: 30 15% 85%;
     --sidebar-ring: 0 0% 23%;
 
-    /* Custom luxury tokens */
+    /* Typography families — light/regular weights only; never bold. */
     --font-serif: 'Cormorant Garamond', Georgia, serif;
     --font-sans: 'Jost', system-ui, sans-serif;
 
@@ -105,10 +105,10 @@
     --luxury-leading-relaxed: 1.7;       /* hero serif paragraph */
     --luxury-leading-body: 1.75;         /* body / blurbs */
 
+    /* Layout — content/text ceilings and the responsive section rhythm. */
     --content-max: 1200px;
     --text-max: 680px;
 
-    /* Responsive section spacing */
     --section-gap: 120px;
     --hero-gap: 160px;
     --heading-body-gap: 24px;

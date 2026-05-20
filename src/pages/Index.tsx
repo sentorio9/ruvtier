@@ -332,7 +332,7 @@ const Index = () => {
               <ScrollFadeIn key={item.label} delay={i * 0.08}>
                 <Link
                   to={item.to}
-                  className="group block"
+                  className="group relative block pb-20 md:pb-24"
                 >
                   <div className="relative flex w-full aspect-[4/5] items-center justify-center overflow-hidden bg-background px-[10%] py-[10%]">
                     <img
@@ -343,16 +343,16 @@ const Index = () => {
                     />
                     <div
                       aria-hidden
-                      className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:opacity-100 transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                      className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/45 via-black/15 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
                     />
-                    <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center text-center px-4 pb-5 md:pb-6 text-[#F6F4F1]">
-                      <h3 className="type-subtitle motion-safe:opacity-90 motion-safe:translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 transition-[opacity,transform] duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]">
-                        {item.label}
-                      </h3>
-                      <span className="mt-2 type-cta motion-safe:opacity-0 motion-safe:translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 transition-[opacity,transform] duration-[700ms] delay-100 ease-[cubic-bezier(0.22,0.61,0.36,1)]">
-                        Explore
-                      </span>
-                    </div>
+                  </div>
+                  <div className="absolute inset-x-0 top-full z-10 flex flex-col items-center text-center px-4 pt-4 md:pt-5 text-foreground motion-safe:group-hover:-translate-y-[115%] motion-safe:group-focus-visible:-translate-y-[115%] motion-safe:group-hover:text-[#F6F4F1] motion-safe:group-focus-visible:text-[#F6F4F1] transition-[transform,color] duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]">
+                    <h3 className="type-subtitle">
+                      {item.label}
+                    </h3>
+                    <span className="mt-2 type-cta">
+                      Explore
+                    </span>
                   </div>
                 </Link>
               </ScrollFadeIn>

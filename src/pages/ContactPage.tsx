@@ -1,3 +1,15 @@
+/**
+ * Contact — quiet correspondence with the house.
+ *
+ * Each correspondence is personal and considered. The page exposes
+ * email, phone, Instagram, and a guarded message form.
+ *
+ * Section order: Navigation · heading + contact details · message
+ * form (honeypot-protected) · LuxuryFooter.
+ *
+ * Design-system dependencies: `.luxury-container`, serif heading,
+ * `.luxury-button`. Form protection via `src/lib/formProtection.ts`.
+ */
 import { useRef, useState } from "react";
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";

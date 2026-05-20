@@ -1,3 +1,18 @@
+/**
+ * SubscribePanel — confirmation panel opened after a footer newsletter
+ * submit. Collects optional first/last name alongside the email and
+ * writes the subscription via Supabase.
+ *
+ * Props:
+ *   - `isOpen: boolean` · `onClose(): void`
+ *
+ * Used by: every page that renders `LuxuryFooter` (the footer raises
+ * `onSubscribeClick`, the host page opens this panel).
+ *
+ * Design-system dependencies: page canvas, hairline inputs, single
+ * easing curve. Form protection via `src/lib/formProtection.ts`.
+ * Escape closes; body scroll locks while open.
+ */
 import { useState, useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";

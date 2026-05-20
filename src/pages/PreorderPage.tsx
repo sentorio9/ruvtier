@@ -1,3 +1,17 @@
+/**
+ * Private Access — Pre-Order page (`/preorder/:slug`).
+ *
+ * A request flow, not a purchase. The page reads as an invitation:
+ * single garment image, allocation note, a contemplative form.
+ * Submissions sync with the customer CRM in Supabase.
+ *
+ * Section order: Navigation · product image + allocation eyebrow ·
+ * Private Access form · LuxuryFooter.
+ *
+ * Design-system dependencies: `.luxury-container`, `.type-display`,
+ * `.type-eyebrow` ("Available by allocation — not open purchase"),
+ * `.luxury-button`. Form protection via `src/lib/formProtection.ts`.
+ */
 import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navigation from "@/components/Navigation";

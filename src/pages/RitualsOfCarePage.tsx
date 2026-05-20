@@ -1,3 +1,22 @@
+/**
+ * Rituals of Care & Restoration.
+ *
+ * The house voice at its most instructive — guidance on how a RUVTIER
+ * piece is kept, written so each paragraph reads as a quiet rule.
+ *
+ * Section order:
+ *   1. Navigation.
+ *   2. Heading + two intro paragraphs.
+ *   3. Five care sections (Daily Handling → Time → Cashmere → Silk →
+ *      Leather).
+ *   4. RUVTIER Restoration block.
+ *   5. Italic closing line.
+ *   6. LuxuryFooter.
+ *
+ * Design-system dependencies: narrow `max-w-[620px]` column, serif
+ * body at 15px / 1.85 leading; copy mirrors `RITUALS_*` exports in
+ * `src/content/brand.ts`.
+ */
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";

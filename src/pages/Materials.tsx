@@ -1,3 +1,16 @@
+/**
+ * Materials index (`/materials`).
+ *
+ * Index of every house material. Opens with the editorial line
+ * `Material is memory`, then lists each fibre as a quiet link.
+ *
+ * Section order: Navigation · headline + intro · material list ·
+ * LuxuryFooter.
+ *
+ * Design-system dependencies: `.luxury-container`, `.luxury-heading`,
+ * `.luxury-body`, `.hero-glow`. Copy fallbacks mirror `MATERIALS_INTRO`
+ * in `src/content/brand.ts`.
+ */
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";

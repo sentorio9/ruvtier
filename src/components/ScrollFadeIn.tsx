@@ -1,3 +1,18 @@
+/**
+ * ScrollFadeIn — viewport-triggered fade-and-rise. The house's only
+ * scroll-in motion; used to bring every editorial block in calmly.
+ *
+ * Props:
+ *   - `children: ReactNode`
+ *   - `className?: string`
+ *   - `delay?: number` — seconds; stagger sibling blocks gently.
+ *
+ * Used by: most public pages.
+ *
+ * Design-system dependencies: single easing curve
+ * `cubic-bezier(0.22,0.61,0.36,1)`, 900ms duration, 24px rise. Fires
+ * once via `viewport={{ once: true }}`.
+ */
 import { motion } from "framer-motion";
 import { ReactNode } from "react";
 

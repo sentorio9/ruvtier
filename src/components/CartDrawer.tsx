@@ -1,3 +1,15 @@
+/**
+ * CartDrawer — right-anchored drawer holding the current bag.
+ *
+ * Props:
+ *   - `isOpen: boolean` · `onClose(): void`
+ *
+ * Used by: `Navigation.tsx`.
+ *
+ * Design-system dependencies: dim overlay `bg-foreground/20`, drawer
+ * uses page canvas (`bg-background`), hairline border `--border`,
+ * single easing curve. Escape closes; body scroll locks while open.
+ */
 import React from "react";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";

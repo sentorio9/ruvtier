@@ -1,3 +1,17 @@
+/**
+ * SearchOverlay — full-screen overlay with a single input and a
+ * debounced real-time Supabase query. Selecting a result navigates
+ * to the product page.
+ *
+ * Props:
+ *   - `isOpen: boolean` · `onClose(): void`
+ *
+ * Used by: `Navigation.tsx`, `FullScreenMenu.tsx`.
+ *
+ * Design-system dependencies: page canvas `bg-background`, hairline
+ * input, 0.6-stroke search icon. Escape closes; body scroll locks;
+ * focus restores to trigger on close.
+ */
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";

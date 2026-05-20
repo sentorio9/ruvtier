@@ -1,3 +1,17 @@
+/**
+ * Material detail page (`/materials/:slug`).
+ *
+ * A single material treated as a subject — vicuña, cashmere, silk,
+ * linen, denim. One descriptive paragraph in italic, one CTA back to
+ * the index.
+ *
+ * Section order: Navigation · centred heading + italic description ·
+ * "Explore all materials" link · LuxuryFooter.
+ *
+ * Design-system dependencies: `.luxury-container`, `.luxury-heading`,
+ * `.luxury-body`, `.luxury-button`. Copy sourced from
+ * `MATERIAL_DESCRIPTIONS` in `src/content/brand.ts`.
+ */
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";

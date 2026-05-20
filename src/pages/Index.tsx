@@ -1,3 +1,24 @@
+/**
+ * Homepage — the opening cadence of the house.
+ *
+ * Reads as a slow editorial sequence: hero · featured pre-order ·
+ * split Women/Men collection · Material is Memory · In Your Keeping ·
+ * footer. Sections snap on desktop (md+) for a film-strip feel.
+ *
+ * Section order:
+ *   1. Hero — `.hero-glow` + `.type-display` over `heroImage`.
+ *   2. Featured Pre-Order — first product where `preorder_enabled`.
+ *   3. Split Collection — Women & Men cards with image cross-fade.
+ *   4. Material is Memory — silk-scarf still, CTA to /materials.
+ *   5. In Your Keeping — three quiet tiles.
+ *   6. LuxuryFooter.
+ *
+ * Design-system dependencies: `.luxury-container`, `.luxury-section`,
+ * `.type-display` / `.type-title` / `.type-eyebrow` / `.type-cta`,
+ * `.luxury-button`, `.hero-glow`, single easing curve
+ * `cubic-bezier(0.22,0.61,0.36,1)`. Copy fallbacks mirror
+ * `src/content/brand.ts`.
+ */
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";

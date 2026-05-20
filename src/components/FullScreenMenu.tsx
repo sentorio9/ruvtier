@@ -1,3 +1,21 @@
+/**
+ * SlideMenu (a.k.a. FullScreenMenu) — left-anchored slide-in panel
+ * that holds primary navigation. Two-layer composition: the primary
+ * panel lists destinations; secondary panels slide over for Boutique,
+ * Materials, and Home Interior sub-categories.
+ *
+ * Props:
+ *   - `isOpen: boolean` · `onClose(): void`
+ *   - `onOpenSearch?(): void` · `onOpenLounge?(): void` — mobile
+ *     utilities delegated back to the host (Navigation).
+ *
+ * Used by: `Navigation.tsx`.
+ *
+ * Design-system dependencies: panel width `min(30vw,440px)` desktop /
+ * `85vw` mobile, hairline divider `--border`, the single easing curve
+ * `cubic-bezier(0.22,0.61,0.36,1)`, 0.6-stroke lucide icons. Escape
+ * closes; focus restores to the trigger on close.
+ */
 import { useState, useEffect, useRef } from "react";
 import { X, ChevronRight, ArrowLeft } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";

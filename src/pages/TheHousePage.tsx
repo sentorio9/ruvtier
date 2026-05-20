@@ -1,3 +1,22 @@
+/**
+ * The House — manifesto page.
+ *
+ * A single narrow column of serif paragraphs read as one slow
+ * statement of intent. No imagery. The page closes on the italic line
+ * `Ruvtier does not persuade. It remains.`
+ *
+ * Section order:
+ *   1. Navigation.
+ *   2. Manifesto paragraphs (Discipline → Craft → Garments →
+ *      Philosophy → Founder → Closing).
+ *   3. Social links row.
+ *   4. LuxuryFooter.
+ *
+ * Design-system dependencies: serif body at clamp(16px,1.25vw,19px)
+ * with 2.0 leading; tracking `0.32em` on the social microtype;
+ * `<Editable>` wrappers source fallbacks from
+ * `HOUSE_MANIFESTO` in `src/content/brand.ts`.
+ */
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";

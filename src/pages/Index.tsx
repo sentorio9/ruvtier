@@ -192,79 +192,78 @@ const Index = () => {
       )}
 
       {/* Split Collection — Women / Men */}
-      <section className="min-h-[100svh] md:snap-start flex items-center bg-background">
-        <div className="luxury-container w-full grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-8 py-[clamp(64px,10vh,120px)]">
-          {/* Women */}
-          <ScrollFadeIn>
-            <Link to="/boutique/women" className="group flex flex-col h-full">
-              <div className="relative flex-1 min-h-0 w-full overflow-hidden bg-secondary transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:shadow-[0_30px_70px_-32px_rgba(0,0,0,0.35)]">
-                <img
-                  src={womenImage}
-                  alt="Women's collection by RUVTIER"
-                  className="w-full h-full object-cover object-[center_25%] transition-[transform,filter] duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.015] motion-safe:group-hover:brightness-[0.96]"
-                  loading="lazy"
-                />
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/35 via-black/10 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
-                />
-              </div>
-              <div className="flex flex-col items-center text-center px-6 pt-5 md:pt-6 text-foreground">
-                <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="type-eyebrow mb-2 md:mb-3">
-                  {womenSeason}
-                </Editable>
-                <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="type-title mb-3 md:mb-4">
-                  {womenTitle}
-                </Editable>
-                <span className="inline-flex items-center gap-2 type-cta">
-                  <span className="relative inline-block pb-1">
-                    <Editable kind="text_block" contentKey="home_women_card" field="cta_label" label="Women — CTA label" as="span">{womenCta}</Editable>
-                    <span
-                      aria-hidden
-                      className="absolute left-0 right-0 -bottom-px h-px bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
-                    />
+      <section className="md:h-[100svh] md:snap-start flex flex-col justify-center bg-background">
+        <div className="luxury-container w-full grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-8 md:h-full md:max-h-[calc(100svh-96px)] py-[clamp(48px,7vh,96px)]">
+          {[
+            {
+              to: "/boutique/women",
+              primary: womenImage,
+              secondary: heroImage,
+              alt: "Women's collection by RUVTIER",
+              season: womenSeason,
+              title: womenTitle,
+              cta: womenCta,
+              contentKey: "home_women_card",
+              objectPos: "object-[center_25%]",
+              delay: 0,
+            },
+            {
+              to: "/boutique/men",
+              primary: menImage,
+              secondary: lifestyleImg,
+              alt: "Men's collection by RUVTIER",
+              season: menSeason,
+              title: menTitle,
+              cta: menCta,
+              contentKey: "home_men_card",
+              objectPos: "object-center",
+              delay: 0.1,
+            },
+          ].map((card) => (
+            <ScrollFadeIn key={card.to} delay={card.delay}>
+              <Link to={card.to} className="group relative flex flex-col h-full overflow-hidden">
+                {/* Image frame */}
+                <div className="relative flex-1 min-h-0 w-full overflow-hidden bg-secondary transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:shadow-[0_30px_70px_-32px_rgba(0,0,0,0.35)]">
+                  <img
+                    src={card.primary}
+                    alt={card.alt}
+                    loading="lazy"
+                    className={`absolute inset-0 w-full h-full object-cover ${card.objectPos} transition-opacity duration-[900ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] motion-safe:group-hover:opacity-0`}
+                  />
+                  <img
+                    src={card.secondary}
+                    alt=""
+                    aria-hidden
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover object-center opacity-0 scale-[1.02] motion-safe:group-hover:opacity-100 motion-safe:group-hover:scale-100 transition-[opacity,transform] duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                  />
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/30 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                  />
+                </div>
+                {/* Caption panel — always visible, lifts on hover */}
+                <div className="relative z-10 shrink-0 bg-background flex flex-col items-center text-center px-6 pt-5 md:pt-6 pb-2 h-[110px] md:h-[124px] transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] motion-safe:group-hover:-translate-y-[56px] md:motion-safe:group-hover:-translate-y-[64px]">
+                  <Editable kind="text_block" contentKey={card.contentKey} field="season" label={`${card.alt} — season label`} as="span" className="type-eyebrow mb-2 md:mb-3">
+                    {card.season}
+                  </Editable>
+                  <Editable kind="text_block" contentKey={card.contentKey} field="title" label={`${card.alt} — title`} as="h2" className="type-title mb-2 md:mb-3">
+                    {card.title}
+                  </Editable>
+                  <span className="inline-flex items-center gap-2 type-cta">
+                    <span className="relative inline-block pb-1">
+                      <Editable kind="text_block" contentKey={card.contentKey} field="cta_label" label={`${card.alt} — CTA label`} as="span">{card.cta}</Editable>
+                      <span
+                        aria-hidden
+                        className="absolute left-0 right-0 -bottom-px h-px bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                      />
+                    </span>
+                    <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
                   </span>
-                  <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
-                </span>
-              </div>
-            </Link>
-          </ScrollFadeIn>
-
-          {/* Men */}
-          <ScrollFadeIn delay={0.1}>
-            <Link to="/boutique/men" className="group flex flex-col h-full">
-              <div className="relative flex-1 min-h-0 w-full overflow-hidden bg-secondary transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:shadow-[0_30px_70px_-32px_rgba(0,0,0,0.35)]">
-                <img
-                  src={menImage}
-                  alt="Men's collection by RUVTIER"
-                  className="w-full h-full object-contain object-center transition-[transform,filter] duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.015] motion-safe:group-hover:brightness-[0.96]"
-                  loading="lazy"
-                />
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/35 via-black/10 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
-                />
-              </div>
-              <div className="flex flex-col items-center text-center px-6 pt-5 md:pt-6 text-foreground">
-                <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="type-eyebrow mb-2 md:mb-3">
-                  {menSeason}
-                </Editable>
-                <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="type-title mb-3 md:mb-4">
-                  {menTitle}
-                </Editable>
-                <span className="inline-flex items-center gap-2 type-cta">
-                  <span className="relative inline-block pb-1">
-                    <Editable kind="text_block" contentKey="home_men_card" field="cta_label" label="Men — CTA label" as="span">{menCta}</Editable>
-                    <span
-                      aria-hidden
-                      className="absolute left-0 right-0 -bottom-px h-px bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
-                    />
-                  </span>
-                  <svg className="w-3 h-3 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
-                </span>
-              </div>
-            </Link>
-          </ScrollFadeIn>
+                </div>
+              </Link>
+            </ScrollFadeIn>
+          ))}
         </div>
       </section>
 
@@ -272,7 +271,7 @@ const Index = () => {
       <section className="luxury-section min-h-[100svh] md:snap-start flex items-center">
         <div className="luxury-container w-full flex flex-col items-center text-center py-[clamp(48px,8vh,96px)]">
           <ScrollFadeIn>
-            <div className="w-full max-w-[420px] md:max-w-[520px] mx-auto overflow-hidden max-h-[55svh]">
+            <div className="w-full max-w-[320px] md:max-w-[400px] mx-auto aspect-[3/4] max-h-[48svh]">
               <img
                 src={materialMemoryScarf}
                 alt="A RUVTIER silk scarf draped over a wooden chair — the quiet permanence of material."

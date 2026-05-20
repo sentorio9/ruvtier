@@ -23,48 +23,15 @@ import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { useState } from "react";
+import {
+  RITUALS_HEADING,
+  RITUALS_INTRO_PARAGRAPHS,
+  RITUALS_SECTIONS,
+  RITUALS_RESTORATION,
+  CLOSING_LINES,
+} from "@/content/brand";
 
-const sections = [
-  {
-    title: "Daily Handling",
-    paragraphs: [
-      "Allow each piece to breathe between wear.",
-      "Time preserves what haste erodes.",
-    ],
-  },
-  {
-    title: "A Note on Time",
-    paragraphs: [
-      "Delicate changes in texture, softness, and drape are not flaws. They are the quiet record of a life well worn.",
-      "What a piece becomes over time is part of its value.",
-    ],
-  },
-  {
-    title: "Cashmere & Baby Cashmere",
-    paragraphs: [
-      "Cashmere is among the most delicate fibres in the world, valued not for resilience, but for its quiet softness.",
-      "After wear, allow the garment to rest. Air it gently, away from direct light, before returning it to your wardrobe.",
-      "With considered care, cashmere softens, deepens, and becomes more personal with time.",
-    ],
-  },
-  {
-    title: "Silk",
-    paragraphs: [
-      "Silk responds to its environment with sensitivity. Light, movement, and touch all leave their trace.",
-      "Avoid prolonged exposure to direct light, which may soften its tone. Contact with water, oils, or fragrance should remain minimal.",
-      "After wear, allow the piece to rest and breathe before storing.",
-      "Silk retains its beauty not through intervention, but through restraint.",
-    ],
-  },
-  {
-    title: "Leather",
-    paragraphs: [
-      "Leather is a living material. It evolves, developing a patina that reflects time, use, and touch.",
-      "Avoid unnecessary friction or pressure that may alter its surface.",
-      "When not in use, store in a dust bag, allowing the piece to maintain its shape and character.",
-    ],
-  },
-];
+const sections = RITUALS_SECTIONS;
 
 const RitualsOfCarePage = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);

@@ -332,22 +332,28 @@ const Index = () => {
               <ScrollFadeIn key={item.label} delay={i * 0.08}>
                 <Link
                   to={item.to}
-                  className="group grid h-full grid-rows-[auto_auto_auto] content-start justify-items-center gap-0 text-center transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] hover:-translate-y-1"
+                  className="group block"
                 >
-                  <div className="flex w-full aspect-[4/5] items-center justify-center overflow-hidden bg-background px-[10%] py-[10%]">
+                  <div className="relative flex w-full aspect-[4/5] items-center justify-center overflow-hidden bg-background px-[10%] py-[10%]">
                     <img
                       src={item.img}
                       alt={item.label}
                       loading="lazy"
                       className={`object-contain object-center transition-transform duration-700 ease-out group-hover:scale-[1.02] ${item.imgClass}`}
                     />
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:opacity-100 transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                    />
+                    <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center text-center px-4 pb-5 md:pb-6 text-[#F6F4F1]">
+                      <h3 className="type-subtitle motion-safe:opacity-90 motion-safe:translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 transition-[opacity,transform] duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]">
+                        {item.label}
+                      </h3>
+                      <span className="mt-2 type-cta motion-safe:opacity-0 motion-safe:translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 transition-[opacity,transform] duration-[700ms] delay-100 ease-[cubic-bezier(0.22,0.61,0.36,1)]">
+                        Explore
+                      </span>
+                    </div>
                   </div>
-                  <h3 className="mt-6 min-h-[2.75rem] self-start type-subtitle flex items-start justify-center text-center md:min-h-[3rem] transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:-translate-y-0.5">
-                    {item.label}
-                  </h3>
-                  <span className="mt-3 type-cta text-muted-foreground transition-[transform,color] duration-500 group-hover:text-foreground group-hover:-translate-y-0.5">
-                    Explore
-                  </span>
                 </Link>
               </ScrollFadeIn>
             ))}

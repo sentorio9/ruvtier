@@ -1,30 +1,43 @@
-Implement the selected "Stacked editorial group" hero in `src/pages/Index.tsx`.
+## Problem
 
-## Changes (hero section only)
+You're seeing a perpetual loading spinner, but the site loads cleanly on my end:
 
-1. **Headline becomes a clickable serif statement linking to `/collection`** (Spring/Summer 2026).
-   - Wrap in `<Link to="/collection">` with `aria-label="Discover the Spring/Summer 2026 collection"`.
-   - Promote element from `<p>` to `<h1>` for SEO and semantic weight.
-   - Larger scale on desktop: `text-5xl md:text-7xl lg:text-[5.5rem]`, leading `1.15`, tracking `0.08em`, color `#F6F4F1`.
-   - Hover: whole link micro-scales `1.01` (700ms, brand easing); a thin chevron-down icon (0.6 stroke, brand spec) fades in beneath the headline as the clickability hint.
-   - Editable wrapper preserved so admin editor still works.
+- Preview URL: returns the hero, headline, and Pre-Order CTAs within ~1s
+- Published site (`ruvtier.com`): returns HTTP 200
+- Lovable Cloud backend: healthy
+- `site_settings.maintenance_enabled`: false
+- No runtime errors; only harmless React Router v7 future-flag warnings
 
-2. **Pre-Order pair (Women / Men) — restyled as Loro Piana paired CTAs.**
-   - Move them up into the same centered composition group (no longer absolutely anchored at the bottom).
-   - At rest: white text + thin always-visible underline at 60% opacity (matches the chosen direction).
-   - Hover: underline scales `scale-x-0` from left, revealing emphasis (700ms, brand easing).
-   - Color shifts from current `text-foreground` (dark grey) to `text-[#F6F4F1]` so they remain legible on the dark editorial hero image.
-   - Spacing: `gap-8 md:gap-16`, `mt-10 md:mt-14` below the headline group.
+That points to either a **stale preview iframe / cached service worker on your device**, or a **gating component that never resolves on slower networks**. The most likely code-side culprit is `MaintenanceGate` — it blocks the whole app behind a Supabase query and renders a blank `min-h-screen` div until it resolves. If that query hangs (slow network, blocked request), the app appears to spin forever with no fallback.
 
-3. **Vertical anchor line** at the bottom-center (1px × 48px, 25% opacity off-white) — a quiet visual cue that more content follows.
+## Quick check first (no code change)
 
-4. **Remove** the redundant secondary halo behind the old bottom-anchored CTAs (no longer needed since CTAs are now grouped with the headline under the existing central halo).
+1. Hard-refresh the preview: `Ctrl/Cmd + Shift + R`
+2. Open the preview in an incognito window
+3. Try the published URL: https://ruvtier.com
 
-## What stays the same
+If any of those load instantly, it's a local cache issue and no code change is needed.
 
-- Hero image, `Editable` content keys (`home_hero / headline / preorder_women / preorder_men`), the central radial halo, ScrollFadeIn entrances, snap-section structure.
-- Brand tokens: Cormorant Garamond serif, Jost uppercase tracked, easing `cubic-bezier(0.22,0.61,0.36,1)`.
+## Plan — if it still hangs
 
-## Files touched
+Harden the boot path so a single slow network call can never freeze the entire site.
 
-- `src/pages/Index.tsx` only (hero section block, roughly lines 84–133).
+### 1. `src/components/MaintenanceGate.tsx`
+- Add a **1500ms safety timeout** to the initial settings fetch. If the query hasn't resolved by then, fall through with `DEFAULTS` (maintenance off) and continue rendering the app. Realtime subscription still updates `settings` afterwards.
+- Wrap the Supabase call in `try/catch` so a thrown error never leaves `loading=true` forever.
+
+### 2. `src/App.tsx` (Suspense fallback)
+- Replace the blank `<div className="min-h-screen bg-background" />` with a minimal **brand-consistent shimmer** (off-white field + tiny centered RUVTIER wordmark at 40% opacity). Same behavior, but the user sees that something is happening instead of guessing.
+
+### 3. `src/hooks/useRegionCurrency.tsx` (light audit)
+- Confirm it doesn't block first paint on a slow external IP-geo / FX call. If it does, defer those fetches behind `useEffect` with `AbortController` and a 2s timeout — never gate render on them.
+
+## Files to touch
+- `src/components/MaintenanceGate.tsx` — add timeout + try/catch
+- `src/App.tsx` — replace Suspense fallback with branded shimmer
+- `src/hooks/useRegionCurrency.tsx` — audit only; edit only if it blocks render
+
+## Out of scope
+- No design changes to the hero or any other section.
+- No backend / schema / RLS changes.
+- No new dependencies.

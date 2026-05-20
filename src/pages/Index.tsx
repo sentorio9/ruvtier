@@ -81,56 +81,65 @@ const Index = () => {
           className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(82vw,880px)] h-[min(40vh,320px)] rounded-[50%] blur-3xl"
           style={{ background: "radial-gradient(ellipse at center, rgba(245,241,235,0.28) 0%, rgba(245,241,235,0.14) 42%, rgba(245,241,235,0) 75%)" }}
         />
-        <div className="relative z-10 text-center px-6 hero-glow translate-y-8 md:translate-y-12">
+        <div className="relative z-10 flex flex-col items-center text-center px-6 hero-glow translate-y-4 md:translate-y-8 max-w-4xl">
           <ScrollFadeIn>
-            <Editable
-              kind="text_block"
-              contentKey="home_hero"
-              field="headline"
-              label="Homepage hero text"
-              as="p"
-              className="hero-title type-display mx-auto max-w-[var(--text-max)]"
+            <Link
+              to="/collection"
+              aria-label="Discover the Spring/Summer 2026 collection"
+              className="group flex flex-col items-center transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] hover:scale-[1.01]"
             >
-              {heroHeadline}
-            </Editable>
+              <Editable
+                kind="text_block"
+                contentKey="home_hero"
+                field="headline"
+                label="Homepage hero text"
+                as="h1"
+                className="hero-title type-display text-[#F6F4F1] text-5xl md:text-7xl lg:text-[5.5rem] leading-[1.15] tracking-[0.08em] mb-6"
+              >
+                {heroHeadline}
+              </Editable>
+              <div
+                aria-hidden
+                className="opacity-0 group-hover:opacity-100 transition-opacity duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] -mt-1"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F6F4F1" strokeWidth="0.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
+                </svg>
+              </div>
+            </Link>
           </ScrollFadeIn>
-        </div>
 
-        <div className="absolute z-10 left-0 right-0 bottom-[clamp(48px,8vh,96px)] px-6">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(72vw,640px)] h-[120px] rounded-[50%] blur-2xl"
-            style={{ background: "radial-gradient(ellipse at center, rgba(245,241,235,0.22) 0%, rgba(245,241,235,0.10) 45%, rgba(245,241,235,0) 78%)" }}
-          />
           <ScrollFadeIn delay={0.25}>
-            <div className="relative flex items-center justify-center gap-[clamp(40px,8vw,120px)]">
+            <div className="relative mt-10 md:mt-14 flex flex-col sm:flex-row items-center justify-center gap-8 md:gap-16">
               <Link
                 to="/boutique/women"
-                className="group relative inline-block type-cta text-foreground transition-colors duration-500"
+                className="group flex flex-col items-center type-cta text-[#F6F4F1] transition-colors duration-500"
               >
                 <Editable kind="text_block" contentKey="home_hero" field="preorder_women" label="Hero — Pre-Order Women" as="span">
                   {heroPreorderWomen}
                 </Editable>
                 <span
                   aria-hidden
-                  className="absolute left-0 right-0 -bottom-1 h-px bg-[#3A3A3A]/80 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                  className="block w-full h-px bg-[#F6F4F1] mt-1 origin-left scale-x-100 opacity-60 group-hover:scale-x-0 transition-transform duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
                 />
               </Link>
               <Link
                 to="/boutique/men"
-                className="group relative inline-block type-cta text-foreground transition-colors duration-500"
+                className="group flex flex-col items-center type-cta text-[#F6F4F1] transition-colors duration-500"
               >
                 <Editable kind="text_block" contentKey="home_hero" field="preorder_men" label="Hero — Pre-Order Men" as="span">
                   {heroPreorderMen}
                 </Editable>
                 <span
                   aria-hidden
-                  className="absolute left-0 right-0 -bottom-1 h-px bg-[#3A3A3A]/80 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                  className="block w-full h-px bg-[#F6F4F1] mt-1 origin-left scale-x-100 opacity-60 group-hover:scale-x-0 transition-transform duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
                 />
               </Link>
             </div>
           </ScrollFadeIn>
         </div>
+
+        <div aria-hidden className="absolute bottom-10 left-1/2 -translate-x-1/2 w-px h-12 bg-[#F6F4F1] opacity-25" />
       </section>
 
       {/* Featured Pre-Order */}

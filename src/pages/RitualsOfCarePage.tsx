@@ -49,17 +49,16 @@ const RitualsOfCarePage = () => {
           {/* Header */}
           <ScrollFadeIn>
             <h1 className="font-serif font-light text-[clamp(26px,3vw,36px)] tracking-[0.04em] text-foreground mb-8">
-              Rituals of Care
+              {RITUALS_HEADING}
             </h1>
           </ScrollFadeIn>
 
           <ScrollFadeIn delay={0.1}>
-            <p className="font-serif text-[15px] leading-[1.85] text-foreground/85 mb-4">
-              Respect for material defines how a RUVTIER piece is made and how it is kept.
-            </p>
-            <p className="font-serif text-[15px] leading-[1.85] text-foreground/85 mb-4">
-              A RUVTIER piece, when preserved with care, will outlast seasons and often, its first owner. Ownership is never absolute; each piece is held in stewardship.
-            </p>
+            {RITUALS_INTRO_PARAGRAPHS.map((p, i) => (
+              <p key={i} className="font-serif text-[15px] leading-[1.85] text-foreground/85 mb-4">
+                {p}
+              </p>
+            ))}
           </ScrollFadeIn>
 
           {/* Care sections */}
@@ -85,20 +84,13 @@ const RitualsOfCarePage = () => {
           <ScrollFadeIn delay={0.1 * (sections.length + 2)}>
             <div className="mt-16 md:mt-20">
               <h2 className="font-serif font-light text-[clamp(20px,2.2vw,26px)] tracking-[0.03em] text-foreground mb-5">
-                RUVTIER Restoration
+                {RITUALS_RESTORATION.heading}
               </h2>
-              <p className="font-serif text-[15px] leading-[1.85] text-foreground/85 mb-4">
-                RUVTIER pieces are created to remain.
-              </p>
-              <p className="font-serif text-[15px] leading-[1.85] text-foreground/85 mb-4">
-                Over time, should a piece require attention, it may be returned to the house for careful assessment and restoration.
-              </p>
-              <p className="font-serif text-[15px] leading-[1.85] text-foreground/85 mb-4">
-                Each restoration is approached individually. Subtle variations, developed through wear, are respected as part of the garment or object's history.
-              </p>
-              <p className="font-serif text-[15px] leading-[1.85] text-foreground/85 mb-4">
-                For guidance, or to arrange a restoration, clients may contact the house directly.
-              </p>
+              {RITUALS_RESTORATION.paragraphs.map((p, i) => (
+                <p key={i} className="font-serif text-[15px] leading-[1.85] text-foreground/85 mb-4">
+                  {p}
+                </p>
+              ))}
             </div>
           </ScrollFadeIn>
 
@@ -106,12 +98,16 @@ const RitualsOfCarePage = () => {
           <ScrollFadeIn delay={0.1 * (sections.length + 3)}>
             <div className="mt-14 md:mt-20 text-center">
               <p className="font-serif italic text-[15px] leading-[1.85] text-foreground/70">
-                To restore a RUVTIER piece is not to make it new
-                <br />
-                but to allow it to continue.
+                {CLOSING_LINES.rituals.split("\n").map((line, i, arr) => (
+                  <span key={i}>
+                    {line}
+                    {i < arr.length - 1 && <br />}
+                  </span>
+                ))}
               </p>
             </div>
           </ScrollFadeIn>
+
         </div>
       </article>
 

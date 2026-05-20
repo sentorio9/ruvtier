@@ -1,3 +1,26 @@
+/**
+ * RUVTIER — design tokens and base styles.
+ *
+ * Single source of truth for the public-site design system. Pairs with
+ * `tailwind.config.ts` (which re-exposes these tokens as Tailwind
+ * utilities) and `DESIGN_SYSTEM.md` at the repo root (which documents
+ * the intent behind every value).
+ *
+ * Structure:
+ *   1. Font imports (Cormorant Garamond + Jost).
+ *   2. `:root` tokens — paper grounds, ink, semantic statuses,
+ *      typography, layout.
+ *   3. Responsive overrides at 1024px / 768px.
+ *   4. Base typography (body, headings).
+ *   5. Component layer: the six `.type-*` classes, legacy `.luxury-*`
+ *      helpers, `.luxury-container` / `.luxury-section` wrappers.
+ *   6. Hero halo (`.hero-glow`) and Lovable badge suppression.
+ *
+ * Rules:
+ *   • All colour values are HSL triplets — consume via `hsl(var(--x))`.
+ *   • Never introduce pure black/white; ink is `--foreground`.
+ *   • Add new tokens here first, then re-expose in tailwind.config.ts.
+ */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Jost:wght@300;400;500&display=swap');
 
 @tailwind base;

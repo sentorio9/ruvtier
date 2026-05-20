@@ -217,9 +217,6 @@ const Index = () => {
               <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="type-display mb-4 md:mb-5">
                 {womenTitle}
               </Editable>
-              <Editable kind="text_block" contentKey="home_women_card" field="blurb" label="Women — blurb" as="p" className="type-body mb-6 md:mb-7 max-w-[clamp(260px,28vw,360px)]">
-                {womenBlurb}
-              </Editable>
               <span className="inline-flex items-center gap-2 type-cta">
                 <span className="relative inline-block pb-1">
                   <Editable kind="text_block" contentKey="home_women_card" field="cta_label" label="Women — CTA label" as="span">{womenCta}</Editable>
@@ -251,9 +248,6 @@ const Index = () => {
               </Editable>
               <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="type-display mb-4 md:mb-5">
                 {menTitle}
-              </Editable>
-              <Editable kind="text_block" contentKey="home_men_card" field="blurb" label="Men — blurb" as="p" className="type-body mb-6 md:mb-7 max-w-[clamp(260px,28vw,360px)]">
-                {menBlurb}
               </Editable>
               <span className="inline-flex items-center gap-2 type-cta">
                 <span className="relative inline-block pb-1">
@@ -323,14 +317,14 @@ const Index = () => {
           </ScrollFadeIn>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-8 lg:gap-10 items-start">
             {[
-              { img: knitwearImg, label: "Knitwear", caption: "Cashmere, hand-finished", to: "/boutique/women", imgClass: "h-full w-[85%] translate-y-[5%]" },
-              { img: lifestyleImg, label: "Life in RUVTIER", caption: "The garment in repose", to: "/boutique/lifestyle", imgClass: "h-full w-full" },
-              { img: appointmentImg, label: "By Appointment Only", caption: "A discreet address", to: "/contact", imgClass: "h-full w-full" },
+              { img: knitwearImg, label: "Knitwear", to: "/boutique/women", imgClass: "h-full w-[85%] translate-y-[5%]" },
+              { img: lifestyleImg, label: "Life in RUVTIER", to: "/boutique/lifestyle", imgClass: "h-full w-full" },
+              { img: appointmentImg, label: "By Appointment Only", to: "/contact", imgClass: "h-full w-full" },
             ].map((item, i) => (
               <ScrollFadeIn key={item.label} delay={i * 0.08}>
                 <Link
                   to={item.to}
-                  className="group grid h-full grid-rows-[auto_auto_auto_auto] content-start justify-items-center gap-0 text-center"
+                  className="group grid h-full grid-rows-[auto_auto_auto] content-start justify-items-center gap-0 text-center"
                 >
                   <div className="flex w-full aspect-[4/5] items-center justify-center overflow-hidden bg-background px-[10%] py-[10%]">
                     <img
@@ -343,9 +337,6 @@ const Index = () => {
                   <h3 className="mt-6 min-h-[2.75rem] self-start type-subtitle flex items-start justify-center text-center md:min-h-[3rem]">
                     {item.label}
                   </h3>
-                  <span className="mt-2 type-body italic font-light leading-none">
-                    {item.caption}
-                  </span>
                   <span className="mt-3 type-cta text-muted-foreground transition-colors duration-500 group-hover:text-foreground">
                     Explore
                   </span>

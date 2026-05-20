@@ -1,49 +1,74 @@
-# Loro Piana–style caption reveal
+## Goal
 
-Captions currently sit overlaid on the image and only fade in on hover. Change so that at rest they live in a quiet block **below** the image, and on hover they smoothly translate up to settle over the lower section of the image — matching loropiana.com.
+Turn the homepage into a Loro Piana–style editorial sequence: each scroll lands cleanly on a full-viewport "chapter," motion is smooth and decelerated, and every chapter is fully visible (no clipped captions, no clunky Women/Men cards).
 
-## Behaviour
+## Problems today
 
-**Rest state**
-- Image fills its `aspect-[3/4]` (Women/Men) or `aspect-[4/5]` (In Your Keeping) frame, no overlay veil, no text on top.
-- Caption block (eyebrow + title + CTA) sits directly beneath the image, left-aligned, in foreground text color, with normal page background. Modest top spacing (`mt-5 md:mt-6`).
+1. No snap behavior — scroll lands arbitrarily mid-section.
+2. Women/Men cards are tall `aspect-[3/4]` images PLUS a `pb-32 md:pb-36` reserved caption strip that sits below the image. On a 1303×890 viewport the caption is cut off and the two cards feel cramped/clunky.
+3. Caption-on-hover-only means at rest the cards look label-less and unfinished.
+4. Sections have inconsistent heights, so scrolling never feels "one screen = one idea."
 
-**Hover / focus-visible state**
-- Caption block translates upward into the lower portion of the image (`translate-y-[-100%]` of its own height, or a fixed `-translate-y-[88%]`), text color shifts to `#F6F4F1`.
-- A soft bottom-anchored gradient veil fades in inside the image frame (`from-black/45 via-black/15 to-transparent`, bottom half) so the text stays legible.
-- Image gets a gentle `scale-[1.015]` and `brightness-[0.95]`.
-- Underline sweep on the CTA label remains.
+## Plan
 
-**Motion**
-- All transitions `cubic-bezier(0.22, 0.61, 0.36, 1)`, 700–900ms; image transform 1100ms.
-- `motion-reduce`: no translate, no scale — caption simply stays below the image and the veil does not appear.
+### 1. Page-snap scrolling (homepage only)
 
-## Structure change
+- Wrap the homepage in a snap container: `h-[100svh] overflow-y-scroll snap-y snap-mandatory scroll-smooth` on the root `<div>` in `src/pages/Index.tsx`.
+- Each chapter becomes `min-h-[100svh] snap-start snap-always flex flex-col` so it fills the viewport and the browser decelerates onto it.
+- Add `scroll-padding-top` equal to the fixed nav height so chapters align under the header.
+- Respect `prefers-reduced-motion`: drop `scroll-smooth` and `snap-mandatory` → `snap-proximity` via a `motion-safe:` / `motion-reduce:` split.
+- Keep native scrolling (per project memory — no JS scroll hijack, no Lenis).
 
-For each card, wrap the existing `<Link>` content in a single `relative` container, and split into:
+Chapters (one screen each):
+1. Hero ("Permanence in garment form")
+2. Featured Pre-Order (silk scarf / featured product)
+3. Women + Men split collection
+4. Material is Memory (scarf editorial)
+5. In Your Keeping (3-card explore row)
+6. Footer (allowed to be shorter; `snap-end`)
 
-```text
-<Link class="group block">
-  <div class="relative aspect-[3/4] overflow-hidden">   ← image frame (clips the rising caption)
-    <img ... />
-    <div aria-hidden class="... gradient veil, opacity-0 group-hover:opacity-100" />
-    <div class="absolute left-0 right-0 top-full
-                translate-y-0 group-hover:-translate-y-[88%]
-                px-6 pb-6 md:pb-8 text-foreground group-hover:text-[#F6F4F1]
-                transition-[transform,color] duration-[800ms] ease-...">
-      eyebrow / title / CTA (no per-element opacity tricks)
-    </div>
-  </div>
-</Link>
-```
+### 2. Rebuild Women / Men chapter (the clunky one)
 
-Key points:
-- `overflow-hidden` on the image frame clips the caption when it rises, so it appears to slide *out from under* the image.
-- Caption is positioned with `top-full` so at rest it sits flush below the image (its natural place visually); reserve matching outer spacing so layout doesn't jump — done by giving the outer `<Link>` `pb-[var(--caption-h)]` via a fixed `pb-24 md:pb-28` (tuned per card) so the column grid stays stable whether hovering or not.
-- Text alignment switches from current `items-center text-center` to `items-start text-left` to match Loro Piana editorial style. (Confirm — see question.)
+Loro Piana pattern: two tall images sit side-by-side, each with its caption **always visible and quiet** beneath the image, and a subtle lift/veil on hover.
 
-## Files
-- `src/pages/Index.tsx` only — Women card (~205–235), Men card (~239–270), and the three "In Your Keeping" cards (~336–357). No CSS, config, or new deps.
+- Remove the `pb-32 md:pb-36` reserved strip and the `absolute top-full` caption that translates upward on hover.
+- New structure per card:
+  - `<Link class="group flex flex-col h-full">`
+  - Image frame: `flex-1 min-h-0 aspect-auto overflow-hidden` so the image fills the available vertical space inside the 100svh chapter (no fixed aspect ratio fighting the viewport).
+  - Caption block: static, sits below the image, always visible — eyebrow (season), serif title, CTA with underline-on-hover. Spacing `pt-5 md:pt-6`, centered.
+- Hover refinement (kept, calmer):
+  - Image: `scale-[1.015]` + `brightness-[0.96]`, 1100ms.
+  - Bottom gradient veil inside the image frame fades in (`from-black/35 via-black/10`).
+  - CTA underline sweeps in.
+- Section shell: `min-h-[100svh] snap-start flex items-center` with `luxury-container grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 py-[clamp(64px,10vh,120px)]`.
+- Image aspect on desktop is governed by the chapter height, not a hard `3/4`, so both cards + captions fit on 890px viewports without clipping.
+
+### 3. Tighten the other chapters to fit one screen
+
+- Hero already `min-h-[100svh]` — keep.
+- Featured Pre-Order: change outer `<section>` to `min-h-[100svh] snap-start flex items-center`, reduce inner `py-20 md:py-28` to `py-[clamp(48px,8vh,96px)]`, image `aspect-[3/4] max-h-[80svh] w-auto mx-auto` so it never overflows.
+- Material is Memory: same `min-h-[100svh] snap-start flex flex-col items-center justify-center`, scarf image capped at `max-h-[55svh]`.
+- In Your Keeping: `min-h-[100svh] snap-start flex flex-col justify-center`, heading + 3-card row sized to fit without scroll-within-section. Drop the `pb-20 md:pb-24` reserved strip; captions always visible under each tile.
+- Footer chapter: `snap-start` only (no min-h forced), `snap-always` so the last snap lands at the footer cleanly.
+
+### 4. Motion + easing
+
+- All transitions continue using `cubic-bezier(0.22, 0.61, 0.36, 1)`, 550–900ms (per Motion Principles memory).
+- Snap deceleration is native; no custom JS.
+- ScrollFadeIn already in use — keep it; it works inside snap containers (IntersectionObserver fires on snap settle).
+
+### 5. Scope of files
+
+- `src/pages/Index.tsx` — only file edited. Restructure the root wrapper, the Women/Men section, and add `min-h-[100svh] snap-start` to each `<section>`.
+- No CSS file changes required; all done via Tailwind utilities.
+- No changes to Navigation, Footer, or any other route.
 
 ## Open question
-Loro Piana captions are left-aligned. Current cards are centered. Switch to **left-aligned** to match the reference, or keep **centered**?
+
+Snap behavior on **mobile** (small viewports) can feel aggressive when chapters are taller than the screen. Recommendation: enable snap **only at `md:` and up** (`md:snap-y md:snap-mandatory`), leave mobile as normal scroll. Confirm or override.
+
+## Out of scope
+
+- No changes to copy, images, product data, or routes.
+- No new dependencies (no Lenis, GSAP ScrollTrigger, Locomotive).
+- No JS scroll-jacking — strictly CSS `scroll-snap`.

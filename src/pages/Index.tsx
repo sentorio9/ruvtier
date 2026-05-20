@@ -211,13 +211,13 @@ const Index = () => {
               />
             </div>
             <div className="mt-8 md:mt-10 flex flex-col items-center text-center px-4">
-              <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="type-eyebrow mb-3 md:mb-4">
+              <Editable kind="text_block" contentKey="home_women_card" field="season" label="Women — season label" as="span" className="type-eyebrow mb-3 md:mb-4 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:-translate-y-0.5">
                 {womenSeason}
               </Editable>
-              <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="type-display mb-4 md:mb-5">
+              <Editable kind="text_block" contentKey="home_women_card" field="title" label="Women — title" as="h2" className="type-display mb-4 md:mb-5 transition-transform duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:-translate-y-1">
                 {womenTitle}
               </Editable>
-              <span className="inline-flex items-center gap-2 type-cta">
+              <span className="inline-flex items-center gap-2 type-cta transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:-translate-y-0.5">
                 <span className="relative inline-block pb-1">
                   <Editable kind="text_block" contentKey="home_women_card" field="cta_label" label="Women — CTA label" as="span">{womenCta}</Editable>
                   <span
@@ -243,13 +243,13 @@ const Index = () => {
               />
             </div>
             <div className="mt-8 md:mt-10 flex flex-col items-center text-center px-4">
-              <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="type-eyebrow mb-3 md:mb-4">
+              <Editable kind="text_block" contentKey="home_men_card" field="season" label="Men — season label" as="span" className="type-eyebrow mb-3 md:mb-4 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:-translate-y-0.5">
                 {menSeason}
               </Editable>
-              <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="type-display mb-4 md:mb-5">
+              <Editable kind="text_block" contentKey="home_men_card" field="title" label="Men — title" as="h2" className="type-display mb-4 md:mb-5 transition-transform duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:-translate-y-1">
                 {menTitle}
               </Editable>
-              <span className="inline-flex items-center gap-2 type-cta">
+              <span className="inline-flex items-center gap-2 type-cta transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:-translate-y-0.5">
                 <span className="relative inline-block pb-1">
                   <Editable kind="text_block" contentKey="home_men_card" field="cta_label" label="Men — CTA label" as="span">{menCta}</Editable>
                   <span
@@ -295,7 +295,7 @@ const Index = () => {
                 field="cta_label"
                 label="'Material is Memory' button"
                 as="span"
-                className="inline-block"
+                className="inline-block transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] hover:-translate-y-0.5"
               >
                 <Link to="/materials" className="luxury-button type-cta">
                   {materialMemoryCta}
@@ -324,7 +324,7 @@ const Index = () => {
               <ScrollFadeIn key={item.label} delay={i * 0.08}>
                 <Link
                   to={item.to}
-                  className="group grid h-full grid-rows-[auto_auto_auto] content-start justify-items-center gap-0 text-center"
+                  className="group grid h-full grid-rows-[auto_auto_auto] content-start justify-items-center gap-0 text-center transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] hover:-translate-y-1"
                 >
                   <div className="flex w-full aspect-[4/5] items-center justify-center overflow-hidden bg-background px-[10%] py-[10%]">
                     <img
@@ -334,10 +334,10 @@ const Index = () => {
                       className={`object-contain object-center transition-transform duration-700 ease-out group-hover:scale-[1.02] ${item.imgClass}`}
                     />
                   </div>
-                  <h3 className="mt-6 min-h-[2.75rem] self-start type-subtitle flex items-start justify-center text-center md:min-h-[3rem]">
+                  <h3 className="mt-6 min-h-[2.75rem] self-start type-subtitle flex items-start justify-center text-center md:min-h-[3rem] transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:-translate-y-0.5">
                     {item.label}
                   </h3>
-                  <span className="mt-3 type-cta text-muted-foreground transition-colors duration-500 group-hover:text-foreground">
+                  <span className="mt-3 type-cta text-muted-foreground transition-[transform,color] duration-500 group-hover:text-foreground group-hover:-translate-y-0.5">
                     Explore
                   </span>
                 </Link>

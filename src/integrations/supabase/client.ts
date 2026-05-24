@@ -30,13 +30,15 @@ if (!isSupabaseConfigured) {
 // receive traffic; it only prevents a startup crash/white screen.
 const SAFE_SUPABASE_URL = 'https://placeholder.supabase.co';
 const SAFE_SUPABASE_KEY = 'public-anon-key-not-configured';
+const resolvedSupabaseUrl = isSupabaseConfigured ? SUPABASE_URL! : SAFE_SUPABASE_URL;
+const resolvedSupabaseKey = isSupabaseConfigured ? SUPABASE_PUBLISHABLE_KEY! : SAFE_SUPABASE_KEY;
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
 export const supabase = createClient<Database>(
-  isSupabaseConfigured ? SUPABASE_URL : SAFE_SUPABASE_URL,
-  isSupabaseConfigured ? SUPABASE_PUBLISHABLE_KEY : SAFE_SUPABASE_KEY,
+  resolvedSupabaseUrl,
+  resolvedSupabaseKey,
   {
     auth: {
       storage: localStorage,

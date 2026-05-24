@@ -14,8 +14,12 @@ import CookieConsent from "./components/CookieConsent";
 import LocationConsentPrompt from "./components/LocationConsentPrompt";
 import MaintenanceGate from "./components/MaintenanceGate";
 
+// Eager-import the home route — it's the dominant entry point and the
+// Suspense fallback round-trip is what users perceive as "blank screen".
+import Index from "./pages/Index";
+
 // Lazy-loaded pages
-const Index = lazy(() => import("./pages/Index"));
+
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Stillness = lazy(() => import("./pages/Stillness"));
 const Materials = lazy(() => import("./pages/Materials"));

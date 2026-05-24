@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { isSupabaseConfigured, supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 
 export type Product = Tables<"products">;
 
 export function useActiveProducts(options?: { collection?: string; gender?: string; featured?: boolean; limit?: number }) {
-  return useQuery({
+  return useQuery<Product[]>({
     queryKey: ["products", "active", options],
+    enabled: isSupabaseConfigured,
+    initialData: [],
     queryFn: async () => {
+      if (!isSupabaseConfigured) return [];
+
       let query = supabase
         .from("products")
         .select("*")
@@ -29,10 +33,12 @@ export function useActiveProducts(options?: { collection?: string; gender?: stri
 }
 
 export function useProductBySlug(slug: string | undefined) {
-  return useQuery({
+  return useQuery<Product | null>({
     queryKey: ["product", slug],
+    enabled: isSupabaseConfigured && !!slug,
+    initialData: null,
     queryFn: async () => {
-      if (!slug) return null;
+      if (!isSupabaseConfigured || !slug) return null;
       const { data, error } = await supabase
         .from("products")
         .select("*")
@@ -43,7 +49,6 @@ export function useProductBySlug(slug: string | undefined) {
       if (error) throw error;
       return data as Product | null;
     },
-    enabled: !!slug,
   });
 }
 

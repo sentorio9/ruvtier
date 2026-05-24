@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { isSupabaseConfigured, supabase, SUPABASE_CONFIG_ERROR } from "@/integrations/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
 
 interface Profile {
@@ -38,6 +38,8 @@ interface AuthState {
 
 const AuthContext = createContext<AuthState | null>(null);
 
+const unavailable = () => ({ error: SUPABASE_CONFIG_ERROR });
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -45,6 +47,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const fetchProfile = async (userId: string) => {
+    if (!isSupabaseConfigured) {
+      setProfile(null);
+      return;
+    }
+
     const { data } = await supabase
       .from("profiles")
       .select("*")
@@ -54,6 +61,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
+    if (!isSupabaseConfigured) {
+      setLoading(false);
+      return;
+    }
+
     // Get initial session first
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -81,6 +93,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signUp = async (email: string, password: string, displayName?: string): Promise<{ error: string | null }> => {
+    if (!isSupabaseConfigured) return unavailable();
+
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -94,6 +108,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signIn = async (email: string, password: string, rememberMe?: boolean): Promise<{ error: string | null }> => {
+    if (!isSupabaseConfigured) return unavailable();
+
     // If not remembering, we still sign in but could clear on tab close
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) return { error: error.message };
@@ -107,11 +123,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    if (isSupabaseConfigured) {
+      await supabase.auth.signOut();
+    }
+    setUser(null);
+    setSession(null);
     setProfile(null);
   };
 
   const resetPassword = async (email: string): Promise<{ error: string | null }> => {
+    if (!isSupabaseConfigured) return unavailable();
+
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/reset-password`,
     });
@@ -120,6 +142,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const updateProfile = async (updates: Record<string, unknown>): Promise<{ error: string | null }> => {
+    if (!isSupabaseConfigured) return unavailable();
     if (!user) return { error: "Not authenticated" };
     const { error } = await supabase
       .from("profiles")

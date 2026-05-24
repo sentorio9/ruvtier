@@ -2,16 +2,48 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL?.trim();
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim();
+
+const hasValidUrl = (value: string | undefined) => {
+  if (!value) return false;
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' || url.protocol === 'http:';
+  } catch {
+    return false;
+  }
+};
+
+export const isSupabaseConfigured =
+  hasValidUrl(SUPABASE_URL) && Boolean(SUPABASE_PUBLISHABLE_KEY);
+
+export const SUPABASE_CONFIG_ERROR =
+  'Supabase environment variables are missing. Configure VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY in the deployment environment.';
+
+if (!isSupabaseConfigured) {
+  console.warn(SUPABASE_CONFIG_ERROR);
+}
+
+// Keep module import safe even when deployment env vars are missing. Public
+// hooks gate network calls with isSupabaseConfigured so this fallback should not
+// receive traffic; it only prevents a startup crash/white screen.
+const SAFE_SUPABASE_URL = 'https://placeholder.supabase.co';
+const SAFE_SUPABASE_KEY = 'public-anon-key-not-configured';
+const resolvedSupabaseUrl = isSupabaseConfigured ? SUPABASE_URL! : SAFE_SUPABASE_URL;
+const resolvedSupabaseKey = isSupabaseConfigured ? SUPABASE_PUBLISHABLE_KEY! : SAFE_SUPABASE_KEY;
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
-export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-  auth: {
-    storage: localStorage,
-    persistSession: true,
-    autoRefreshToken: true,
+export const supabase = createClient<Database>(
+  resolvedSupabaseUrl,
+  resolvedSupabaseKey,
+  {
+    auth: {
+      storage: localStorage,
+      persistSession: true,
+      autoRefreshToken: true,
+    }
   }
-});
+);

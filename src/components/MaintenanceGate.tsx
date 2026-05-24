@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { isSupabaseConfigured, supabase } from "@/integrations/supabase/client";
 import { ADMIN_PREFIX } from "@/admin/config";
 import MaintenancePage from "@/pages/MaintenancePage";
 
@@ -39,6 +39,8 @@ export default function MaintenanceGate({ children }: { children: ReactNode }) {
   }, [location.search]);
 
   useEffect(() => {
+    if (!isSupabaseConfigured) return;
+
     let alive = true;
     (async () => {
       try {

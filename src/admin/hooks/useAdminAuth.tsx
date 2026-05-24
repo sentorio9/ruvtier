@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { isSupabaseConfigured, supabase, SUPABASE_CONFIG_ERROR } from "@/integrations/supabase/client";
 
 type AdminRole = "super_admin" | "admin" | "editor" | "support_viewer";
 
@@ -22,6 +22,10 @@ const SESSION_KEY = "ruvtier_admin_session";
 const REMEMBER_KEY = "ruvtier_admin_remember";
 
 async function callAdminAuth(body: Record<string, unknown>) {
+  if (!isSupabaseConfigured) {
+    throw new Error(SUPABASE_CONFIG_ERROR);
+  }
+
   const res = await fetch(ADMIN_AUTH_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json", apikey: API_KEY },
@@ -54,6 +58,8 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const setSupabaseSession = useCallback(async (session: { access_token: string; refresh_token: string } | null) => {
+    if (!isSupabaseConfigured) return;
+
     if (session?.access_token && session?.refresh_token) {
       await supabase.auth.setSession({
         access_token: session.access_token,
@@ -65,6 +71,12 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   // Validate existing session on mount. Admin sessions are intentionally limited
   // to sessionStorage so they are not persisted after the browser session ends.
   useEffect(() => {
+    if (!isSupabaseConfigured) {
+      clearStoredSession();
+      setLoading(false);
+      return;
+    }
+
     const token = getStoredSession();
     if (!token) {
       clearStoredSession();
@@ -91,12 +103,16 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   }, [setSupabaseSession]);
 
   const login = async (username: string, password: string, _rememberMe: boolean) => {
+    if (!isSupabaseConfigured) return { error: SUPABASE_CONFIG_ERROR, requestId: null };
+
     const data = await callAdminAuth({ action: "login", username, password, rememberMe: false });
     if (data.error) return { error: data.error, requestId: null };
     return { error: null, requestId: data.requestId as string };
   };
 
   const checkStatus = async (requestId: string) => {
+    if (!isSupabaseConfigured) return { status: "error", error: SUPABASE_CONFIG_ERROR };
+
     const data = await callAdminAuth({ action: "check-status", requestId });
 
     if (data.status === "approved" && data.sessionToken) {
@@ -116,11 +132,13 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = async () => {
     const token = getStoredSession();
-    if (token) {
+    if (token && isSupabaseConfigured) {
       await callAdminAuth({ action: "logout", sessionToken: token }).catch(() => {});
     }
     clearStoredSession();
-    await supabase.auth.signOut();
+    if (isSupabaseConfigured) {
+      await supabase.auth.signOut();
+    }
     setRole(null);
     setDisplayLabel(null);
   };

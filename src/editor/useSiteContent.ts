@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { isSupabaseConfigured, supabase } from "@/integrations/supabase/client";
 
 /**
  * In-memory cache of site_content rows keyed by content_key.
@@ -19,6 +19,11 @@ function notify() {
 
 async function loadOnce() {
   if (loaded || loading) return loading ?? Promise.resolve();
+  if (!isSupabaseConfigured) {
+    loaded = true;
+    return Promise.resolve();
+  }
+
   loading = (async () => {
     const { data } = await supabase
       .from("site_content" as any)

@@ -24,8 +24,11 @@ const PREVIEW_KEY = "ruvtier_admin_preview";
 
 export default function MaintenanceGate({ children }: { children: ReactNode }) {
   const location = useLocation();
-  const [settings, setSettings] = useState<Settings | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Render optimistically with maintenance OFF so visitors never see a blank
+  // gate while the settings query is in-flight. If the fetch reveals
+  // maintenance is actually on, we swap to MaintenancePage in the same tick.
+  const [settings, setSettings] = useState<Settings>(DEFAULTS);
+
 
   // Allow opt-in preview bypass via ?preview=1 (admin tool)
   useEffect(() => {

@@ -24,8 +24,11 @@ const PREVIEW_KEY = "ruvtier_admin_preview";
 
 export default function MaintenanceGate({ children }: { children: ReactNode }) {
   const location = useLocation();
-  const [settings, setSettings] = useState<Settings | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Render optimistically with maintenance OFF so visitors never see a blank
+  // gate while the settings query is in-flight. If the fetch reveals
+  // maintenance is actually on, we swap to MaintenancePage in the same tick.
+  const [settings, setSettings] = useState<Settings>(DEFAULTS);
+
 
   // Allow opt-in preview bypass via ?preview=1 (admin tool)
   useEffect(() => {
@@ -37,31 +40,16 @@ export default function MaintenanceGate({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let alive = true;
-    // Safety timeout: never block the entire site behind this query.
-    // If the settings fetch hasn't resolved within 1.5s, fall through with
-    // defaults (maintenance off). The realtime subscription below will still
-    // pick up the real value once it arrives.
-    const timeoutId = window.setTimeout(() => {
-      if (!alive) return;
-      setSettings((prev) => prev ?? DEFAULTS);
-      setLoading(false);
-    }, 1500);
-
     (async () => {
       try {
         const { data } = await (supabase.from("site_settings" as any) as any)
           .select("maintenance_enabled, maintenance_headline, maintenance_subline, maintenance_collect_email")
           .eq("id", 1)
           .maybeSingle();
-        if (!alive) return;
-        setSettings(data || DEFAULTS);
+        if (!alive || !data) return;
+        setSettings(data);
       } catch (err) {
         console.warn("MaintenanceGate: settings fetch failed, using defaults", err);
-        if (!alive) return;
-        setSettings((prev) => prev ?? DEFAULTS);
-      } finally {
-        if (alive) setLoading(false);
-        window.clearTimeout(timeoutId);
       }
     })();
 
@@ -85,7 +73,6 @@ export default function MaintenanceGate({ children }: { children: ReactNode }) {
 
     return () => {
       alive = false;
-      window.clearTimeout(timeoutId);
       supabase.removeChannel(channel);
     };
   }, []);
@@ -97,9 +84,7 @@ export default function MaintenanceGate({ children }: { children: ReactNode }) {
   const isResetPassword = location.pathname === "/reset-password";
   const hasPreviewBypass = sessionStorage.getItem(PREVIEW_KEY) === "1";
 
-  if (loading) {
-    return <div className="min-h-screen bg-background" />;
-  }
+
 
   if (settings?.maintenance_enabled && !isAdminRoute && !isResetPassword && !hasPreviewBypass) {
     return (

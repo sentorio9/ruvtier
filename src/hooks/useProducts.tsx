@@ -1,34 +1,21 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { isSupabaseConfigured, supabase } from "@/integrations/supabase/client";
-import type { Tables } from "@/integrations/supabase/types";
+import { isSupabaseConfigured } from "@/integrations/supabase/client";
+import {
+  fetchActiveCatalogProducts,
+  fetchCatalogProductBySlug,
+  type CatalogProduct,
+  type ProductCatalogFilters,
+} from "@/domain/catalog";
 
-export type Product = Tables<"products">;
+export type Product = CatalogProduct;
 
-export function useActiveProducts(options?: { collection?: string; gender?: string; featured?: boolean; limit?: number }) {
+export function useActiveProducts(options?: ProductCatalogFilters) {
   return useQuery<Product[]>({
     queryKey: ["products", "active", options],
     enabled: isSupabaseConfigured,
     initialData: [],
-    queryFn: async () => {
-      if (!isSupabaseConfigured) return [];
-
-      let query = supabase
-        .from("products")
-        .select("*")
-        .eq("status", "active")
-        .is("deleted_at", null)
-        .order("created_at", { ascending: false });
-
-      if (options?.collection) query = query.eq("collection", options.collection);
-      if (options?.gender) query = query.eq("gender_segment", options.gender);
-      if (options?.featured) query = query.eq("featured", true);
-      if (options?.limit) query = query.limit(options.limit);
-
-      const { data, error } = await query;
-      if (error) throw error;
-      return data as Product[];
-    },
+    queryFn: () => fetchActiveCatalogProducts(options),
   });
 }
 
@@ -37,18 +24,7 @@ export function useProductBySlug(slug: string | undefined) {
     queryKey: ["product", slug],
     enabled: isSupabaseConfigured && !!slug,
     initialData: null,
-    queryFn: async () => {
-      if (!isSupabaseConfigured || !slug) return null;
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .eq("slug", slug)
-        .eq("status", "active")
-        .is("deleted_at", null)
-        .maybeSingle();
-      if (error) throw error;
-      return data as Product | null;
-    },
+    queryFn: () => fetchCatalogProductBySlug(slug),
   });
 }
 

@@ -40,24 +40,104 @@ const AuthContext = createContext<AuthState | null>(null);
 
 const unavailable = () => ({ error: SUPABASE_CONFIG_ERROR });
 
+const PROFILE_FIELD_LIMITS: Record<string, number> = {
+  display_name: 120,
+  phone: 40,
+  street_address: 180,
+  street_address_2: 180,
+  city: 120,
+  state_province: 120,
+  zip_code: 40,
+  country: 120,
+  billing_street_address: 180,
+  billing_street_address_2: 180,
+  billing_city: 120,
+  billing_state_province: 120,
+  billing_zip_code: 40,
+  billing_country: 120,
+};
+
+const BOOLEAN_PROFILE_FIELDS = new Set(["use_shipping_as_billing"]);
+
+const cleanEmail = (email: string) => email.trim().toLowerCase();
+
+const cleanString = (value: unknown, maxLength: number) => {
+  if (value == null) return null;
+  const next = String(value).trim().replace(/[\u0000-\u001F\u007F]/g, "");
+  return next ? next.slice(0, maxLength) : null;
+};
+
+function sanitizeProfileUpdates(updates: Record<string, unknown>) {
+  const sanitized: Record<string, unknown> = {};
+
+  for (const [key, maxLength] of Object.entries(PROFILE_FIELD_LIMITS)) {
+    if (Object.prototype.hasOwnProperty.call(updates, key)) {
+      sanitized[key] = cleanString(updates[key], maxLength);
+    }
+  }
+
+  for (const key of BOOLEAN_PROFILE_FIELDS) {
+    if (Object.prototype.hasOwnProperty.call(updates, key)) {
+      sanitized[key] = Boolean(updates[key]);
+    }
+  }
+
+  return sanitized;
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchProfile = async (userId: string) => {
-    if (!isSupabaseConfigured) {
+  const ensureProfile = async (authUser: User) => {
+    if (!isSupabaseConfigured || !authUser.email) {
       setProfile(null);
       return;
     }
 
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("profiles")
       .select("*")
-      .eq("user_id", userId)
+      .eq("user_id", authUser.id)
       .maybeSingle();
-    setProfile(data as Profile | null);
+
+    if (data) {
+      setProfile(data as Profile);
+      return;
+    }
+
+    if (error) {
+      setProfile(null);
+      return;
+    }
+
+    const displayName = cleanString(authUser.user_metadata?.display_name, PROFILE_FIELD_LIMITS.display_name);
+    const payload = {
+      user_id: authUser.id,
+      email: cleanEmail(authUser.email),
+      display_name: displayName,
+    };
+
+    const { data: created, error: createError } = await supabase
+      .from("profiles")
+      .insert(payload)
+      .select("*")
+      .single();
+
+    if (!createError && created) {
+      setProfile(created as Profile);
+      return;
+    }
+
+    const { data: retry } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("user_id", authUser.id)
+      .maybeSingle();
+
+    setProfile((retry as Profile | null) ?? null);
   };
 
   useEffect(() => {
@@ -66,23 +146,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    // Get initial session first
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        fetchProfile(session.user.id).finally(() => setLoading(false));
+        ensureProfile(session.user).finally(() => setLoading(false));
       } else {
         setLoading(false);
       }
     });
 
-    // Listen for auth changes — do NOT await inside callback to avoid deadlocks
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        fetchProfile(session.user.id);
+        ensureProfile(session.user);
       } else {
         setProfile(null);
       }
@@ -96,11 +174,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!isSupabaseConfigured) return unavailable();
 
     const { error } = await supabase.auth.signUp({
-      email,
+      email: cleanEmail(email),
       password,
       options: {
         emailRedirectTo: window.location.origin,
-        data: { display_name: displayName },
+        data: { display_name: cleanString(displayName, PROFILE_FIELD_LIMITS.display_name) },
       },
     });
     if (error) return { error: error.message };
@@ -110,11 +188,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signIn = async (email: string, password: string, rememberMe?: boolean): Promise<{ error: string | null }> => {
     if (!isSupabaseConfigured) return unavailable();
 
-    // If not remembering, we still sign in but could clear on tab close
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({ email: cleanEmail(email), password });
     if (error) return { error: error.message };
     if (!rememberMe) {
-      // Store flag so we can clear session on browser close
       sessionStorage.setItem("ruvtier_session_only", "true");
     } else {
       sessionStorage.removeItem("ruvtier_session_only");
@@ -134,7 +210,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const resetPassword = async (email: string): Promise<{ error: string | null }> => {
     if (!isSupabaseConfigured) return unavailable();
 
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    const { error } = await supabase.auth.resetPasswordForEmail(cleanEmail(email), {
       redirectTo: `${window.location.origin}/reset-password`,
     });
     if (error) return { error: error.message };
@@ -144,12 +220,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const updateProfile = async (updates: Record<string, unknown>): Promise<{ error: string | null }> => {
     if (!isSupabaseConfigured) return unavailable();
     if (!user) return { error: "Not authenticated" };
+
+    const sanitized = sanitizeProfileUpdates(updates);
+    if (Object.keys(sanitized).length === 0) return { error: "No profile changes supplied" };
+
     const { error } = await supabase
       .from("profiles")
-      .update(updates as any)
+      .update(sanitized as any)
       .eq("user_id", user.id);
     if (error) return { error: error.message };
-    await fetchProfile(user.id);
+    await ensureProfile(user);
     return { error: null };
   };
 

@@ -1,23 +1,9 @@
-/**
- * ClientLoungeDrawer — right-anchored drawer holding the four auth
- * views: login · register · profile · forgot-password.
- *
- * Props:
- *   - `isOpen: boolean` · `onClose(): void`
- *
- * Used by: `Navigation.tsx` (desktop only; mobile opens via
- * `FullScreenMenu`).
- *
- * Design-system dependencies: shared client-lounge form elements
- * (`FormElements.tsx`, `PasswordStrengthIndicator.tsx`,
- * `AddressFields.tsx`); 12-char min password rule; body scroll locks
- * while open.
- */
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
-import { X } from "lucide-react";
+import { useClientLoungeAccount, type ClientLoungeCart, type ClientLoungeOrder } from "@/hooks/useClientLoungeAccount";
 import { InputField, ErrorText, SuccessText } from "./client-lounge/FormElements";
 import PasswordStrengthIndicator, { isPasswordValid } from "./client-lounge/PasswordStrengthIndicator";
 import AddressFields, { type AddressData } from "./client-lounge/AddressFields";
@@ -38,9 +24,29 @@ const emptyAddress: AddressData = {
   country: "",
 };
 
+const formatMoney = (amount: number | null | undefined) => {
+  const value = typeof amount === "number" ? amount : 0;
+  return new Intl.NumberFormat("en-GB", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 2,
+  }).format(value);
+};
+
+const formatDate = (value: string | null | undefined) => {
+  if (!value) return "Pending";
+  try {
+    return new Intl.DateTimeFormat("en-GB", { dateStyle: "medium" }).format(new Date(value));
+  } catch {
+    return "Pending";
+  }
+};
+
 export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
   const { user, profile, loading, signIn, signUp, signOut, resetPassword, updateProfile } = useAuth();
+  const account = useClientLoungeAccount();
   useBodyScrollLock(isOpen);
+
   const [view, setView] = useState<View>("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -50,7 +56,6 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
   const [success, setSuccess] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  // Profile edit state
   const [editName, setEditName] = useState("");
   const [editPhone, setEditPhone] = useState("");
   const [editMode, setEditMode] = useState(false);
@@ -69,11 +74,15 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    if (!email.trim() || !password.trim()) { setError("All fields are required"); return; }
+    if (!email.trim() || !password.trim()) {
+      setError("All fields are required");
+      return;
+    }
+
     setSubmitting(true);
-    const { error } = await signIn(email.trim(), password, rememberMe);
+    const result = await signIn(email.trim(), password, rememberMe);
     setSubmitting(false);
-    if (error) setError(error);
+    if (result.error) setError(result.error);
     else resetForm();
   };
 
@@ -81,79 +90,47 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-    if (!email.trim() || !password.trim()) { setError("All fields are required"); return; }
-    if (!isPasswordValid(password)) { setError("Password does not meet all requirements"); return; }
-    setSubmitting(true);
-    const { error } = await signUp(email.trim(), password, displayName.trim() || undefined);
-    setSubmitting(false);
-    if (error) setError(error);
-    else {
-      setSuccess(`Verification email sent to ${email.trim()}. Please check your inbox to activate your account.`);
-      resetForm();
+    if (!email.trim() || !password.trim()) {
+      setError("All fields are required");
+      return;
     }
-  };
+    if (!isPasswordValid(password)) {
+      setError("Password does not meet all requirements");
+      return;
+    }
 
-  const handleSignOut = async () => {
-    await signOut();
-    resetForm();
-    setView("login");
+    setSubmitting(true);
+    const result = await signUp(email.trim(), password, displayName.trim() || undefined);
+    setSubmitting(false);
+    if (result.error) setError(result.error);
+    else {
+      const destination = email.trim();
+      resetForm();
+      setSuccess(`Verification email sent to ${destination}. Please check your inbox to activate your account.`);
+    }
   };
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-    if (!email.trim()) { setError("Please enter your email address"); return; }
+    if (!email.trim()) {
+      setError("Please enter your email address");
+      return;
+    }
+
     setSubmitting(true);
-    const { error } = await resetPassword(email.trim());
+    const result = await resetPassword(email.trim());
     setSubmitting(false);
-    if (error) setError(error);
+    if (result.error) setError(result.error);
     else setSuccess(`Password reset link sent to ${email.trim()}. Please check your inbox.`);
   };
 
-  const handleUpdateProfile = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setSubmitting(true);
-    const updates: Partial<{
-      display_name: string | null;
-      phone: string | null;
-      street_address: string | null;
-      street_address_2: string | null;
-      city: string | null;
-      state_province: string | null;
-      zip_code: string | null;
-      country: string | null;
-      use_shipping_as_billing: boolean;
-      billing_street_address: string | null;
-      billing_street_address_2: string | null;
-      billing_city: string | null;
-      billing_state_province: string | null;
-      billing_zip_code: string | null;
-      billing_country: string | null;
-    }> = {
-      display_name: editName.trim() || null,
-      phone: editPhone.trim() || null,
-      street_address: shippingAddress.street_address || null,
-      street_address_2: shippingAddress.street_address_2 || null,
-      city: shippingAddress.city || null,
-      state_province: shippingAddress.state_province || null,
-      zip_code: shippingAddress.zip_code || null,
-      country: shippingAddress.country || null,
-      use_shipping_as_billing: useShippingAsBilling,
-    };
-    if (!useShippingAsBilling) {
-      updates.billing_street_address = billingAddress.street_address || null;
-      updates.billing_street_address_2 = billingAddress.street_address_2 || null;
-      updates.billing_city = billingAddress.city || null;
-      updates.billing_state_province = billingAddress.state_province || null;
-      updates.billing_zip_code = billingAddress.zip_code || null;
-      updates.billing_country = billingAddress.country || null;
-    }
-    const { error } = await updateProfile(updates as Record<string, unknown>);
-    setSubmitting(false);
-    if (error) setError(error);
-    else setEditMode(false);
+  const handleSignOut = async () => {
+    await signOut();
+    resetForm();
+    setEditMode(false);
+    setView("login");
   };
 
   const startEdit = () => {
@@ -180,13 +157,46 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
     setError(null);
   };
 
+  const handleUpdateProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSubmitting(true);
+
+    const updates: Record<string, unknown> = {
+      display_name: editName,
+      phone: editPhone,
+      street_address: shippingAddress.street_address,
+      street_address_2: shippingAddress.street_address_2,
+      city: shippingAddress.city,
+      state_province: shippingAddress.state_province,
+      zip_code: shippingAddress.zip_code,
+      country: shippingAddress.country,
+      use_shipping_as_billing: useShippingAsBilling,
+      billing_street_address: useShippingAsBilling ? shippingAddress.street_address : billingAddress.street_address,
+      billing_street_address_2: useShippingAsBilling ? shippingAddress.street_address_2 : billingAddress.street_address_2,
+      billing_city: useShippingAsBilling ? shippingAddress.city : billingAddress.city,
+      billing_state_province: useShippingAsBilling ? shippingAddress.state_province : billingAddress.state_province,
+      billing_zip_code: useShippingAsBilling ? shippingAddress.zip_code : billingAddress.zip_code,
+      billing_country: useShippingAsBilling ? shippingAddress.country : billingAddress.country,
+    };
+
+    const result = await updateProfile(updates);
+    setSubmitting(false);
+    if (result.error) setError(result.error);
+    else setEditMode(false);
+  };
+
+  const switchView = (next: View) => {
+    resetForm();
+    setView(next);
+  };
+
   const currentView = user ? "profile" : view;
 
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -197,7 +207,6 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
             aria-hidden="true"
           />
 
-          {/* Drawer */}
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
@@ -209,7 +218,6 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
             aria-modal="true"
           >
             <div className="flex flex-col h-full">
-              {/* Header */}
               <div className="flex items-center justify-between px-8 pt-8 pb-6">
                 <h2 className="font-serif text-[18px] font-light tracking-[0.12em] text-foreground">
                   Client Lounge
@@ -221,13 +229,12 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
 
               <div className="border-t border-border mx-8" />
 
-              {/* Content */}
               <div className="flex-1 overflow-y-auto px-8 py-8">
                 {loading ? (
                   <p className="font-sans text-[12px] tracking-[0.12em] uppercase text-muted-foreground">Loading...</p>
                 ) : currentView === "profile" ? (
                   <ProfileView
-                    user={user}
+                    userEmail={user?.email ?? null}
                     profile={profile}
                     editMode={editMode}
                     editName={editName}
@@ -237,10 +244,14 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
                     useShippingAsBilling={useShippingAsBilling}
                     error={error}
                     submitting={submitting}
+                    orders={account.orders}
+                    carts={account.carts}
+                    accountLoading={account.loading}
+                    accountError={account.error}
                     onEditName={setEditName}
                     onEditPhone={setEditPhone}
-                    onShippingChange={(f, v) => setShippingAddress((p) => ({ ...p, [f]: v }))}
-                    onBillingChange={(f, v) => setBillingAddress((p) => ({ ...p, [f]: v }))}
+                    onShippingChange={(field, value) => setShippingAddress((prev) => ({ ...prev, [field]: value }))}
+                    onBillingChange={(field, value) => setBillingAddress((prev) => ({ ...prev, [field]: value }))}
                     onToggleBilling={setUseShippingAsBilling}
                     onStartEdit={startEdit}
                     onCancelEdit={() => setEditMode(false)}
@@ -259,7 +270,7 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
                     onPassword={setPassword}
                     onDisplayName={setDisplayName}
                     onSubmit={handleRegister}
-                    onSwitchToLogin={() => { resetForm(); setView("login"); }}
+                    onSwitchToLogin={() => switchView("login")}
                   />
                 ) : currentView === "forgot" ? (
                   <ForgotPasswordView
@@ -269,7 +280,7 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
                     submitting={submitting}
                     onEmail={setEmail}
                     onSubmit={handleForgotPassword}
-                    onSwitchToLogin={() => { resetForm(); setView("login"); }}
+                    onSwitchToLogin={() => switchView("login")}
                   />
                 ) : (
                   <LoginView
@@ -282,13 +293,12 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
                     onPassword={setPassword}
                     onRememberMe={setRememberMe}
                     onSubmit={handleLogin}
-                    onSwitchToRegister={() => { resetForm(); setView("register"); }}
-                    onSwitchToForgot={() => { resetForm(); setView("forgot"); }}
+                    onSwitchToRegister={() => switchView("register")}
+                    onSwitchToForgot={() => switchView("forgot")}
                   />
                 )}
               </div>
 
-              {/* Footer */}
               <div className="px-8 pb-8">
                 <div className="border-t border-border pt-6">
                   <p className="font-sans text-[10px] tracking-[0.1em] text-muted-foreground/60 text-center">
@@ -304,11 +314,18 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
   );
 }
 
-/* ─── Login View ─── */
 function LoginView({ email, password, rememberMe, error, submitting, onEmail, onPassword, onRememberMe, onSubmit, onSwitchToRegister, onSwitchToForgot }: {
-  email: string; password: string; rememberMe: boolean; error: string | null; submitting: boolean;
-  onEmail: (v: string) => void; onPassword: (v: string) => void; onRememberMe: (v: boolean) => void;
-  onSubmit: (e: React.FormEvent) => void; onSwitchToRegister: () => void; onSwitchToForgot: () => void;
+  email: string;
+  password: string;
+  rememberMe: boolean;
+  error: string | null;
+  submitting: boolean;
+  onEmail: (value: string) => void;
+  onPassword: (value: string) => void;
+  onRememberMe: (value: boolean) => void;
+  onSubmit: (event: React.FormEvent) => void;
+  onSwitchToRegister: () => void;
+  onSwitchToForgot: () => void;
 }) {
   return (
     <div className="space-y-6">
@@ -318,47 +335,39 @@ function LoginView({ email, password, rememberMe, error, submitting, onEmail, on
         <InputField label="Password" value={password} onChange={onPassword} type="password" autoComplete="current-password" />
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="remember-me"
-              checked={rememberMe}
-              onChange={(e) => onRememberMe(e.target.checked)}
-              className="w-3.5 h-3.5 accent-foreground"
-            />
-            <label htmlFor="remember-me" className="font-sans text-[11px] text-muted-foreground cursor-pointer">
-              Keep me signed in
-            </label>
-          </div>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" checked={rememberMe} onChange={(event) => onRememberMe(event.target.checked)} className="w-3.5 h-3.5 accent-foreground" />
+            <span className="font-sans text-[11px] text-muted-foreground">Keep me signed in</span>
+          </label>
           <button type="button" onClick={onSwitchToForgot} className="font-sans text-[11px] text-muted-foreground hover:text-foreground underline transition-colors">
             Forgot password?
           </button>
         </div>
 
         {error && <ErrorText>{error}</ErrorText>}
-        <button
-          type="submit"
-          disabled={submitting}
-          className="w-full h-11 bg-foreground text-background text-[11px] tracking-[0.15em] uppercase hover:bg-foreground/90 transition-colors disabled:opacity-40 font-sans"
-        >
+        <button type="submit" disabled={submitting} className="w-full h-11 bg-foreground text-background text-[11px] tracking-[0.15em] uppercase hover:bg-foreground/90 transition-colors disabled:opacity-40 font-sans">
           {submitting ? "Signing In..." : "Sign In"}
         </button>
       </form>
       <p className="font-sans text-[11px] text-muted-foreground text-center">
-        New to Ruvtier?{" "}
-        <button onClick={onSwitchToRegister} className="underline text-foreground hover:text-foreground/80">
-          Create an account
-        </button>
+        New to Ruvtier? <button onClick={onSwitchToRegister} className="underline text-foreground hover:text-foreground/80">Create an account</button>
       </p>
     </div>
   );
 }
 
-/* ─── Register View ─── */
 function RegisterView({ email, password, displayName, error, success, submitting, onEmail, onPassword, onDisplayName, onSubmit, onSwitchToLogin }: {
-  email: string; password: string; displayName: string; error: string | null; success: string | null; submitting: boolean;
-  onEmail: (v: string) => void; onPassword: (v: string) => void; onDisplayName: (v: string) => void;
-  onSubmit: (e: React.FormEvent) => void; onSwitchToLogin: () => void;
+  email: string;
+  password: string;
+  displayName: string;
+  error: string | null;
+  success: string | null;
+  submitting: boolean;
+  onEmail: (value: string) => void;
+  onPassword: (value: string) => void;
+  onDisplayName: (value: string) => void;
+  onSubmit: (event: React.FormEvent) => void;
+  onSwitchToLogin: () => void;
 }) {
   return (
     <div className="space-y-6">
@@ -367,72 +376,77 @@ function RegisterView({ email, password, displayName, error, success, submitting
         <InputField label="Full Name" value={displayName} onChange={onDisplayName} autoComplete="name" />
         <InputField label="Email" value={email} onChange={onEmail} type="email" autoComplete="email" />
         <InputField label="Password" value={password} onChange={onPassword} type="password" autoComplete="new-password" />
-
         <PasswordStrengthIndicator password={password} />
-
         {error && <ErrorText>{error}</ErrorText>}
         {success && <SuccessText>{success}</SuccessText>}
-        <button
-          type="submit"
-          disabled={submitting}
-          className="w-full h-11 bg-foreground text-background text-[11px] tracking-[0.15em] uppercase hover:bg-foreground/90 transition-colors disabled:opacity-40 font-sans"
-        >
+        <button type="submit" disabled={submitting} className="w-full h-11 bg-foreground text-background text-[11px] tracking-[0.15em] uppercase hover:bg-foreground/90 transition-colors disabled:opacity-40 font-sans">
           {submitting ? "Creating Account..." : "Register"}
         </button>
       </form>
       <p className="font-sans text-[11px] text-muted-foreground text-center">
-        Already have an account?{" "}
-        <button onClick={onSwitchToLogin} className="underline text-foreground hover:text-foreground/80">
-          Sign in
-        </button>
+        Already have an account? <button onClick={onSwitchToLogin} className="underline text-foreground hover:text-foreground/80">Sign in</button>
       </p>
     </div>
   );
 }
 
-/* ─── Forgot Password View ─── */
 function ForgotPasswordView({ email, error, success, submitting, onEmail, onSubmit, onSwitchToLogin }: {
-  email: string; error: string | null; success: string | null; submitting: boolean;
-  onEmail: (v: string) => void; onSubmit: (e: React.FormEvent) => void; onSwitchToLogin: () => void;
+  email: string;
+  error: string | null;
+  success: string | null;
+  submitting: boolean;
+  onEmail: (value: string) => void;
+  onSubmit: (event: React.FormEvent) => void;
+  onSwitchToLogin: () => void;
 }) {
   return (
     <div className="space-y-6">
       <p className="font-sans text-[11px] tracking-[0.15em] uppercase text-muted-foreground">Reset your password</p>
       <p className="font-sans text-[12px] text-muted-foreground leading-relaxed">
-        Enter the email address associated with your account and we'll send you a link to reset your password.
+        Enter the email address associated with your account and we will send a password reset link.
       </p>
       <form onSubmit={onSubmit} className="space-y-5">
         <InputField label="Email" value={email} onChange={onEmail} type="email" autoComplete="email" />
         {error && <ErrorText>{error}</ErrorText>}
         {success && <SuccessText>{success}</SuccessText>}
-        <button
-          type="submit"
-          disabled={submitting}
-          className="w-full h-11 bg-foreground text-background text-[11px] tracking-[0.15em] uppercase hover:bg-foreground/90 transition-colors disabled:opacity-40 font-sans"
-        >
+        <button type="submit" disabled={submitting} className="w-full h-11 bg-foreground text-background text-[11px] tracking-[0.15em] uppercase hover:bg-foreground/90 transition-colors disabled:opacity-40 font-sans">
           {submitting ? "Sending..." : "Send Reset Link"}
         </button>
       </form>
       <p className="font-sans text-[11px] text-muted-foreground text-center">
-        <button onClick={onSwitchToLogin} className="underline text-foreground hover:text-foreground/80">
-          Back to sign in
-        </button>
+        <button onClick={onSwitchToLogin} className="underline text-foreground hover:text-foreground/80">Back to sign in</button>
       </p>
     </div>
   );
 }
 
-/* ─── Profile View ─── */
-interface ProfileViewProps {
-  user: { email?: string } | null;
-  profile: {
-    display_name?: string | null;
-    email?: string | null;
-    phone?: string | null;
-    city?: string | null;
-    state_province?: string | null;
-    country?: string | null;
-  } | null;
+function ProfileView({
+  userEmail,
+  profile,
+  editMode,
+  editName,
+  editPhone,
+  shippingAddress,
+  billingAddress,
+  useShippingAsBilling,
+  error,
+  submitting,
+  orders,
+  carts,
+  accountLoading,
+  accountError,
+  onEditName,
+  onEditPhone,
+  onShippingChange,
+  onBillingChange,
+  onToggleBilling,
+  onStartEdit,
+  onCancelEdit,
+  onSave,
+  onSignOut,
+}: {
+  userEmail: string | null;
+  profile: any;
   editMode: boolean;
   editName: string;
   editPhone: string;
@@ -441,47 +455,40 @@ interface ProfileViewProps {
   useShippingAsBilling: boolean;
   error: string | null;
   submitting: boolean;
-  onEditName: (v: string) => void;
-  onEditPhone: (v: string) => void;
-  onShippingChange: (f: keyof AddressData, v: string) => void;
-  onBillingChange: (f: keyof AddressData, v: string) => void;
-  onToggleBilling: (v: boolean) => void;
+  orders: ClientLoungeOrder[];
+  carts: ClientLoungeCart[];
+  accountLoading: boolean;
+  accountError: string | null;
+  onEditName: (value: string) => void;
+  onEditPhone: (value: string) => void;
+  onShippingChange: (field: keyof AddressData, value: string) => void;
+  onBillingChange: (field: keyof AddressData, value: string) => void;
+  onToggleBilling: (value: boolean) => void;
   onStartEdit: () => void;
   onCancelEdit: () => void;
-  onSave: (e: React.FormEvent) => void;
+  onSave: (event: React.FormEvent) => void;
   onSignOut: () => void;
-}
-
-function ProfileView({ user, profile, editMode, editName, editPhone, shippingAddress, billingAddress, useShippingAsBilling, error, submitting, onEditName, onEditPhone, onShippingChange, onBillingChange, onToggleBilling, onStartEdit, onCancelEdit, onSave, onSignOut }: ProfileViewProps) {
+}) {
   return (
-    <div className="space-y-6">
-      <p className="font-sans text-[11px] tracking-[0.15em] uppercase text-muted-foreground">Welcome back</p>
-      <p className="font-serif text-[22px] font-light text-foreground">
-        {profile?.display_name || profile?.email || user?.email}
-      </p>
+    <div className="space-y-7">
+      <div className="space-y-2">
+        <p className="font-sans text-[11px] tracking-[0.15em] uppercase text-muted-foreground">Welcome back</p>
+        <p className="font-serif text-[22px] font-light text-foreground break-words">
+          {profile?.display_name || profile?.email || userEmail}
+        </p>
+      </div>
 
       {!editMode ? (
-        <div className="space-y-4">
-          <div>
-            <p className="font-sans text-[10px] tracking-[0.15em] uppercase text-muted-foreground mb-1">Email</p>
-            <p className="font-sans text-[13px] text-foreground">{profile?.email || user?.email}</p>
-          </div>
-          {profile?.phone && (
-            <div>
-              <p className="font-sans text-[10px] tracking-[0.15em] uppercase text-muted-foreground mb-1">Phone</p>
-              <p className="font-sans text-[13px] text-foreground">{profile.phone}</p>
-            </div>
-          )}
-          {profile?.city && (
-            <div>
-              <p className="font-sans text-[10px] tracking-[0.15em] uppercase text-muted-foreground mb-1">Location</p>
-              <p className="font-sans text-[13px] text-foreground">
-                {[profile.city, profile.state_province, profile.country].filter(Boolean).join(", ")}
-              </p>
-            </div>
+        <div className="space-y-5">
+          <ProfileField label="Email" value={profile?.email || userEmail} />
+          {profile?.phone && <ProfileField label="Phone" value={profile.phone} />}
+          {(profile?.city || profile?.country) && (
+            <ProfileField label="Location" value={[profile?.city, profile?.state_province, profile?.country].filter(Boolean).join(", ")} />
           )}
 
-          <div className="pt-4 space-y-3">
+          <AccountActivity orders={orders} carts={carts} loading={accountLoading} error={accountError} />
+
+          <div className="pt-2 space-y-3">
             <button onClick={onStartEdit} className="w-full h-11 border border-border text-[11px] tracking-[0.15em] uppercase text-foreground hover:bg-accent transition-colors font-sans">
               Edit Profile
             </button>
@@ -494,7 +501,6 @@ function ProfileView({ user, profile, editMode, editName, editPhone, shippingAdd
         <form onSubmit={onSave} className="space-y-5">
           <InputField label="Display Name" value={editName} onChange={onEditName} />
           <InputField label="Phone" value={editPhone} onChange={onEditPhone} type="tel" />
-
           <div className="border-t border-border pt-5">
             <AddressFields
               shippingAddress={shippingAddress}
@@ -505,7 +511,6 @@ function ProfileView({ user, profile, editMode, editName, editPhone, shippingAdd
               onToggleBilling={onToggleBilling}
             />
           </div>
-
           {error && <ErrorText>{error}</ErrorText>}
           <div className="flex gap-3">
             <button type="button" onClick={onCancelEdit} className="flex-1 h-11 border border-border text-[11px] tracking-[0.15em] uppercase text-muted-foreground hover:text-foreground transition-colors font-sans">
@@ -517,6 +522,68 @@ function ProfileView({ user, profile, editMode, editName, editPhone, shippingAdd
           </div>
         </form>
       )}
+    </div>
+  );
+}
+
+function ProfileField({ label, value }: { label: string; value: string | null | undefined }) {
+  if (!value) return null;
+  return (
+    <div>
+      <p className="font-sans text-[10px] tracking-[0.15em] uppercase text-muted-foreground mb-1">{label}</p>
+      <p className="font-sans text-[13px] text-foreground break-words">{value}</p>
+    </div>
+  );
+}
+
+function AccountActivity({ orders, carts, loading, error }: { orders: ClientLoungeOrder[]; carts: ClientLoungeCart[]; loading: boolean; error: string | null }) {
+  const activeCart = carts.find((cart) => cart.status === "active") ?? carts[0];
+
+  return (
+    <div className="border-t border-border pt-5 space-y-5">
+      <div>
+        <p className="font-sans text-[10px] tracking-[0.15em] uppercase text-muted-foreground mb-3">Orders</p>
+        {loading ? (
+          <p className="font-sans text-[12px] text-muted-foreground">Loading account activity...</p>
+        ) : error ? (
+          <p className="font-sans text-[12px] text-destructive">Unable to load account activity.</p>
+        ) : orders.length === 0 ? (
+          <p className="font-sans text-[12px] text-muted-foreground">No orders are linked to this account yet.</p>
+        ) : (
+          <div className="space-y-3">
+            {orders.slice(0, 5).map((order) => (
+              <div key={order.id} className="border border-border px-3 py-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-sans text-[12px] text-foreground tracking-[0.06em]">{order.order_number}</p>
+                    <p className="font-sans text-[11px] text-muted-foreground mt-1">Placed {formatDate(order.created_at)}</p>
+                  </div>
+                  <p className="font-sans text-[11px] text-foreground uppercase tracking-[0.1em]">{order.status}</p>
+                </div>
+                <div className="mt-3 flex items-center justify-between gap-3">
+                  <p className="font-sans text-[11px] text-muted-foreground">Payment {order.payment_status || "pending"}</p>
+                  <p className="font-sans text-[12px] text-foreground">{formatMoney(order.total)}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div>
+        <p className="font-sans text-[10px] tracking-[0.15em] uppercase text-muted-foreground mb-3">Current Cart</p>
+        {!activeCart ? (
+          <p className="font-sans text-[12px] text-muted-foreground">No active cart is linked to this account.</p>
+        ) : (
+          <div className="border border-border px-3 py-3 flex items-center justify-between gap-3">
+            <div>
+              <p className="font-sans text-[12px] text-foreground">{activeCart.item_count} item{activeCart.item_count === 1 ? "" : "s"}</p>
+              <p className="font-sans text-[11px] text-muted-foreground mt-1">Updated {formatDate(activeCart.updated_at)}</p>
+            </div>
+            <p className="font-sans text-[12px] text-foreground">{formatMoney(activeCart.subtotal)}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

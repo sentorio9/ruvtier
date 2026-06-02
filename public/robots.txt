@@ -1,9 +1,13 @@
-# RUVTIER — Robots policy
-# Public marketing site. Private routes are not listed here on purpose
-# (listing them would broadcast their existence). Access is enforced
-# server-side via authentication.
+# RUVTIER robots policy
+# Keep public marketing pages crawlable and block the default private admin
+# route. If VITE_ADMIN_ROUTE changes in production, mirror that route here or
+# generate robots.txt at the hosting layer.
 
 User-agent: *
 Allow: /
+Disallow: /123vhtg241s
+Disallow: /123vhtg241s/
+Disallow: /admin
+Disallow: /admin/
 
 Sitemap: https://ruvtier.com/sitemap.xml

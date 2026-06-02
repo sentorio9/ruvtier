@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 type Customer = Tables<"customers">;
 
-const statuses = ["active", "vip", "blocked", "archived"];
+const statuses = ["active", "archived"];
 
 export default function AdminCustomers() {
   const [customers, setCustomers] = useState<Customer[]>([]);

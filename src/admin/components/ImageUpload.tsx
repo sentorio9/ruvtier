@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Upload, X, Loader2, Crop } from "lucide-react";
+import { callAdminFunction } from "../lib/adminApi";
 import ImageCropModal from "./ImageCropModal";
 
 interface ImageUploadProps {
@@ -12,14 +12,25 @@ interface ImageUploadProps {
   aspectRatio?: number;
 }
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+function blobToBase64(blob: Blob) {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(",").pop() || "");
+    reader.onerror = () => reject(new Error("Unable to read file"));
+    reader.readAsDataURL(blob);
+  });
+}
+
+function internalStorageUrl(url: string, bucket: string) {
+  return url.includes(`/storage/v1/object/public/${bucket}/`);
+}
 
 export default function ImageUpload({
   value,
   onChange,
   label,
   bucket = "product-images",
-  folder = "products",
+  folder = "products/gallery",
   aspectRatio = 3 / 4,
 }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
@@ -30,26 +41,30 @@ export default function ImageUpload({
   const inputRef = useRef<HTMLInputElement>(null);
   const fontStyle = { fontFamily: "var(--font-sans)" };
 
-  const uploadBlob = async (blob: Blob, originalName?: string) => {
+  const uploadBlob = async (blob: Blob, originalName?: string, mimeType?: string) => {
     setError(null);
     setUploading(true);
 
-    const ext = originalName?.split(".").pop() || "jpg";
-    const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    try {
+      const dataBase64 = await blobToBase64(blob);
+      const data = await callAdminFunction<{ url: string }>("admin-upload", {
+        method: "POST",
+        csrf: true,
+        body: {
+          bucket,
+          folder,
+          fileName: originalName || "image.jpg",
+          mimeType: blob.type || mimeType || "image/jpeg",
+          dataBase64,
+        },
+      });
 
-    const { error: uploadError } = await supabase.storage
-      .from(bucket)
-      .upload(fileName, blob, { cacheControl: "3600", upsert: false, contentType: blob.type || "image/jpeg" });
-
-    if (uploadError) {
-      setError(uploadError.message);
+      onChange(data.url);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to upload image");
+    } finally {
       setUploading(false);
-      return;
     }
-
-    const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${fileName}`;
-    onChange(publicUrl);
-    setUploading(false);
   };
 
   const handleFileSelected = (file: File) => {
@@ -63,7 +78,6 @@ export default function ImageUpload({
       return;
     }
 
-    // Show crop modal
     const reader = new FileReader();
     reader.onload = () => {
       setCropSrc(reader.result as string);
@@ -74,26 +88,29 @@ export default function ImageUpload({
 
   const handleCropComplete = (blob: Blob) => {
     setCropSrc(null);
-    uploadBlob(blob, pendingFile?.name);
+    uploadBlob(blob, pendingFile?.name, pendingFile?.type);
     setPendingFile(null);
   };
 
   const handleSkipCrop = () => {
     setCropSrc(null);
     if (pendingFile) {
-      uploadBlob(pendingFile, pendingFile.name);
+      uploadBlob(pendingFile, pendingFile.name, pendingFile.type);
       setPendingFile(null);
     }
   };
 
   const handleRemove = async () => {
     if (!value) return;
-    const prefix = `/storage/v1/object/public/${bucket}/`;
-    const idx = value.indexOf(prefix);
-    if (idx !== -1) {
-      const path = value.slice(idx + prefix.length);
-      await supabase.storage.from(bucket).remove([path]);
+
+    if (internalStorageUrl(value, bucket)) {
+      await callAdminFunction("admin-upload", {
+        method: "DELETE",
+        csrf: true,
+        body: { bucket, url: value },
+      }).catch(() => {});
     }
+
     onChange("");
   };
 
@@ -174,7 +191,6 @@ export default function ImageUpload({
         </div>
       )}
 
-      {/* Manual URL fallback */}
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -186,7 +202,7 @@ export default function ImageUpload({
       <input
         ref={inputRef}
         type="file"
-        accept="image/*"
+        accept="image/jpeg,image/png,image/webp"
         className="hidden"
         onChange={(e) => {
           const file = e.target.files?.[0];
@@ -201,7 +217,6 @@ export default function ImageUpload({
         </p>
       )}
 
-      {/* Crop Modal */}
       {cropSrc && (
         <ImageCropModal
           imageSrc={cropSrc}

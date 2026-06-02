@@ -2,20 +2,30 @@ import { ReactNode, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAdminAuth } from "../hooks/useAdminAuth";
 import {
-  LayoutDashboard, Package, ShoppingCart, Users, ScrollText,
-  FileText, Settings, LogOut, ChevronLeft, ChevronRight, ShoppingBag, ClipboardList, Power, Wand2
+  LayoutDashboard,
+  Package,
+  Boxes,
+  ShoppingCart,
+  Users,
+  ScrollText,
+  Settings,
+  LogOut,
+  ChevronLeft,
+  ChevronRight,
+  ShoppingBag,
+  ClipboardList,
+  Power,
 } from "lucide-react";
 import { ADMIN_PREFIX } from "../config";
 
 const navItems = [
   { to: ADMIN_PREFIX, icon: LayoutDashboard, label: "Dashboard", exact: true },
-  { to: `${ADMIN_PREFIX}/products`, icon: Package, label: "Products" },
+  { to: `${ADMIN_PREFIX}/products`, icon: Package, label: "Garments" },
+  { to: `${ADMIN_PREFIX}/inventory`, icon: Boxes, label: "Inventory" },
   { to: `${ADMIN_PREFIX}/orders`, icon: ShoppingCart, label: "Orders" },
   { to: `${ADMIN_PREFIX}/customers`, icon: Users, label: "Customers" },
   { to: `${ADMIN_PREFIX}/carts`, icon: ShoppingBag, label: "Carts" },
   { to: `${ADMIN_PREFIX}/preorders`, icon: ClipboardList, label: "Preorders" },
-  { to: `${ADMIN_PREFIX}/content`, icon: FileText, label: "Content" },
-  { to: `${ADMIN_PREFIX}/editor`, icon: Wand2, label: "Website Editor" },
   { to: `${ADMIN_PREFIX}/maintenance`, icon: Power, label: "Maintenance" },
   { to: `${ADMIN_PREFIX}/logs`, icon: ScrollText, label: "Audit Logs" },
   { to: `${ADMIN_PREFIX}/settings`, icon: Settings, label: "Settings" },
@@ -37,13 +47,11 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-[hsl(220,15%,6%)] flex">
-      {/* Sidebar */}
       <aside
         className={`fixed left-0 top-0 h-full bg-[hsl(220,15%,8%)] border-r border-[hsl(220,10%,14%)] flex flex-col transition-all duration-300 z-50 ${
           collapsed ? "w-[60px]" : "w-[220px]"
         }`}
       >
-        {/* Brand */}
         <div className="h-14 flex items-center px-4 border-b border-[hsl(220,10%,14%)]">
           {!collapsed && (
             <span
@@ -56,12 +64,12 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           <button
             onClick={() => setCollapsed(!collapsed)}
             className={`text-[hsl(220,10%,40%)] hover:text-[hsl(220,10%,65%)] transition-colors ${collapsed ? "mx-auto" : "ml-auto"}`}
+            aria-label={collapsed ? "Expand admin navigation" : "Collapse admin navigation"}
           >
             {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
           </button>
         </div>
 
-        {/* Nav */}
         <nav className="flex-1 py-3 space-y-0.5 overflow-y-auto">
           {navItems.map((item) => {
             const active = isActive(item.to, item.exact);
@@ -84,7 +92,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           })}
         </nav>
 
-        {/* Footer */}
         <div className="border-t border-[hsl(220,10%,14%)] p-3">
           {!collapsed && (
             <div className="mb-2 px-1">
@@ -108,7 +115,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         </div>
       </aside>
 
-      {/* Main content */}
       <main className={`flex-1 transition-all duration-300 ${collapsed ? "ml-[60px]" : "ml-[220px]"}`}>
         <div className="p-6 md:p-8 max-w-[1400px]">
           {children}

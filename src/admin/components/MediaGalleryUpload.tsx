@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Upload, X, Loader2, ArrowUp, ArrowDown, Crop } from "lucide-react";
+import { callAdminFunction } from "../lib/adminApi";
 import ImageCropModal from "./ImageCropModal";
 
 interface MediaGalleryUploadProps {
@@ -12,7 +12,18 @@ interface MediaGalleryUploadProps {
   maxImages?: number;
 }
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+function blobToBase64(blob: Blob) {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(",").pop() || "");
+    reader.onerror = () => reject(new Error("Unable to read file"));
+    reader.readAsDataURL(blob);
+  });
+}
+
+function internalStorageUrl(url: string, bucket: string) {
+  return url.includes(`/storage/v1/object/public/${bucket}/`);
+}
 
 export default function MediaGalleryUpload({
   value,
@@ -30,29 +41,37 @@ export default function MediaGalleryUpload({
   const inputRef = useRef<HTMLInputElement>(null);
   const fontStyle = { fontFamily: "var(--font-sans)" };
 
-  const uploadBlob = async (blob: Blob, originalName?: string) => {
+  const uploadBlob = async (blob: Blob, originalName?: string, mimeType?: string) => {
     setError(null);
     setUploading(true);
-    const ext = (originalName?.split(".").pop() || "jpg").toLowerCase();
-    const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-    const { error: err } = await supabase.storage
-      .from(bucket)
-      .upload(fileName, blob, { cacheControl: "3600", upsert: false, contentType: blob.type || "image/jpeg" });
-    if (err) {
-      setError(err.message);
+
+    try {
+      const dataBase64 = await blobToBase64(blob);
+      const data = await callAdminFunction<{ url: string }>("admin-upload", {
+        method: "POST",
+        csrf: true,
+        body: {
+          bucket,
+          folder,
+          fileName: originalName || "gallery-image.jpg",
+          mimeType: blob.type || mimeType || "image/jpeg",
+          dataBase64,
+        },
+      });
+
+      if (editingIndex !== null) {
+        const next = [...value];
+        next[editingIndex] = data.url;
+        onChange(next);
+        setEditingIndex(null);
+      } else {
+        onChange([...value, data.url]);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to upload image");
+    } finally {
       setUploading(false);
-      return;
     }
-    const url = `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${fileName}`;
-    if (editingIndex !== null) {
-      const next = [...value];
-      next[editingIndex] = url;
-      onChange(next);
-      setEditingIndex(null);
-    } else {
-      onChange([...value, url]);
-    }
-    setUploading(false);
   };
 
   const handleFile = (file: File) => {
@@ -75,14 +94,14 @@ export default function MediaGalleryUpload({
 
   const handleCropComplete = (blob: Blob) => {
     setCropSrc(null);
-    uploadBlob(blob, pendingFile?.name);
+    uploadBlob(blob, pendingFile?.name, pendingFile?.type);
     setPendingFile(null);
   };
 
   const handleSkipCrop = () => {
     setCropSrc(null);
     if (pendingFile) {
-      uploadBlob(pendingFile, pendingFile.name);
+      uploadBlob(pendingFile, pendingFile.name, pendingFile.type);
       setPendingFile(null);
     } else {
       setEditingIndex(null);
@@ -91,14 +110,12 @@ export default function MediaGalleryUpload({
 
   const removeAt = async (index: number) => {
     const url = value[index];
-    const prefix = `/storage/v1/object/public/${bucket}/`;
-    const idx = url.indexOf(prefix);
-    if (idx !== -1) {
-      try {
-        await supabase.storage.from(bucket).remove([url.slice(idx + prefix.length)]);
-      } catch {
-        // best-effort
-      }
+    if (internalStorageUrl(url, bucket)) {
+      await callAdminFunction("admin-upload", {
+        method: "DELETE",
+        csrf: true,
+        body: { bucket, url },
+      }).catch(() => {});
     }
     onChange(value.filter((_, i) => i !== index));
   };
@@ -198,7 +215,7 @@ export default function MediaGalleryUpload({
       <input
         ref={inputRef}
         type="file"
-        accept="image/*"
+        accept="image/jpeg,image/png,image/webp"
         className="hidden"
         onChange={(e) => {
           const file = e.target.files?.[0];

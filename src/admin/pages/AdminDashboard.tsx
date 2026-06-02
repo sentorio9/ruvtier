@@ -70,17 +70,18 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     async function load() {
+      const activeSessionQuery = (supabase.from("admin_sessions") as any)
+        .select("id, last_accessed_at, last_ip_address, last_user_agent, access_count, expires_at, credential_id")
+        .is("revoked_at", null)
+        .gt("expires_at", new Date().toISOString())
+        .order("last_accessed_at", { ascending: false });
+
       const [products, orders, customers, logs, sessions] = await Promise.all([
         supabase.from("products").select("status", { count: "exact" }).is("deleted_at", null),
         supabase.from("orders").select("status", { count: "exact" }).is("deleted_at", null),
         supabase.from("customers").select("id", { count: "exact" }).is("deleted_at", null),
         supabase.from("audit_logs").select("id, action, actor_email, created_at").order("created_at", { ascending: false }).limit(10),
-        supabase
-          .from("admin_sessions")
-          .select("id, last_accessed_at, last_ip_address, last_user_agent, access_count, expires_at, credential_id")
-          .is("revoked_at", null)
-          .gt("expires_at", new Date().toISOString())
-          .order("last_accessed_at", { ascending: false }),
+        activeSessionQuery,
       ]);
 
       const sessionData = sessions.data || [];

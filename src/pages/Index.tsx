@@ -235,8 +235,8 @@ const Index = () => {
       )}
 
       {/* Split Collection — Women / Men */}
-      <section className="md:h-[80svh] md:snap-start flex flex-col justify-center bg-background">
-        <div className="luxury-container w-full py-[clamp(48px,7vh,96px)]">
+      <section className="md:min-h-[80svh] md:snap-start flex flex-col justify-center bg-background">
+        <div className="luxury-container w-full py-[clamp(32px,4vh,64px)]">
           <div className="grid grid-cols-1 gap-10 md:gap-8 md:max-w-[80%] md:mx-auto md:[grid-template-columns:1fr_1fr] md:[transition:grid-template-columns_500ms_cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:md:[&:has(.panel-women:hover)]:[grid-template-columns:54fr_46fr] [@media(hover:hover)]:md:[&:has(.panel-men:hover)]:[grid-template-columns:46fr_54fr]">
             {[
               {
@@ -267,7 +267,7 @@ const Index = () => {
               <ScrollFadeIn key={card.to} delay={card.delay}>
                 <Link to={card.to} className={`group ${card.panelClass} relative flex flex-col overflow-hidden`}>
                   {/* Image frame — locked 3:4 desktop, 4:5 mobile */}
-                  <div className="relative w-full aspect-[4/5] md:aspect-[3/4] md:max-h-[calc(80svh-240px)] md:[width:auto] md:mx-auto overflow-hidden bg-secondary transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:shadow-[0_30px_70px_-32px_rgba(0,0,0,0.35)]">
+                  <div className="relative w-full aspect-[4/5] md:aspect-[3/4] overflow-hidden bg-secondary transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:shadow-[0_30px_70px_-32px_rgba(0,0,0,0.35)]">
                     <img
                       src={card.primary}
                       alt={card.alt}

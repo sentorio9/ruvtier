@@ -57,6 +57,9 @@ const Index = () => {
   usePriceTick();
 
   const heroHeadline = useSiteText("home_hero", "headline", HOME_HERO_HEADLINE);
+  const heroEyebrow = useSiteText("home_hero", "eyebrow", HOME_HERO_EYEBROW);
+  const heroCta = useSiteText("home_hero", "cta_label", HOME_HERO_CTA);
+  const heroUtility = useSiteText("home_hero", "utility_caption", HOME_HERO_UTILITY);
   const heroPreorderWomen = useSiteText("home_hero", "preorder_women", HOME_HERO_PREORDER_WOMEN);
   const heroPreorderMen = useSiteText("home_hero", "preorder_men", HOME_HERO_PREORDER_MEN);
   const materialMemoryHeadline = useSiteText("home_material_memory", "headline", HOME_MATERIAL_MEMORY_HEADLINE);

@@ -1,21 +1,32 @@
-I’ll revise the homepage Material section so it matches the attached reference and actually displays the scarf image.
+I’ll rework “In Your Keeping” to match the reference and replace the three sketches.
 
-What I will change:
+## Layout (match reference exactly)
 
-1. **Make the image render reliably**
-   - Replace the current asset-pointer path usage with a plain constant URL from the uploaded asset, or use the imported asset safely so the `img src` cannot become empty in the rendered DOM.
-   - Add explicit width/height structure around the image so it always has a visible rendered box.
+1. Three equal cards, soft cream chip background (`bg-secondary`) with a 1px hairline border (`border-border`), no rounded corners.
+2. Inside each card, 3:4 framed sketch area with subtle interior padding so the drawing floats; sketches sit on transparent backgrounds so the cream card shows through.
+3. Top-left of each card: a small roman numeral overlay — I, II, III — in `type-eyebrow`, muted foreground.
+4. Bottom-center of each card: tiny italic caption in muted foreground:
+   - “sketch — knitwear in hands”
+   - “sketch ⇄ photo on hover”
+   - “sketch — boutique façade”
+5. Below the card (outside the chip): serif `type-title` label (“Knitwear” / “Life in RUVTIER” / “By Appointment Only”) centered, then a small underlined uppercase `EXPLORE` link with the existing hover underline animation.
+6. Section keeps current snap, heading, container, fade-in.
 
-2. **Match the provided reference composition**
-   - Keep the section very quiet and minimal, but restore the missing visual block above the “Material is memory” text.
-   - Center the image/card above the heading, then keep the heading, body, and “Discover all materials” CTA centered below it.
-   - Preserve the RUVTIER luxury spacing, off-white background, serif heading, and text-only button rules.
+## New sketch assets (transparent PNGs, ~90% same art style)
 
-3. **Remove inaccurate placeholder/editor text**
-   - Remove/replace the visible caption text “image crossfades to fabric macro on hover,” because there is no longer a crossfade and it makes the section look unfinished.
-   - Keep any image label subtle or hidden if it conflicts with the clean reference.
+Regenerate three pencil-sketch illustrations matching the existing graphite/charcoal line-art aesthetic, no shading background, soft hatching, slightly looser lines — but on transparent backgrounds so they overlay the cream chip cleanly:
 
-4. **Verify the fix**
-   - Check the live page after the change.
-   - Confirm the scarf image request appears in browser network requests.
-   - Confirm the Material section screenshot shows the image visibly above the text instead of only blank space.
+- `src/assets/explore-knitwear-v2.png` — close crop of hands knitting with chunky yarn (similar to current)
+- `src/assets/explore-lifestyle-v2.png` — quiet figure in luxury knitwear (similar register to current men sketch)
+- `src/assets/explore-appointment-v2.png` — boutique façade with awning and entrance (similar to current)
+
+Upload each via `lovable-assets` and import the pointers in `Index.tsx`. Old jpg/png files will be removed after the swap is verified.
+
+## Code changes (scope-limited)
+
+- `src/pages/Index.tsx`: swap the three image imports for the new asset pointers; restructure the “In Your Keeping” card markup to add the cream chip frame, hairline border, top-left roman numeral, bottom caption, then external title + EXPLORE.
+- No changes to copy constants, snap container, navigation, or other sections.
+
+## Verification
+
+- Capture preview at 1303×890, scroll to the section, screenshot, and confirm the three cards visually match the reference (cream chips, numerals, captions, sketches floating inside).

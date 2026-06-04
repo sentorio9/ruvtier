@@ -35,9 +35,9 @@ import womenPrimary from "@/assets/collection-women-primary.jpg";
 import womenHover from "@/assets/collection-women-hover.jpg";
 import menPrimary from "@/assets/collection-men-primary.jpg";
 import menHover from "@/assets/collection-men-hover.jpg";
-import knitwearImg from "@/assets/explore-knitwear.jpg";
-import lifestyleImg from "@/assets/explore-lifestyle.jpg";
-import appointmentImg from "@/assets/explore-appointment.png";
+import knitwearImg from "@/assets/explore-knitwear-v2.png";
+import lifestyleImg from "@/assets/explore-lifestyle-v2.png";
+import appointmentImg from "@/assets/explore-appointment-v2.png";
 import materialMemoryScarfAsset from "@/assets/material-memory-scarf.png.asset.json";
 const materialMemoryScarf = materialMemoryScarfAsset.url;
 import {
@@ -384,34 +384,38 @@ const Index = () => {
           </ScrollFadeIn>
           <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-8 lg:gap-10 items-start">
             {[
-              { img: knitwearImg, label: "Knitwear", to: "/boutique/women", imgClass: "h-full w-[85%] translate-y-[5%]" },
-              { img: lifestyleImg, label: "Life in RUVTIER", to: "/boutique/lifestyle", imgClass: "h-full w-full" },
-              { img: appointmentImg, label: "By Appointment Only", to: "/contact", imgClass: "h-full w-full" },
+              { img: knitwearImg, label: "Knitwear", to: "/boutique/women", numeral: "I", caption: "sketch — knitwear in hands" },
+              { img: lifestyleImg, label: "Life in RUVTIER", to: "/boutique/lifestyle", numeral: "II", caption: "sketch ⇄ photo on hover" },
+              { img: appointmentImg, label: "By Appointment Only", to: "/contact", numeral: "III", caption: "sketch — boutique façade" },
             ].map((item, i) => (
               <ScrollFadeIn key={item.label} delay={i * 0.08}>
                 <Link to={item.to} className="group flex flex-col">
-                  <div className="relative flex w-full aspect-[4/5] max-h-[55svh] items-center justify-center overflow-hidden bg-background px-[10%] py-[10%]">
+                  <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary border border-border">
+                    <span aria-hidden className="absolute top-3 left-3 type-eyebrow tracking-luxury-wide text-foreground/60 z-10">
+                      {item.numeral}
+                    </span>
                     <img
                       src={item.img}
                       alt={item.label}
                       loading="lazy"
-                      className={`object-contain object-center transition-transform duration-700 ease-out group-hover:scale-[1.02] ${item.imgClass}`}
+                      className="absolute inset-0 w-full h-full object-contain object-center p-[8%] transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                     />
-                    <div
-                      aria-hidden
-                      className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/35 via-black/10 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
-                    />
+                    <span aria-hidden className="absolute bottom-3 left-0 right-0 text-center type-eyebrow text-foreground/55 z-10">
+                      {item.caption}
+                    </span>
                   </div>
-                  <div className="flex flex-col items-center text-center px-4 pt-4 md:pt-5 text-foreground">
-                    <h3 className="type-subtitle">
+                  <div className="flex flex-col items-center text-center px-4 pt-5 md:pt-6 text-foreground">
+                    <h3 className="type-title">
                       {item.label}
                     </h3>
-                    <span className="mt-2 type-cta relative inline-block pb-1">
-                      Explore
-                      <span
-                        aria-hidden
-                        className="absolute left-0 right-0 -bottom-px h-px bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
-                      />
+                    <span className="mt-3 type-cta tracking-luxury-wide relative inline-block pb-1">
+                      <span className="relative inline-block pb-1">
+                        EXPLORE
+                        <span
+                          aria-hidden
+                          className="absolute left-0 right-0 -bottom-px h-px bg-current"
+                        />
+                      </span>
                     </span>
                   </div>
                 </Link>

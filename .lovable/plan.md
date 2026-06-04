@@ -1,21 +1,18 @@
-## Fix split section snap behavior
+## Tone down the collection hover
 
-Two surgical edits in `src/pages/Index.tsx`:
+Single edit in `src/pages/Index.tsx`, line 240 — the grid that holds the Women / Men panels.
 
-1. **Line 95** — change the snap container from mandatory to proximity so taller-than-viewport sections can be fully scrolled:
-   ```diff
-   - <div className="relative md:h-[100svh] md:overflow-y-scroll md:snap-y md:snap-mandatory motion-safe:md:scroll-smooth">
-   + <div className="relative md:h-[100svh] md:overflow-y-scroll md:snap-y md:snap-proximity motion-safe:md:scroll-smooth">
-   ```
+Replace the aggressive 54fr / 46fr widen with a barely-perceptible 51fr / 49fr shift so the hovered panel only nudges a couple of pixels instead of taking over the screen. The image crossfade and 1.03 scale stay as-is (those are subtle already).
 
-2. **Line 238** — normalize the split section to a full snap stop matching every other section:
-   ```diff
-   - <section className="md:min-h-[80svh] md:snap-start flex flex-col justify-center bg-background">
-   + <section className="md:min-h-[100svh] md:snap-start flex flex-col justify-center bg-background">
-   ```
+```diff
+- [@media(hover:hover)]:md:[&:has(.panel-women:hover)]:[grid-template-columns:54fr_46fr]
+- [@media(hover:hover)]:md:[&:has(.panel-men:hover)]:[grid-template-columns:46fr_54fr]
++ [@media(hover:hover)]:md:[&:has(.panel-women:hover)]:[grid-template-columns:51fr_49fr]
++ [@media(hover:hover)]:md:[&:has(.panel-men:hover)]:[grid-template-columns:49fr_51fr]
+```
 
 ### Out of scope
-Image markup, hover behavior, captions, copy, other sections, tokens, DB.
+Image scale, crossfade, captions, copy, snap behavior, other sections.
 
 ### Verification
-At 1303×890, scroll Theia → split: section fully visible (both images + captions), continues cleanly to next section.
+At 1303×890, hover each panel: the sibling shrinks only marginally (~10–15px), nothing dominates the screen, image still crossfades and breathes.

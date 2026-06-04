@@ -39,6 +39,7 @@ import knitwearImg from "@/assets/explore-knitwear.jpg";
 import lifestyleImg from "@/assets/explore-lifestyle.jpg";
 import appointmentImg from "@/assets/explore-appointment.png";
 import materialMemoryScarf from "@/assets/material-memory-scarf.png";
+import materialMemoryMacro from "@/assets/material-memory-macro.jpg";
 import {
   HOME_HERO_HEADLINE,
   HOME_HERO_EYEBROW,
@@ -48,6 +49,9 @@ import {
   HOME_HERO_PREORDER_MEN,
   HOME_MATERIAL_MEMORY_HEADLINE,
   HOME_MATERIAL_MEMORY_CTA,
+  HOME_MATERIAL_MEMORY_EYEBROW,
+  HOME_MATERIAL_MEMORY_TAG,
+  HOME_MATERIAL_MEMORY_BLURB,
   HOME_WOMEN_CARD,
   HOME_MEN_CARD,
   HOME_IN_YOUR_KEEPING_HEADLINE,
@@ -66,6 +70,9 @@ const Index = () => {
   const heroPreorderMen = useSiteText("home_hero", "preorder_men", HOME_HERO_PREORDER_MEN);
   const materialMemoryHeadline = useSiteText("home_material_memory", "headline", HOME_MATERIAL_MEMORY_HEADLINE);
   const materialMemoryCta = useSiteText("home_material_memory", "cta_label", HOME_MATERIAL_MEMORY_CTA);
+  const materialMemoryEyebrow = useSiteText("home_material_memory", "eyebrow", HOME_MATERIAL_MEMORY_EYEBROW);
+  const materialMemoryTag = useSiteText("home_material_memory", "tag", HOME_MATERIAL_MEMORY_TAG);
+  const materialMemoryBlurb = useSiteText("home_material_memory", "blurb", HOME_MATERIAL_MEMORY_BLURB);
   const womenSeason = useSiteText("home_women_card", "season", HOME_WOMEN_CARD.season);
   const womenTitle = useSiteText("home_women_card", "title", HOME_WOMEN_CARD.title);
   const womenBlurb = useSiteText("home_women_card", "blurb", HOME_WOMEN_CARD.blurb);
@@ -316,43 +323,94 @@ const Index = () => {
       <section className="luxury-section min-h-[100svh] md:snap-start flex items-center">
         <div className="luxury-container w-full flex flex-col items-center text-center py-[clamp(48px,8vh,96px)]">
           <ScrollFadeIn>
-            <div className="w-full max-w-[320px] md:max-w-[400px] mx-auto aspect-[3/4] max-h-[48svh]">
+            <Editable
+              kind="text_block"
+              contentKey="home_material_memory"
+              field="eyebrow"
+              label="'Material is Memory' eyebrow"
+              as="span"
+              className="block type-eyebrow text-[10px] tracking-[0.3em] text-muted-foreground mb-7"
+            >
+              {materialMemoryEyebrow}
+            </Editable>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={0.12}>
+            <Link to="/materials" className="group relative block w-full max-w-[320px] md:max-w-[400px] mx-auto aspect-[3/4] overflow-hidden">
               <img
                 src={materialMemoryScarf}
                 alt="A RUVTIER silk scarf draped over a wooden chair — the quiet permanence of material."
-                className="w-full h-full object-contain"
+                width={1024}
+                height={1024}
                 loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:opacity-0"
               />
-            </div>
-          </ScrollFadeIn>
-          <ScrollFadeIn delay={0.1}>
-            <div className="mt-8 md:mt-12 flex flex-col items-center text-center">
+              <img
+                src={materialMemoryMacro}
+                alt=""
+                aria-hidden
+                width={1024}
+                height={1024}
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-opacity duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:opacity-100"
+              />
               <Editable
                 kind="text_block"
                 contentKey="home_material_memory"
-                field="headline"
-                label="'Material is Memory' heading"
-                as="h2"
-                className="type-display mb-6 md:mb-8"
-              >
-                {materialMemoryHeadline}
-              </Editable>
-              <Editable
-                kind="text_block"
-                contentKey="home_material_memory"
-                field="cta_label"
-                label="'Material is Memory' button"
+                field="tag"
+                label="'Material is Memory' image tag"
                 as="span"
-                className="inline-block transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] hover:-translate-y-0.5"
+                className="absolute top-3 right-3 type-eyebrow text-[9px] tracking-[0.2em] text-background/90 mix-blend-difference"
               >
-                <Link to="/materials" className="luxury-button type-cta">
-                  {materialMemoryCta}
-                </Link>
+                {materialMemoryTag}
               </Editable>
-            </div>
+            </Link>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={0.24}>
+            <Editable
+              kind="text_block"
+              contentKey="home_material_memory"
+              field="headline"
+              label="'Material is Memory' heading"
+              as="h2"
+              className="relative z-10 -mt-[0.5em] type-display text-[30px] md:text-[42px]"
+            >
+              {materialMemoryHeadline}
+            </Editable>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={0.36}>
+            <Editable
+              kind="text_block"
+              contentKey="home_material_memory"
+              field="blurb"
+              label="'Material is Memory' blurb"
+              as="p"
+              className="mt-5 max-w-[420px] text-[13px] leading-relaxed text-muted-foreground"
+            >
+              {materialMemoryBlurb}
+            </Editable>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={0.48}>
+            <Link to="/materials" className="group mt-8 inline-block type-cta text-[11px] tracking-[0.2em]">
+              <span className="relative inline-block pb-1">
+                <Editable
+                  kind="text_block"
+                  contentKey="home_material_memory"
+                  field="cta_label"
+                  label="'Material is Memory' CTA"
+                  as="span"
+                >
+                  {materialMemoryCta}
+                </Editable>
+                <span
+                  aria-hidden
+                  className="absolute left-0 right-0 -bottom-px h-px bg-current origin-left scale-x-0 [@media(hover:hover)]:group-hover:scale-x-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                />
+              </span>
+            </Link>
           </ScrollFadeIn>
         </div>
       </section>
+
 
       {/* In Your Keeping */}
       <section className="min-h-[100svh] md:snap-start flex flex-col justify-center py-[clamp(48px,8vh,96px)]">

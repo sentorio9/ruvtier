@@ -1,42 +1,22 @@
+## Fix the Women / Men split section
 
-## Scope
+The last edit added `md:max-h-[calc(80svh-240px)] md:[width:auto] md:mx-auto` to the image frame. Combined with `aspect-[3/4]` and the absolute-positioned `<img>` children, `width:auto` collapsed the frame so the images no longer render and the panels lost their centering. Revert that change and use a non-destructive way to keep the section inside the scroll range.
 
-Refine the Women/Men split section on `src/pages/Index.tsx` and replace the four images with a cohesive AI-generated campaign shoot.
+### Change (single file: `src/pages/Index.tsx`)
 
-## 1. Generate four campaign images
+1. **Restore the image frame** to the last working version:
+   ```tsx
+   <div className="relative w-full aspect-[4/5] md:aspect-[3/4] overflow-hidden bg-secondary transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:shadow-[0_30px_70px_-32px_rgba(0,0,0,0.35)]">
+   ```
+   This brings the two stacked `<img>` layers back, restores object-cover centering, and re-enables the hover crossfade + scale.
 
-Use `imagegen--generate_image` with `model: premium` (text-free editorial photography needs the higher fidelity tier). All four share one prompt scaffold — fixed background (#C9C2B6 warm greige seamless), soft diffused window key light from the left, medium-format 80mm look, shallow DOF, desaturated warm filmic grade, palette limited to ivory/camel/taupe/charcoal + one deep accent. 3:4 portrait, eye-line consistent, no text/logos.
+2. **Fit the section inside the scroll range** without touching the image. Two safe levers, applied together:
+   - Drop the hard `md:h-[80svh]` lock to `md:min-h-[80svh]` so the snap target still feels like a full viewport stop but the panels can extend a touch when the 3:4 image + caption need more room (no overflow clipping, no collapsed frames).
+   - Tighten the vertical breathing room from `py-[clamp(48px,7vh,96px)]` to `py-[clamp(32px,4vh,64px)]` on the inner `luxury-container`, which reclaims ~60px and keeps the eyebrow / title / CTA visible inside one snap stop at 1303×890.
+   - Keep the existing `md:max-w-[80%] md:mx-auto` grid wrapper (the 20% panel-size reduction the user asked for previously) untouched.
 
-- `src/assets/collection-women-primary.jpg` — female, three-quarter stance, ivory high-neck sleeveless knit + wide cream trousers, looking off-camera.
-- `src/assets/collection-women-hover.jpg` — same model/set, closer crop on knit weave, hands + torso, face partially out of frame.
-- `src/assets/collection-men-primary.jpg` — male, standing, burgundy honeycomb mock-neck + stone pleated trousers, cream leather holdall, cropped just above chin.
-- `src/assets/collection-men-hover.jpg` — same look, detail crop: sweater texture, hand in pocket, holdall strap, no face.
+### Out of scope
+Hover behavior, caption baselines, copy, imagery, other homepage sections, tokens, and DB.
 
-Generate sequentially so each prompt can reference the prior shot's grade/background language to keep the campaign cohesive.
-
-## 2. Refactor the split section in `src/pages/Index.tsx`
-
-Replace the existing Women/Men `section` (the one that maps over two card configs) with a tighter layout:
-
-- **Aspect lock**: each panel uses `aspect-[3/4]` on desktop and `aspect-[4/5]` on mobile (replaces the current `md:h-full` flex sizing). Drop `md:max-h-[calc(100svh-96px)]`.
-- **Equal panels with hover widen**: wrap both panels in a CSS grid where each column is `grid-template-columns: 1fr 1fr` by default. On `group/panel` hover, use a parent `has-[:hover]` selector or a small piece of state to shift to `54fr 46fr` with `transition: grid-template-columns 500ms ease`. Tailwind arbitrary value `grid-cols-[1fr_1fr] [&:has(.panel:hover)]:grid-cols-[54fr_46fr]`. Disable via `@media (hover: none)` so touch devices keep 1:1.
-- **Image crossfade**: two `<img>` stacked `absolute inset-0`, primary `opacity-100`, hover `opacity-0`; on group hover invert. `transition-opacity duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]`. Visible image scales 1 → 1.03 over the same 600ms via `transition-transform`. Wrap both in `@media (hover: hover)` (Tailwind `hover:` already gated; add `motion-safe:` + `[@media(hover:none)]:transform-none [@media(hover:none)]:opacity-100` guards on the hover image to keep tap clean).
-- **Caption baselines**: lift the eyebrow/title/CTA out of the current `h-[110px]` lifting panel and put them in a fixed-height caption row beneath the image with `min-h-[140px]` and `flex flex-col justify-between` so eyebrow / title / CTA align across panels. Remove the existing `group-hover:-translate-y` lift (no longer needed — caption is always visible at the same baseline).
-- **CTA copy + animation**: replace `cta` labels with `DISCOVER WOMEN →` / `DISCOVER MEN →` (move into `HOME_WOMEN_CARD.cta` / `HOME_MEN_CARD.cta` in `src/content/brand.ts`). Underline already animates left-to-right via the existing `scale-x-0 group-hover:scale-x-100` span — keep that, ensure both share `tracking-luxury-wide` for identical letter-spacing.
-- **Imagery wiring**: import the four new assets, pass `primary` and `secondary` per card. Remove the `heroImage`/`lifestyleImg` fallbacks (constraint #4).
-
-## 3. Content updates
-
-In `src/content/brand.ts` update `HOME_WOMEN_CARD.cta` to `DISCOVER WOMEN →` and `HOME_MEN_CARD.cta` to `DISCOVER MEN →` (keep existing season/title/blurb).
-
-## Out of scope
-
-- No changes to other homepage sections, header, footer, or admin editor.
-- No new tokens — reuses existing `type-eyebrow`, `type-title`, `type-cta`, `tracking-luxury-wide`, and the standard easing curve.
-- No DB / RLS / backend work.
-
-## Verification
-
-- Visit `/` at 1303×890: panels equal width, captions on identical baselines, hover crossfades over 600ms, hovered panel widens to ~54%, sibling shrinks, underline sweeps in from left.
-- Resize ≤ md: panels stack full-width 4:5, no hover effects fire, tap navigates.
-- Confirm all four generated images share background tone, lighting direction, and grade.
+### Verification
+At 1303×890, scroll into the split section: both panels are equal width, centered, both images render and crossfade on hover, eyebrow / title / CTA share baselines, and the section sits inside the snap stop without the caption being pushed below the fold.

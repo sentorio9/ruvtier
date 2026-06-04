@@ -571,6 +571,7 @@ export type Database = {
       }
       products: {
         Row: {
+          allocated_count: number
           availability: string
           care_info: string | null
           collection: string | null
@@ -580,6 +581,7 @@ export type Database = {
           created_by: string | null
           deleted_at: string | null
           description: string | null
+          edition_size: number | null
           featured: boolean | null
           gender_segment: string | null
           hero_image_url: string | null
@@ -603,6 +605,7 @@ export type Database = {
           updated_by: string | null
         }
         Insert: {
+          allocated_count?: number
           availability?: string
           care_info?: string | null
           collection?: string | null
@@ -612,6 +615,7 @@ export type Database = {
           created_by?: string | null
           deleted_at?: string | null
           description?: string | null
+          edition_size?: number | null
           featured?: boolean | null
           gender_segment?: string | null
           hero_image_url?: string | null
@@ -635,6 +639,7 @@ export type Database = {
           updated_by?: string | null
         }
         Update: {
+          allocated_count?: number
           availability?: string
           care_info?: string | null
           collection?: string | null
@@ -644,6 +649,7 @@ export type Database = {
           created_by?: string | null
           deleted_at?: string | null
           description?: string | null
+          edition_size?: number | null
           featured?: boolean | null
           gender_segment?: string | null
           hero_image_url?: string | null

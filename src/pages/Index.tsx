@@ -39,6 +39,7 @@ import knitwearImg from "@/assets/explore-knitwear.jpg";
 import lifestyleImg from "@/assets/explore-lifestyle.jpg";
 import appointmentImg from "@/assets/explore-appointment.png";
 import materialMemoryScarf from "@/assets/material-memory-scarf.png";
+import materialMemoryMacro from "@/assets/material-memory-macro.jpg";
 import {
   HOME_HERO_HEADLINE,
   HOME_HERO_EYEBROW,

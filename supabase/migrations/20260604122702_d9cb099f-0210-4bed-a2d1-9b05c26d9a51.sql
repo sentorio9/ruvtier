@@ -1,0 +1,3 @@
+ALTER TABLE public.products
+  ADD COLUMN IF NOT EXISTS edition_size INTEGER,
+  ADD COLUMN IF NOT EXISTS allocated_count INTEGER NOT NULL DEFAULT 0;

@@ -92,7 +92,7 @@ const Index = () => {
     : null;
 
   return (
-    <div className="relative md:h-[100svh] md:overflow-y-scroll md:snap-y md:snap-mandatory motion-safe:md:scroll-smooth">
+    <div className="relative md:h-[100svh] md:overflow-y-scroll md:snap-y md:snap-proximity motion-safe:md:scroll-smooth">
       <Navigation />
 
       {/* Hero */}

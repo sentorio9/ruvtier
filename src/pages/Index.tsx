@@ -69,6 +69,9 @@ const Index = () => {
   const heroPreorderMen = useSiteText("home_hero", "preorder_men", HOME_HERO_PREORDER_MEN);
   const materialMemoryHeadline = useSiteText("home_material_memory", "headline", HOME_MATERIAL_MEMORY_HEADLINE);
   const materialMemoryCta = useSiteText("home_material_memory", "cta_label", HOME_MATERIAL_MEMORY_CTA);
+  const materialMemoryBody = useSiteText("home_material_memory", "body", HOME_MATERIAL_MEMORY_BODY);
+  const materialMemorySwatchEyebrow = useSiteText("home_material_memory", "swatch_eyebrow", HOME_MATERIAL_MEMORY_SWATCH_EYEBROW);
+  const materialMemorySwatchCaption = useSiteText("home_material_memory", "swatch_caption", HOME_MATERIAL_MEMORY_SWATCH_CAPTION);
   const womenSeason = useSiteText("home_women_card", "season", HOME_WOMEN_CARD.season);
   const womenTitle = useSiteText("home_women_card", "title", HOME_WOMEN_CARD.title);
   const womenBlurb = useSiteText("home_women_card", "blurb", HOME_WOMEN_CARD.blurb);

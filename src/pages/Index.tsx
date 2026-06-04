@@ -38,7 +38,8 @@ import menHover from "@/assets/collection-men-hover.jpg";
 import knitwearImg from "@/assets/explore-knitwear.jpg";
 import lifestyleImg from "@/assets/explore-lifestyle.jpg";
 import appointmentImg from "@/assets/explore-appointment.png";
-import materialMemoryScarf from "@/assets/material-memory-scarf.png";
+import materialMemoryScarfAsset from "@/assets/material-memory-scarf.png.asset.json";
+const materialMemoryScarf = materialMemoryScarfAsset.url;
 import {
   HOME_HERO_HEADLINE,
   HOME_HERO_EYEBROW,

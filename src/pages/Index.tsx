@@ -94,7 +94,7 @@ const Index = () => {
       <Navigation />
 
       {/* Hero */}
-      <section className="relative min-h-[100svh] md:snap-start flex items-center justify-center overflow-hidden bg-background">
+      <section className="relative min-h-[100svh] md:snap-start overflow-hidden bg-background">
         <div className="absolute inset-0 overflow-hidden">
           <Editable
             kind="site_image"
@@ -113,71 +113,66 @@ const Index = () => {
           </Editable>
           <div className="absolute inset-0 bg-foreground/15 pointer-events-none" />
         </div>
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(82vw,880px)] h-[min(40vh,320px)] rounded-[50%] blur-3xl"
-          style={{ background: "radial-gradient(ellipse at center, rgba(245,241,235,0.28) 0%, rgba(245,241,235,0.14) 42%, rgba(245,241,235,0) 75%)" }}
-        />
-        <div className="relative z-10 flex flex-col items-center text-center px-6 hero-glow translate-y-4 md:translate-y-8 max-w-4xl">
-          <ScrollFadeIn>
-            <Link
-              to="/collection"
-              aria-label="Discover the Spring/Summer 2026 collection"
-              className="group flex flex-col items-center transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] hover:scale-[1.01]"
-            >
+
+        <div className="relative z-10 luxury-container h-full min-h-[100svh] flex flex-col justify-end pb-[clamp(64px,12vh,140px)] pt-[clamp(96px,18vh,180px)]">
+          <div className="max-w-[640px]">
+            <ScrollFadeIn>
+              <Editable
+                kind="text_block"
+                contentKey="home_hero"
+                field="eyebrow"
+                label="Hero — eyebrow"
+                as="p"
+                className="type-eyebrow text-[#F6F4F1]/80 text-xs md:text-sm tracking-luxury-widest mb-6 md:mb-8"
+              >
+                {heroEyebrow}
+              </Editable>
               <Editable
                 kind="text_block"
                 contentKey="home_hero"
                 field="headline"
                 label="Homepage hero text"
                 as="h1"
-                className="hero-title type-display text-[#F6F4F1] text-5xl md:text-7xl lg:text-[5.5rem] leading-[1.15] tracking-[0.08em] mb-6"
+                className="hero-title type-display text-[#F6F4F1] text-5xl md:text-7xl lg:text-[5.5rem] leading-[1.05] tracking-[0.02em]"
               >
                 {heroHeadline}
               </Editable>
-              <div
-                aria-hidden
-                className="opacity-0 group-hover:opacity-100 transition-opacity duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] -mt-1"
-              >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F6F4F1" strokeWidth="0.6" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
-                </svg>
-              </div>
-            </Link>
-          </ScrollFadeIn>
+            </ScrollFadeIn>
 
-          <ScrollFadeIn delay={0.25}>
-            <div className="relative mt-10 md:mt-14 flex flex-col sm:flex-row items-center justify-center gap-8 md:gap-16">
+            <ScrollFadeIn delay={0.2}>
               <Link
-                to="/boutique/women"
-                className="group flex flex-col items-center type-cta text-[#F6F4F1] transition-colors duration-500"
+                to="/collection"
+                className="group inline-flex flex-col items-start type-cta text-[#F6F4F1] mt-8 md:mt-10 transition-colors duration-500"
               >
-                <Editable kind="text_block" contentKey="home_hero" field="preorder_women" label="Hero — Pre-Order Women" as="span">
-                  {heroPreorderWomen}
+                <Editable kind="text_block" contentKey="home_hero" field="cta_label" label="Hero — primary CTA" as="span">
+                  {heroCta}
                 </Editable>
                 <span
                   aria-hidden
-                  className="block w-full h-px bg-[#F6F4F1] mt-1 origin-left scale-x-100 opacity-60 group-hover:scale-x-0 transition-transform duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                  className="block w-full h-px bg-[#F6F4F1] mt-1 origin-left scale-x-100 opacity-70 group-hover:scale-x-0 transition-transform duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
                 />
               </Link>
-              <Link
-                to="/boutique/men"
-                className="group flex flex-col items-center type-cta text-[#F6F4F1] transition-colors duration-500"
-              >
-                <Editable kind="text_block" contentKey="home_hero" field="preorder_men" label="Hero — Pre-Order Men" as="span">
-                  {heroPreorderMen}
-                </Editable>
-                <span
-                  aria-hidden
-                  className="block w-full h-px bg-[#F6F4F1] mt-1 origin-left scale-x-100 opacity-60 group-hover:scale-x-0 transition-transform duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
-                />
-              </Link>
-            </div>
-          </ScrollFadeIn>
+            </ScrollFadeIn>
+          </div>
         </div>
 
-        <div aria-hidden className="absolute bottom-10 left-1/2 -translate-x-1/2 w-px h-12 bg-[#F6F4F1] opacity-25" />
+        <div className="pointer-events-none absolute z-10 bottom-[clamp(64px,12vh,140px)] right-[clamp(24px,5vw,64px)] hidden sm:block">
+          <ScrollFadeIn delay={0.35}>
+            <Editable
+              kind="text_block"
+              contentKey="home_hero"
+              field="utility_caption"
+              label="Hero — utility caption"
+              as="span"
+              className="type-eyebrow text-[#F6F4F1]/70 text-xs tracking-luxury-wide"
+            >
+              {heroUtility}
+            </Editable>
+          </ScrollFadeIn>
+        </div>
       </section>
+
+
 
       {/* Featured Pre-Order */}
       {featuredPreorder && (

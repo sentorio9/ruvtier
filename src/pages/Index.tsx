@@ -322,35 +322,16 @@ const Index = () => {
       {/* Material is Memory */}
       <section className="luxury-section min-h-[100svh] md:snap-start flex items-center bg-background">
         <div className="luxury-container w-full flex flex-col items-center text-center py-[clamp(48px,8vh,96px)]">
-          <ScrollFadeIn>
-            <div className="group relative w-full max-w-[320px] md:max-w-[380px] mx-auto aspect-[3/4] max-h-[52svh] overflow-hidden bg-[hsl(30_18%_88%)] ring-1 ring-foreground/5">
+          <ScrollFadeIn className="w-full max-w-[320px] md:max-w-[380px] mx-auto">
+            <div className="group relative w-full aspect-[3/4] overflow-hidden bg-[hsl(30_18%_88%)] ring-1 ring-foreground/5">
               <img
                 src={materialMemoryScarf}
                 alt="A RUVTIER silk scarf draped over a wooden chair — the quiet permanence of material."
+                width={760}
+                height={1013}
                 className="absolute inset-0 w-full h-full object-cover object-[center_30%] transition-transform duration-[900ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:scale-[1.02]"
                 decoding="async"
               />
-              <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-foreground/10 via-transparent to-foreground/15" />
-              <Editable
-                kind="text_block"
-                contentKey="home_material_memory"
-                field="swatch_eyebrow"
-                label="'Material is Memory' swatch eyebrow"
-                as="span"
-                className="absolute top-5 right-5 type-eyebrow text-foreground/75 text-[10px] md:text-xs tracking-luxury-widest uppercase"
-              >
-                {materialMemorySwatchEyebrow}
-              </Editable>
-              <Editable
-                kind="text_block"
-                contentKey="home_material_memory"
-                field="swatch_caption"
-                label="'Material is Memory' swatch caption"
-                as="span"
-                className="absolute bottom-5 left-0 right-0 text-center type-eyebrow text-foreground/60 text-[10px] md:text-[11px] tracking-luxury-wide"
-              >
-                {materialMemorySwatchCaption}
-              </Editable>
             </div>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.1}>

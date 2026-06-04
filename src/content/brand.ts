@@ -49,7 +49,7 @@ export const HOME_WOMEN_CARD = {
   season: "Spring / Summer 2026",
   title: "Women's Collection",
   blurb: "Refined silhouettes shaped by material devotion and quiet permanence.",
-  cta: "Discover More",
+  cta: "Discover Women →",
 } as const;
 
 /** Split Collection card — Men. */
@@ -57,7 +57,7 @@ export const HOME_MEN_CARD = {
   season: "Spring / Summer 2026",
   title: "Men's Collection",
   blurb: "Understated forms built from heritage craft and enduring composition.",
-  cta: "Explore Collection",
+  cta: "Discover Men →",
 } as const;
 
 /** In Your Keeping — section headline. */

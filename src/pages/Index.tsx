@@ -237,7 +237,7 @@ const Index = () => {
       {/* Split Collection — Women / Men */}
       <section className="md:min-h-[100svh] md:snap-start flex flex-col justify-center bg-background">
         <div className="luxury-container w-full py-[clamp(32px,4vh,64px)]">
-          <div className="grid grid-cols-1 gap-10 md:gap-8 md:max-w-[80%] md:mx-auto md:[grid-template-columns:1fr_1fr] md:[transition:grid-template-columns_500ms_cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:md:[&:has(.panel-women:hover)]:[grid-template-columns:54fr_46fr] [@media(hover:hover)]:md:[&:has(.panel-men:hover)]:[grid-template-columns:46fr_54fr]">
+          <div className="grid grid-cols-1 gap-10 md:gap-8 md:max-w-[80%] md:mx-auto md:[grid-template-columns:1fr_1fr] md:[transition:grid-template-columns_500ms_cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:md:[&:has(.panel-women:hover)]:[grid-template-columns:51fr_49fr] [@media(hover:hover)]:md:[&:has(.panel-men:hover)]:[grid-template-columns:49fr_51fr]">
             {[
               {
                 to: "/boutique/women",
@@ -274,7 +274,7 @@ const Index = () => {
                       loading="lazy"
                       width={1024}
                       height={1024}
-                      className="absolute inset-0 w-full h-full object-cover object-center transition-[opacity,transform] duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:motion-safe:group-hover:opacity-0 [@media(hover:hover)]:motion-safe:group-hover:scale-[1.03]"
+                      className="absolute inset-0 w-full h-full object-cover object-center transition-[opacity,transform] duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:motion-safe:group-hover:opacity-0 [@media(hover:hover)]:motion-safe:group-hover:scale-[1.01]"
                     />
                     <img
                       src={card.secondary}
@@ -283,7 +283,7 @@ const Index = () => {
                       loading="lazy"
                       width={1024}
                       height={1024}
-                      className="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-[opacity,transform] duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:motion-safe:group-hover:opacity-100 [@media(hover:hover)]:motion-safe:group-hover:scale-[1.03]"
+                      className="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-[opacity,transform] duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:motion-safe:group-hover:opacity-100 [@media(hover:hover)]:motion-safe:group-hover:scale-[1.01]"
                     />
                   </div>
                   {/* Caption — fixed baselines across panels */}

@@ -40,12 +40,9 @@ export const HOME_HERO_PREORDER_WOMEN = "Pre-Order for Women";
 /** Hero — Men pre-order link label. */
 export const HOME_HERO_PREORDER_MEN = "Pre-Order for Men";
 
-/** Material is Memory section — eyebrow, tag, headline, blurb and CTA. */
-export const HOME_MATERIAL_MEMORY_EYEBROW = "The Material Library";
-export const HOME_MATERIAL_MEMORY_TAG = "Mulberry Silk — Nº 04";
-export const HOME_MATERIAL_MEMORY_HEADLINE = "Material is memory";
-export const HOME_MATERIAL_MEMORY_BLURB = "Every piece begins with a fibre chosen years before it is worn.";
-export const HOME_MATERIAL_MEMORY_CTA = "Discover all materials →";
+/** Material is Memory section — headline and CTA. */
+export const HOME_MATERIAL_MEMORY_HEADLINE = "Material is Memory";
+export const HOME_MATERIAL_MEMORY_CTA = "Discover all material";
 
 /** Split Collection card — Women. */
 export const HOME_WOMEN_CARD = {

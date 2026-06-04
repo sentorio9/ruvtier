@@ -1,37 +1,21 @@
-## Fix the "Material is memory" swatch — make the image actually appear and the card visible
+I’ll revise the homepage Material section so it matches the attached reference and actually displays the scarf image.
 
-### What's broken
+What I will change:
 
-From the live preview at `/`:
-- The swatch card area above "Material is memory" is empty — no image, no visible frame.
-- Inspecting the network, the `/__l5e/assets-v1/.../material-memory-scarf.png` request never fires, even though the CDN serves it 200.
-- The card div is in the DOM (so `bg-secondary` IS painting a faint tan rectangle), but because the homepage page background and `--secondary` are both off-white, the card edges are indistinguishable from the page and read as empty space.
+1. **Make the image render reliably**
+   - Replace the current asset-pointer path usage with a plain constant URL from the uploaded asset, or use the imported asset safely so the `img src` cannot become empty in the rendered DOM.
+   - Add explicit width/height structure around the image so it always has a visible rendered box.
 
-Two issues compounding:
-1. **Image never loads.** Both swatch `<img>` tags use `loading="lazy"`. The page uses a single inner `md:overflow-y-scroll` snap container, so `loading="lazy"`'s document-viewport intersection check never fires for sections that scroll into view inside that inner container.
-2. **Card frame invisible.** `bg-secondary` (HSL 30 15% 90%) is too close to the off-white page background to register as a distinct swatch card. The reference image has clear contrast.
+2. **Match the provided reference composition**
+   - Keep the section very quiet and minimal, but restore the missing visual block above the “Material is memory” text.
+   - Center the image/card above the heading, then keep the heading, body, and “Discover all materials” CTA centered below it.
+   - Preserve the RUVTIER luxury spacing, off-white background, serif heading, and text-only button rules.
 
-### Fix (frontend only, `src/pages/Index.tsx`)
+3. **Remove inaccurate placeholder/editor text**
+   - Remove/replace the visible caption text “image crossfades to fabric macro on hover,” because there is no longer a crossfade and it makes the section look unfinished.
+   - Keep any image label subtle or hidden if it conflicts with the clean reference.
 
-1. Drop `loading="lazy"` on the swatch image so it loads on mount (the image is small enough and is the centerpiece of the section).
-2. Remove the second (zoomed) crossfade `<img>` — with the actual photograph in place, the duplicated layer adds nothing and the hover zoom-in fights the editorial calm. Keep a single image with a gentle `scale-[1.02]` on hover instead.
-3. Make the card frame visible:
-   - Swap `bg-secondary` for an explicit warm-stone tone using a tailwind arbitrary value tied to the design system: `bg-[hsl(30_18%_88%)]` (slightly deeper than `--secondary` so the frame reads against the off-white page).
-   - Add a hairline edge: `ring-1 ring-foreground/5`.
-4. Make sure the photo fills the frame edge-to-edge: keep `object-cover object-center`, but tighten focus to the scarf using `object-[center_30%]` so the draped silk anchors the composition instead of the empty wall.
-5. Eyebrow + caption stay where they are (top-right and bottom-center, inside the card) so it visually matches the reference. Adjust their color to read on the photo: `text-foreground/75` for the eyebrow and `text-foreground/60` for the caption, plus a soft top/bottom gradient scrim inside the card (`bg-gradient-to-b from-foreground/8 via-transparent to-foreground/10`) so the overlay text has the faintest separation without painting boxes.
-6. No copy, layout, snap, easing, or section-order changes.
-
-### Out of scope
-
-- No changes to other sections, pages, or imagery.
-- No new assets; the CDN-hosted scarf photo stays as the source.
-- No changes to the admin editor or content keys.
-
-### Verification
-
-After the change, on `/` at 1303×890, snap to the Material is Memory stop:
-- A clearly framed warm-stone card sits above the headline.
-- The chair-scarf photo fills the card edge-to-edge.
-- `MULBERRY SILK — Nº 04` reads top-right and `image crossfades to fabric macro on hover` reads bottom-center.
-- Network panel shows a single 200 request to `/__l5e/assets-v1/.../material-memory-scarf.png` on initial render.
+4. **Verify the fix**
+   - Check the live page after the change.
+   - Confirm the scarf image request appears in browser network requests.
+   - Confirm the Material section screenshot shows the image visibly above the text instead of only blank space.

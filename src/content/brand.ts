@@ -41,8 +41,11 @@ export const HOME_HERO_PREORDER_WOMEN = "Pre-Order for Women";
 export const HOME_HERO_PREORDER_MEN = "Pre-Order for Men";
 
 /** Material is Memory section — headline and CTA. */
-export const HOME_MATERIAL_MEMORY_HEADLINE = "Material is Memory";
-export const HOME_MATERIAL_MEMORY_CTA = "Discover all material";
+export const HOME_MATERIAL_MEMORY_HEADLINE = "Material is memory";
+export const HOME_MATERIAL_MEMORY_CTA = "Discover all materials";
+export const HOME_MATERIAL_MEMORY_BODY = "Every piece begins with a fibre chosen years before it is worn.";
+export const HOME_MATERIAL_MEMORY_SWATCH_EYEBROW = "Mulberry Silk — Nº 04";
+export const HOME_MATERIAL_MEMORY_SWATCH_CAPTION = "image crossfades to fabric macro on hover";
 
 /** Split Collection card — Women. */
 export const HOME_WOMEN_CARD = {

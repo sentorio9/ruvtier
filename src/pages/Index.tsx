@@ -39,6 +39,9 @@ import appointmentImg from "@/assets/explore-appointment.png";
 import materialMemoryScarf from "@/assets/material-memory-scarf.png";
 import {
   HOME_HERO_HEADLINE,
+  HOME_HERO_EYEBROW,
+  HOME_HERO_CTA,
+  HOME_HERO_UTILITY,
   HOME_HERO_PREORDER_WOMEN,
   HOME_HERO_PREORDER_MEN,
   HOME_MATERIAL_MEMORY_HEADLINE,

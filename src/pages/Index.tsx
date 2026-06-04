@@ -267,19 +267,7 @@ const Index = () => {
               <ScrollFadeIn key={card.to} delay={card.delay}>
                 <Link to={card.to} className={`group ${card.panelClass} relative flex flex-col overflow-hidden`}>
                   {/* Image frame — locked 3:4 desktop, 4:5 mobile */}
-                  <div className="relative w-full aspect-[4/5] md:aspect-[3/4] md:max-h-[calc(80svh-260px)] mx-auto overflow-hidden bg-secondary transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:shadow-[0_30px_70px_-32px_rgba(0,0,0,0.35)]" style={{ aspectRatio: '3/4' }}>
-                    <div className="md:hidden" />
-                  </div>
-                  <div className="hidden">{/* placeholder */}</div>
-                  <div className="md:hidden" />
-                  <div className="relative w-full md:hidden aspect-[4/5] overflow-hidden bg-secondary">
-                    {/* mobile fallback removed */}
-                  </div>
-                  <div className="hidden md:block relative w-full md:max-h-[calc(80svh-260px)] aspect-[3/4] mx-auto overflow-hidden">
-                    {/* */}
-                  </div>
-                  {false && <div className="hidden">
-                  <div className="relative w-full aspect-[4/5] md:aspect-[3/4] overflow-hidden bg-secondary transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:shadow-[0_30px_70px_-32px_rgba(0,0,0,0.35)]">
+                  <div className="relative w-full aspect-[4/5] md:aspect-[3/4] md:max-h-[calc(80svh-240px)] md:[width:auto] md:mx-auto overflow-hidden bg-secondary transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:shadow-[0_30px_70px_-32px_rgba(0,0,0,0.35)]">
                     <img
                       src={card.primary}
                       alt={card.alt}

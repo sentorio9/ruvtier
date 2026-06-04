@@ -25,6 +25,15 @@
 /** Hero — main editorial headline, large serif over the cover image. */
 export const HOME_HERO_HEADLINE = "Permanence in garment form";
 
+/** Hero — small eyebrow above headline. */
+export const HOME_HERO_EYEBROW = "SPRING / SUMMER 2026";
+
+/** Hero — primary CTA label (rendered uppercase via type-cta). */
+export const HOME_HERO_CTA = "Discover the Collection";
+
+/** Hero — small utility caption, bottom-right. */
+export const HOME_HERO_UTILITY = "full-bleed film, slow pan ↻";
+
 /** Hero — Women pre-order link label. */
 export const HOME_HERO_PREORDER_WOMEN = "Pre-Order for Women";
 

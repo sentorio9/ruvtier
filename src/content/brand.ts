@@ -82,6 +82,26 @@ export const HOME_FEATURED_PREORDER = {
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Preorder / Private Access — src/pages/PreorderPage.tsx
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Eyebrow above the product name. Suffixed with the edition_size at render. */
+export const PREORDER_EYEBROW_PREFIX = "PRIVATE ACCESS — EDITION OF";
+
+/** Availability tail appended after the price ("€780 — allocated, not open purchase"). */
+export const PREORDER_AVAILABILITY = "allocated, not open purchase";
+
+/** Primary call to action — opens the Private Access drawer. */
+export const PREORDER_CTA = "Request Allocation";
+
+/** Quiet line under the CTA. */
+export const PREORDER_FINEPRINT =
+  "Size guidance by appointment · Complimentary alterations for life";
+
+/** Label preceding the allocation counter. */
+export const PREORDER_ALLOCATION_LABEL = "Allocation status";
+
+// ─────────────────────────────────────────────────────────────────────────────
 // The House — src/pages/TheHousePage.tsx (manifesto paragraphs)
 // ─────────────────────────────────────────────────────────────────────────────
 

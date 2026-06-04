@@ -319,29 +319,66 @@ const Index = () => {
 
 
       {/* Material is Memory */}
-      <section className="luxury-section min-h-[100svh] md:snap-start flex items-center">
+      <section className="luxury-section min-h-[100svh] md:snap-start flex items-center bg-background">
         <div className="luxury-container w-full flex flex-col items-center text-center py-[clamp(48px,8vh,96px)]">
           <ScrollFadeIn>
-            <div className="w-full max-w-[320px] md:max-w-[400px] mx-auto aspect-[3/4] max-h-[48svh]">
+            <div className="group relative w-full max-w-[320px] md:max-w-[380px] mx-auto aspect-[3/4] max-h-[52svh] overflow-hidden bg-secondary">
               <img
                 src={materialMemoryScarf}
                 alt="A RUVTIER silk scarf draped over a wooden chair — the quiet permanence of material."
-                className="w-full h-full object-contain"
+                className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:opacity-0"
                 loading="lazy"
               />
+              <img
+                src={materialMemoryScarf}
+                alt=""
+                aria-hidden
+                className="absolute inset-0 w-full h-full object-cover object-center scale-[1.6] opacity-0 transition-opacity duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:opacity-100"
+                loading="lazy"
+              />
+              <Editable
+                kind="text_block"
+                contentKey="home_material_memory"
+                field="swatch_eyebrow"
+                label="'Material is Memory' swatch eyebrow"
+                as="span"
+                className="absolute top-5 right-5 type-eyebrow text-foreground/70 text-[10px] md:text-xs tracking-luxury-widest uppercase"
+              >
+                {materialMemorySwatchEyebrow}
+              </Editable>
+              <Editable
+                kind="text_block"
+                contentKey="home_material_memory"
+                field="swatch_caption"
+                label="'Material is Memory' swatch caption"
+                as="span"
+                className="absolute bottom-5 left-0 right-0 text-center type-eyebrow text-foreground/55 text-[10px] md:text-[11px] tracking-luxury-wide"
+              >
+                {materialMemorySwatchCaption}
+              </Editable>
             </div>
           </ScrollFadeIn>
           <ScrollFadeIn delay={0.1}>
-            <div className="mt-8 md:mt-12 flex flex-col items-center text-center">
+            <div className="mt-8 md:mt-10 flex flex-col items-center text-center">
               <Editable
                 kind="text_block"
                 contentKey="home_material_memory"
                 field="headline"
                 label="'Material is Memory' heading"
                 as="h2"
-                className="type-display mb-6 md:mb-8"
+                className="type-display mb-4 md:mb-5"
               >
                 {materialMemoryHeadline}
+              </Editable>
+              <Editable
+                kind="text_block"
+                contentKey="home_material_memory"
+                field="body"
+                label="'Material is Memory' body"
+                as="p"
+                className="type-body max-w-[460px] mb-6 md:mb-8"
+              >
+                {materialMemoryBody}
               </Editable>
               <Editable
                 kind="text_block"
@@ -359,6 +396,7 @@ const Index = () => {
           </ScrollFadeIn>
         </div>
       </section>
+
 
       {/* In Your Keeping */}
       <section className="min-h-[100svh] md:snap-start flex flex-col justify-center py-[clamp(48px,8vh,96px)]">

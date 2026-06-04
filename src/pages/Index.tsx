@@ -274,7 +274,7 @@ const Index = () => {
                       loading="lazy"
                       width={1024}
                       height={1024}
-                      className="absolute inset-0 w-full h-full object-cover object-center transition-[opacity,transform] duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:motion-safe:group-hover:opacity-0 [@media(hover:hover)]:motion-safe:group-hover:scale-[1.03]"
+                      className="absolute inset-0 w-full h-full object-cover object-center transition-[opacity,transform] duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:motion-safe:group-hover:opacity-0 [@media(hover:hover)]:motion-safe:group-hover:scale-[1.01]"
                     />
                     <img
                       src={card.secondary}
@@ -283,7 +283,7 @@ const Index = () => {
                       loading="lazy"
                       width={1024}
                       height={1024}
-                      className="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-[opacity,transform] duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:motion-safe:group-hover:opacity-100 [@media(hover:hover)]:motion-safe:group-hover:scale-[1.03]"
+                      className="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-[opacity,transform] duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:motion-safe:group-hover:opacity-100 [@media(hover:hover)]:motion-safe:group-hover:scale-[1.01]"
                     />
                   </div>
                   {/* Caption — fixed baselines across panels */}

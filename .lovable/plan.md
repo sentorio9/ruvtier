@@ -1,78 +1,42 @@
-## Goal
 
-Bring `/preorder/:slug` (e.g. Theia sweater) in line with the reference: a calm two-column composition with a 1-main + 2-thumbnail gallery, a Private Access intent column on the right (eyebrow, headline, price+availability line, short description, inline size selector, allocation progress, single `REQUEST ALLOCATION` CTA, fine print, and three info accordions). The full request form moves into a right-side drawer that opens from the CTA.
+## Scope
 
-## Files
+Refine the Women/Men split section on `src/pages/Index.tsx` and replace the four images with a cohesive AI-generated campaign shoot.
 
-**Database (migration)**
-- `products` — add `edition_size INT` and `allocated_count INT DEFAULT 0`, both nullable. No backfill; rows without `edition_size` simply hide the counter. RLS unchanged (existing product policies cover it).
+## 1. Generate four campaign images
 
-**New components**
-- `src/components/PrivateAccessDrawer.tsx` — right-side drawer (uses existing `ui/sheet`) wrapping the current form body extracted from `PreorderPage`. Receives `product`, `defaultSize`, `open`, `onClose`. Handles submit, success state, and the same form-protection/honeypot logic that lives in the page today.
-- `src/components/preorder/InfoAccordion.tsx` — thin wrapper around `ui/accordion` styled for the page (hairline border-top, label in `type-eyebrow`, body in `type-body`, no chevron rotation noise). Used three times.
+Use `imagegen--generate_image` with `model: premium` (text-free editorial photography needs the higher fidelity tier). All four share one prompt scaffold — fixed background (#C9C2B6 warm greige seamless), soft diffused window key light from the left, medium-format 80mm look, shallow DOF, desaturated warm filmic grade, palette limited to ivory/camel/taupe/charcoal + one deep accent. 3:4 portrait, eye-line consistent, no text/logos.
 
-**Edited**
-- `src/pages/PreorderPage.tsx` — rebuilt around the new layout (details below). The existing form JSX is lifted into `PrivateAccessDrawer`; the page only renders intent + CTA.
-- `src/content/brand.ts` — add `PREORDER_EYEBROW_PREFIX = "PRIVATE ACCESS — EDITION OF"`, `PREORDER_CTA = "Request Allocation"`, `PREORDER_FINEPRINT = "Size guidance by appointment · Complimentary alterations for life"`, `PREORDER_AVAILABILITY = "allocated, not open purchase"`.
+- `src/assets/collection-women-primary.jpg` — female, three-quarter stance, ivory high-neck sleeveless knit + wide cream trousers, looking off-camera.
+- `src/assets/collection-women-hover.jpg` — same model/set, closer crop on knit weave, hands + torso, face partially out of frame.
+- `src/assets/collection-men-primary.jpg` — male, standing, burgundy honeycomb mock-neck + stone pleated trousers, cream leather holdall, cropped just above chin.
+- `src/assets/collection-men-hover.jpg` — same look, detail crop: sweater texture, hand in pocket, holdall strap, no face.
 
-## Page composition
+Generate sequentially so each prompt can reference the prior shot's grade/background language to keep the campaign cohesive.
 
-```text
-luxury-container · grid lg:grid-cols-2 gap-10 lg:gap-20
+## 2. Refactor the split section in `src/pages/Index.tsx`
 
-LEFT (gallery)
-  main image  — aspect [4/5] or [1/1], first media_gallery item
-                (falls back to hero_image_url → thumbnail_url → garmentImage)
-  thumbs row  — grid grid-cols-2 gap-4, items 2 & 3 from gallery
-                rendered ONLY if they exist (no empty tiles); click swaps main
+Replace the existing Women/Men `section` (the one that maps over two card configs) with a tighter layout:
 
-RIGHT (intent, sticky)
-  eyebrow      type-eyebrow · tracking-luxury-widest
-               "PRIVATE ACCESS — EDITION OF {edition_size}"   (hidden if null)
-  h1           font-serif text-3xl md:text-4xl              — product.name
-  price line   text-sm text-muted-foreground
-               "{formatPrice(price)} — allocated, not open purchase"
-  description  luxury-body                                   — product.description
+- **Aspect lock**: each panel uses `aspect-[3/4]` on desktop and `aspect-[4/5]` on mobile (replaces the current `md:h-full` flex sizing). Drop `md:max-h-[calc(100svh-96px)]`.
+- **Equal panels with hover widen**: wrap both panels in a CSS grid where each column is `grid-template-columns: 1fr 1fr` by default. On `group/panel` hover, use a parent `has-[:hover]` selector or a small piece of state to shift to `54fr 46fr` with `transition: grid-template-columns 500ms ease`. Tailwind arbitrary value `grid-cols-[1fr_1fr] [&:has(.panel:hover)]:grid-cols-[54fr_46fr]`. Disable via `@media (hover: none)` so touch devices keep 1:1.
+- **Image crossfade**: two `<img>` stacked `absolute inset-0`, primary `opacity-100`, hover `opacity-0`; on group hover invert. `transition-opacity duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]`. Visible image scales 1 → 1.03 over the same 600ms via `transition-transform`. Wrap both in `@media (hover: hover)` (Tailwind `hover:` already gated; add `motion-safe:` + `[@media(hover:none)]:transform-none [@media(hover:none)]:opacity-100` guards on the hover image to keep tap clean).
+- **Caption baselines**: lift the eyebrow/title/CTA out of the current `h-[110px]` lifting panel and put them in a fixed-height caption row beneath the image with `min-h-[140px]` and `flex flex-col justify-between` so eyebrow / title / CTA align across panels. Remove the existing `group-hover:-translate-y` lift (no longer needed — caption is always visible at the same baseline).
+- **CTA copy + animation**: replace `cta` labels with `DISCOVER WOMEN →` / `DISCOVER MEN →` (move into `HOME_WOMEN_CARD.cta` / `HOME_MEN_CARD.cta` in `src/content/brand.ts`). Underline already animates left-to-right via the existing `scale-x-0 group-hover:scale-x-100` span — keep that, ensure both share `tracking-luxury-wide` for identical letter-spacing.
+- **Imagery wiring**: import the four new assets, pass `primary` and `secondary` per card. Remove the `heroImage`/`lifestyleImg` fallbacks (constraint #4).
 
-  size block   label "SIZE" type-eyebrow
-               row of square buttons from product.size_options
-               selected = filled foreground; others = hairline border
-               (selection passed to drawer as defaultSize)
+## 3. Content updates
 
-  allocation   thin baseline rule + caption row
-               left: "Allocation status"
-               right: "{remaining} of {edition_size} remaining"
-               (whole block hidden when edition_size is null)
-               remaining = max(edition_size - (allocated_count ?? 0), 0)
-
-  CTA          full-width black button (existing button style)
-               "REQUEST ALLOCATION" → opens PrivateAccessDrawer
-  fineprint    text-xs text-muted-foreground centered
-
-  accordions   3 × InfoAccordion (hide any item whose source is empty)
-    · Composition & care   ← product.materials + product.care_info (stacked)
-    · Fit & measurements   ← product.size_options joined + product.long_description excerpt if relevant; fall back to "Available on request"
-    · Provenance & maker   ← product.long_description (or short placeholder)
-```
-
-Motion: keep `ScrollFadeIn` on left gallery, right header, and the accordions group (small staggered delays). No new animation libraries.
-
-## Drawer behaviour
-
-- Opens with selected size pre-filled.
-- All existing fields preserved (full name, email, country, size, delivery region, message) plus honeypot + timing guard.
-- On success: drawer shows the same "Your request has been received" message, then auto-closes after 2.4 s.
-- Insert payload unchanged (`preorder_requests`). No edition_size mutation from client.
-- Respects scroll lock and Escape-to-close (already part of `ui/sheet`).
+In `src/content/brand.ts` update `HOME_WOMEN_CARD.cta` to `DISCOVER WOMEN →` and `HOME_MEN_CARD.cta` to `DISCOVER MEN →` (keep existing season/title/blurb).
 
 ## Out of scope
 
-- Admin UI to edit `edition_size` / `allocated_count` — fields exist in DB; admin form update will be a follow-up.
-- Automatic increment of `allocated_count` on submit — counter is editorially curated for now (matches "Use existing fields" intent).
-- Changes to other pages, navigation, footer, or design tokens.
-- Image lightbox / gallery zoom.
+- No changes to other homepage sections, header, footer, or admin editor.
+- No new tokens — reuses existing `type-eyebrow`, `type-title`, `type-cta`, `tracking-luxury-wide`, and the standard easing curve.
+- No DB / RLS / backend work.
 
 ## Verification
 
-- Visit `/preorder/stillness-cashmere-coat` (or any preorder-enabled product); confirm layout matches the reference at desktop (1303×890) and mobile, accordions collapse cleanly, counter hides when `edition_size` is null, size selection carries into the drawer, submit still writes to `preorder_requests`.
-- Re-screenshot before declaring done.
+- Visit `/` at 1303×890: panels equal width, captions on identical baselines, hover crossfades over 600ms, hovered panel widens to ~54%, sibling shrinks, underline sweeps in from left.
+- Resize ≤ md: panels stack full-width 4:5, no hover effects fire, tap navigates.
+- Confirm all four generated images share background tone, lighting direction, and grade.

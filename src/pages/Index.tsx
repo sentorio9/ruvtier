@@ -347,7 +347,7 @@ const Index = () => {
                 field="swatch_caption"
                 label="'Material is Memory' swatch caption"
                 as="span"
-                className="absolute bottom-5 left-0 right-0 text-center type-eyebrow text-foreground/55 text-[10px] md:text-[11px] tracking-luxury-wide"
+                className="absolute bottom-5 left-0 right-0 text-center type-eyebrow text-foreground/60 text-[10px] md:text-[11px] tracking-luxury-wide"
               >
                 {materialMemorySwatchCaption}
               </Editable>

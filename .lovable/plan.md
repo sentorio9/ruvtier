@@ -1,23 +1,37 @@
-## Use the uploaded scarf photo as the swatch image
+## Fix the "Material is memory" swatch — make the image actually appear and the card visible
 
-The structure built last turn matches the reference (eyebrow top-right, caption bottom-center, headline + body + CTA below). The remaining gap is the actual imagery — the card currently shows the old PNG with transparent background on a tan fill. Swap in the new chair-scarf photo so it fills the swatch.
+### What's broken
 
-### Changes
+From the live preview at `/`:
+- The swatch card area above "Material is memory" is empty — no image, no visible frame.
+- Inspecting the network, the `/__l5e/assets-v1/.../material-memory-scarf.png` request never fires, even though the CDN serves it 200.
+- The card div is in the DOM (so `bg-secondary` IS painting a faint tan rectangle), but because the homepage page background and `--secondary` are both off-white, the card edges are indistinguishable from the page and read as empty space.
 
-1. Upload `user-uploads://image-49.png` (the navy-border silk scarf on the wooden chair) via `lovable-assets create` and write the pointer to `src/assets/material-memory-scarf.png.asset.json`.
-2. In `src/pages/Index.tsx`:
-   - Import the new asset pointer instead of `material-memory-scarf.png`.
-   - Use it as the swatch image (`object-cover object-center`) so the photo fills the 3:4 card edge-to-edge.
-   - Keep the hover layer using the same image with a `scale-[1.25]` zoom (acts as the "fabric macro" crossfade until a dedicated macro shot exists).
-   - Keep the eyebrow `Mulberry Silk — Nº 04` (top-right) and the caption `image crossfades to fabric macro on hover` (bottom-center) — set their color to a soft dark tone that reads on the off-white scarf (`text-foreground/60`).
-3. Leave the existing `src/assets/material-memory-scarf.png` binary untouched (other code may reference it); the new pointer JSON replaces only what `Index.tsx` imports.
+Two issues compounding:
+1. **Image never loads.** Both swatch `<img>` tags use `loading="lazy"`. The page uses a single inner `md:overflow-y-scroll` snap container, so `loading="lazy"`'s document-viewport intersection check never fires for sections that scroll into view inside that inner container.
+2. **Card frame invisible.** `bg-secondary` (HSL 30 15% 90%) is too close to the off-white page background to register as a distinct swatch card. The reference image has clear contrast.
+
+### Fix (frontend only, `src/pages/Index.tsx`)
+
+1. Drop `loading="lazy"` on the swatch image so it loads on mount (the image is small enough and is the centerpiece of the section).
+2. Remove the second (zoomed) crossfade `<img>` — with the actual photograph in place, the duplicated layer adds nothing and the hover zoom-in fights the editorial calm. Keep a single image with a gentle `scale-[1.02]` on hover instead.
+3. Make the card frame visible:
+   - Swap `bg-secondary` for an explicit warm-stone tone using a tailwind arbitrary value tied to the design system: `bg-[hsl(30_18%_88%)]` (slightly deeper than `--secondary` so the frame reads against the off-white page).
+   - Add a hairline edge: `ring-1 ring-foreground/5`.
+4. Make sure the photo fills the frame edge-to-edge: keep `object-cover object-center`, but tighten focus to the scarf using `object-[center_30%]` so the draped silk anchors the composition instead of the empty wall.
+5. Eyebrow + caption stay where they are (top-right and bottom-center, inside the card) so it visually matches the reference. Adjust their color to read on the photo: `text-foreground/75` for the eyebrow and `text-foreground/60` for the caption, plus a soft top/bottom gradient scrim inside the card (`bg-gradient-to-b from-foreground/8 via-transparent to-foreground/10`) so the overlay text has the faintest separation without painting boxes.
+6. No copy, layout, snap, easing, or section-order changes.
 
 ### Out of scope
 
-- No layout, headline, body, CTA, snap, or easing changes.
-- No new editor fields; existing `Editable` wiring stays.
-- No other pages touched.
+- No changes to other sections, pages, or imagery.
+- No new assets; the CDN-hosted scarf photo stays as the source.
+- No changes to the admin editor or content keys.
 
 ### Verification
 
-Reload `/`, scroll to the Material is Memory snap stop: the silk-scarf-on-chair photo now fills the swatch card; eyebrow and caption remain legible over the image; hover triggers a smooth zoomed crossfade.
+After the change, on `/` at 1303×890, snap to the Material is Memory stop:
+- A clearly framed warm-stone card sits above the headline.
+- The chair-scarf photo fills the card edge-to-edge.
+- `MULBERRY SILK — Nº 04` reads top-right and `image crossfades to fabric macro on hover` reads bottom-center.
+- Network panel shows a single 200 request to `/__l5e/assets-v1/.../material-memory-scarf.png` on initial render.

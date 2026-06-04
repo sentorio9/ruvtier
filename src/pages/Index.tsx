@@ -337,7 +337,7 @@ const Index = () => {
                 field="swatch_eyebrow"
                 label="'Material is Memory' swatch eyebrow"
                 as="span"
-                className="absolute top-5 right-5 type-eyebrow text-foreground/70 text-[10px] md:text-xs tracking-luxury-widest uppercase"
+                className="absolute top-5 right-5 type-eyebrow text-foreground/75 text-[10px] md:text-xs tracking-luxury-widest uppercase"
               >
                 {materialMemorySwatchEyebrow}
               </Editable>

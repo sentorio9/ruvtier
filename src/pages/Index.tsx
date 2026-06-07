@@ -400,12 +400,12 @@ const Index = () => {
                       loading="lazy"
                       className="absolute inset-0 w-full h-full object-contain object-center p-[8%] transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                     />
-                    <span aria-hidden className="absolute bottom-3 left-0 right-0 text-center type-eyebrow text-foreground/55 z-10">
+                    <span aria-hidden className="hidden md:block absolute bottom-3 left-0 right-0 text-center type-eyebrow text-foreground/55 z-10">
                       {item.caption}
                     </span>
                   </div>
-                  <div className="flex flex-col items-center text-center px-4 pt-5 md:pt-6 text-foreground">
-                    <h3 className="type-title">
+                  <div className="flex flex-col items-center text-center px-1 md:px-4 pt-3 md:pt-6 text-foreground min-h-[88px] md:min-h-[120px]">
+                    <h3 className="type-title text-[15px] md:text-inherit leading-snug">
                       {item.label}
                     </h3>
                     <span className="mt-3 type-cta tracking-luxury-wide relative inline-block pb-1">

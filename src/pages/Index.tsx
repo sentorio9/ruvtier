@@ -185,12 +185,12 @@ const Index = () => {
 
       {/* Featured Pre-Order */}
       {featuredPreorder && (
-        <section className="luxury-section bg-background min-h-[100svh] md:snap-start flex items-center">
-          <div className="luxury-container w-full py-[clamp(48px,8vh,96px)]">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+        <section className="luxury-section bg-background md:min-h-[100svh] md:snap-start flex items-center">
+          <div className="luxury-container w-full py-[clamp(40px,8vh,96px)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
               <ScrollFadeIn>
-                <Link to={featuredHref!} className="block group overflow-hidden mx-auto w-full max-w-[min(100%,60vh)]">
-                  <div className="relative w-full aspect-[3/4] max-h-[78svh] overflow-hidden bg-secondary flex items-center justify-center transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:shadow-[0_24px_60px_-30px_rgba(58,58,58,0.18)]">
+                <Link to={featuredHref!} className="block group overflow-hidden mx-auto w-full max-w-[260px] md:max-w-[min(100%,60vh)]">
+                  <div className="relative w-full aspect-[3/4] md:max-h-[78svh] overflow-hidden bg-secondary flex items-center justify-center transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:shadow-[0_24px_60px_-30px_rgba(58,58,58,0.18)]">
                     {featuredImage ? (
                       <img
                         src={featuredImage}

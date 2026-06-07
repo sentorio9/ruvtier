@@ -320,9 +320,9 @@ const Index = () => {
 
 
       {/* Material is Memory */}
-      <section className="luxury-section min-h-[100svh] md:snap-start flex items-center bg-background">
-        <div className="luxury-container w-full flex flex-col items-center text-center py-[clamp(48px,8vh,96px)]">
-          <ScrollFadeIn className="w-full max-w-[320px] md:max-w-[380px] mx-auto">
+      <section className="luxury-section md:min-h-[100svh] md:snap-start flex items-center bg-background">
+        <div className="luxury-container w-full flex flex-col items-center text-center py-[clamp(40px,8vh,96px)]">
+          <ScrollFadeIn className="w-full max-w-[220px] md:max-w-[380px] mx-auto">
             <div className="group relative w-full aspect-[3/4] overflow-hidden bg-[hsl(30_18%_88%)] ring-1 ring-foreground/5">
               <img
                 src={materialMemoryScarf}

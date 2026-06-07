@@ -185,12 +185,12 @@ const Index = () => {
 
       {/* Featured Pre-Order */}
       {featuredPreorder && (
-        <section className="luxury-section bg-background min-h-[100svh] md:snap-start flex items-center">
-          <div className="luxury-container w-full py-[clamp(48px,8vh,96px)]">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+        <section className="luxury-section bg-background md:min-h-[100svh] md:snap-start flex items-center">
+          <div className="luxury-container w-full py-[clamp(40px,8vh,96px)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
               <ScrollFadeIn>
-                <Link to={featuredHref!} className="block group overflow-hidden mx-auto w-full max-w-[min(100%,60vh)]">
-                  <div className="relative w-full aspect-[3/4] max-h-[78svh] overflow-hidden bg-secondary flex items-center justify-center transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:shadow-[0_24px_60px_-30px_rgba(58,58,58,0.18)]">
+                <Link to={featuredHref!} className="block group overflow-hidden mx-auto w-full max-w-[260px] md:max-w-[min(100%,60vh)]">
+                  <div className="relative w-full aspect-[3/4] md:max-h-[78svh] overflow-hidden bg-secondary flex items-center justify-center transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:shadow-[0_24px_60px_-30px_rgba(58,58,58,0.18)]">
                     {featuredImage ? (
                       <img
                         src={featuredImage}
@@ -320,9 +320,9 @@ const Index = () => {
 
 
       {/* Material is Memory */}
-      <section className="luxury-section min-h-[100svh] md:snap-start flex items-center bg-background">
-        <div className="luxury-container w-full flex flex-col items-center text-center py-[clamp(48px,8vh,96px)]">
-          <ScrollFadeIn className="w-full max-w-[320px] md:max-w-[380px] mx-auto">
+      <section className="luxury-section md:min-h-[100svh] md:snap-start flex items-center bg-background">
+        <div className="luxury-container w-full flex flex-col items-center text-center py-[clamp(40px,8vh,96px)]">
+          <ScrollFadeIn className="w-full max-w-[220px] md:max-w-[380px] mx-auto">
             <div className="group relative w-full aspect-[3/4] overflow-hidden bg-[hsl(30_18%_88%)] ring-1 ring-foreground/5">
               <img
                 src={materialMemoryScarf}
@@ -375,7 +375,7 @@ const Index = () => {
 
 
       {/* In Your Keeping */}
-      <section className="min-h-[100svh] md:snap-start flex flex-col justify-center py-[clamp(48px,8vh,96px)]">
+      <section className="md:min-h-[100svh] md:snap-start flex flex-col justify-center py-[clamp(40px,8vh,96px)]">
         <div className="luxury-container w-full">
           <ScrollFadeIn>
             <Editable kind="text_block" contentKey="home_in_your_keeping" field="headline" label="'In Your Keeping' heading" as="h2" className="type-title text-center mb-10 md:mb-14">
@@ -400,12 +400,12 @@ const Index = () => {
                       loading="lazy"
                       className="absolute inset-0 w-full h-full object-contain object-center p-[8%] transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                     />
-                    <span aria-hidden className="absolute bottom-3 left-0 right-0 text-center type-eyebrow text-foreground/55 z-10">
+                    <span aria-hidden className="hidden md:block absolute bottom-3 left-0 right-0 text-center type-eyebrow text-foreground/55 z-10">
                       {item.caption}
                     </span>
                   </div>
-                  <div className="flex flex-col items-center text-center px-4 pt-5 md:pt-6 text-foreground">
-                    <h3 className="type-title">
+                  <div className="flex flex-col items-center text-center px-1 md:px-4 pt-3 md:pt-6 text-foreground min-h-[88px] md:min-h-[120px]">
+                    <h3 className="type-title text-[15px] md:text-inherit leading-snug">
                       {item.label}
                     </h3>
                     <span className="mt-3 type-cta tracking-luxury-wide relative inline-block pb-1">

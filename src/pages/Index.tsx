@@ -375,7 +375,7 @@ const Index = () => {
 
 
       {/* In Your Keeping */}
-      <section className="min-h-[100svh] md:snap-start flex flex-col justify-center py-[clamp(48px,8vh,96px)]">
+      <section className="md:min-h-[100svh] md:snap-start flex flex-col justify-center py-[clamp(40px,8vh,96px)]">
         <div className="luxury-container w-full">
           <ScrollFadeIn>
             <Editable kind="text_block" contentKey="home_in_your_keeping" field="headline" label="'In Your Keeping' heading" as="h2" className="type-title text-center mb-10 md:mb-14">

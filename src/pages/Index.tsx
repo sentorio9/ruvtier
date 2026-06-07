@@ -142,7 +142,7 @@ const Index = () => {
                 field="headline"
                 label="Homepage hero text"
                 as="h1"
-                className="hero-title type-display text-[#F6F4F1] text-5xl md:text-7xl lg:text-[5.5rem] leading-[1.05] tracking-[0.02em]"
+                className="hero-title font-serif font-light text-[#F6F4F1] text-[clamp(40px,7vw,88px)] leading-[1.06] tracking-[0.015em]"
               >
                 {heroHeadline}
               </Editable>
@@ -189,7 +189,7 @@ const Index = () => {
           <div className="luxury-container w-full py-[clamp(40px,8vh,96px)]">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
               <ScrollFadeIn>
-                <Link to={featuredHref!} className="block group overflow-hidden mx-auto w-full max-w-[260px] md:max-w-[min(100%,60vh)]">
+                <Link to={featuredHref!} className="block group overflow-hidden mx-auto w-full max-w-[300px] md:max-w-[min(100%,60vh)]">
                   <div className="relative w-full aspect-[3/4] md:max-h-[78svh] overflow-hidden bg-secondary flex items-center justify-center transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:shadow-[0_24px_60px_-30px_rgba(58,58,58,0.18)]">
                     {featuredImage ? (
                       <img
@@ -208,26 +208,26 @@ const Index = () => {
               </ScrollFadeIn>
 
               <ScrollFadeIn delay={0.1}>
-                <div className="flex flex-col items-start text-left max-w-[460px]">
+                <div className="flex flex-col items-start text-left max-w-[440px] mx-auto md:mx-0 px-2 md:px-0">
                   {(featuredPreorder as any).preorder_enabled && (
-                    <span className="type-eyebrow mb-5">
+                    <span className="type-eyebrow mb-6">
                       Private Access — Pre-Register
                     </span>
                   )}
-                  <h2 className="type-display mb-5">
+                  <h2 className="type-display mb-6">
                     {featuredPreorder.name}
                   </h2>
                   {featuredPreorder.description && (
-                    <p className="type-body mb-6">
+                    <p className="type-body mb-7">
                       {featuredPreorder.description}
                     </p>
                   )}
                   {(featuredPreorder as any).preorder_enabled ? (
-                    <p className="type-eyebrow mb-8">
+                    <p className="type-eyebrow mb-9">
                       Available by allocation — not open purchase
                     </p>
                   ) : featuredPreorder.price != null ? (
-                    <p className="type-subtitle mb-8">
+                    <p className="type-subtitle mb-9">
                       {formatPrice(featuredPreorder.price)}
                     </p>
                   ) : null}
@@ -294,11 +294,11 @@ const Index = () => {
                     />
                   </div>
                   {/* Caption — fixed baselines across panels */}
-                  <div className="relative z-10 shrink-0 bg-background flex flex-col items-center text-center px-2 md:px-6 pt-4 md:pt-7 pb-2 min-h-[110px] md:min-h-[160px]">
-                    <Editable kind="text_block" contentKey={card.contentKey} field="season" label={`${card.alt} — season label`} as="span" className="type-eyebrow tracking-luxury-wide mb-3">
+                  <div className="relative z-10 shrink-0 bg-background flex flex-col items-center text-center px-3 md:px-6 pt-5 md:pt-8 pb-3 md:pb-4 min-h-[120px] md:min-h-[168px]">
+                    <Editable kind="text_block" contentKey={card.contentKey} field="season" label={`${card.alt} — season label`} as="span" className="type-eyebrow tracking-luxury-wide mb-3 md:mb-4">
                       {card.season}
                     </Editable>
-                    <Editable kind="text_block" contentKey={card.contentKey} field="title" label={`${card.alt} — title`} as="h2" className="type-title mb-4">
+                    <Editable kind="text_block" contentKey={card.contentKey} field="title" label={`${card.alt} — title`} as="h2" className="type-title mb-4 md:mb-5">
                       {card.title}
                     </Editable>
                     <span className="type-cta tracking-luxury-wide">
@@ -322,7 +322,7 @@ const Index = () => {
       {/* Material is Memory */}
       <section className="luxury-section md:min-h-[100svh] md:snap-start flex items-center bg-background">
         <div className="luxury-container w-full flex flex-col items-center text-center py-[clamp(40px,8vh,96px)]">
-          <ScrollFadeIn className="w-full max-w-[220px] md:max-w-[380px] mx-auto">
+          <ScrollFadeIn className="w-full max-w-[260px] md:max-w-[380px] mx-auto">
             <div className="group relative w-full aspect-[3/4] overflow-hidden bg-[hsl(30_18%_88%)] ring-1 ring-foreground/5">
               <img
                 src={materialMemoryScarf}
@@ -391,7 +391,7 @@ const Index = () => {
               <ScrollFadeIn key={item.label} delay={i * 0.08}>
                 <Link to={item.to} className="group flex flex-col">
                   <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary border border-border">
-                    <span aria-hidden className="absolute top-3 left-3 type-eyebrow tracking-luxury-wide text-foreground/60 z-10">
+                    <span aria-hidden className="absolute top-3 left-3 md:top-4 md:left-4 type-eyebrow tracking-luxury-wide text-foreground/60 z-10">
                       {item.numeral}
                     </span>
                     <img
@@ -400,15 +400,15 @@ const Index = () => {
                       loading="lazy"
                       className="absolute inset-0 w-full h-full object-contain object-center p-[8%] transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                     />
-                    <span aria-hidden className="hidden md:block absolute bottom-3 left-0 right-0 text-center type-eyebrow text-foreground/55 z-10">
+                    <span aria-hidden className="hidden md:block absolute bottom-4 left-0 right-0 text-center type-eyebrow text-foreground/55 z-10">
                       {item.caption}
                     </span>
                   </div>
-                  <div className="flex flex-col items-center text-center px-1 md:px-4 pt-3 md:pt-6 text-foreground min-h-[88px] md:min-h-[120px]">
-                    <h3 className="type-title text-[15px] md:text-inherit leading-snug">
+                  <div className="flex flex-col items-center text-center px-2 md:px-4 pt-4 md:pt-6 text-foreground">
+                    <h3 className="type-title leading-luxury-card">
                       {item.label}
                     </h3>
-                    <span className="mt-3 type-cta tracking-luxury-wide relative inline-block pb-1">
+                    <span className="mt-3 md:mt-4 type-cta tracking-luxury-wide relative inline-block pb-1">
                       <span className="relative inline-block pb-1">
                         EXPLORE
                         <span

@@ -405,7 +405,7 @@ const Index = () => {
                     </span>
                   </div>
                   <div className="flex flex-col items-center text-center px-2 md:px-4 pt-4 md:pt-6 text-foreground">
-                    <h3 className="type-title leading-luxury-card">
+                    <h3 className="type-title leading-luxury-card min-h-[3.4em] md:min-h-0 flex items-start justify-center">
                       {item.label}
                     </h3>
                     <span className="mt-3 md:mt-4 type-cta tracking-luxury-wide relative inline-block pb-1">
@@ -418,6 +418,7 @@ const Index = () => {
                       </span>
                     </span>
                   </div>
+
                 </Link>
               </ScrollFadeIn>
             ))}

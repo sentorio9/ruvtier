@@ -142,7 +142,7 @@ const Index = () => {
                 field="headline"
                 label="Homepage hero text"
                 as="h1"
-                className="hero-title font-serif font-light text-[#F6F4F1] text-[clamp(40px,7vw,88px)] leading-[1.06] tracking-[0.015em]"
+                className="hero-title font-serif font-light text-[#F6F4F1] text-[clamp(32px,6.4vw,80px)] leading-[1.08] tracking-[0.015em]"
               >
                 {heroHeadline}
               </Editable>
@@ -378,7 +378,7 @@ const Index = () => {
       <section className="md:min-h-[100svh] md:snap-start flex flex-col justify-center py-[clamp(40px,8vh,96px)]">
         <div className="luxury-container w-full">
           <ScrollFadeIn>
-            <Editable kind="text_block" contentKey="home_in_your_keeping" field="headline" label="'In Your Keeping' heading" as="h2" className="type-title text-center mb-10 md:mb-14">
+            <Editable kind="text_block" contentKey="home_in_your_keeping" field="headline" label="'In Your Keeping' heading" as="h2" className="type-display text-center mb-10 md:mb-14">
               {inYourKeepingHeading}
             </Editable>
           </ScrollFadeIn>
@@ -405,7 +405,7 @@ const Index = () => {
                     </span>
                   </div>
                   <div className="flex flex-col items-center text-center px-2 md:px-4 pt-4 md:pt-6 text-foreground">
-                    <h3 className="type-title leading-luxury-card min-h-[3.4em] md:min-h-0 flex items-start justify-center">
+                    <h3 className="type-title leading-luxury-card text-[15px] md:text-[inherit] min-h-[3em] md:min-h-0 flex items-start justify-center">
                       {item.label}
                     </h3>
                     <span className="mt-3 md:mt-4 type-cta tracking-luxury-wide relative inline-block pb-1">

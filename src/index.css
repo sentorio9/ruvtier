@@ -168,7 +168,7 @@
   .type-display {
     font-family: var(--font-serif);
     font-weight: 400;
-    font-size: clamp(38px, 3.6vw, 52px);
+    font-size: clamp(28px, 3.6vw, 52px);
     letter-spacing: 0.04em;
     line-height: 1.15;
     color: hsl(var(--foreground));
@@ -176,7 +176,7 @@
   .type-title {
     font-family: var(--font-serif);
     font-weight: 400;
-    font-size: clamp(24px, 2.2vw, 32px);
+    font-size: clamp(18px, 2.2vw, 32px);
     letter-spacing: 0.06em;
     line-height: 1.25;
     color: hsl(var(--foreground));

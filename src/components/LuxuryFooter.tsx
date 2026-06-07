@@ -231,7 +231,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   );
 
   return (
-    <footer className="bg-[hsl(30_18%_92%)] border-t border-border">
+    <footer className="bg-background border-t border-border">
       <div className="luxury-container pt-14 md:pt-24 pb-10 md:pb-14">
 
         {/* ─── MOBILE: centered newsletter, then disclosure rows ─── */}

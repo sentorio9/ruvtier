@@ -52,15 +52,15 @@ interface LuxuryFooterProps {
   onSubscribeClick: () => void;
 }
 
-// Footer typography bumped ~12% to improve legibility while staying editorial.
+// Footer typography — light weights, editorial tracking, generous leading.
 const linkClass =
-  "text-[14px] tracking-[0.08em] text-muted-foreground hover:text-foreground transition-colors duration-300 leading-relaxed font-sans";
+  "text-[13px] tracking-[0.10em] text-muted-foreground hover:text-foreground transition-colors duration-300 leading-[1.9] font-sans font-light";
 
 const headingClass =
-  "font-serif tracking-[0.14em] text-foreground mb-4 text-[18px] font-medium";
+  "font-serif tracking-[0.16em] text-foreground mb-5 text-[13px] uppercase font-normal";
 
 const newsletterHeadingClass =
-  "font-serif font-light tracking-[0.04em] text-foreground mb-4 text-[clamp(20px,1.6vw,26px)] leading-[1.2]";
+  "font-serif font-light tracking-[0.06em] text-foreground mb-5 text-[clamp(20px,1.6vw,26px)] leading-[1.25]";
 
 const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const [email, setEmail] = useState("");

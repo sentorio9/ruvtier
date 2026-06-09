@@ -99,7 +99,7 @@ const Index = () => {
   const heroImageOverride = useSiteImage("site_image_home_hero");
 
   // Featured pre-order
-  const { data: featuredProducts } = useActiveProducts({ featured: true, limit: 5 });
+  const { data: featuredProducts } = useActiveProducts({ featured: true, limit: 6 });
   const featuredPreorder =
     featuredProducts?.find((p: any) => p.preorder_enabled) ?? featuredProducts?.[0] ?? null;
   const featuredImage =
@@ -111,6 +111,11 @@ const Index = () => {
         ? `/preorder/${featuredPreorder.slug}`
         : `/product/${featuredPreorder.slug}`)
     : null;
+
+  // The Edit — 4 featured products (skip the one already shown in the Featured Pre-Order block)
+  const editProducts = (featuredProducts ?? [])
+    .filter((p: any) => !featuredPreorder || p.id !== featuredPreorder.id)
+    .slice(0, 4);
 
   return (
     <div className="relative md:h-[100svh] md:overflow-y-scroll md:snap-y md:snap-proximity motion-safe:md:scroll-smooth">

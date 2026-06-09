@@ -46,6 +46,17 @@ export const HOME_MATERIAL_MEMORY_CTA = "Discover all materials";
 export const HOME_MATERIAL_MEMORY_BODY = "Every piece begins with a fibre chosen years before it is worn.";
 export const HOME_MATERIAL_MEMORY_SWATCH_EYEBROW = "Mulberry Silk — Nº 04";
 export const HOME_MATERIAL_MEMORY_SWATCH_CAPTION = "image crossfades to fabric macro on hover";
+export const HOME_MATERIAL_MEMORY_EYEBROW = "The Material Library";
+export const HOME_MATERIAL_MEMORY_FIBRES = "Cashmere · Baby camel · Sea island cotton";
+
+/** Manifesto interstitial — beneath hero. */
+export const HOME_MANIFESTO_LINE = "We make few things, slowly — and only once.";
+export const HOME_MANIFESTO_EYEBROW = "The House of Ruvtier · Est. Palermo Italy";
+
+/** The Edit — featured products strip. */
+export const HOME_EDIT_EYEBROW = "The Edit";
+export const HOME_EDIT_HEADLINE = "Six pieces, this season";
+export const HOME_EDIT_VIEW_ALL = "View all";
 
 /** Split Collection card — Women. */
 export const HOME_WOMEN_CARD = {

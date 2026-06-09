@@ -52,6 +52,13 @@ import {
   HOME_MATERIAL_MEMORY_BODY,
   HOME_MATERIAL_MEMORY_SWATCH_EYEBROW,
   HOME_MATERIAL_MEMORY_SWATCH_CAPTION,
+  HOME_MATERIAL_MEMORY_EYEBROW,
+  HOME_MATERIAL_MEMORY_FIBRES,
+  HOME_MANIFESTO_LINE,
+  HOME_MANIFESTO_EYEBROW,
+  HOME_EDIT_EYEBROW,
+  HOME_EDIT_HEADLINE,
+  HOME_EDIT_VIEW_ALL,
   HOME_WOMEN_CARD,
   HOME_MEN_CARD,
   HOME_IN_YOUR_KEEPING_HEADLINE,
@@ -82,10 +89,17 @@ const Index = () => {
   const menBlurb = useSiteText("home_men_card", "blurb", HOME_MEN_CARD.blurb);
   const menCta = useSiteText("home_men_card", "cta_label", HOME_MEN_CARD.cta);
   const inYourKeepingHeading = useSiteText("home_in_your_keeping", "headline", HOME_IN_YOUR_KEEPING_HEADLINE);
+  const manifestoLine = useSiteText("home_manifesto", "line", HOME_MANIFESTO_LINE);
+  const manifestoEyebrow = useSiteText("home_manifesto", "eyebrow", HOME_MANIFESTO_EYEBROW);
+  const editEyebrow = useSiteText("home_edit", "eyebrow", HOME_EDIT_EYEBROW);
+  const editHeadline = useSiteText("home_edit", "headline", HOME_EDIT_HEADLINE);
+  const editViewAll = useSiteText("home_edit", "view_all", HOME_EDIT_VIEW_ALL);
+  const materialMemoryEyebrow = useSiteText("home_material_memory", "eyebrow", HOME_MATERIAL_MEMORY_EYEBROW);
+  const materialMemoryFibres = useSiteText("home_material_memory", "fibres", HOME_MATERIAL_MEMORY_FIBRES);
   const heroImageOverride = useSiteImage("site_image_home_hero");
 
   // Featured pre-order
-  const { data: featuredProducts } = useActiveProducts({ featured: true, limit: 5 });
+  const { data: featuredProducts } = useActiveProducts({ featured: true, limit: 6 });
   const featuredPreorder =
     featuredProducts?.find((p: any) => p.preorder_enabled) ?? featuredProducts?.[0] ?? null;
   const featuredImage =
@@ -98,12 +112,17 @@ const Index = () => {
         : `/product/${featuredPreorder.slug}`)
     : null;
 
+  // The Edit — 4 featured products (skip the one already shown in the Featured Pre-Order block)
+  const editProducts = (featuredProducts ?? [])
+    .filter((p: any) => !featuredPreorder || p.id !== featuredPreorder.id)
+    .slice(0, 4);
+
   return (
     <div className="relative md:h-[100svh] md:overflow-y-scroll md:snap-y md:snap-proximity motion-safe:md:scroll-smooth">
       <Navigation />
 
       {/* Hero */}
-      <section className="relative min-h-[100svh] md:snap-start overflow-hidden bg-background">
+      <section className="relative min-h-[100svh] md:min-h-[88svh] md:snap-start overflow-hidden bg-background">
         <div className="absolute inset-0 overflow-hidden">
           <Editable
             kind="site_image"
@@ -123,7 +142,7 @@ const Index = () => {
           <div className="absolute inset-0 bg-foreground/15 pointer-events-none" />
         </div>
 
-        <div className="relative z-10 luxury-container h-full min-h-[100svh] flex flex-col justify-end pb-[clamp(64px,12vh,140px)] pt-[clamp(96px,18vh,180px)]">
+        <div className="relative z-10 luxury-container h-full min-h-[100svh] md:min-h-[88svh] flex flex-col justify-end pb-[clamp(64px,12vh,140px)] pt-[clamp(96px,18vh,180px)]">
           <div className="max-w-[640px]">
             <ScrollFadeIn>
               <Editable
@@ -181,6 +200,35 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Manifesto — interstitial */}
+      <section className="bg-background border-b border-border">
+        <div className="luxury-container flex flex-col items-center text-center py-[clamp(56px,9vh,112px)]">
+          <ScrollFadeIn>
+            <Editable
+              kind="text_block"
+              contentKey="home_manifesto"
+              field="line"
+              label="Manifesto — line"
+              as="p"
+              className="font-serif italic font-light text-foreground text-[clamp(20px,2.4vw,28px)] leading-[1.5] max-w-[560px] mx-auto"
+            >
+              {manifestoLine}
+            </Editable>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={0.1}>
+            <Editable
+              kind="text_block"
+              contentKey="home_manifesto"
+              field="eyebrow"
+              label="Manifesto — eyebrow"
+              as="p"
+              className="type-eyebrow tracking-luxury-wide text-foreground/55 mt-5 md:mt-6 uppercase"
+            >
+              {manifestoEyebrow}
+            </Editable>
+          </ScrollFadeIn>
+        </div>
+      </section>
 
 
       {/* Featured Pre-Order */}
@@ -318,31 +366,116 @@ const Index = () => {
         </div>
       </section>
 
+      {/* The Edit — featured products strip */}
+      {editProducts.length > 0 && (
+        <section className="md:min-h-[100svh] md:snap-start flex flex-col justify-center bg-background">
+          <div className="luxury-container w-full py-[clamp(48px,8vh,96px)]">
+            <ScrollFadeIn>
+              <div className="flex items-end justify-between gap-6 pb-5 md:pb-7 border-b border-border mb-8 md:mb-12">
+                <div className="flex flex-col items-start">
+                  <Editable kind="text_block" contentKey="home_edit" field="eyebrow" label="The Edit — eyebrow" as="span" className="type-eyebrow tracking-luxury-wide text-foreground/55 uppercase mb-2 md:mb-3">
+                    {editEyebrow}
+                  </Editable>
+                  <Editable kind="text_block" contentKey="home_edit" field="headline" label="The Edit — headline" as="h2" className="type-display">
+                    {editHeadline}
+                  </Editable>
+                </div>
+                <Link to="/collection" className="group hidden md:inline-flex items-center type-cta tracking-luxury-wide pb-[2px] shrink-0">
+                  <span className="relative inline-block pb-1">
+                    <Editable kind="text_block" contentKey="home_edit" field="view_all" label="The Edit — view all" as="span" className="uppercase">
+                      {editViewAll}
+                    </Editable>
+                    <span aria-hidden className="absolute left-0 right-0 -bottom-px h-px bg-current origin-left scale-x-100 group-hover:scale-x-0 transition-transform duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]" />
+                  </span>
+                  <span aria-hidden className="ml-2">→</span>
+                </Link>
+              </div>
+            </ScrollFadeIn>
 
-      {/* Material is Memory */}
-      <section className="luxury-section md:min-h-[100svh] md:snap-start flex items-center bg-background">
-        <div className="luxury-container w-full flex flex-col items-center text-center py-[clamp(40px,8vh,96px)]">
-          <ScrollFadeIn className="w-full max-w-[260px] md:max-w-[380px] mx-auto">
-            <div className="group relative w-full aspect-[3/4] overflow-hidden bg-[hsl(30_18%_88%)] ring-1 ring-foreground/5">
-              <img
-                src={materialMemoryScarf}
-                alt="A RUVTIER silk scarf draped over a wooden chair — the quiet permanence of material."
-                width={760}
-                height={1013}
-                className="absolute inset-0 w-full h-full object-cover object-[center_30%] transition-transform duration-[900ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:scale-[1.02]"
-                decoding="async"
-              />
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-[clamp(12px,2vw,24px)] gap-y-10 md:gap-y-12">
+              {editProducts.map((p: any, i: number) => {
+                const img = p.hero_image_url || p.thumbnail_url || null;
+                const isPreorder = !!p.preorder_enabled;
+                const href = isPreorder ? `/preorder/${p.slug}` : `/product/${p.slug}`;
+                const cta = isPreorder ? "Reserve" : "Discover";
+                const priceLabel = p.price != null ? formatPrice(p.price) : null;
+                return (
+                  <ScrollFadeIn key={p.id} delay={i * 0.06}>
+                    <Link to={href} className="group flex flex-col">
+                      <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:shadow-[0_24px_60px_-30px_rgba(58,58,58,0.22)]">
+                        {img ? (
+                          <img
+                            src={img}
+                            alt={p.name}
+                            loading="lazy"
+                            className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:scale-[1.02]"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center text-muted-foreground font-serif italic text-sm">
+                            {p.name}
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex flex-col items-start pt-4 md:pt-5 text-left">
+                        <h3 className="font-serif font-light text-foreground text-[14px] md:text-[16px] leading-snug">
+                          {p.name}
+                        </h3>
+                        <p className="type-eyebrow tracking-luxury-wide text-foreground/55 mt-2 md:mt-2.5 uppercase">
+                          {priceLabel ? <>{priceLabel} <span className="mx-1 opacity-60">·</span> {cta}</> : cta}
+                        </p>
+                      </div>
+                    </Link>
+                  </ScrollFadeIn>
+                );
+              })}
             </div>
-          </ScrollFadeIn>
-          <ScrollFadeIn delay={0.1}>
-            <div className="mt-8 md:mt-10 flex flex-col items-center text-center">
+
+            <div className="mt-10 md:hidden flex justify-center">
+              <Link to="/collection" className="group inline-flex items-center type-cta tracking-luxury-wide">
+                <span className="relative inline-block pb-1 uppercase">
+                  {editViewAll}
+                  <span aria-hidden className="absolute left-0 right-0 -bottom-px h-px bg-current" />
+                </span>
+                <span aria-hidden className="ml-2">→</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Material is Memory — asymmetric two-column */}
+      <section className="md:min-h-[100svh] md:snap-start bg-background overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-[1.15fr_1fr] md:min-h-[78svh]">
+          <div className="group relative w-full aspect-[4/5] md:aspect-auto md:min-h-[60svh] overflow-hidden bg-[hsl(30_18%_88%)]">
+            <img
+              src={materialMemoryScarf}
+              alt="A RUVTIER silk scarf draped over a wooden chair — the quiet permanence of material."
+              width={760}
+              height={1013}
+              className="absolute inset-0 w-full h-full object-cover object-[center_30%] transition-transform duration-[900ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:scale-[1.02]"
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+          <div className="flex flex-col justify-center px-[clamp(28px,5vw,72px)] py-[clamp(40px,8vh,96px)]">
+            <ScrollFadeIn>
+              <Editable
+                kind="text_block"
+                contentKey="home_material_memory"
+                field="eyebrow"
+                label="'Material is Memory' eyebrow"
+                as="p"
+                className="type-eyebrow tracking-luxury-wide text-foreground/55 uppercase mb-4 md:mb-5"
+              >
+                {materialMemoryEyebrow}
+              </Editable>
               <Editable
                 kind="text_block"
                 contentKey="home_material_memory"
                 field="headline"
                 label="'Material is Memory' heading"
                 as="h2"
-                className="type-display mb-4 md:mb-5"
+                className="type-display mb-5 md:mb-6"
               >
                 {materialMemoryHeadline}
               </Editable>
@@ -352,26 +485,37 @@ const Index = () => {
                 field="body"
                 label="'Material is Memory' body"
                 as="p"
-                className="type-body max-w-[460px] mb-6 md:mb-8"
+                className="type-body max-w-[460px] mb-5 md:mb-6 text-foreground/75"
               >
                 {materialMemoryBody}
               </Editable>
               <Editable
                 kind="text_block"
                 contentKey="home_material_memory"
-                field="cta_label"
-                label="'Material is Memory' button"
-                as="span"
-                className="inline-block transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] hover:-translate-y-0.5"
+                field="fibres"
+                label="'Material is Memory' fibres list"
+                as="p"
+                className="type-eyebrow tracking-luxury-wide text-foreground/55 mb-7 md:mb-9 uppercase"
               >
-                <Link to="/materials" className="luxury-button type-cta">
-                  {materialMemoryCta}
-                </Link>
+                {materialMemoryFibres}
               </Editable>
-            </div>
-          </ScrollFadeIn>
+              <Link
+                to="/materials"
+                className="group inline-flex flex-col items-start type-cta tracking-luxury-wide w-fit"
+              >
+                <span className="relative inline-block pb-1 uppercase">
+                  <Editable kind="text_block" contentKey="home_material_memory" field="cta_label" label="'Material is Memory' CTA" as="span">
+                    {materialMemoryCta}
+                  </Editable>
+                  <span aria-hidden className="absolute left-0 right-0 -bottom-px h-px bg-current origin-left scale-x-100 group-hover:scale-x-0 transition-transform duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]" />
+                </span>
+              </Link>
+            </ScrollFadeIn>
+          </div>
         </div>
       </section>
+
+
 
 
       {/* In Your Keeping */}

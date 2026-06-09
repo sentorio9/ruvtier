@@ -200,6 +200,35 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Manifesto — interstitial */}
+      <section className="bg-background border-b border-border">
+        <div className="luxury-container flex flex-col items-center text-center py-[clamp(56px,9vh,112px)]">
+          <ScrollFadeIn>
+            <Editable
+              kind="text_block"
+              contentKey="home_manifesto"
+              field="line"
+              label="Manifesto — line"
+              as="p"
+              className="font-serif italic font-light text-foreground text-[clamp(20px,2.4vw,28px)] leading-[1.5] max-w-[560px] mx-auto"
+            >
+              {manifestoLine}
+            </Editable>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={0.1}>
+            <Editable
+              kind="text_block"
+              contentKey="home_manifesto"
+              field="eyebrow"
+              label="Manifesto — eyebrow"
+              as="p"
+              className="type-eyebrow tracking-luxury-wide text-foreground/55 mt-5 md:mt-6 uppercase"
+            >
+              {manifestoEyebrow}
+            </Editable>
+          </ScrollFadeIn>
+        </div>
+      </section>
 
 
       {/* Featured Pre-Order */}

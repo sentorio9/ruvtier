@@ -122,7 +122,7 @@ const Index = () => {
       <Navigation />
 
       {/* Hero */}
-      <section className="relative min-h-[100svh] md:snap-start overflow-hidden bg-background">
+      <section className="relative min-h-[100svh] md:min-h-[88svh] md:snap-start overflow-hidden bg-background">
         <div className="absolute inset-0 overflow-hidden">
           <Editable
             kind="site_image"

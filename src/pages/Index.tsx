@@ -142,7 +142,7 @@ const Index = () => {
           <div className="absolute inset-0 bg-foreground/15 pointer-events-none" />
         </div>
 
-        <div className="relative z-10 luxury-container h-full min-h-[100svh] flex flex-col justify-end pb-[clamp(64px,12vh,140px)] pt-[clamp(96px,18vh,180px)]">
+        <div className="relative z-10 luxury-container h-full min-h-[100svh] md:min-h-[88svh] flex flex-col justify-end pb-[clamp(64px,12vh,140px)] pt-[clamp(96px,18vh,180px)]">
           <div className="max-w-[640px]">
             <ScrollFadeIn>
               <Editable

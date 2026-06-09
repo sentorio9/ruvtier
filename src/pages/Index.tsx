@@ -89,6 +89,13 @@ const Index = () => {
   const menBlurb = useSiteText("home_men_card", "blurb", HOME_MEN_CARD.blurb);
   const menCta = useSiteText("home_men_card", "cta_label", HOME_MEN_CARD.cta);
   const inYourKeepingHeading = useSiteText("home_in_your_keeping", "headline", HOME_IN_YOUR_KEEPING_HEADLINE);
+  const manifestoLine = useSiteText("home_manifesto", "line", HOME_MANIFESTO_LINE);
+  const manifestoEyebrow = useSiteText("home_manifesto", "eyebrow", HOME_MANIFESTO_EYEBROW);
+  const editEyebrow = useSiteText("home_edit", "eyebrow", HOME_EDIT_EYEBROW);
+  const editHeadline = useSiteText("home_edit", "headline", HOME_EDIT_HEADLINE);
+  const editViewAll = useSiteText("home_edit", "view_all", HOME_EDIT_VIEW_ALL);
+  const materialMemoryEyebrow = useSiteText("home_material_memory", "eyebrow", HOME_MATERIAL_MEMORY_EYEBROW);
+  const materialMemoryFibres = useSiteText("home_material_memory", "fibres", HOME_MATERIAL_MEMORY_FIBRES);
   const heroImageOverride = useSiteImage("site_image_home_hero");
 
   // Featured pre-order

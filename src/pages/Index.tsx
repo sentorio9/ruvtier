@@ -18,7 +18,7 @@
  * driven; vertical rhythm comes from .section-pad-* and alternating
  * band tones (ivory · warm-1 · warm-2 · charcoal).
  */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
@@ -34,6 +34,7 @@ import AtYourService from "@/components/home/AtYourService";
 import AllocationNote from "@/components/home/AllocationNote";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { useActiveProducts, formatPrice, usePriceTick } from "@/hooks/useProducts";
+import { isSupabaseConfigured } from "@/integrations/supabase/client";
 import heroImage from "@/assets/hero-main-replacement.png.asset.json";
 import womenPrimary from "@/assets/collection-women-primary.jpg";
 import womenHover from "@/assets/collection-women-hover.jpg";
@@ -96,10 +97,20 @@ const Index = () => {
 
   // Product sets: pull a single batch of featured products, then split
   // between The Edit (first 4) and The Icons (next 3, no overlap).
-  const { data: featuredProducts } = useActiveProducts({ featured: true, limit: 12 });
+  const { data: featuredProducts, error: featuredError, isLoading: featuredLoading } = useActiveProducts({ featured: true, limit: 12 });
   const allFeatured = featuredProducts ?? [];
   const editProducts = allFeatured.slice(0, 4);
   const iconProducts = allFeatured.slice(4, 7);
+
+  useEffect(() => {
+    console.info("[Index] featured products", {
+      isSupabaseConfigured,
+      isLoading: featuredLoading,
+      count: featuredProducts?.length ?? 0,
+      error: featuredError,
+    });
+  }, [featuredProducts, featuredError, featuredLoading]);
+
 
   return (
     <div className="relative bg-background">
@@ -278,33 +289,33 @@ const Index = () => {
       </section>
 
       {/* 4. The Edit — warm-2 band, 4-up featured products */}
-      {editProducts.length > 0 && (
-        <section className="bg-warm-2 hairline-top hairline-bottom section-pad-md">
-          <div className="luxury-container w-full">
-            <ScrollFadeIn>
-              <div className="flex items-end justify-between gap-6 pb-5 md:pb-7 border-b border-border mb-8 md:mb-12">
-                <div className="flex flex-col items-start">
-                  <Editable kind="text_block" contentKey="home_edit" field="eyebrow" label="The Edit — eyebrow" as="span" className="type-eyebrow tracking-luxury-wide text-foreground/55 uppercase mb-2 md:mb-3">
-                    {editEyebrow}
-                  </Editable>
-                  <Editable kind="text_block" contentKey="home_edit" field="headline" label="The Edit — headline" as="h2" className="type-display">
-                    {editHeadline}
-                  </Editable>
-                </div>
-                <Link to="/collection" className="group hidden md:inline-flex items-center type-cta tracking-luxury-wide shrink-0">
-                  <span className="relative inline-block pb-1">
-                    <Editable kind="text_block" contentKey="home_edit" field="view_all" label="The Edit — view all" as="span" className="uppercase">
-                      {editViewAll}
-                    </Editable>
-                    <span aria-hidden className="absolute left-0 right-0 -bottom-px h-px bg-current origin-left scale-x-100 group-hover:scale-x-0 transition-transform duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]" />
-                  </span>
-                  <span aria-hidden className="ml-2">→</span>
-                </Link>
+      <section className="bg-warm-2 hairline-top hairline-bottom section-pad-md">
+        <div className="luxury-container w-full">
+          <ScrollFadeIn>
+            <div className="flex items-end justify-between gap-6 pb-5 md:pb-7 border-b border-border mb-8 md:mb-12">
+              <div className="flex flex-col items-start">
+                <Editable kind="text_block" contentKey="home_edit" field="eyebrow" label="The Edit — eyebrow" as="span" className="type-eyebrow tracking-luxury-wide text-foreground/55 uppercase mb-2 md:mb-3">
+                  {editEyebrow}
+                </Editable>
+                <Editable kind="text_block" contentKey="home_edit" field="headline" label="The Edit — headline" as="h2" className="type-display">
+                  {editHeadline}
+                </Editable>
               </div>
-            </ScrollFadeIn>
+              <Link to="/collection" className="group hidden md:inline-flex items-center type-cta tracking-luxury-wide shrink-0">
+                <span className="relative inline-block pb-1">
+                  <Editable kind="text_block" contentKey="home_edit" field="view_all" label="The Edit — view all" as="span" className="uppercase">
+                    {editViewAll}
+                  </Editable>
+                  <span aria-hidden className="absolute left-0 right-0 -bottom-px h-px bg-current origin-left scale-x-100 group-hover:scale-x-0 transition-transform duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]" />
+                </span>
+                <span aria-hidden className="ml-2">→</span>
+              </Link>
+            </div>
+          </ScrollFadeIn>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-[clamp(12px,2vw,24px)] gap-y-10 md:gap-y-12">
-              {editProducts.map((p: any, i: number) => {
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-[clamp(12px,2vw,24px)] gap-y-10 md:gap-y-12">
+            {editProducts.length > 0
+              ? editProducts.map((p: any, i: number) => {
                 const img = p.hero_image_url || p.thumbnail_url || null;
                 const isPreorder = !!p.preorder_enabled;
                 const href = isPreorder ? `/preorder/${p.slug}` : `/product/${p.slug}`;
@@ -338,12 +349,23 @@ const Index = () => {
                     </Link>
                   </ScrollFadeIn>
                 );
-              })}
-            </div>
-
+              })
+              : Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="flex flex-col">
+                  <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary" aria-hidden />
+                  <div className="pt-4 md:pt-5">
+                    <p className="type-eyebrow tracking-luxury-wide text-foreground/40 uppercase">
+                      {featuredError ? "Selection temporarily unavailable" : featuredLoading ? "Loading" : "Selection coming soon"}
+                    </p>
+                  </div>
+                </div>
+              ))}
           </div>
-        </section>
-      )}
+
+        </div>
+      </section>
+
+
 
       {/* 5. Material is Memory — full-bleed centerpiece */}
       <MaterialCenterpiece />

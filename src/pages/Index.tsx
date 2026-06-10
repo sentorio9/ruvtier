@@ -379,9 +379,9 @@ const Index = () => {
           </ScrollFadeIn>
           <div className="grid grid-cols-3 gap-3 md:gap-8 lg:gap-10 items-start">
             {[
-              { img: knitwearImg, label: "Knitwear", to: "/boutique/women", numeral: "I", caption: "sketch — knitwear in hands" },
-              { img: lifestyleImg, label: "Life in RUVTIER", to: "/boutique/lifestyle", numeral: "II", caption: "sketch ⇄ photo on hover" },
-              { img: appointmentImg, label: "By Appointment Only", to: "/contact", numeral: "III", caption: "sketch — boutique façade" },
+              { img: knitwearImg.url, label: "Knitwear", to: "/boutique/women", numeral: "I", caption: "sketch — knitwear in hands" },
+              { img: lifestyleImg.url, label: "Life in RUVTIER", to: "/boutique/lifestyle", numeral: "II", caption: "sketch ⇄ photo on hover" },
+              { img: appointmentImg.url, label: "By Appointment Only", to: "/contact", numeral: "III", caption: "sketch — boutique façade" },
             ].map((item, i) => (
               <ScrollFadeIn key={item.label} delay={i * 0.08}>
                 <Link to={item.to} className="group flex flex-col">

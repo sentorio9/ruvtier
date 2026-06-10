@@ -106,7 +106,7 @@ const Index = () => {
       <Navigation />
 
       {/* 1. Hero — contained, image-then-caption, never full-bleed */}
-      <section className="bg-background section-pad-sm">
+      <section className="bg-background pt-[60px] md:pt-[112px] pb-16 md:pb-24">
         <div className="luxury-container w-full">
           <ScrollFadeIn>
             <Editable

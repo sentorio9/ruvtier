@@ -1,26 +1,20 @@
-## Problem
+## Goal
 
-The homepage hero section sits flush at the top of the page, but `Navigation` is `position: fixed` with two rows on desktop (~96px total: 56px utility + 40px category row) and ~52px on mobile. The top of the hero image is being covered by those header rows.
+Swap the "Material is memory" image for the uploaded silk-scarf-on-chair photo, and align the fibres mentioned in that section with the materials actually listed on the site.
 
-## Fix
+## Materials currently on site (`/materials`)
+Vicuña · Cashmere · Merino Wool · Silk · French Linen · Denim
 
-Single, surgical change in `src/pages/Index.tsx` on the hero `<section>` (line 109): add top padding equal to the fixed header height so the image starts fully below it.
+## Off-site fibres to remove from `src/content/brand.ts`
+- `HOME_MATERIAL_MEMORY_FIBRES`: "Cashmere · Baby camel · Sea island cotton" → **"Cashmere · Silk · French Linen"** (all three exist on the materials page; matches the silk scarf imagery).
+- `HOME_MATERIAL_MEMORY_SWATCH_EYEBROW`: "Mulberry Silk — Nº 04" → **"Silk — Nº 04"**.
+- `HOME_MATERIAL_MEMORY_ORIGIN_TAG`: "[INSERT REAL NAME] · Traceable" → **"Palermo Atelier · Traceable"** (drops the placeholder).
 
-Change:
-```
-<section className="bg-background section-pad-sm">
-```
-to:
-```
-<section className="bg-background pt-[60px] md:pt-[112px] pb-[var(--section-pad-sm,…)]">
-```
-(keep existing bottom spacing — implement by adding `pt-[60px] md:pt-[112px]` and keeping `section-pad-sm`, then neutralizing its top via an inline override, or simply replace with explicit `pt-[60px] md:pt-[112px] pb-16 md:pb-24` matching the current section-pad-sm bottom value).
-
-Values:
-- Mobile: 52px nav + 8px breathing room = **60px**
-- Desktop: 56px + 40px + 16px breathing room = **112px**
+## Image replacement
+1. Upload the user's image via `lovable-assets create --file /mnt/user-uploads/image-56.png --filename material-memory-scarf.png` → write `src/assets/material-memory-scarf.png.asset.json` (overwrites the existing pointer that `MaterialCenterpiece.tsx` already imports — no component code change needed).
+2. Delete the old CDN asset pointer's underlying file isn't necessary; overwriting the `.asset.json` with the new pointer is sufficient. The component will pick up the new URL automatically.
 
 ## Out of scope
-
-- No palette, copy, animation, or layout changes.
-- No changes to `Navigation`, other sections, or the hero image itself.
+- No layout, animation, palette, or component-structure changes.
+- No edits to `/materials` page list itself.
+- No changes to product data.

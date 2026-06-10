@@ -11,7 +11,12 @@ export function useActiveProducts(options?: { collection?: string; gender?: stri
     enabled: isSupabaseConfigured,
     initialData: [],
     queryFn: async () => {
-      if (!isSupabaseConfigured) return [];
+      if (!isSupabaseConfigured) {
+        console.warn(
+          "[useActiveProducts] Supabase not configured — VITE_SUPABASE_URL / VITE_SUPABASE_PUBLISHABLE_KEY missing",
+        );
+        return [];
+      }
 
       let query = supabase
         .from("products")
@@ -26,7 +31,11 @@ export function useActiveProducts(options?: { collection?: string; gender?: stri
       if (options?.limit) query = query.limit(options.limit);
 
       const { data, error } = await query;
-      if (error) throw error;
+      if (error) {
+        console.error("[useActiveProducts] supabase error", error, { options });
+        throw error;
+      }
+      console.info("[useActiveProducts] result", { count: data?.length ?? 0, options });
       return data as Product[];
     },
   });

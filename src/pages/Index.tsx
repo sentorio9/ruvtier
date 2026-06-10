@@ -18,7 +18,7 @@
  * driven; vertical rhythm comes from .section-pad-* and alternating
  * band tones (ivory · warm-1 · warm-2 · charcoal).
  */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";

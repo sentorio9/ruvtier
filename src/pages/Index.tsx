@@ -34,6 +34,7 @@ import AtYourService from "@/components/home/AtYourService";
 import AllocationNote from "@/components/home/AllocationNote";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { useActiveProducts, formatPrice, usePriceTick } from "@/hooks/useProducts";
+import { isSupabaseConfigured } from "@/integrations/supabase/client";
 import heroImage from "@/assets/hero-main-replacement.png.asset.json";
 import womenPrimary from "@/assets/collection-women-primary.jpg";
 import womenHover from "@/assets/collection-women-hover.jpg";

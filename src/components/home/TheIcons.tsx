@@ -22,7 +22,7 @@ const TheIcons = ({ products, formatPriceWhole }: TheIconsProps) => {
   const headline = useSiteText("home_icons", "headline", HOME_ICONS.headline);
   const viewAll = useSiteText("home_icons", "view_all", HOME_ICONS.viewAll);
 
-  if (!products || products.length < 1) return null;
+  const hasProducts = !!products && products.length > 0;
 
   return (
     <section className="bg-background section-pad-md">

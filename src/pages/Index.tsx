@@ -1,23 +1,22 @@
 /**
- * Homepage — the opening cadence of the house.
- *
- * Reads as a slow editorial sequence: hero · featured pre-order ·
- * split Women/Men collection · Material is Memory · In Your Keeping ·
- * footer. Sections snap on desktop (md+) for a film-strip feel.
+ * Homepage — continuous editorial sequence.
  *
  * Section order:
- *   1. Hero — `.hero-glow` + `.type-display` over `heroImage`.
- *   2. Featured Pre-Order — first product where `preorder_enabled`.
- *   3. Split Collection — Women & Men cards with image cross-fade.
- *   4. Material is Memory — silk-scarf still, CTA to /materials.
- *   5. In Your Keeping — three quiet tiles.
- *   6. LuxuryFooter.
+ *   1. Hero (full-bleed, 88vh)
+ *   2. Manifesto (warm-1 band, contained)
+ *   3. Split Collection — Women / Men (ivory, contained)
+ *   4. The Edit (warm-2 band, contained, 4-up featured products)
+ *   5. Material is Memory (full-bleed centerpiece)
+ *   6. The Making (full-bleed dark editorial story)
+ *   7. The Icons (ivory, contained, 3-up signature products)
+ *   8. At Your Service (charcoal full-bleed band)
+ *   9. Allocation Note (warm-1 band)
+ *  10. In Your Keeping (ivory, contained)
+ *  11. LuxuryFooter
  *
- * Design-system dependencies: `.luxury-container`, `.luxury-section`,
- * `.type-display` / `.type-title` / `.type-eyebrow` / `.type-cta`,
- * `.luxury-button`, `.hero-glow`, single easing curve
- * `cubic-bezier(0.22,0.61,0.36,1)`. Copy fallbacks mirror
- * `src/content/brand.ts`.
+ * Scroll-snap removed — native scrolling only. Sections are content-
+ * driven; vertical rhythm comes from .section-pad-* and alternating
+ * band tones (ivory · warm-1 · warm-2 · charcoal).
  */
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -28,6 +27,11 @@ import { useSiteText, useSiteImage } from "@/editor/useSiteContent";
 
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
+import MaterialCenterpiece from "@/components/home/MaterialCenterpiece";
+import TheMaking from "@/components/home/TheMaking";
+import TheIcons from "@/components/home/TheIcons";
+import AtYourService from "@/components/home/AtYourService";
+import AllocationNote from "@/components/home/AllocationNote";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { useActiveProducts, formatPrice, usePriceTick } from "@/hooks/useProducts";
 import heroImage from "@/assets/hero-permanence.jpg";
@@ -38,22 +42,11 @@ import menHover from "@/assets/collection-men-hover.jpg";
 import knitwearImg from "@/assets/explore-knitwear.jpg";
 import lifestyleImg from "@/assets/explore-lifestyle.jpg";
 import appointmentImg from "@/assets/explore-appointment.png";
-import materialMemoryScarfAsset from "@/assets/material-memory-scarf.png.asset.json";
-const materialMemoryScarf = materialMemoryScarfAsset.url;
 import {
   HOME_HERO_HEADLINE,
   HOME_HERO_EYEBROW,
   HOME_HERO_CTA,
   HOME_HERO_UTILITY,
-  HOME_HERO_PREORDER_WOMEN,
-  HOME_HERO_PREORDER_MEN,
-  HOME_MATERIAL_MEMORY_HEADLINE,
-  HOME_MATERIAL_MEMORY_CTA,
-  HOME_MATERIAL_MEMORY_BODY,
-  HOME_MATERIAL_MEMORY_SWATCH_EYEBROW,
-  HOME_MATERIAL_MEMORY_SWATCH_CAPTION,
-  HOME_MATERIAL_MEMORY_EYEBROW,
-  HOME_MATERIAL_MEMORY_FIBRES,
   HOME_MANIFESTO_LINE,
   HOME_MANIFESTO_EYEBROW,
   HOME_EDIT_EYEBROW,
@@ -64,29 +57,34 @@ import {
   HOME_IN_YOUR_KEEPING_HEADLINE,
 } from "@/content/brand";
 
+// Whole-figure price formatter used inside The Edit and The Icons.
+// Defers to formatPrice for currency/symbol/region, then strips the
+// fractional part so editorial cards never show "€2,400.00".
+const formatPriceWhole = (price: number | null | undefined): string => {
+  const formatted = formatPrice(price);
+  if (formatted === "—") return formatted;
+  // Drop a decimal portion if present (e.g. "€2,400.00" -> "€2,400").
+  return formatted.replace(/[.,]\d{2}(?!\d)/, "");
+};
+
 const Index = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
-  usePageMeta({ title: "RUVTIER — A Whisper of Luxury", description: "RUVTIER is a luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition. Discover the Spring/Summer 2026 collection." });
+  usePageMeta({
+    title: "RUVTIER — A Whisper of Luxury",
+    description:
+      "RUVTIER is a luxury fashion house devoted to permanence, material origin, and the quiet art of garment composition. Discover the Spring/Summer 2026 collection.",
+  });
   usePriceTick();
 
   const heroHeadline = useSiteText("home_hero", "headline", HOME_HERO_HEADLINE);
   const heroEyebrow = useSiteText("home_hero", "eyebrow", HOME_HERO_EYEBROW);
   const heroCta = useSiteText("home_hero", "cta_label", HOME_HERO_CTA);
   const heroUtility = useSiteText("home_hero", "utility_caption", HOME_HERO_UTILITY);
-  const heroPreorderWomen = useSiteText("home_hero", "preorder_women", HOME_HERO_PREORDER_WOMEN);
-  const heroPreorderMen = useSiteText("home_hero", "preorder_men", HOME_HERO_PREORDER_MEN);
-  const materialMemoryHeadline = useSiteText("home_material_memory", "headline", HOME_MATERIAL_MEMORY_HEADLINE);
-  const materialMemoryCta = useSiteText("home_material_memory", "cta_label", HOME_MATERIAL_MEMORY_CTA);
-  const materialMemoryBody = useSiteText("home_material_memory", "body", HOME_MATERIAL_MEMORY_BODY);
-  const materialMemorySwatchEyebrow = useSiteText("home_material_memory", "swatch_eyebrow", HOME_MATERIAL_MEMORY_SWATCH_EYEBROW);
-  const materialMemorySwatchCaption = useSiteText("home_material_memory", "swatch_caption", HOME_MATERIAL_MEMORY_SWATCH_CAPTION);
   const womenSeason = useSiteText("home_women_card", "season", HOME_WOMEN_CARD.season);
   const womenTitle = useSiteText("home_women_card", "title", HOME_WOMEN_CARD.title);
-  const womenBlurb = useSiteText("home_women_card", "blurb", HOME_WOMEN_CARD.blurb);
   const womenCta = useSiteText("home_women_card", "cta_label", HOME_WOMEN_CARD.cta);
   const menSeason = useSiteText("home_men_card", "season", HOME_MEN_CARD.season);
   const menTitle = useSiteText("home_men_card", "title", HOME_MEN_CARD.title);
-  const menBlurb = useSiteText("home_men_card", "blurb", HOME_MEN_CARD.blurb);
   const menCta = useSiteText("home_men_card", "cta_label", HOME_MEN_CARD.cta);
   const inYourKeepingHeading = useSiteText("home_in_your_keeping", "headline", HOME_IN_YOUR_KEEPING_HEADLINE);
   const manifestoLine = useSiteText("home_manifesto", "line", HOME_MANIFESTO_LINE);
@@ -94,35 +92,21 @@ const Index = () => {
   const editEyebrow = useSiteText("home_edit", "eyebrow", HOME_EDIT_EYEBROW);
   const editHeadline = useSiteText("home_edit", "headline", HOME_EDIT_HEADLINE);
   const editViewAll = useSiteText("home_edit", "view_all", HOME_EDIT_VIEW_ALL);
-  const materialMemoryEyebrow = useSiteText("home_material_memory", "eyebrow", HOME_MATERIAL_MEMORY_EYEBROW);
-  const materialMemoryFibres = useSiteText("home_material_memory", "fibres", HOME_MATERIAL_MEMORY_FIBRES);
   const heroImageOverride = useSiteImage("site_image_home_hero");
 
-  // Featured pre-order
-  const { data: featuredProducts } = useActiveProducts({ featured: true, limit: 6 });
-  const featuredPreorder =
-    featuredProducts?.find((p: any) => p.preorder_enabled) ?? featuredProducts?.[0] ?? null;
-  const featuredImage =
-    (featuredPreorder as any)?.hero_image_url ||
-    (featuredPreorder as any)?.thumbnail_url ||
-    null;
-  const featuredHref = featuredPreorder
-    ? ((featuredPreorder as any).preorder_enabled
-        ? `/preorder/${featuredPreorder.slug}`
-        : `/product/${featuredPreorder.slug}`)
-    : null;
-
-  // The Edit — 4 featured products (skip the one already shown in the Featured Pre-Order block)
-  const editProducts = (featuredProducts ?? [])
-    .filter((p: any) => !featuredPreorder || p.id !== featuredPreorder.id)
-    .slice(0, 4);
+  // Product sets: pull a single batch of featured products, then split
+  // between The Edit (first 4) and The Icons (next 3, no overlap).
+  const { data: featuredProducts } = useActiveProducts({ featured: true, limit: 12 });
+  const allFeatured = featuredProducts ?? [];
+  const editProducts = allFeatured.slice(0, 4);
+  const iconProducts = allFeatured.slice(4, 7);
 
   return (
-    <div className="relative md:h-[100svh] md:overflow-y-scroll md:snap-y md:snap-proximity motion-safe:md:scroll-smooth">
+    <div className="relative">
       <Navigation />
 
-      {/* Hero */}
-      <section className="relative min-h-[100svh] md:min-h-[88svh] md:snap-start overflow-hidden bg-background">
+      {/* 1. Hero */}
+      <section className="relative min-h-[100svh] md:min-h-[88svh] overflow-hidden bg-background">
         <div className="absolute inset-0 overflow-hidden">
           <Editable
             kind="site_image"
@@ -200,9 +184,9 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Manifesto — interstitial */}
-      <section className="bg-background border-b border-border">
-        <div className="luxury-container flex flex-col items-center text-center py-[clamp(56px,9vh,112px)]">
+      {/* 2. Manifesto — warm-1 interstitial */}
+      <section className="bg-warm-1 section-pad-sm">
+        <div className="luxury-container flex flex-col items-center text-center">
           <ScrollFadeIn>
             <Editable
               kind="text_block"
@@ -230,68 +214,9 @@ const Index = () => {
         </div>
       </section>
 
-
-      {/* Featured Pre-Order */}
-      {featuredPreorder && (
-        <section className="luxury-section bg-background md:min-h-[100svh] md:snap-start flex items-center">
-          <div className="luxury-container w-full py-[clamp(40px,8vh,96px)]">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
-              <ScrollFadeIn>
-                <Link to={featuredHref!} className="block group overflow-hidden mx-auto w-full max-w-[300px] md:max-w-[min(100%,60vh)]">
-                  <div className="relative w-full aspect-[3/4] md:max-h-[78svh] overflow-hidden bg-secondary flex items-center justify-center transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:shadow-[0_24px_60px_-30px_rgba(58,58,58,0.18)]">
-                    {featuredImage ? (
-                      <img
-                        src={featuredImage}
-                        alt={featuredPreorder.name}
-                        loading="lazy"
-                        className="w-full h-full object-contain object-center transition-[transform,filter] duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.015] group-hover:brightness-[1.02]"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-muted-foreground font-serif italic">
-                        {featuredPreorder.name}
-                      </div>
-                    )}
-                  </div>
-                </Link>
-              </ScrollFadeIn>
-
-              <ScrollFadeIn delay={0.1}>
-                <div className="flex flex-col items-start text-left max-w-[440px] mx-auto md:mx-0 px-2 md:px-0">
-                  {(featuredPreorder as any).preorder_enabled && (
-                    <span className="type-eyebrow mb-6">
-                      Private Access — Pre-Register
-                    </span>
-                  )}
-                  <h2 className="type-display mb-6">
-                    {featuredPreorder.name}
-                  </h2>
-                  {featuredPreorder.description && (
-                    <p className="type-body mb-7">
-                      {featuredPreorder.description}
-                    </p>
-                  )}
-                  {(featuredPreorder as any).preorder_enabled ? (
-                    <p className="type-eyebrow mb-9">
-                      Available by allocation — not open purchase
-                    </p>
-                  ) : featuredPreorder.price != null ? (
-                    <p className="type-subtitle mb-9">
-                      {formatPrice(featuredPreorder.price)}
-                    </p>
-                  ) : null}
-                  <Link to={featuredHref!} className="luxury-button">
-                    {(featuredPreorder as any).preorder_enabled ? "Pre-Register" : "Discover the Piece"}
-                  </Link>
-                </div>
-              </ScrollFadeIn>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Split Collection — Women / Men */}
-      <section className="md:min-h-[100svh] md:snap-start flex flex-col justify-center bg-background">
-        <div className="luxury-container w-full py-[clamp(32px,4vh,64px)]">
+      {/* 3. Split Collection — Women / Men */}
+      <section className="bg-background section-pad-md">
+        <div className="luxury-container w-full">
           <div className="grid grid-cols-2 gap-4 md:gap-8 md:max-w-[72%] md:mx-auto md:[grid-template-columns:1fr_1fr] md:[transition:grid-template-columns_500ms_cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:md:[&:has(.panel-women:hover)]:[grid-template-columns:51fr_49fr] [@media(hover:hover)]:md:[&:has(.panel-men:hover)]:[grid-template-columns:49fr_51fr]">
             {[
               {
@@ -321,7 +246,6 @@ const Index = () => {
             ].map((card) => (
               <ScrollFadeIn key={card.to} delay={card.delay}>
                 <Link to={card.to} className={`group ${card.panelClass} relative flex flex-col overflow-hidden`}>
-                  {/* Image frame — locked 3:4 desktop, 4:5 mobile */}
                   <div className="relative w-full aspect-[4/5] md:aspect-[3/4] overflow-hidden bg-secondary transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:shadow-[0_30px_70px_-32px_rgba(0,0,0,0.35)]">
                     <img
                       src={card.primary}
@@ -341,7 +265,6 @@ const Index = () => {
                       className="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-[opacity,transform] duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:motion-safe:group-hover:opacity-100 [@media(hover:hover)]:motion-safe:group-hover:scale-[1.01]"
                     />
                   </div>
-                  {/* Caption — fixed baselines across panels */}
                   <div className="relative z-10 shrink-0 bg-background flex flex-col items-center text-center px-3 md:px-6 pt-5 md:pt-8 pb-3 md:pb-4 min-h-[120px] md:min-h-[168px]">
                     <Editable kind="text_block" contentKey={card.contentKey} field="season" label={`${card.alt} — season label`} as="span" className="type-eyebrow tracking-luxury-wide mb-3 md:mb-4">
                       {card.season}
@@ -366,10 +289,10 @@ const Index = () => {
         </div>
       </section>
 
-      {/* The Edit — featured products strip */}
+      {/* 4. The Edit — warm-2 band, 4-up featured products */}
       {editProducts.length > 0 && (
-        <section className="md:min-h-[100svh] md:snap-start flex flex-col justify-center bg-background">
-          <div className="luxury-container w-full py-[clamp(48px,8vh,96px)]">
+        <section className="bg-warm-2 section-pad-md">
+          <div className="luxury-container w-full">
             <ScrollFadeIn>
               <div className="flex items-end justify-between gap-6 pb-5 md:pb-7 border-b border-border mb-8 md:mb-12">
                 <div className="flex flex-col items-start">
@@ -380,7 +303,7 @@ const Index = () => {
                     {editHeadline}
                   </Editable>
                 </div>
-                <Link to="/collection" className="group hidden md:inline-flex items-center type-cta tracking-luxury-wide pb-[2px] shrink-0">
+                <Link to="/collection" className="group hidden md:inline-flex items-center type-cta tracking-luxury-wide shrink-0">
                   <span className="relative inline-block pb-1">
                     <Editable kind="text_block" contentKey="home_edit" field="view_all" label="The Edit — view all" as="span" className="uppercase">
                       {editViewAll}
@@ -398,7 +321,7 @@ const Index = () => {
                 const isPreorder = !!p.preorder_enabled;
                 const href = isPreorder ? `/preorder/${p.slug}` : `/product/${p.slug}`;
                 const cta = isPreorder ? "Reserve" : "Discover";
-                const priceLabel = p.price != null ? formatPrice(p.price) : null;
+                const priceLabel = p.price != null ? formatPriceWhole(p.price) : null;
                 return (
                   <ScrollFadeIn key={p.id} delay={i * 0.06}>
                     <Link to={href} className="group flex flex-col">
@@ -408,7 +331,7 @@ const Index = () => {
                             src={img}
                             alt={p.name}
                             loading="lazy"
-                            className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:scale-[1.02]"
+                            className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:scale-[1.03]"
                           />
                         ) : (
                           <div className="absolute inset-0 flex items-center justify-center text-muted-foreground font-serif italic text-sm">
@@ -443,83 +366,23 @@ const Index = () => {
         </section>
       )}
 
-      {/* Material is Memory — asymmetric two-column */}
-      <section className="md:min-h-[100svh] md:snap-start bg-background overflow-hidden">
-        <div className="grid grid-cols-1 md:grid-cols-[1.15fr_1fr] md:min-h-[78svh]">
-          <div className="group relative w-full aspect-[4/5] md:aspect-auto md:min-h-[60svh] overflow-hidden bg-[hsl(30_18%_88%)]">
-            <img
-              src={materialMemoryScarf}
-              alt="A RUVTIER silk scarf draped over a wooden chair — the quiet permanence of material."
-              width={760}
-              height={1013}
-              className="absolute inset-0 w-full h-full object-cover object-[center_30%] transition-transform duration-[900ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:scale-[1.02]"
-              decoding="async"
-              loading="lazy"
-            />
-          </div>
-          <div className="flex flex-col justify-center px-[clamp(28px,5vw,72px)] py-[clamp(40px,8vh,96px)]">
-            <ScrollFadeIn>
-              <Editable
-                kind="text_block"
-                contentKey="home_material_memory"
-                field="eyebrow"
-                label="'Material is Memory' eyebrow"
-                as="p"
-                className="type-eyebrow tracking-luxury-wide text-foreground/55 uppercase mb-4 md:mb-5"
-              >
-                {materialMemoryEyebrow}
-              </Editable>
-              <Editable
-                kind="text_block"
-                contentKey="home_material_memory"
-                field="headline"
-                label="'Material is Memory' heading"
-                as="h2"
-                className="type-display mb-5 md:mb-6"
-              >
-                {materialMemoryHeadline}
-              </Editable>
-              <Editable
-                kind="text_block"
-                contentKey="home_material_memory"
-                field="body"
-                label="'Material is Memory' body"
-                as="p"
-                className="type-body max-w-[460px] mb-5 md:mb-6 text-foreground/75"
-              >
-                {materialMemoryBody}
-              </Editable>
-              <Editable
-                kind="text_block"
-                contentKey="home_material_memory"
-                field="fibres"
-                label="'Material is Memory' fibres list"
-                as="p"
-                className="type-eyebrow tracking-luxury-wide text-foreground/55 mb-7 md:mb-9 uppercase"
-              >
-                {materialMemoryFibres}
-              </Editable>
-              <Link
-                to="/materials"
-                className="group inline-flex flex-col items-start type-cta tracking-luxury-wide w-fit"
-              >
-                <span className="relative inline-block pb-1 uppercase">
-                  <Editable kind="text_block" contentKey="home_material_memory" field="cta_label" label="'Material is Memory' CTA" as="span">
-                    {materialMemoryCta}
-                  </Editable>
-                  <span aria-hidden className="absolute left-0 right-0 -bottom-px h-px bg-current origin-left scale-x-100 group-hover:scale-x-0 transition-transform duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]" />
-                </span>
-              </Link>
-            </ScrollFadeIn>
-          </div>
-        </div>
-      </section>
+      {/* 5. Material is Memory — full-bleed centerpiece */}
+      <MaterialCenterpiece />
 
+      {/* 6. The Making — full-bleed editorial story */}
+      <TheMaking />
 
+      {/* 7. The Icons — second product set */}
+      <TheIcons products={iconProducts} formatPriceWhole={formatPriceWhole} />
 
+      {/* 8. At Your Service — charcoal band */}
+      <AtYourService />
 
-      {/* In Your Keeping */}
-      <section className="md:min-h-[100svh] md:snap-start flex flex-col justify-center py-[clamp(40px,8vh,96px)]">
+      {/* 9. Allocation Note — warm-1 band */}
+      <AllocationNote onJoinClick={() => setSubscribeOpen(true)} />
+
+      {/* 10. In Your Keeping */}
+      <section className="bg-background section-pad-md border-t border-border">
         <div className="luxury-container w-full">
           <ScrollFadeIn>
             <Editable kind="text_block" contentKey="home_in_your_keeping" field="headline" label="'In Your Keeping' heading" as="h2" className="type-display text-center mb-10 md:mb-14">
@@ -555,14 +418,10 @@ const Index = () => {
                     <span className="mt-3 md:mt-4 type-cta tracking-luxury-wide relative inline-block pb-1">
                       <span className="relative inline-block pb-1">
                         EXPLORE
-                        <span
-                          aria-hidden
-                          className="absolute left-0 right-0 -bottom-px h-px bg-current"
-                        />
+                        <span aria-hidden className="absolute left-0 right-0 -bottom-px h-px bg-current" />
                       </span>
                     </span>
                   </div>
-
                 </Link>
               </ScrollFadeIn>
             ))}
@@ -570,9 +429,8 @@ const Index = () => {
         </div>
       </section>
 
-      <div className="md:snap-start">
-        <LuxuryFooter onSubscribeClick={() => setSubscribeOpen(true)} />
-      </div>
+      {/* 11. Footer */}
+      <LuxuryFooter onSubscribeClick={() => setSubscribeOpen(true)} />
       <SubscribePanel isOpen={subscribeOpen} onClose={() => setSubscribeOpen(false)} />
     </div>
   );

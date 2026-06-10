@@ -29,36 +29,36 @@
 
 @layer base {
   :root {
-    /* Paper grounds — warm cream canvas. */
-    --background: 30 23% 95%;
-    --foreground: 0 0% 23%;
+    /* Paper grounds — single unified ivory canvas (#F4F1EA). */
+    --background: 42 27% 94%;
+    --foreground: 240 2% 23%;
 
-    /* Card / popover — identical to the page canvas. */
-    --card: 30 23% 95%;
-    --card-foreground: 0 0% 23%;
+    --card: 42 27% 94%;
+    --card-foreground: 240 2% 23%;
 
-    --popover: 30 23% 95%;
-    --popover-foreground: 0 0% 23%;
+    --popover: 42 27% 94%;
+    --popover-foreground: 240 2% 23%;
 
-    /* Ink — warm charcoal, never pure black. */
-    --primary: 0 0% 23%;
-    --primary-foreground: 30 23% 95%;
+    /* Ink — warm charcoal (#3A3A3C). */
+    --primary: 240 2% 23%;
+    --primary-foreground: 42 27% 94%;
 
-    /* Quiet wells — soft cream chips for image frames and secondary surfaces. */
-    --secondary: 30 15% 90%;
-    --secondary-foreground: 0 0% 23%;
+    /* Image-well / quiet surfaces — warm taupe (#BDB3A1 family). */
+    --secondary: 37 18% 69%;
+    --secondary-foreground: 240 2% 23%;
 
-    --muted: 30 15% 90%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 37 27% 88%;
+    --muted-foreground: 40 8% 39%;
 
-    --accent: 30 15% 88%;
-    --accent-foreground: 0 0% 23%;
+    --accent: 37 27% 88%;
+    --accent-foreground: 240 2% 23%;
 
-    /* Destructive — blocking errors only. */
+    /* Cool accent — used sparingly (#5B6770). */
+    --accent-cool: 205 10% 40%;
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    /* Semantic statuses — sage success, soft caution, high-attention warning. */
     --success: 152 44% 34%;
     --success-foreground: 152 44% 96%;
     --caution: 38 70% 45%;
@@ -66,22 +66,21 @@
     --warning: 22 70% 50%;
     --warning-foreground: 22 70% 96%;
 
-    /* Hairlines — single 1px stroke; never thicker. */
-    --border: 30 15% 85%;
-    --input: 30 15% 85%;
-    --ring: 0 0% 23%;
+    /* Hairlines (#DDD8CE). */
+    --border: 37 21% 84%;
+    --input: 37 21% 84%;
+    --ring: 240 2% 23%;
 
-    /* No rounded corners on the public site. */
     --radius: 0px;
 
-    --sidebar-background: 30 23% 95%;
-    --sidebar-foreground: 0 0% 23%;
-    --sidebar-primary: 0 0% 23%;
-    --sidebar-primary-foreground: 30 23% 95%;
-    --sidebar-accent: 30 15% 90%;
-    --sidebar-accent-foreground: 0 0% 23%;
-    --sidebar-border: 30 15% 85%;
-    --sidebar-ring: 0 0% 23%;
+    --sidebar-background: 42 27% 94%;
+    --sidebar-foreground: 240 2% 23%;
+    --sidebar-primary: 240 2% 23%;
+    --sidebar-primary-foreground: 42 27% 94%;
+    --sidebar-accent: 37 27% 88%;
+    --sidebar-accent-foreground: 240 2% 23%;
+    --sidebar-border: 37 21% 84%;
+    --sidebar-ring: 240 2% 23%;
 
     /* Typography families — light/regular weights only; never bold. */
     --font-serif: 'Cormorant Garamond', Georgia, serif;
@@ -274,13 +273,15 @@
   .luxury-container {
     max-width: var(--content-max);
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 64px;
+  }
+
+  @media (max-width: 1024px) {
+    .luxury-container { padding: 0 32px; }
   }
 
   @media (max-width: 768px) {
-    .luxury-container {
-      padding: 0 20px;
-    }
+    .luxury-container { padding: 0 20px; }
   }
 
   .luxury-section {
@@ -288,14 +289,41 @@
     padding-bottom: var(--section-gap);
   }
 
-  /* Homepage rhythm — content-driven vertical spacing for the editorial flow.
-     Pair with .bg-warm-1 / .bg-warm-2 / bg-background to group sections by tone. */
-  .section-pad-sm { padding-block: clamp(40px, 6vh, 56px); }
-  .section-pad-md { padding-block: clamp(64px, 9vh, 88px); }
-  .section-pad-lg { padding-block: clamp(80px, 12vh, 112px); }
+  /* Homepage rhythm — one consistent scale. Mobile halves the padding. */
+  .section-pad-sm { padding-block: 40px; }
+  .section-pad-md { padding-block: 64px; }
+  .section-pad-lg { padding-block: 88px; }
+  @media (max-width: 768px) {
+    .section-pad-sm { padding-block: 24px; }
+    .section-pad-md { padding-block: 40px; }
+    .section-pad-lg { padding-block: 56px; }
+  }
 
-  .bg-warm-1 { background:#F2EEE6; }
-  .bg-warm-2 { background:#EFEBE3; }
+  .hairline-top    { border-top: 0.5px solid hsl(var(--border)); }
+  .hairline-bottom { border-bottom: 0.5px solid hsl(var(--border)); }
+
+  /* Single warm inset — both tokens resolve to #EAE4D8 so the page
+     reads as one material. */
+  .bg-warm-1, .bg-warm-2 { background: #EAE4D8; }
+}
+
+/* Motion — slow, settled, luxury. */
+@keyframes kenburns {
+  from { transform: scale(1) translate3d(0,0,0); }
+  to   { transform: scale(1.04) translate3d(-1%, 0, 0); }
+}
+@keyframes imgSettle {
+  from { transform: scale(1.04); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+.motion-img-reveal { animation: imgSettle 1.2s cubic-bezier(0.22,0.61,0.36,1) both; }
+.motion-kenburns   { animation: kenburns 20s ease-in-out infinite alternate; }
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-img-reveal, .motion-kenburns {
+    animation: none !important;
+    transform: none !important;
+  }
 }
 
 /* Hero legibility — a very subtle cream halo sits behind dark editorial text

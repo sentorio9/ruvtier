@@ -102,90 +102,78 @@ const Index = () => {
   const iconProducts = allFeatured.slice(4, 7);
 
   return (
-    <div className="relative">
+    <div className="relative bg-background">
       <Navigation />
 
-      {/* 1. Hero */}
-      <section className="relative min-h-[100svh] md:min-h-[88svh] overflow-hidden bg-background">
-        <div className="absolute inset-0 overflow-hidden">
-          <Editable
-            kind="site_image"
-            contentKey="site_image_home_hero"
-            label="Homepage hero image"
-            as="div"
-            className="absolute inset-0 overflow-hidden"
-          >
-            <img
-              src={heroImageOverride || heroImage}
-              alt="RUVTIER luxury garment editorial"
-              className="absolute inset-0 w-full h-full object-cover object-[center_30%] md:object-center"
-              fetchPriority="high"
-              decoding="async"
-            />
-          </Editable>
-          <div className="absolute inset-0 bg-foreground/15 pointer-events-none" />
-        </div>
+      {/* 1. Hero — contained, image-then-caption, never full-bleed */}
+      <section className="bg-background section-pad-sm">
+        <div className="luxury-container w-full">
+          <ScrollFadeIn>
+            <Editable
+              kind="site_image"
+              contentKey="site_image_home_hero"
+              label="Homepage hero image"
+              as="div"
+              className="relative w-full max-h-[60vh] aspect-[16/9] overflow-hidden bg-secondary"
+            >
+              <img
+                src={heroImageOverride || heroImage}
+                alt="RUVTIER luxury garment editorial"
+                className="absolute inset-0 w-full h-full object-cover object-center motion-kenburns"
+                fetchPriority="high"
+                decoding="async"
+              />
+            </Editable>
+          </ScrollFadeIn>
 
-        <div className="relative z-10 luxury-container h-full min-h-[100svh] md:min-h-[88svh] flex flex-col justify-end pb-[clamp(64px,12vh,140px)] pt-[clamp(96px,18vh,180px)]">
-          <div className="max-w-[640px]">
-            <ScrollFadeIn>
+          <div className="flex flex-col items-center text-center pt-7 md:pt-9">
+            <ScrollFadeIn delay={0.05}>
               <Editable
                 kind="text_block"
                 contentKey="home_hero"
                 field="eyebrow"
                 label="Hero — eyebrow"
                 as="p"
-                className="type-eyebrow text-[#F6F4F1]/80 text-xs md:text-sm tracking-luxury-widest mb-6 md:mb-8"
+                className="type-eyebrow tracking-luxury-widest text-muted-foreground mb-3 md:mb-4"
               >
                 {heroEyebrow}
               </Editable>
+            </ScrollFadeIn>
+            <ScrollFadeIn delay={0.15}>
               <Editable
                 kind="text_block"
                 contentKey="home_hero"
                 field="headline"
                 label="Homepage hero text"
                 as="h1"
-                className="hero-title font-serif font-light text-[#F6F4F1] text-[clamp(32px,6.4vw,80px)] leading-[1.08] tracking-[0.015em]"
+                className="font-serif font-light text-foreground text-[clamp(28px,4.4vw,56px)] leading-[1.1] tracking-[0.02em] max-w-[20ch] mx-auto"
               >
                 {heroHeadline}
               </Editable>
             </ScrollFadeIn>
-
-            <ScrollFadeIn delay={0.2}>
+            <ScrollFadeIn delay={0.25}>
               <Link
                 to="/collection"
-                className="group inline-flex flex-col items-start type-cta text-[#F6F4F1] mt-8 md:mt-10 transition-colors duration-500"
+                className="group inline-flex items-center type-cta tracking-luxury-wide text-foreground mt-6 md:mt-8"
               >
-                <Editable kind="text_block" contentKey="home_hero" field="cta_label" label="Hero — primary CTA" as="span">
-                  {heroCta}
-                </Editable>
-                <span
-                  aria-hidden
-                  className="block w-full h-px bg-[#F6F4F1] mt-1 origin-left scale-x-100 opacity-70 group-hover:scale-x-0 transition-transform duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
-                />
+                <span className="relative inline-block pb-1 uppercase">
+                  <Editable kind="text_block" contentKey="home_hero" field="cta_label" label="Hero — primary CTA" as="span">
+                    {heroCta}
+                  </Editable>
+                  <span
+                    aria-hidden
+                    className="absolute left-0 right-0 -bottom-px h-px bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                  />
+                </span>
               </Link>
             </ScrollFadeIn>
           </div>
         </div>
-
-        <div className="pointer-events-none absolute z-10 bottom-[clamp(64px,12vh,140px)] right-[clamp(24px,5vw,64px)] hidden sm:block">
-          <ScrollFadeIn delay={0.35}>
-            <Editable
-              kind="text_block"
-              contentKey="home_hero"
-              field="utility_caption"
-              label="Hero — utility caption"
-              as="span"
-              className="type-eyebrow text-[#F6F4F1]/70 text-xs tracking-luxury-wide"
-            >
-              {heroUtility}
-            </Editable>
-          </ScrollFadeIn>
-        </div>
       </section>
 
+
       {/* 2. Manifesto — warm-1 interstitial */}
-      <section className="bg-warm-1 section-pad-sm">
+      <section className="bg-warm-1 hairline-top hairline-bottom section-pad-sm">
         <div className="luxury-container flex flex-col items-center text-center">
           <ScrollFadeIn>
             <Editable
@@ -217,7 +205,7 @@ const Index = () => {
       {/* 3. Split Collection — Women / Men */}
       <section className="bg-background section-pad-md">
         <div className="luxury-container w-full">
-          <div className="grid grid-cols-2 gap-4 md:gap-8 md:max-w-[72%] md:mx-auto md:[grid-template-columns:1fr_1fr] md:[transition:grid-template-columns_500ms_cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:md:[&:has(.panel-women:hover)]:[grid-template-columns:51fr_49fr] [@media(hover:hover)]:md:[&:has(.panel-men:hover)]:[grid-template-columns:49fr_51fr]">
+          <div className="grid grid-cols-2 gap-4 md:gap-8 md:[grid-template-columns:1fr_1fr] md:[transition:grid-template-columns_500ms_cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:md:[&:has(.panel-women:hover)]:[grid-template-columns:51fr_49fr] [@media(hover:hover)]:md:[&:has(.panel-men:hover)]:[grid-template-columns:49fr_51fr]">
             {[
               {
                 to: "/boutique/women",
@@ -291,7 +279,7 @@ const Index = () => {
 
       {/* 4. The Edit — warm-2 band, 4-up featured products */}
       {editProducts.length > 0 && (
-        <section className="bg-warm-2 section-pad-md">
+        <section className="bg-warm-2 hairline-top hairline-bottom section-pad-md">
           <div className="luxury-container w-full">
             <ScrollFadeIn>
               <div className="flex items-end justify-between gap-6 pb-5 md:pb-7 border-b border-border mb-8 md:mb-12">

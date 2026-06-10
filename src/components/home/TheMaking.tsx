@@ -1,9 +1,9 @@
 /**
- * TheMaking — full-bleed editorial story band beneath Material is Memory.
+ * TheMaking — contained atelier story.
  *
- * Atmospheric atelier image with a centred text overlay introducing the
- * single-maker craft narrative. Reuses ScrollFadeIn (single house motion
- * primitive) and the editable text pattern.
+ * Image centred at ~55% width, caption (eyebrow + headline + body +
+ * CTA) below. Sits on the unified ivory canvas — no dark overlay, no
+ * full-bleed.
  */
 import { Link } from "react-router-dom";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
@@ -20,35 +20,35 @@ const TheMaking = () => {
   const imageOverride = useSiteImage("site_image_home_making");
 
   return (
-    <section className="relative w-full min-h-[55vh] md:min-h-[60vh] overflow-hidden">
-      <Editable
-        kind="site_image"
-        contentKey="site_image_home_making"
-        label="The Making — background image"
-        as="div"
-        className="absolute inset-0"
-      >
-        <img
-          src={imageOverride || makingImage}
-          alt=""
-          aria-hidden
-          width={1920}
-          height={1080}
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover object-center"
-        />
-      </Editable>
-      <div className="absolute inset-0 bg-[#1E1C18]/55 pointer-events-none" />
-
-      <div className="relative z-10 luxury-container section-pad-md flex flex-col items-center text-center min-h-[55vh] md:min-h-[60vh] justify-center">
+    <section className="bg-background section-pad-md">
+      <div className="luxury-container w-full flex flex-col items-center text-center">
         <ScrollFadeIn>
+          <Editable
+            kind="site_image"
+            contentKey="site_image_home_making"
+            label="The Making — image"
+            as="div"
+            className="relative w-full md:w-[55%] mx-auto aspect-[4/3] overflow-hidden bg-secondary"
+          >
+            <img
+              src={imageOverride || makingImage}
+              alt="RUVTIER atelier — hands at work"
+              width={1600}
+              height={1200}
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover object-center"
+            />
+          </Editable>
+        </ScrollFadeIn>
+
+        <ScrollFadeIn delay={0.1}>
           <Editable
             kind="text_block"
             contentKey="home_making"
             field="eyebrow"
             label="The Making — eyebrow"
             as="p"
-            className="type-eyebrow tracking-luxury-wide text-[#F7F5F0]/70 uppercase mb-5 md:mb-6"
+            className="type-eyebrow tracking-luxury-wide text-muted-foreground uppercase mt-8 md:mt-10 mb-4 md:mb-5"
           >
             {eyebrow}
           </Editable>
@@ -58,27 +58,27 @@ const TheMaking = () => {
             field="headline"
             label="The Making — headline"
             as="h2"
-            className="font-serif font-light text-[#F7F5F0] text-[clamp(26px,3.6vw,52px)] leading-[1.18] tracking-[0.04em] max-w-[18ch] mx-auto"
+            className="type-display max-w-[18ch] mx-auto"
           >
             {headline}
           </Editable>
         </ScrollFadeIn>
-        <ScrollFadeIn delay={0.12}>
+        <ScrollFadeIn delay={0.2}>
           <Editable
             kind="text_block"
             contentKey="home_making"
             field="body"
             label="The Making — body"
             as="p"
-            className="font-sans font-light text-[#F7F5F0]/85 text-[clamp(15px,1.05vw,17px)] leading-[1.7] max-w-[52ch] mx-auto mt-6 md:mt-7"
+            className="type-body text-foreground/80 max-w-[52ch] mx-auto mt-5 md:mt-6"
           >
             {body}
           </Editable>
         </ScrollFadeIn>
-        <ScrollFadeIn delay={0.2}>
+        <ScrollFadeIn delay={0.3}>
           <Link
             to="/the-house"
-            className="group inline-flex items-center type-cta tracking-luxury-wide text-[#F7F5F0] mt-8 md:mt-10"
+            className="group inline-flex items-center type-cta tracking-luxury-wide text-foreground mt-7 md:mt-9"
           >
             <span className="relative inline-block pb-1 uppercase">
               <Editable
@@ -92,7 +92,7 @@ const TheMaking = () => {
               </Editable>
               <span
                 aria-hidden
-                className="absolute left-0 right-0 -bottom-px h-px bg-current origin-left scale-x-100 group-hover:scale-x-0 transition-transform duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]"
+                className="absolute left-0 right-0 -bottom-px h-px bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-[cubic-bezier(0.22,0.61,0.36,1)]"
               />
             </span>
             <span aria-hidden className="ml-2">→</span>

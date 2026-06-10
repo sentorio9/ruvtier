@@ -12,7 +12,7 @@ interface AllocationNoteProps {
 }
 
 const AllocationNote = ({ onJoinClick }: AllocationNoteProps) => (
-  <section className="bg-warm-1 section-pad-sm">
+  <section className="bg-warm-1 hairline-top hairline-bottom section-pad-sm">
     <div className="luxury-container flex flex-col items-center text-center">
       <ScrollFadeIn>
         <h2 className="font-serif font-light text-foreground text-[clamp(22px,2.6vw,34px)] leading-[1.25] tracking-[0.04em] mb-5 md:mb-6">

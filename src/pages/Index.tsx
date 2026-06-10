@@ -173,7 +173,7 @@ const Index = () => {
 
 
       {/* 2. Manifesto — warm-1 interstitial */}
-      <section className="bg-warm-1 section-pad-sm">
+      <section className="bg-warm-1 hairline-top hairline-bottom section-pad-sm">
         <div className="luxury-container flex flex-col items-center text-center">
           <ScrollFadeIn>
             <Editable
@@ -205,7 +205,7 @@ const Index = () => {
       {/* 3. Split Collection — Women / Men */}
       <section className="bg-background section-pad-md">
         <div className="luxury-container w-full">
-          <div className="grid grid-cols-2 gap-4 md:gap-8 md:max-w-[72%] md:mx-auto md:[grid-template-columns:1fr_1fr] md:[transition:grid-template-columns_500ms_cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:md:[&:has(.panel-women:hover)]:[grid-template-columns:51fr_49fr] [@media(hover:hover)]:md:[&:has(.panel-men:hover)]:[grid-template-columns:49fr_51fr]">
+          <div className="grid grid-cols-2 gap-4 md:gap-8 md:[grid-template-columns:1fr_1fr] md:[transition:grid-template-columns_500ms_cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:md:[&:has(.panel-women:hover)]:[grid-template-columns:51fr_49fr] [@media(hover:hover)]:md:[&:has(.panel-men:hover)]:[grid-template-columns:49fr_51fr]">
             {[
               {
                 to: "/boutique/women",

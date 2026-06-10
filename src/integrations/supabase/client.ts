@@ -25,6 +25,14 @@ if (!isSupabaseConfigured) {
   console.warn(SUPABASE_CONFIG_ERROR);
 }
 
+// Non-secret startup diagnostic so production builds can confirm whether the
+// VITE_ env vars made it into the bundle. Values themselves are never logged.
+console.info("[supabase] client init", {
+  isSupabaseConfigured,
+  url: SUPABASE_URL ? "set" : "missing",
+  key: SUPABASE_PUBLISHABLE_KEY ? "set" : "missing",
+});
+
 // Keep module import safe even when deployment env vars are missing. Public
 // hooks gate network calls with isSupabaseConfigured so this fallback should not
 // receive traffic; it only prevents a startup crash/white screen.

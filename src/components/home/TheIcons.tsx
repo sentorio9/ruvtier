@@ -73,7 +73,8 @@ const TheIcons = ({ products, formatPriceWhole }: TheIconsProps) => {
         </ScrollFadeIn>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-[clamp(16px,2.5vw,32px)] gap-y-12">
-          {products.slice(0, 3).map((p: any, i: number) => {
+          {hasProducts
+            ? products.slice(0, 3).map((p: any, i: number) => {
             const img = p.hero_image_url || p.thumbnail_url || null;
             const gallery = Array.isArray(p.media_gallery) ? p.media_gallery : [];
             const firstGallery = gallery[0];
@@ -123,8 +124,19 @@ const TheIcons = ({ products, formatPriceWhole }: TheIconsProps) => {
                 </Link>
               </ScrollFadeIn>
             );
-          })}
+          })
+            : Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="flex flex-col">
+                <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary" aria-hidden />
+                <div className="pt-5 md:pt-6">
+                  <p className="type-eyebrow tracking-luxury-wide text-foreground/40 uppercase">
+                    Selection temporarily unavailable
+                  </p>
+                </div>
+              </div>
+            ))}
         </div>
+
 
       </div>
     </section>

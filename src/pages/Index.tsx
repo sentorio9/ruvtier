@@ -97,10 +97,20 @@ const Index = () => {
 
   // Product sets: pull a single batch of featured products, then split
   // between The Edit (first 4) and The Icons (next 3, no overlap).
-  const { data: featuredProducts } = useActiveProducts({ featured: true, limit: 12 });
+  const { data: featuredProducts, error: featuredError, isLoading: featuredLoading } = useActiveProducts({ featured: true, limit: 12 });
   const allFeatured = featuredProducts ?? [];
   const editProducts = allFeatured.slice(0, 4);
   const iconProducts = allFeatured.slice(4, 7);
+
+  useEffect(() => {
+    console.info("[Index] featured products", {
+      isSupabaseConfigured,
+      isLoading: featuredLoading,
+      count: featuredProducts?.length ?? 0,
+      error: featuredError,
+    });
+  }, [featuredProducts, featuredError, featuredLoading]);
+
 
   return (
     <div className="relative bg-background">

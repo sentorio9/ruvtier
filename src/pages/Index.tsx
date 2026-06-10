@@ -379,13 +379,13 @@ const Index = () => {
           </ScrollFadeIn>
           <div className="grid grid-cols-3 gap-3 md:gap-8 lg:gap-10 items-start">
             {[
-              { img: knitwearImg.url, label: "Knitwear", to: "/boutique/women", numeral: "I", caption: "sketch — knitwear in hands" },
-              { img: lifestyleImg.url, label: "Life in RUVTIER", to: "/boutique/lifestyle", numeral: "II", caption: "sketch ⇄ photo on hover" },
-              { img: appointmentImg.url, label: "By Appointment Only", to: "/contact", numeral: "III", caption: "sketch — boutique façade" },
+              { img: knitwearImg.url, label: "Knitwear", to: "/boutique/women", numeral: "I" },
+              { img: lifestyleImg.url, label: "Life in RUVTIER", to: "/boutique/lifestyle", numeral: "II" },
+              { img: appointmentImg.url, label: "By Appointment Only", to: "/contact", numeral: "III" },
             ].map((item, i) => (
               <ScrollFadeIn key={item.label} delay={i * 0.08}>
                 <Link to={item.to} className="group flex flex-col">
-                  <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary border border-border">
+                  <div className="relative w-full aspect-[3/4] overflow-hidden bg-background border border-border/60">
                     <span aria-hidden className="absolute top-3 left-3 md:top-4 md:left-4 type-eyebrow tracking-luxury-wide text-foreground/60 z-10">
                       {item.numeral}
                     </span>
@@ -393,12 +393,10 @@ const Index = () => {
                       src={item.img}
                       alt={item.label}
                       loading="lazy"
-                      className="absolute inset-0 w-full h-full object-contain object-center p-[8%] transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                      className="absolute inset-0 w-full h-full object-contain object-center p-[3%] transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                     />
-                    <span aria-hidden className="hidden md:block absolute bottom-4 left-0 right-0 text-center type-eyebrow text-foreground/55 z-10">
-                      {item.caption}
-                    </span>
                   </div>
+
                   <div className="flex flex-col items-center text-center px-2 md:px-4 pt-4 md:pt-6 text-foreground">
                     <h3 className="type-title leading-luxury-card text-[15px] md:text-[inherit] min-h-[3em] md:min-h-0 flex items-start justify-center">
                       {item.label}

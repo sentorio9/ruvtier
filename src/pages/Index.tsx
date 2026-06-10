@@ -34,7 +34,7 @@ import AtYourService from "@/components/home/AtYourService";
 import AllocationNote from "@/components/home/AllocationNote";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { useActiveProducts, formatPrice, usePriceTick } from "@/hooks/useProducts";
-import heroImage from "@/assets/hero-permanence.jpg";
+import heroImage from "@/assets/hero-main-replacement.png.asset.json";
 import womenPrimary from "@/assets/collection-women-primary.jpg";
 import womenHover from "@/assets/collection-women-hover.jpg";
 import menPrimary from "@/assets/collection-men-primary.jpg";
@@ -117,7 +117,7 @@ const Index = () => {
               className="relative w-full max-h-[60vh] aspect-[16/9] overflow-hidden bg-secondary"
             >
               <img
-                src={heroImageOverride || heroImage}
+                src={heroImageOverride || heroImage.url}
                 alt="RUVTIER luxury garment editorial"
                 className="absolute inset-0 w-full h-full object-cover object-center motion-kenburns"
                 fetchPriority="high"

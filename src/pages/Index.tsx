@@ -341,15 +341,6 @@ const Index = () => {
               })}
             </div>
 
-            <div className="mt-10 md:hidden flex justify-center">
-              <Link to="/collection" className="group inline-flex items-center type-cta tracking-luxury-wide">
-                <span className="relative inline-block pb-1 uppercase">
-                  {editViewAll}
-                  <span aria-hidden className="absolute left-0 right-0 -bottom-px h-px bg-current" />
-                </span>
-                <span aria-hidden className="ml-2">→</span>
-              </Link>
-            </div>
           </div>
         </section>
       )}

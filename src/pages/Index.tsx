@@ -39,9 +39,9 @@ import womenPrimary from "@/assets/collection-women-primary.jpg";
 import womenHover from "@/assets/collection-women-hover.jpg";
 import menPrimary from "@/assets/collection-men-primary.jpg";
 import menHover from "@/assets/collection-men-hover.jpg";
-import knitwearImg from "@/assets/explore-knitwear.jpg";
-import lifestyleImg from "@/assets/explore-lifestyle.jpg";
-import appointmentImg from "@/assets/explore-appointment.png";
+import knitwearImg from "@/assets/sketch-knitwear.png.asset.json";
+import lifestyleImg from "@/assets/sketch-lifestyle.png.asset.json";
+import appointmentImg from "@/assets/sketch-appointment.png.asset.json";
 import {
   HOME_HERO_HEADLINE,
   HOME_HERO_EYEBROW,
@@ -379,9 +379,9 @@ const Index = () => {
           </ScrollFadeIn>
           <div className="grid grid-cols-3 gap-3 md:gap-8 lg:gap-10 items-start">
             {[
-              { img: knitwearImg, label: "Knitwear", to: "/boutique/women", numeral: "I", caption: "sketch — knitwear in hands" },
-              { img: lifestyleImg, label: "Life in RUVTIER", to: "/boutique/lifestyle", numeral: "II", caption: "sketch ⇄ photo on hover" },
-              { img: appointmentImg, label: "By Appointment Only", to: "/contact", numeral: "III", caption: "sketch — boutique façade" },
+              { img: knitwearImg.url, label: "Knitwear", to: "/boutique/women", numeral: "I", caption: "sketch — knitwear in hands" },
+              { img: lifestyleImg.url, label: "Life in RUVTIER", to: "/boutique/lifestyle", numeral: "II", caption: "sketch ⇄ photo on hover" },
+              { img: appointmentImg.url, label: "By Appointment Only", to: "/contact", numeral: "III", caption: "sketch — boutique façade" },
             ].map((item, i) => (
               <ScrollFadeIn key={item.label} delay={i * 0.08}>
                 <Link to={item.to} className="group flex flex-col">

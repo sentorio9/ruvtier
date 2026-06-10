@@ -75,6 +75,11 @@ const TheIcons = ({ products, formatPriceWhole }: TheIconsProps) => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-[clamp(16px,2.5vw,32px)] gap-y-12">
           {products.slice(0, 3).map((p: any, i: number) => {
             const img = p.hero_image_url || p.thumbnail_url || null;
+            const gallery = Array.isArray(p.media_gallery) ? p.media_gallery : [];
+            const firstGallery = gallery[0];
+            const hoverImg = typeof firstGallery === "string"
+              ? firstGallery
+              : (firstGallery && typeof firstGallery.url === "string" ? firstGallery.url : null);
             const isPreorder = !!p.preorder_enabled;
             const href = isPreorder ? `/preorder/${p.slug}` : `/product/${p.slug}`;
             const cta = isPreorder ? "Reserve" : "Discover";
@@ -84,12 +89,23 @@ const TheIcons = ({ products, formatPriceWhole }: TheIconsProps) => {
                 <Link to={href} className="group flex flex-col">
                   <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary transition-shadow duration-[800ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:shadow-[0_30px_70px_-32px_rgba(58,58,58,0.28)]">
                     {img ? (
-                      <img
-                        src={img}
-                        alt={p.name}
-                        loading="lazy"
-                        className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:scale-[1.03]"
-                      />
+                      <>
+                        <img
+                          src={img}
+                          alt={p.name}
+                          loading="lazy"
+                          className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:scale-[1.03] ${hoverImg ? "[@media(hover:hover)]:group-hover:opacity-0" : ""}`}
+                        />
+                        {hoverImg && (
+                          <img
+                            src={hoverImg}
+                            alt=""
+                            aria-hidden
+                            loading="lazy"
+                            className="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-all duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:group-hover:scale-[1.03]"
+                          />
+                        )}
+                      </>
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center text-muted-foreground font-serif italic">
                         {p.name}

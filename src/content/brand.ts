@@ -43,15 +43,49 @@ export const HOME_HERO_PREORDER_MEN = "Pre-Order for Men";
 /** Material is Memory section — headline and CTA. */
 export const HOME_MATERIAL_MEMORY_HEADLINE = "Material is memory";
 export const HOME_MATERIAL_MEMORY_CTA = "Discover all materials";
-export const HOME_MATERIAL_MEMORY_BODY = "Every piece begins with a fibre chosen years before it is worn.";
+export const HOME_MATERIAL_MEMORY_BODY = "Spun in Palermo from a single named fibre we trace to its source. We make only what it allows.";
 export const HOME_MATERIAL_MEMORY_SWATCH_EYEBROW = "Mulberry Silk — Nº 04";
 export const HOME_MATERIAL_MEMORY_SWATCH_CAPTION = "image crossfades to fabric macro on hover";
 export const HOME_MATERIAL_MEMORY_EYEBROW = "The Material Library";
 export const HOME_MATERIAL_MEMORY_FIBRES = "Cashmere · Baby camel · Sea island cotton";
+export const HOME_MATERIAL_MEMORY_ORIGIN_TAG = "[FIBRE NAME]® · Traceable";
 
 /** Manifesto interstitial — beneath hero. */
 export const HOME_MANIFESTO_LINE = "We make few things, slowly — and only once.";
-export const HOME_MANIFESTO_EYEBROW = "The House of Ruvtier · Est. Palermo Italy";
+export const HOME_MANIFESTO_EYEBROW = "The House of Ruvtier · Atelier Palermo";
+
+/** The Making — editorial atelier story. */
+export const HOME_MAKING = {
+  eyebrow: "The Making",
+  headline: "Forty-one hours, one pair of hands",
+  body: "Each piece is cut, canvassed and finished in our Palermo atelier by a single maker, whose initials it carries.",
+  cta: "Our craft",
+} as const;
+
+/** The Icons — second product set. */
+export const HOME_ICONS = {
+  eyebrow: "The Icons",
+  headline: "The pieces we are known for",
+  viewAll: "View all",
+} as const;
+
+/** At Your Service — dark service band. */
+export const HOME_SERVICES = {
+  heading: "At your service",
+  items: [
+    { title: "Private appointment", body: "In store in Palermo, or by video", to: "/contact" },
+    { title: "Concierge", body: "Monday–Sunday · 9–19h", to: "/contact" },
+    { title: "Care & repair", body: "For the life of the piece", to: "/rituals-of-care" },
+    { title: "The gift", body: "Wrapped by hand", to: "/contact" },
+  ],
+} as const;
+
+/** Allocation explainer — short warm band. */
+export const HOME_ALLOCATION = {
+  heading: "What allocation means",
+  body: "Each edition is made once. Clients are offered pieces in order of registration — no restocks, no waitlists.",
+  cta: "Join the private list",
+} as const;
 
 /** The Edit — featured products strip. */
 export const HOME_EDIT_EYEBROW = "The Edit";

@@ -287,6 +287,15 @@
     padding-top: var(--section-gap);
     padding-bottom: var(--section-gap);
   }
+
+  /* Homepage rhythm — content-driven vertical spacing for the editorial flow.
+     Pair with .bg-warm-1 / .bg-warm-2 / bg-background to group sections by tone. */
+  .section-pad-sm { padding-block: clamp(40px, 6vh, 56px); }
+  .section-pad-md { padding-block: clamp(64px, 9vh, 88px); }
+  .section-pad-lg { padding-block: clamp(80px, 12vh, 112px); }
+
+  .bg-warm-1 { background:#F2EEE6; }
+  .bg-warm-2 { background:#EFEBE3; }
 }
 
 /* Hero legibility — a very subtle cream halo sits behind dark editorial text

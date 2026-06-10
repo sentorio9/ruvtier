@@ -43,12 +43,12 @@ export const HOME_HERO_PREORDER_MEN = "Pre-Order for Men";
 /** Material is Memory section — headline and CTA. */
 export const HOME_MATERIAL_MEMORY_HEADLINE = "Material is memory";
 export const HOME_MATERIAL_MEMORY_CTA = "Discover all materials";
-export const HOME_MATERIAL_MEMORY_BODY = "Spun in Palermo from a single named fibre we trace to its source. We make only what it allows.";
+export const HOME_MATERIAL_MEMORY_BODY = "Spun in our Palermo atelier from a single named fibre we trace to its source. We make only what it allows.";
 export const HOME_MATERIAL_MEMORY_SWATCH_EYEBROW = "Mulberry Silk — Nº 04";
 export const HOME_MATERIAL_MEMORY_SWATCH_CAPTION = "image crossfades to fabric macro on hover";
 export const HOME_MATERIAL_MEMORY_EYEBROW = "The Material Library";
 export const HOME_MATERIAL_MEMORY_FIBRES = "Cashmere · Baby camel · Sea island cotton";
-export const HOME_MATERIAL_MEMORY_ORIGIN_TAG = "[FIBRE NAME]® · Traceable";
+export const HOME_MATERIAL_MEMORY_ORIGIN_TAG = "[INSERT REAL NAME] · Traceable";
 
 /** Manifesto interstitial — beneath hero. */
 export const HOME_MANIFESTO_LINE = "We make few things, slowly — and only once.";

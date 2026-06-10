@@ -279,7 +279,7 @@ const Index = () => {
 
       {/* 4. The Edit — warm-2 band, 4-up featured products */}
       {editProducts.length > 0 && (
-        <section className="bg-warm-2 section-pad-md">
+        <section className="bg-warm-2 hairline-top hairline-bottom section-pad-md">
           <div className="luxury-container w-full">
             <ScrollFadeIn>
               <div className="flex items-end justify-between gap-6 pb-5 md:pb-7 border-b border-border mb-8 md:mb-12">

@@ -154,7 +154,7 @@ const Navigation = () => {
         onOpenLounge={() => setLoungeOpen(true)}
       />
       <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
-      <ClientLoungeDrawer isOpen={loungeOpen} onClose={() => setLoungeOpen(false)} />
+      <ClientLoungeDrawer isOpen={loungeOpen} onClose={closeLounge} initialView={loungeInitialView} />
       <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
       <ShippingRegionModal open={shippingOpen} onClose={() => setShippingOpen(false)} />
     </>

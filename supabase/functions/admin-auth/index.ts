@@ -508,6 +508,22 @@ Deno.serve(async (req) => {
       const checkIp = req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown'
       const checkUa = req.headers.get('user-agent') || 'unknown'
 
+      // Atomically claim the approved request so only the first poll mints a
+      // session. Subsequent polls will see status='session_issued' and bail out
+      // before inserting another admin_sessions row.
+      const { data: claimed } = await supabase
+        .from('admin_login_requests')
+        .update({ status: 'session_issued', resolved_at: new Date().toISOString() })
+        .eq('id', requestId)
+        .eq('status', 'approved')
+        .select('id')
+        .maybeSingle()
+
+      if (!claimed) {
+        // Lost the race — another concurrent call already issued the session.
+        return jsonResponse({ status: 'consumed' })
+      }
+
       await supabase.from('admin_sessions').insert({
         credential_id: cred.id,
         session_token: sessionToken,
@@ -533,6 +549,12 @@ Deno.serve(async (req) => {
         displayLabel: cred.display_label,
         supabaseSession,
       })
+    }
+
+    // Already-consumed approvals — tell the client to stop polling without
+    // minting yet another session.
+    if (request.status === 'session_issued') {
+      return jsonResponse({ status: 'consumed' })
     }
 
     return jsonResponse({ status: 'unknown' })
@@ -633,8 +655,21 @@ Deno.serve(async (req) => {
 
   // --- LOGOUT ---
   if (action === 'logout') {
-    if ((rawBody as any).sessionToken) {
-      await supabase.from('admin_sessions').delete().eq('session_token', (rawBody as any).sessionToken)
+    const token = (rawBody as any).sessionToken
+    if (token) {
+      // Look up the credential first, then revoke every session for that
+      // credential — defense in depth against any stray sessions created by
+      // earlier check-status polls.
+      const { data: session } = await supabase
+        .from('admin_sessions')
+        .select('credential_id')
+        .eq('session_token', token)
+        .maybeSingle()
+      if (session?.credential_id) {
+        await supabase.from('admin_sessions').delete().eq('credential_id', session.credential_id)
+      } else {
+        await supabase.from('admin_sessions').delete().eq('session_token', token)
+      }
     }
     return jsonResponse({ success: true })
   }

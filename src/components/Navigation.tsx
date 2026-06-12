@@ -151,7 +151,7 @@ const Navigation = () => {
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
         onOpenSearch={() => setSearchOpen(true)}
-        onOpenLounge={() => setLoungeOpen(true)}
+        onOpenLounge={() => { setLoungeInitialView(undefined); setLoungeOpen(true); }}
       />
       <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
       <ClientLoungeDrawer isOpen={loungeOpen} onClose={closeLounge} initialView={loungeInitialView} />

@@ -31,7 +31,7 @@ function InputField({ label, value, onChange, placeholder }: {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full h-10 px-3 bg-transparent border border-border text-foreground text-[13px] font-sans focus:outline-none focus:border-foreground/40 transition-colors placeholder:text-muted-foreground/40"
+        className="w-full h-10 px-3 bg-transparent border border-border text-foreground text-[13px] font-sans focus:outline-none focus:border-foreground/40 transition-colors placeholder:text-muted-foreground/70"
       />
     </div>
   );

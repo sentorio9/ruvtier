@@ -41,7 +41,7 @@ interface Props {
 }
 
 const inputClass =
-  "w-full h-11 px-4 bg-transparent border border-border text-foreground text-sm tracking-wide placeholder:text-muted-foreground/50 focus:outline-none focus:border-foreground transition-colors duration-300";
+  "w-full h-11 px-4 bg-transparent border border-border text-foreground text-sm tracking-wide placeholder:text-muted-foreground/70 focus:outline-none focus:border-foreground transition-colors duration-300";
 const labelClass =
   "block text-[10px] tracking-[0.15em] uppercase text-muted-foreground mb-2";
 

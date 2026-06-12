@@ -156,7 +156,7 @@ const SubscribePanel = ({ isOpen, onClose }: SubscribePanelProps) => {
                           onChange={handleChange(key)}
                         placeholder={label}
                         aria-label={label}
-                        className="w-full bg-transparent py-3 font-sans text-sm tracking-wide placeholder:text-muted-foreground/50 focus:outline-none"
+                        className="w-full bg-transparent py-3 font-sans text-sm tracking-wide placeholder:text-muted-foreground/70 focus:outline-none"
                         />
                       </div>
                     ))}

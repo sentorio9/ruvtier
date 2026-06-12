@@ -272,7 +272,8 @@ export function RegionProvider({ children }: { children: ReactNode }) {
       } catch { /* keep default */ }
     }
 
-    if (!consent && !restored) setNeedsLocationConsent(true);
+    // Region popup removed: detection runs silently, the footer selector is the permanent affordance.
+    void consent;
 
     setLoading(false);
     // Prime FX rates in the background.

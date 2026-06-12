@@ -18,8 +18,8 @@ interface Props {
   onToggleBilling: (useSame: boolean) => void;
 }
 
-function InputField({ label, value, onChange, placeholder }: {
-  label: string; value: string; onChange: (v: string) => void; placeholder?: string;
+function InputField({ label, value, onChange, placeholder, autoComplete, name }: {
+  label: string; value: string; onChange: (v: string) => void; placeholder?: string; autoComplete?: string; name?: string;
 }) {
   return (
     <div>
@@ -31,6 +31,8 @@ function InputField({ label, value, onChange, placeholder }: {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
+        autoComplete={autoComplete}
+        name={name}
         className="w-full h-10 px-3 bg-transparent border border-border text-foreground text-[13px] font-sans focus:outline-none focus:border-foreground/40 transition-colors placeholder:text-muted-foreground/70"
       />
     </div>
@@ -43,15 +45,15 @@ function AddressBlock({ title, data, onChange }: {
   return (
     <div className="space-y-3">
       <p className="font-sans text-[10px] tracking-[0.15em] uppercase text-muted-foreground">{title}</p>
-      <InputField label="Street Address" value={data.street_address} onChange={(v) => onChange("street_address", v)} />
-      <InputField label="Apt / Suite / Unit" value={data.street_address_2} onChange={(v) => onChange("street_address_2", v)} />
+      <InputField label="Street Address" value={data.street_address} onChange={(v) => onChange("street_address", v)} autoComplete="street-address" name="street-address" />
+      <InputField label="Apt / Suite / Unit" value={data.street_address_2} onChange={(v) => onChange("street_address_2", v)} autoComplete="address-line2" name="address-line2" />
       <div className="grid grid-cols-2 gap-3">
-        <InputField label="City" value={data.city} onChange={(v) => onChange("city", v)} />
-        <InputField label="State / Province" value={data.state_province} onChange={(v) => onChange("state_province", v)} />
+        <InputField label="City" value={data.city} onChange={(v) => onChange("city", v)} autoComplete="address-level2" name="city" />
+        <InputField label="State / Province" value={data.state_province} onChange={(v) => onChange("state_province", v)} autoComplete="address-level1" name="state" />
       </div>
       <div className="grid grid-cols-2 gap-3">
-        <InputField label="Zip / Postal Code" value={data.zip_code} onChange={(v) => onChange("zip_code", v)} />
-        <InputField label="Country" value={data.country} onChange={(v) => onChange("country", v)} />
+        <InputField label="Zip / Postal Code" value={data.zip_code} onChange={(v) => onChange("zip_code", v)} autoComplete="postal-code" name="zip" />
+        <InputField label="Country" value={data.country} onChange={(v) => onChange("country", v)} autoComplete="country-name" name="country" />
       </div>
     </div>
   );

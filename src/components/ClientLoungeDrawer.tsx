@@ -571,8 +571,8 @@ function ProfileView({ user, profile, editMode, editName, editPhone, shippingAdd
         </div>
       ) : (
         <form onSubmit={onSave} className="space-y-5">
-          <InputField label="Display Name" value={editName} onChange={onEditName} />
-          <InputField label="Phone" value={editPhone} onChange={onEditPhone} type="tel" />
+          <InputField label="Display Name" value={editName} onChange={onEditName} autoComplete="name" name="display-name" />
+          <InputField label="Phone" value={editPhone} onChange={onEditPhone} type="tel" autoComplete="tel" name="phone" />
 
           <div className="border-t border-border pt-5">
             <AddressFields

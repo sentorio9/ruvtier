@@ -35,11 +35,30 @@ const Navigation = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [loungeOpen, setLoungeOpen] = useState(false);
+  const [loungeInitialView, setLoungeInitialView] = useState<"signin" | "register" | "reset" | undefined>(undefined);
   const [searchOpen, setSearchOpen] = useState(false);
   const [shippingOpen, setShippingOpen] = useState(false);
   const isMobile = useIsMobile();
   const { language } = useLanguage();
   const { t } = useT();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.pathname === "/lounge") {
+      const params = new URLSearchParams(location.search);
+      const v = params.get("view");
+      const mapped: "signin" | "register" | "reset" =
+        v === "register" || v === "reset" || v === "signin" ? v : "signin";
+      setLoungeInitialView(mapped);
+      setLoungeOpen(true);
+    }
+  }, [location.pathname, location.search]);
+
+  const closeLounge = () => {
+    setLoungeOpen(false);
+    if (location.pathname === "/lounge") navigate("/", { replace: true });
+  };
 
   return (
     <>

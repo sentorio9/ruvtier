@@ -129,7 +129,7 @@ const TheIcons = ({ products, formatPriceWhole }: TheIconsProps) => {
               <div key={i} className="flex flex-col">
                 <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary" aria-hidden />
                 <div className="pt-5 md:pt-6">
-                  <p className="type-eyebrow tracking-luxury-wide text-foreground/40 uppercase">
+                  <p className="type-eyebrow tracking-luxury-wide text-foreground/60 uppercase">
                     Selection temporarily unavailable
                   </p>
                 </div>

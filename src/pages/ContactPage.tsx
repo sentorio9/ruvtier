@@ -120,7 +120,7 @@ const ContactPage = () => {
                     onChange={handleChange("name")}
                     placeholder="Name"
                     aria-label="Your name"
-                    className="w-full bg-transparent pt-2 pb-3 font-sans text-[13px] tracking-[0.08em] placeholder:text-muted-foreground/40 focus:outline-none"
+                    className="w-full bg-transparent pt-2 pb-3 font-sans text-[13px] tracking-[0.08em] placeholder:text-muted-foreground/70 focus:outline-none"
                   />
                 </div>
                 <div className="relative border-b border-foreground/15 transition-colors duration-500 focus-within:border-foreground/50">
@@ -132,7 +132,7 @@ const ContactPage = () => {
                     onChange={handleChange("email")}
                     placeholder="Email"
                     aria-label="Your email address"
-                    className="w-full bg-transparent pt-2 pb-3 font-sans text-[13px] tracking-[0.08em] placeholder:text-muted-foreground/40 focus:outline-none"
+                    className="w-full bg-transparent pt-2 pb-3 font-sans text-[13px] tracking-[0.08em] placeholder:text-muted-foreground/70 focus:outline-none"
                   />
                 </div>
                 <div className="relative border-b border-foreground/15 transition-colors duration-500 focus-within:border-foreground/50">
@@ -144,7 +144,7 @@ const ContactPage = () => {
                     placeholder="Message"
                     aria-label="Your message"
                     rows={5}
-                    className="w-full bg-transparent pt-2 pb-3 font-sans text-[13px] tracking-[0.08em] leading-relaxed placeholder:text-muted-foreground/40 focus:outline-none resize-none"
+                    className="w-full bg-transparent pt-2 pb-3 font-sans text-[13px] tracking-[0.08em] leading-relaxed placeholder:text-muted-foreground/70 focus:outline-none resize-none"
                   />
                 </div>
                 {error && (

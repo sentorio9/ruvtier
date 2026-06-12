@@ -354,7 +354,7 @@ const Index = () => {
                 <div key={i} className="flex flex-col">
                   <div className="relative w-full aspect-[3/4] overflow-hidden bg-secondary" aria-hidden />
                   <div className="pt-4 md:pt-5">
-                    <p className="type-eyebrow tracking-luxury-wide text-foreground/40 uppercase">
+                    <p className="type-eyebrow tracking-luxury-wide text-foreground/60 uppercase">
                       {featuredError ? "Selection temporarily unavailable" : featuredLoading ? "Loading" : "Selection coming soon"}
                     </p>
                   </div>

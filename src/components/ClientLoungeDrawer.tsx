@@ -238,7 +238,7 @@ export default function ClientLoungeDrawer({ isOpen, onClose, initialView }: Pro
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed top-0 right-0 z-[101] h-full w-full max-w-[420px] bg-background border-l border-border"
+            className="client-lounge-drawer fixed top-0 right-0 z-[101] h-full w-full max-w-[420px] bg-background border-l border-border"
             role="dialog"
             aria-label="Client Lounge"
             aria-modal="true"

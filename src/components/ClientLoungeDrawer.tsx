@@ -469,6 +469,38 @@ function ForgotPasswordView({ email, error, success, submitting, onEmail, onSubm
   );
 }
 
+/* ─── Reset Password (set new) View ─── */
+function ResetPasswordView({ password, confirmPassword, error, success, submitting, onPassword, onConfirmPassword, onSubmit, onSwitchToLogin }: {
+  password: string; confirmPassword: string; error: string | null; success: string | null; submitting: boolean;
+  onPassword: (v: string) => void; onConfirmPassword: (v: string) => void;
+  onSubmit: (e: React.FormEvent) => void; onSwitchToLogin: () => void;
+}) {
+  return (
+    <div className="space-y-6">
+      <p className="font-sans text-[11px] tracking-[0.15em] uppercase text-muted-foreground">Set a new password</p>
+      <form onSubmit={onSubmit} className="space-y-5">
+        <InputField label="New Password" value={password} onChange={onPassword} type="password" autoComplete="new-password" />
+        <PasswordStrengthIndicator password={password} />
+        <InputField label="Confirm Password" value={confirmPassword} onChange={onConfirmPassword} type="password" autoComplete="new-password" />
+        {error && <ErrorText>{error}</ErrorText>}
+        {success && <SuccessText>{success}</SuccessText>}
+        <button
+          type="submit"
+          disabled={submitting}
+          className="w-full h-11 bg-foreground text-background text-[11px] tracking-[0.15em] uppercase hover:bg-foreground/90 transition-colors disabled:opacity-40 font-sans"
+        >
+          {submitting ? "Updating..." : "Update Password"}
+        </button>
+      </form>
+      <p className="font-sans text-[11px] text-muted-foreground text-center">
+        <button onClick={onSwitchToLogin} className="underline text-foreground hover:text-foreground/80">
+          Back to sign in
+        </button>
+      </p>
+    </div>
+  );
+}
+
 /* ─── Profile View ─── */
 interface ProfileViewProps {
   user: { email?: string } | null;

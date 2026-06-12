@@ -106,6 +106,7 @@ const App = () => (
         <MaintenanceGate>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/lounge" element={<Index />} />
           <Route path="/stillness" element={<Stillness />} />
           <Route path="/materials" element={<Materials />} />
           <Route path="/materials/:slug" element={<MaterialPage />} />

@@ -12,8 +12,8 @@
  * 0.6-stroke custom SVG icons (menu, search, cart). No props — all
  * chrome state is local.
  */
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import SlideMenu from "./FullScreenMenu";
 import CartDrawer from "./CartDrawer";
@@ -35,11 +35,30 @@ const Navigation = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [loungeOpen, setLoungeOpen] = useState(false);
+  const [loungeInitialView, setLoungeInitialView] = useState<"signin" | "register" | "reset" | undefined>(undefined);
   const [searchOpen, setSearchOpen] = useState(false);
   const [shippingOpen, setShippingOpen] = useState(false);
   const isMobile = useIsMobile();
   const { language } = useLanguage();
   const { t } = useT();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.pathname === "/lounge") {
+      const params = new URLSearchParams(location.search);
+      const v = params.get("view");
+      const mapped: "signin" | "register" | "reset" =
+        v === "register" || v === "reset" || v === "signin" ? v : "signin";
+      setLoungeInitialView(mapped);
+      setLoungeOpen(true);
+    }
+  }, [location.pathname, location.search]);
+
+  const closeLounge = () => {
+    setLoungeOpen(false);
+    if (location.pathname === "/lounge") navigate("/", { replace: true });
+  };
 
   return (
     <>
@@ -98,7 +117,7 @@ const Navigation = () => {
             </button>
             {!isMobile && (
               <button
-                onClick={() => setLoungeOpen(true)}
+                onClick={() => { setLoungeInitialView(undefined); setLoungeOpen(true); }}
                 className="luxury-button !p-1.5 !text-[10.5px] tracking-[0.16em]"
               >
                 {t("nav.client_lounge")}
@@ -132,10 +151,10 @@ const Navigation = () => {
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
         onOpenSearch={() => setSearchOpen(true)}
-        onOpenLounge={() => setLoungeOpen(true)}
+        onOpenLounge={() => { setLoungeInitialView(undefined); setLoungeOpen(true); }}
       />
       <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
-      <ClientLoungeDrawer isOpen={loungeOpen} onClose={() => setLoungeOpen(false)} />
+      <ClientLoungeDrawer isOpen={loungeOpen} onClose={closeLounge} initialView={loungeInitialView} />
       <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
       <ShippingRegionModal open={shippingOpen} onClose={() => setShippingOpen(false)} />
     </>

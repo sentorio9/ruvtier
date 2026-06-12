@@ -13,20 +13,23 @@
  * `AddressFields.tsx`); 12-char min password rule; body scroll locks
  * while open.
  */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { supabase } from "@/integrations/supabase/client";
 import { X } from "lucide-react";
 import { InputField, ErrorText, SuccessText } from "./client-lounge/FormElements";
 import PasswordStrengthIndicator, { isPasswordValid } from "./client-lounge/PasswordStrengthIndicator";
 import AddressFields, { type AddressData } from "./client-lounge/AddressFields";
 
-type View = "login" | "register" | "profile" | "forgot";
+type View = "login" | "register" | "profile" | "forgot" | "reset";
+export type LoungeInitialView = "signin" | "register" | "reset";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  initialView?: LoungeInitialView;
 }
 
 const emptyAddress: AddressData = {
@@ -38,10 +41,24 @@ const emptyAddress: AddressData = {
   country: "",
 };
 
-export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
+const mapInitialView = (v?: LoungeInitialView): View => {
+  if (v === "register") return "register";
+  if (v === "reset") return "reset";
+  return "login";
+};
+
+export default function ClientLoungeDrawer({ isOpen, onClose, initialView }: Props) {
   const { user, profile, loading, signIn, signUp, signOut, resetPassword, updateProfile } = useAuth();
   useBodyScrollLock(isOpen);
-  const [view, setView] = useState<View>("login");
+  const [view, setView] = useState<View>(() => mapInitialView(initialView));
+
+  useEffect(() => {
+    if (isOpen && initialView) setView(mapInitialView(initialView));
+  }, [isOpen, initialView]);
+
+  // Reset (set-new-password) state
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -180,7 +197,25 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
     setError(null);
   };
 
-  const currentView = user ? "profile" : view;
+  const handleResetSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+    if (!isPasswordValid(newPassword)) { setError("Password does not meet all requirements"); return; }
+    if (newPassword !== confirmPassword) { setError("Passwords do not match"); return; }
+    setSubmitting(true);
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    setSubmitting(false);
+    if (error) setError(error.message);
+    else {
+      setSuccess("Password updated successfully.");
+      setNewPassword("");
+      setConfirmPassword("");
+      setView("profile");
+    }
+  };
+
+  const currentView: View = view === "reset" ? "reset" : user ? "profile" : view;
 
   return (
     <AnimatePresence>
@@ -270,6 +305,18 @@ export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
                     onEmail={setEmail}
                     onSubmit={handleForgotPassword}
                     onSwitchToLogin={() => { resetForm(); setView("login"); }}
+                  />
+                ) : currentView === "reset" ? (
+                  <ResetPasswordView
+                    password={newPassword}
+                    confirmPassword={confirmPassword}
+                    error={error}
+                    success={success}
+                    submitting={submitting}
+                    onPassword={setNewPassword}
+                    onConfirmPassword={setConfirmPassword}
+                    onSubmit={handleResetSubmit}
+                    onSwitchToLogin={() => { setNewPassword(""); setConfirmPassword(""); resetForm(); setView("login"); }}
                   />
                 ) : (
                   <LoginView
@@ -411,6 +458,38 @@ function ForgotPasswordView({ email, error, success, submitting, onEmail, onSubm
           className="w-full h-11 bg-foreground text-background text-[11px] tracking-[0.15em] uppercase hover:bg-foreground/90 transition-colors disabled:opacity-40 font-sans"
         >
           {submitting ? "Sending..." : "Send Reset Link"}
+        </button>
+      </form>
+      <p className="font-sans text-[11px] text-muted-foreground text-center">
+        <button onClick={onSwitchToLogin} className="underline text-foreground hover:text-foreground/80">
+          Back to sign in
+        </button>
+      </p>
+    </div>
+  );
+}
+
+/* ─── Reset Password (set new) View ─── */
+function ResetPasswordView({ password, confirmPassword, error, success, submitting, onPassword, onConfirmPassword, onSubmit, onSwitchToLogin }: {
+  password: string; confirmPassword: string; error: string | null; success: string | null; submitting: boolean;
+  onPassword: (v: string) => void; onConfirmPassword: (v: string) => void;
+  onSubmit: (e: React.FormEvent) => void; onSwitchToLogin: () => void;
+}) {
+  return (
+    <div className="space-y-6">
+      <p className="font-sans text-[11px] tracking-[0.15em] uppercase text-muted-foreground">Set a new password</p>
+      <form onSubmit={onSubmit} className="space-y-5">
+        <InputField label="New Password" value={password} onChange={onPassword} type="password" autoComplete="new-password" />
+        <PasswordStrengthIndicator password={password} />
+        <InputField label="Confirm Password" value={confirmPassword} onChange={onConfirmPassword} type="password" autoComplete="new-password" />
+        {error && <ErrorText>{error}</ErrorText>}
+        {success && <SuccessText>{success}</SuccessText>}
+        <button
+          type="submit"
+          disabled={submitting}
+          className="w-full h-11 bg-foreground text-background text-[11px] tracking-[0.15em] uppercase hover:bg-foreground/90 transition-colors disabled:opacity-40 font-sans"
+        >
+          {submitting ? "Updating..." : "Update Password"}
         </button>
       </form>
       <p className="font-sans text-[11px] text-muted-foreground text-center">

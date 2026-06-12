@@ -19,7 +19,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { supabase } from "@/integrations/supabase/client";
 import { X } from "lucide-react";
-import { InputField, ErrorText, SuccessText } from "./client-lounge/FormElements";
+import { Link } from "react-router-dom";
+import { InputField, ErrorText, SuccessText, LoungeCheckbox } from "./client-lounge/FormElements";
 import PasswordStrengthIndicator, { isPasswordValid } from "./client-lounge/PasswordStrengthIndicator";
 import AddressFields, { type AddressData } from "./client-lounge/AddressFields";
 

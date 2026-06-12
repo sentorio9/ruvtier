@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
-export function InputField({ label, value, onChange, type = "text", autoComplete }: {
-  label: string; value: string; onChange: (v: string) => void; type?: string; autoComplete?: string;
+export function InputField({ label, value, onChange, type = "text", autoComplete, name }: {
+  label: string; value: string; onChange: (v: string) => void; type?: string; autoComplete?: string; name?: string;
 }) {
   return (
     <div>
@@ -13,6 +13,7 @@ export function InputField({ label, value, onChange, type = "text", autoComplete
         value={value}
         onChange={(e) => onChange(e.target.value)}
         autoComplete={autoComplete}
+        name={name}
         className="w-full h-11 px-3 bg-transparent border border-border text-foreground text-[13px] font-sans focus:outline-none focus:border-foreground/40 transition-colors"
       />
     </div>

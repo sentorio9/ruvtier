@@ -306,6 +306,18 @@ export default function ClientLoungeDrawer({ isOpen, onClose, initialView }: Pro
                     onSubmit={handleForgotPassword}
                     onSwitchToLogin={() => { resetForm(); setView("login"); }}
                   />
+                ) : currentView === "reset" ? (
+                  <ResetPasswordView
+                    password={newPassword}
+                    confirmPassword={confirmPassword}
+                    error={error}
+                    success={success}
+                    submitting={submitting}
+                    onPassword={setNewPassword}
+                    onConfirmPassword={setConfirmPassword}
+                    onSubmit={handleResetSubmit}
+                    onSwitchToLogin={() => { setNewPassword(""); setConfirmPassword(""); resetForm(); setView("login"); }}
+                  />
                 ) : (
                   <LoginView
                     email={email}

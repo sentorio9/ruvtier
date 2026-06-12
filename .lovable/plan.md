@@ -1,45 +1,35 @@
-## Goal
-Never show the cookie banner and the region/currency prompt at the same time. Adopt your preferred optional path: auto-detect the region silently, drop the first-load region popup entirely, and surface a small "Shipping to [country] — [currency] ⌄" affordance that opens the existing selector. Cookie banner remains the only first-load overlay.
+# Fix: Collections empty on the live site
 
-## Changes
+## Diagnosis
 
-### 1. `src/App.tsx`
-- Remove `<LocationConsentPrompt />` from the render tree (and its import). The component file stays in the repo for now but is no longer mounted — safe to delete in a follow-up if you confirm.
-- Keep `<CookieConsent />` exactly where it is.
+- The 6 active products (Silk Meridian Blazer, Cashmere shirt, Theia Sweater, Atelier Boiled-Wool Shell, and the two Bordeaux mocks) **are in the database** and registered in the admin panel — nothing is missing there.
+- The access policies (who may read what) are all correctly defined.
+- However, **every table in the database is missing its base Data API permissions (GRANTs)**. Policies alone aren't enough — without an explicit grant, the database refuses the request outright, so the website receives "permission denied" and shows "Selection coming soon" / "Selection temporarily unavailable".
+- This affects the published site and (once caches clear) the preview too, plus other features: pre-order requests, the maintenance subscribe form, site content/settings, the admin panel's data, and backend functions.
 
-### 2. `src/hooks/useRegionCurrency.tsx`
-- In the initial mount effect, stop setting `needsLocationConsent` to `true`. Auto-detection from timezone already runs and is persisted, so first-time visitors get a sensible default silently.
-- Keep `acceptLocationConsent` / `dismissLocationConsent` exported (no breaking API change) but they become no-ops from the UI side — the footer/header affordance uses `setRegion` directly via the existing selector.
-- Persistence is unchanged: `ruvtier_region` already survives reloads, so returning visitors keep their choice.
+## Fix (one database migration, no code changes)
 
-### 3. New affordance: `src/components/ShippingToBadge.tsx`
-- Small text-only control matching quiet-luxury tokens (`type-eyebrow tracking-luxury-wide text-foreground/55 uppercase`, no boxes, no bg).
-- Renders: `Shipping to {region.country} — {region.currency} ⌄` with a hairline underline-on-hover (same pattern as other links).
-- Click opens the existing `<RegionSelector />` (reuse it as a controlled dialog/drawer with the project's standard transitions and easing — no new modal styling). Closes on Escape and outside click per Performance Architecture rules.
+Add the missing grants, matched to the existing policies:
 
-### 4. Placement of the affordance
-- **Footer (`src/components/LuxuryFooter.tsx`)**: replace/augment the current region row so the badge is always available — this is the "permanent way" the brief asks for.
-- **Header (`src/components/Navigation.tsx`)**: add the same badge in the desktop top utility row only (mobile keeps the footer entry to avoid header crowding). It sits inline with existing utility links; no background, no icon weight changes.
+1. **All tables** — full access for the backend service role (used by admin functions and email processing).
+2. **All tables** — read/write access for signed-in users (still filtered by the existing row-level policies, so nothing becomes more permissive than the policies allow).
+3. **Anonymous visitors** — only what the policies already permit:
+   - Read: `products`, `site_content`, `site_settings`
+   - Submit: `preorder_requests` (private access requests), `maintenance_subscribers` (newsletter)
 
-### 5. Cookie consent timing
-- No code change to `CookieConsent.tsx` itself — it already self-gates on `ruvtier_cookie_consent` in localStorage, persists the choice, and never reappears. Because the region prompt is gone, the two can no longer overlap by construction.
+## Technical details
 
-## What this delivers vs the brief
-1. First load shows only the cookie banner. ✅ (region popup removed entirely)
-2. No second popup needed after cookie choice — region is already auto-detected. ✅
-3. Cookie consent stays standalone. ✅
-4. Both decisions persist (`ruvtier_cookie_consent`, `ruvtier_region`). ✅
-5. Region selector remains in the footer + new header badge. ✅
-6. Quiet-luxury styling preserved — no stacked modals, no heavy panels. ✅
+```sql
+-- per public table:
+GRANT ALL ON public.<table> TO service_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.<table> TO authenticated;
+-- anon, scoped to existing policies:
+GRANT SELECT ON public.products, public.site_content, public.site_settings TO anon;
+GRANT INSERT ON public.preorder_requests, public.maintenance_subscribers TO anon;
+```
 
-## Out of scope
-- No copy or visual redesign of the cookie banner.
-- No changes to FX-rate fetching, currency formatting, or `formatPrice`.
-- No deletion of `LocationConsentPrompt.tsx` yet (leave dormant; remove in a cleanup pass once you've confirmed).
+Row-level security stays untouched — grants only make the tables reachable; the existing policies keep controlling which rows are visible.
 
 ## Verification
-1. Fresh browser (clear localStorage) → only cookie banner appears; no region popup; footer/header show "Shipping to {detected country} — {CCY} ⌄".
-2. Accept or dismiss cookies → no second prompt appears.
-3. Reload → no prompts; region badge still reflects the saved region.
-4. Click the badge → existing `RegionSelector` opens; changing region updates the badge live and persists across reloads.
-5. Footer region selector still works unchanged.
+
+After the migration, reload the published site and confirm "The Edit" and "The Icons" render the products.

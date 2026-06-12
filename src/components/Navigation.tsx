@@ -12,8 +12,8 @@
  * 0.6-stroke custom SVG icons (menu, search, cart). No props — all
  * chrome state is local.
  */
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import SlideMenu from "./FullScreenMenu";
 import CartDrawer from "./CartDrawer";

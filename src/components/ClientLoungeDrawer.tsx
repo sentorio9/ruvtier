@@ -13,20 +13,23 @@
  * `AddressFields.tsx`); 12-char min password rule; body scroll locks
  * while open.
  */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { supabase } from "@/integrations/supabase/client";
 import { X } from "lucide-react";
 import { InputField, ErrorText, SuccessText } from "./client-lounge/FormElements";
 import PasswordStrengthIndicator, { isPasswordValid } from "./client-lounge/PasswordStrengthIndicator";
 import AddressFields, { type AddressData } from "./client-lounge/AddressFields";
 
-type View = "login" | "register" | "profile" | "forgot";
+type View = "login" | "register" | "profile" | "forgot" | "reset";
+export type LoungeInitialView = "signin" | "register" | "reset";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  initialView?: LoungeInitialView;
 }
 
 const emptyAddress: AddressData = {
@@ -38,10 +41,24 @@ const emptyAddress: AddressData = {
   country: "",
 };
 
-export default function ClientLoungeDrawer({ isOpen, onClose }: Props) {
+const mapInitialView = (v?: LoungeInitialView): View => {
+  if (v === "register") return "register";
+  if (v === "reset") return "reset";
+  return "login";
+};
+
+export default function ClientLoungeDrawer({ isOpen, onClose, initialView }: Props) {
   const { user, profile, loading, signIn, signUp, signOut, resetPassword, updateProfile } = useAuth();
   useBodyScrollLock(isOpen);
-  const [view, setView] = useState<View>("login");
+  const [view, setView] = useState<View>(() => mapInitialView(initialView));
+
+  useEffect(() => {
+    if (isOpen && initialView) setView(mapInitialView(initialView));
+  }, [isOpen, initialView]);
+
+  // Reset (set-new-password) state
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");

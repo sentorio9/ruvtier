@@ -19,7 +19,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { supabase } from "@/integrations/supabase/client";
 import { X } from "lucide-react";
-import { InputField, ErrorText, SuccessText } from "./client-lounge/FormElements";
+import { Link } from "react-router-dom";
+import { InputField, ErrorText, SuccessText, LoungeCheckbox } from "./client-lounge/FormElements";
 import PasswordStrengthIndicator, { isPasswordValid } from "./client-lounge/PasswordStrengthIndicator";
 import AddressFields, { type AddressData } from "./client-lounge/AddressFields";
 
@@ -295,7 +296,9 @@ export default function ClientLoungeDrawer({ isOpen, onClose, initialView }: Pro
                     onDisplayName={setDisplayName}
                     onSubmit={handleRegister}
                     onSwitchToLogin={() => { resetForm(); setView("login"); }}
+                    onNavigate={onClose}
                   />
+
                 ) : currentView === "forgot" ? (
                   <ForgotPasswordView
                     email={email}
@@ -337,6 +340,9 @@ export default function ClientLoungeDrawer({ isOpen, onClose, initialView }: Pro
 
               {/* Footer */}
               <div className="px-8 pb-8">
+                <p className="font-sans text-[10px] tracking-[0.15em] uppercase text-muted-foreground text-center mb-4">
+                  Concierge — Monday–Sunday — 9–19h
+                </p>
                 <div className="border-t border-border pt-6">
                   <p className="font-sans text-[10px] tracking-[0.1em] text-muted-foreground/60 text-center">
                     Your privacy is sacred to us
@@ -365,18 +371,12 @@ function LoginView({ email, password, rememberMe, error, submitting, onEmail, on
         <InputField label="Password" value={password} onChange={onPassword} type="password" autoComplete="current-password" />
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="remember-me"
-              checked={rememberMe}
-              onChange={(e) => onRememberMe(e.target.checked)}
-              className="w-3.5 h-3.5 accent-foreground"
-            />
-            <label htmlFor="remember-me" className="font-sans text-[11px] text-muted-foreground cursor-pointer">
-              Keep me signed in
-            </label>
-          </div>
+          <LoungeCheckbox
+            id="remember-me"
+            checked={rememberMe}
+            onChange={onRememberMe}
+            label="Keep me signed in"
+          />
           <button type="button" onClick={onSwitchToForgot} className="font-sans text-[11px] text-muted-foreground hover:text-foreground underline transition-colors">
             Forgot password?
           </button>
@@ -402,10 +402,10 @@ function LoginView({ email, password, rememberMe, error, submitting, onEmail, on
 }
 
 /* ─── Register View ─── */
-function RegisterView({ email, password, displayName, error, success, submitting, onEmail, onPassword, onDisplayName, onSubmit, onSwitchToLogin }: {
+function RegisterView({ email, password, displayName, error, success, submitting, onEmail, onPassword, onDisplayName, onSubmit, onSwitchToLogin, onNavigate }: {
   email: string; password: string; displayName: string; error: string | null; success: string | null; submitting: boolean;
   onEmail: (v: string) => void; onPassword: (v: string) => void; onDisplayName: (v: string) => void;
-  onSubmit: (e: React.FormEvent) => void; onSwitchToLogin: () => void;
+  onSubmit: (e: React.FormEvent) => void; onSwitchToLogin: () => void; onNavigate: () => void;
 }) {
   return (
     <div className="space-y-6">
@@ -413,12 +413,27 @@ function RegisterView({ email, password, displayName, error, success, submitting
       <form onSubmit={onSubmit} className="space-y-5">
         <InputField label="Full Name" value={displayName} onChange={onDisplayName} autoComplete="name" />
         <InputField label="Email" value={email} onChange={onEmail} type="email" autoComplete="email" />
-        <InputField label="Password" value={password} onChange={onPassword} type="password" autoComplete="new-password" />
+        <div className="space-y-1.5">
+          <InputField label="Password" value={password} onChange={onPassword} type="password" autoComplete="new-password" showToggle />
+          <p className="font-sans text-[10px] tracking-[0.1em] text-muted-foreground/70">
+            Minimum 12 characters
+          </p>
+        </div>
 
         <PasswordStrengthIndicator password={password} />
 
         {error && <ErrorText>{error}</ErrorText>}
         {success && <SuccessText>{success}</SuccessText>}
+        <p className="font-sans text-[10px] leading-relaxed tracking-[0.05em] text-muted-foreground text-center">
+          By creating an account you agree to our{" "}
+          <Link to="/terms-and-conditions" onClick={onNavigate} className="underline underline-offset-2 hover:text-foreground transition-colors">
+            Terms & Conditions
+          </Link>{" "}
+          and{" "}
+          <Link to="/privacy-policy" onClick={onNavigate} className="underline underline-offset-2 hover:text-foreground transition-colors">
+            Privacy Policy
+          </Link>.
+        </p>
         <button
           type="submit"
           disabled={submitting}
@@ -427,6 +442,7 @@ function RegisterView({ email, password, displayName, error, success, submitting
           {submitting ? "Creating Account..." : "Register"}
         </button>
       </form>
+
       <p className="font-sans text-[11px] text-muted-foreground text-center">
         Already have an account?{" "}
         <button onClick={onSwitchToLogin} className="underline text-foreground hover:text-foreground/80">

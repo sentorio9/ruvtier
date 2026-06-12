@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { LoungeCheckbox } from "./FormElements";
 
 interface AddressData {
   street_address: string;
@@ -64,18 +65,12 @@ export default function AddressFields({ shippingAddress, billingAddress, useShip
     <div className="space-y-5">
       <AddressBlock title="Shipping Address" data={shippingAddress} onChange={onShippingChange} />
 
-      <div className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          id="same-billing"
-          checked={useShippingAsBilling}
-          onChange={(e) => onToggleBilling(e.target.checked)}
-          className="w-3.5 h-3.5 accent-foreground"
-        />
-        <label htmlFor="same-billing" className="font-sans text-[11px] text-muted-foreground cursor-pointer">
-          Billing address same as shipping
-        </label>
-      </div>
+      <LoungeCheckbox
+        id="same-billing"
+        checked={useShippingAsBilling}
+        onChange={onToggleBilling}
+        label="Billing address same as shipping"
+      />
 
       {!useShippingAsBilling && (
         <AddressBlock title="Billing Address" data={billingAddress} onChange={onBillingChange} />

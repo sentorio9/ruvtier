@@ -1,44 +1,48 @@
-## Diagnosis
+## Client Lounge drawer — three refinements
 
-Confirmed via DB inspection: `public.products` has four PERMISSIVE policies:
+All changes scoped to the drawer; no palette, layout, or typography token changes.
 
-1. `Public can view active products` — anon, SELECT, `status='active' AND deleted_at IS NULL`
-2. `Authenticated can view active products` — authenticated, SELECT, same predicate
-3. `Admins can manage products` — authenticated, **FOR ALL**, `is_admin(auth.uid())`
-4. `Editors can manage products` — authenticated, **FOR ALL**, `is_editor_or_admin(auth.uid())`
+### 1. Custom checkbox (replace both natives)
 
-Grants and the public-read policy are correct (and the anon request from the live site returns all six featured products, matching what you saw when logged out).
+Create a small shared component `LoungeCheckbox` in `src/components/client-lounge/FormElements.tsx`:
 
-The `FOR ALL` policies cover SELECT as well as writes. They're PERMISSIVE so in normal PostgREST evaluation they should OR with the read policy. But the symptom — empty result for authenticated users, full result for anon — is the classic shape of a `FOR ALL` management policy interfering with reads (e.g. PostgREST/PostgreSQL refusing to short-circuit when a permissive qual on a logged-in session evaluates in an unexpected way, or a stale plan cache after the recent grants migration). The cleanest, future-proof fix is to keep the management policies off the SELECT path entirely.
+- 16×16px square button (`role="checkbox"`, `aria-checked`, keyboard-toggleable via Space/Enter, hidden native `<input>` for form semantics + label `htmlFor`).
+- Styling: `border border-border` (same token as inputs), `bg-transparent`, no rounding (matches `--radius: 0`), no browser default — only our `:focus-visible` outline already scoped to `.client-lounge-drawer`.
+- When checked: render a foreground-colored check mark (lucide `Check` at size 12, `strokeWidth={1.25}`, `text-foreground`). No fill on the box.
+- Label markup left intact, so existing `font-sans text-[11px] text-muted-foreground` styling is preserved.
 
-## Plan
+Replace usages in:
+- `ClientLoungeDrawer.tsx` `LoginView` → "Keep me signed in".
+- `client-lounge/AddressFields.tsx` → "Billing address same as shipping".
 
-Add one migration that, for `products` (and the parallel pattern on a few other public-read tables), replaces the `FOR ALL` admin/editor policies with explicit `FOR INSERT`, `FOR UPDATE`, `FOR DELETE` policies. The read path is then driven solely by the two SELECT policies that already work for anon.
+### 2. Register view enhancements (`RegisterView` in `ClientLoungeDrawer.tsx`)
 
-### Migration sketch
+Three additions, all inside the existing form column:
 
-```sql
--- products
-DROP POLICY IF EXISTS "Admins can manage products" ON public.products;
-DROP POLICY IF EXISTS "Editors can manage products" ON public.products;
+a. **Password helper line** — directly under the Password input (above the `PasswordStrengthIndicator`), one quiet line:
+   `Minimum 12 characters` — `font-sans text-[10px] tracking-[0.1em] text-muted-foreground/70 mt-1.5`.
+   (Using the real rule from `PasswordStrengthIndicator` rather than the example "8".)
 
-CREATE POLICY "Editors can insert products" ON public.products
-  FOR INSERT TO authenticated WITH CHECK (public.is_editor_or_admin(auth.uid()));
-CREATE POLICY "Editors can update products" ON public.products
-  FOR UPDATE TO authenticated
-  USING (public.is_editor_or_admin(auth.uid()))
-  WITH CHECK (public.is_editor_or_admin(auth.uid()));
-CREATE POLICY "Admins can delete products" ON public.products
-  FOR DELETE TO authenticated USING (public.is_admin(auth.uid()));
+b. **Password visibility toggle** — extend the shared `InputField` in `FormElements.tsx` with an optional `showToggle` prop. When true and `type === "password"`, render an inline button at the right edge of the input wrapper (absolute-positioned inside a `relative` wrapper, padding-right on the input to avoid text overlap). Icon: lucide `Eye` / `EyeOff` at size 14, `strokeWidth={1}`, `text-muted-foreground hover:text-foreground`, `bg-transparent border-0`, `aria-label="Show password" / "Hide password"`. State held locally in `InputField`. Enable only on the Register password field for now (sign-in/reset untouched, per "do not change anything else").
+
+c. **Terms & Privacy notice** — small line directly above the Register button:
+   `By creating an account you agree to our` `<Link to="/terms-and-conditions">Terms & Conditions</Link>` `and` `<Link to="/privacy-policy">Privacy Policy</Link>.`
+   Style: `font-sans text-[10px] leading-relaxed tracking-[0.05em] text-muted-foreground text-center`; links use `underline underline-offset-2 hover:text-foreground transition-colors`. Use `react-router-dom`'s `Link` (already used elsewhere in the project) and call `onClose` via a passed handler so the drawer closes when the user navigates — wire a new `onNavigate` prop from `ClientLoungeDrawer` into `RegisterView` that invokes the existing `onClose`.
+
+### 3. Editorial anchor at the bottom of the drawer column
+
+In `ClientLoungeDrawer.tsx` footer block (currently just the privacy line), insert a single anchor line **above** the existing border + privacy line, inside `px-8 pb-8`:
+
+```
+Concierge — Monday–Sunday — 9–19h
 ```
 
-Same treatment applied to `site_content` and `site_settings` if they show the same `FOR ALL` admin policy (will verify in build mode before writing the SQL).
+Style: same letterspaced-caps as the section labels — `font-sans text-[10px] tracking-[0.15em] uppercase text-muted-foreground text-center mb-4`. Keep the existing `border-t` + "Your privacy is sacred to us" exactly as-is below it, so the column resolves cleanly without altering footer rhythm.
 
-### Verification
+### Files touched
 
-1. Run the migration.
-2. With `supabase--read_query` simulate as authenticated: confirm SELECT returns the six featured rows.
-3. Reload the preview while signed in to the Client Lounge and confirm The Edit / The Icons populate.
-4. Confirm admin panel can still create / edit / delete products.
+- `src/components/client-lounge/FormElements.tsx` — add `LoungeCheckbox`, extend `InputField` with `showToggle`.
+- `src/components/client-lounge/AddressFields.tsx` — swap native billing checkbox for `LoungeCheckbox`.
+- `src/components/ClientLoungeDrawer.tsx` — swap "Keep me signed in" checkbox; add helper line, eye toggle (via `showToggle`), and terms/privacy links in `RegisterView`; add concierge line in footer; pass `onClose` down for the legal links.
 
-No client code changes; no schema changes; no impact on anon visitors.
+No changes to auth logic, routes, tokens, or other views.

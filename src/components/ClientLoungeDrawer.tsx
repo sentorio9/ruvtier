@@ -371,18 +371,12 @@ function LoginView({ email, password, rememberMe, error, submitting, onEmail, on
         <InputField label="Password" value={password} onChange={onPassword} type="password" autoComplete="current-password" />
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="remember-me"
-              checked={rememberMe}
-              onChange={(e) => onRememberMe(e.target.checked)}
-              className="w-3.5 h-3.5 accent-foreground"
-            />
-            <label htmlFor="remember-me" className="font-sans text-[11px] text-muted-foreground cursor-pointer">
-              Keep me signed in
-            </label>
-          </div>
+          <LoungeCheckbox
+            id="remember-me"
+            checked={rememberMe}
+            onChange={onRememberMe}
+            label="Keep me signed in"
+          />
           <button type="button" onClick={onSwitchToForgot} className="font-sans text-[11px] text-muted-foreground hover:text-foreground underline transition-colors">
             Forgot password?
           </button>

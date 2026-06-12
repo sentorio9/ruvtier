@@ -117,7 +117,7 @@ const Navigation = () => {
             </button>
             {!isMobile && (
               <button
-                onClick={() => setLoungeOpen(true)}
+                onClick={() => { setLoungeInitialView(undefined); setLoungeOpen(true); }}
                 className="luxury-button !p-1.5 !text-[10.5px] tracking-[0.16em]"
               >
                 {t("nav.client_lounge")}

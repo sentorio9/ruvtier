@@ -2,8 +2,14 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL?.trim();
-const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim();
+// Hardcoded publishable credentials (publishable/anon key — safe in client bundle)
+// guarantee the production build can always reach the project even if VITE_ env
+// vars don't make it into the deployment build step.
+const FALLBACK_SUPABASE_URL = 'https://hgyugpllpcbjvhumxeoj.supabase.co';
+const FALLBACK_SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhneXVncGxscGNianZodW14ZW9qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NzY2MjcsImV4cCI6MjA4OTQ1MjYyN30.v3XicdCD2CZLRTlNOyB4lTLTEK2AnebsFdET9wiFrf4';
+
+const ENV_SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL?.trim();
+const ENV_SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim();
 
 const hasValidUrl = (value: string | undefined) => {
   if (!value) return false;
@@ -15,31 +21,18 @@ const hasValidUrl = (value: string | undefined) => {
   }
 };
 
-export const isSupabaseConfigured =
-  hasValidUrl(SUPABASE_URL) && Boolean(SUPABASE_PUBLISHABLE_KEY);
+const resolvedSupabaseUrl = hasValidUrl(ENV_SUPABASE_URL) ? ENV_SUPABASE_URL! : FALLBACK_SUPABASE_URL;
+const resolvedSupabaseKey = ENV_SUPABASE_KEY || FALLBACK_SUPABASE_KEY;
 
-export const SUPABASE_CONFIG_ERROR =
-  'Supabase environment variables are missing. Configure VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY in the deployment environment.';
+// Always configured now thanks to baked-in publishable fallback.
+export const isSupabaseConfigured = true;
+export const SUPABASE_CONFIG_ERROR = '';
 
-if (!isSupabaseConfigured) {
-  console.warn(SUPABASE_CONFIG_ERROR);
-}
-
-// Non-secret startup diagnostic so production builds can confirm whether the
-// VITE_ env vars made it into the bundle. Values themselves are never logged.
 console.info("[supabase] client init", {
-  isSupabaseConfigured,
-  url: SUPABASE_URL ? "set" : "missing",
-  key: SUPABASE_PUBLISHABLE_KEY ? "set" : "missing",
+  envUrl: ENV_SUPABASE_URL ? "set" : "missing",
+  envKey: ENV_SUPABASE_KEY ? "set" : "missing",
+  using: ENV_SUPABASE_KEY ? "env" : "fallback",
 });
-
-// Keep module import safe even when deployment env vars are missing. Public
-// hooks gate network calls with isSupabaseConfigured so this fallback should not
-// receive traffic; it only prevents a startup crash/white screen.
-const SAFE_SUPABASE_URL = 'https://placeholder.supabase.co';
-const SAFE_SUPABASE_KEY = 'public-anon-key-not-configured';
-const resolvedSupabaseUrl = isSupabaseConfigured ? SUPABASE_URL! : SAFE_SUPABASE_URL;
-const resolvedSupabaseKey = isSupabaseConfigured ? SUPABASE_PUBLISHABLE_KEY! : SAFE_SUPABASE_KEY;
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";

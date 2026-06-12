@@ -340,6 +340,9 @@ export default function ClientLoungeDrawer({ isOpen, onClose, initialView }: Pro
 
               {/* Footer */}
               <div className="px-8 pb-8">
+                <p className="font-sans text-[10px] tracking-[0.15em] uppercase text-muted-foreground text-center mb-4">
+                  Concierge — Monday–Sunday — 9–19h
+                </p>
                 <div className="border-t border-border pt-6">
                   <p className="font-sans text-[10px] tracking-[0.1em] text-muted-foreground/60 text-center">
                     Your privacy is sacred to us

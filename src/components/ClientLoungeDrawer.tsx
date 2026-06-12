@@ -197,7 +197,25 @@ export default function ClientLoungeDrawer({ isOpen, onClose, initialView }: Pro
     setError(null);
   };
 
-  const currentView = user ? "profile" : view;
+  const handleResetSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+    if (!isPasswordValid(newPassword)) { setError("Password does not meet all requirements"); return; }
+    if (newPassword !== confirmPassword) { setError("Passwords do not match"); return; }
+    setSubmitting(true);
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    setSubmitting(false);
+    if (error) setError(error.message);
+    else {
+      setSuccess("Password updated successfully.");
+      setNewPassword("");
+      setConfirmPassword("");
+      setView("profile");
+    }
+  };
+
+  const currentView: View = view === "reset" ? "reset" : user ? "profile" : view;
 
   return (
     <AnimatePresence>

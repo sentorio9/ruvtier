@@ -11,7 +11,7 @@ import { ADMIN_PREFIX } from "./admin/config";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { AdminProtectedLayout, AdminPublicLayout } from "./admin/components/AdminRoute";
 import CookieConsent from "./components/CookieConsent";
-import LocationConsentPrompt from "./components/LocationConsentPrompt";
+
 import MaintenanceGate from "./components/MaintenanceGate";
 
 // Eager-import the home route — it's the dominant entry point and the
@@ -266,7 +266,6 @@ const App = () => (
         </MaintenanceGate>
         </Suspense>
         <CookieConsent />
-        <LocationConsentPrompt />
         </RegionProvider>
         </AuthProvider>
       </BrowserRouter>

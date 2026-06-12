@@ -296,7 +296,9 @@ export default function ClientLoungeDrawer({ isOpen, onClose, initialView }: Pro
                     onDisplayName={setDisplayName}
                     onSubmit={handleRegister}
                     onSwitchToLogin={() => { resetForm(); setView("login"); }}
+                    onNavigate={onClose}
                   />
+
                 ) : currentView === "forgot" ? (
                   <ForgotPasswordView
                     email={email}

@@ -121,6 +121,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const [shippingOpen, setShippingOpen] = useState(false);
+  const [openSection, setOpenSection] = useState<string | null>(null);
   const { region, setRegion } = useRegionCurrency();
   const { languageLabel, setLanguage } = useLanguage();
   const { t } = useT();

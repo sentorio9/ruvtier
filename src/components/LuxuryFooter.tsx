@@ -312,11 +312,23 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
           </div>
 
           <nav className="mt-2" aria-label="Footer navigation">
-            <DisclosureSection title={touchHeading}>{touch}</DisclosureSection>
-            <DisclosureSection title={companyHeading}>{company}</DisclosureSection>
-            <DisclosureSection title={servicesHeading}>{services}</DisclosureSection>
-            <DisclosureSection title={legalHeading}>{legal}</DisclosureSection>
-            <DisclosureSection title={t("footer.touch.contact") ? "Follow Us" : "Follow Us"}>{follow}</DisclosureSection>
+            {[
+              { id: "services", title: servicesHeading, content: services },
+              { id: "company", title: companyHeading, content: company },
+              { id: "touch", title: touchHeading, content: touch },
+              { id: "legal", title: legalHeading, content: legal },
+              { id: "follow", title: "Follow Us", content: follow },
+            ].map((section) => (
+              <DisclosureSection
+                key={section.id}
+                id={section.id}
+                title={section.title}
+                isOpen={openSection === section.id}
+                onToggle={(id) => setOpenSection((cur) => (cur === id ? null : id))}
+              >
+                {section.content}
+              </DisclosureSection>
+            ))}
           </nav>
         </div>
 

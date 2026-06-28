@@ -114,8 +114,8 @@ const DisclosureSection = ({
       </div>
     </div>
   );
-}
-);
+};
+
 
 const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const [email, setEmail] = useState("");

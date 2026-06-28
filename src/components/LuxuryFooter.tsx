@@ -12,8 +12,9 @@
  * Design-system dependencies: `.luxury-container`, hairline `--border`,
  * 0.6-stroke SVG icons, light/regular weights only, brand tracking.
  */
-import { useState, useId } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import ShippingRegionModal from "./ShippingRegionModal";
 import { Editable } from "@/editor/Editable";
 import { useSiteText } from "@/editor/useSiteContent";
@@ -59,69 +60,11 @@ const headingClass =
 const newsletterHeadingClass =
   "font-serif font-light tracking-[0.04em] text-foreground text-[clamp(22px,2vw,30px)] leading-[1.2]";
 
-/* ── Mobile disclosure row ────────────────────────────────────────────
-   Controlled accordion — only one panel open at a time. Chevron rotates
-   90° when active. Smooth grid-rows transition replaces native <details>
-   for predictable single-open behaviour. */
-const DisclosureSection = ({
-  id,
-  title,
-  isOpen,
-  onToggle,
-  children,
-}: {
-  id: string;
-  title: React.ReactNode;
-  isOpen: boolean;
-  onToggle: (id: string) => void;
-  children: React.ReactNode;
-}) => {
-  const panelId = useId();
-  return (
-    <div className="border-b border-border/70">
-      <button
-        type="button"
-        onClick={() => onToggle(id)}
-        aria-expanded={isOpen}
-        aria-controls={panelId}
-        className="group flex w-full items-center justify-between py-5 select-none text-left"
-      >
-        <span className="font-serif font-light text-[15px] tracking-[0.14em] uppercase text-foreground">
-          {title}
-        </span>
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 14 14"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="0.6"
-          className={`text-foreground/70 transition-transform duration-[450ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] ${isOpen ? "rotate-90" : ""}`}
-          aria-hidden
-        >
-          <path d="M4.5 2.5 L9.5 7 L4.5 11.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
-      <div
-        id={panelId}
-        className={`grid transition-[grid-template-rows,opacity] duration-[450ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] ${
-          isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-        }`}
-      >
-        <div className="overflow-hidden">
-          <div className="pb-6 pt-1 flex flex-col gap-3">{children}</div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 
 const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const [shippingOpen, setShippingOpen] = useState(false);
-  const [openSection, setOpenSection] = useState<string | null>(null);
   const { region, setRegion } = useRegionCurrency();
   const { languageLabel, setLanguage } = useLanguage();
   const { t } = useT();
@@ -253,7 +196,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
       <div className="luxury-container pt-14 md:pt-24 pb-10 md:pb-14">
 
         {/* ─── MOBILE: centered newsletter, then disclosure rows ─── */}
-        <div className="md:hidden">
+        <div className="block md:hidden">
           <div className="text-center pb-10 border-b border-border/70">
             <Editable
               kind="text_block"
@@ -313,23 +256,24 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
           </div>
 
           <nav className="mt-2" aria-label="Footer navigation">
-            {[
-              { id: "services", title: servicesHeading, content: services },
-              { id: "company", title: companyHeading, content: company },
-              { id: "touch", title: touchHeading, content: touch },
-              { id: "legal", title: legalHeading, content: legal },
-              { id: "follow", title: "Follow Us", content: follow },
-            ].map((section) => (
-              <DisclosureSection
-                key={section.id}
-                id={section.id}
-                title={section.title}
-                isOpen={openSection === section.id}
-                onToggle={(id) => setOpenSection((cur) => (cur === id ? null : id))}
-              >
-                {section.content}
-              </DisclosureSection>
-            ))}
+            <Accordion type="single" collapsible className="w-full">
+              {[
+                { id: "services", title: servicesHeading, content: services },
+                { id: "company", title: companyHeading, content: company },
+                { id: "touch", title: touchHeading, content: touch },
+                { id: "legal", title: legalHeading, content: legal },
+                { id: "follow", title: "Follow Us", content: follow },
+              ].map((section) => (
+                <AccordionItem key={section.id} value={section.id} className="border-border/70">
+                  <AccordionTrigger className="py-5 text-left font-serif font-light text-[15px] tracking-[0.14em] uppercase text-foreground hover:no-underline [&>svg]:h-[14px] [&>svg]:w-[14px] [&>svg]:text-foreground/70 [&>svg]:stroke-[0.6] [&>svg]:duration-[450ms] [&>svg]:ease-[cubic-bezier(0.22,0.61,0.36,1)]">
+                    {section.title}
+                  </AccordionTrigger>
+                  <AccordionContent className="pb-6 pt-1">
+                    <div className="flex flex-col gap-3">{section.content}</div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </nav>
         </div>
 

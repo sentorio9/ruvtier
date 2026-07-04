@@ -1,22 +1,16 @@
-Fix the mobile footer overlap before any other task.
+## Fix cookie banner palette
 
-1. Correct the breakpoint issue causing `md:hidden` / `hidden md:grid` to fail on phones.
-   - The current Tailwind config sets `md: 0px`, so desktop footer styles are active on mobile.
-   - Restore `md` to a real tablet/desktop breakpoint while preserving the requested phone-as-tablet behavior through component-level layout where needed, not global `md:0`.
+The `CookieConsent` banner currently uses `bg-foreground` + `text-primary-foreground`, which renders as near-black with stark white text — off-brand versus the site's quiet-luxury off-white (#F6F4F1) / dark grey (#3A3A3A) palette and the tonal treatment used across the footer, drawers, and modals.
 
-2. Update `src/components/LuxuryFooter.tsx` only for the footer layout.
-   - Mobile wrapper: `block md:hidden`.
-   - Desktop columns: `hidden md:grid` or `hidden md:flex`, never visible on mobile.
-   - Newsletter appears first on mobile.
-   - Footer link groups render as a vertical mobile accordion using the existing Shadcn Accordion primitives.
-   - Categories: Services, Company, Get in touch, Legal, Follow Us.
-   - Desktop layout remains the existing editorial column grid.
+### Change
 
-3. Remove the custom mobile disclosure implementation if it is no longer needed.
-   - Replace it with Shadcn `Accordion`, `AccordionItem`, `AccordionTrigger`, and `AccordionContent`.
-   - Keep RUVTIER’s typography, palette, spacing, and 0.6-stroke visual tone.
+Edit `src/components/CookieConsent.tsx` only. Repaint the banner using existing semantic tokens so it reads like the rest of the site:
 
-4. Verify on the actual mobile viewport.
-   - Use the current 440px preview/mobile size.
-   - Confirm no horizontal header overlap, newsletter is at the top, and only the vertical accordion rows show on mobile.
-   - Confirm desktop columns are hidden on mobile and still present on desktop breakpoints.
+- Panel: `bg-background` with `border border-border` and the site's soft shadow (no more solid dark block).
+- Title + body: `text-foreground` (serif title unchanged) and `text-muted-foreground` for the description — same hierarchy the footer uses.
+- Primary CTA ("Accept all"): filled in `bg-foreground text-background` with `hover:opacity-80` — the site's standard dark-on-cream action, matching drawer primary buttons.
+- Secondary CTA ("Essential only"): transparent with `border border-border text-foreground hover:border-foreground`, matching the footer's ghost buttons.
+- "Cookie policy" link: `text-muted-foreground hover:text-foreground`, same tracking as today.
+- Keep layout, spacing, animation, tracking, and copy exactly as-is.
+
+No other files change. No logic, no new tokens, no palette additions — just swap the hardcoded dark-panel classes for the existing semantic tokens already used throughout the site.

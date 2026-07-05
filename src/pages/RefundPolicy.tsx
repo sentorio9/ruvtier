@@ -45,7 +45,7 @@ const RefundPolicy = () => (
       {
         heading: "6. Faulty or incorrect items",
         paragraphs: [
-          "If an item is faulty, damaged or incorrect, please contact us at [insert contact email]. We may ask for photos and order details to help resolve the issue.",
+          "If an item is faulty, damaged or incorrect, please contact us at contact@ruvtier.com. We may ask for photos and order details to help resolve the issue.",
         ],
       },
       {
@@ -56,7 +56,7 @@ const RefundPolicy = () => (
       },
       {
         heading: "8. Contact",
-        paragraphs: ["For refund questions, contact us at [insert contact email]."],
+        paragraphs: ["For refund questions, contact us at contact@ruvtier.com."],
       },
     ]}
   />

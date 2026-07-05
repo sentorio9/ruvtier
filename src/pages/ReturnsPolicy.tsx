@@ -65,7 +65,7 @@ const ReturnsPolicy = () => (
       },
       {
         heading: "6. How to request a return",
-        paragraphs: ["To request a return, contact [insert contact email] with:"],
+        paragraphs: ["To request a return, contact contact@ruvtier.com with:"],
         list: [
           "Your name",
           "Order number, if available",
@@ -82,7 +82,7 @@ const ReturnsPolicy = () => (
       },
       {
         heading: "8. Contact",
-        paragraphs: ["For return questions, contact us at [insert contact email]."],
+        paragraphs: ["For return questions, contact us at contact@ruvtier.com."],
       },
     ]}
   />

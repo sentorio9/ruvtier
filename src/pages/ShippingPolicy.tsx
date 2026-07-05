@@ -54,7 +54,7 @@ const ShippingPolicy = () => (
       },
       {
         heading: "6. Contact",
-        paragraphs: ["For shipping questions, contact us at [insert contact email]."],
+        paragraphs: ["For shipping questions, contact us at contact@ruvtier.com."],
       },
     ]}
   />

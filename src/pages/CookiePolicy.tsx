@@ -53,7 +53,7 @@ const CookiePolicy = () => (
       },
       {
         heading: "7. Contact",
-        paragraphs: ["For questions about cookies, contact us at [insert contact email]."],
+        paragraphs: ["For questions about cookies, contact us at contact@ruvtier.com."],
       },
     ]}
   />

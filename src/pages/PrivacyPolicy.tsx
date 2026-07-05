@@ -18,10 +18,10 @@ const PrivacyPolicy = () => (
         heading: "1. Who we are",
         paragraphs: [
           "RUVTIER is a luxury clothing and lifestyle brand.",
-          "Business name: [insert legal business name]",
+          "Business name: RUVTIER",
           "Trading name: RUVTIER",
-          "Business address: [insert business address]",
-          "Email: [insert contact email]",
+          "Business address: Palermo, Italy (correspondence address available on request)",
+          "Email: contact@ruvtier.com",
           "For the purposes of data protection law, RUVTIER is the controller of the personal data collected through this website.",
         ],
       },
@@ -121,7 +121,7 @@ const PrivacyPolicy = () => (
         ],
       },
       {
-        paragraphs: ["To exercise your rights, contact us at [insert contact email]."],
+        paragraphs: ["To exercise your rights, contact us at contact@ruvtier.com."],
       },
       {
         heading: "10. Security",
@@ -138,7 +138,7 @@ const PrivacyPolicy = () => (
       {
         heading: "12. Complaints",
         paragraphs: [
-          "If you have concerns about how we use your personal information, please contact us first at [insert contact email].",
+          "If you have concerns about how we use your personal information, please contact us first at contact@ruvtier.com.",
           "You may also contact the UK Information Commissioner's Office if you are unhappy with how your data has been handled.",
         ],
       },

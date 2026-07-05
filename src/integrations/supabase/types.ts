@@ -495,23 +495,105 @@ export type Database = {
         }
         Relationships: []
       }
+      order_items: {
+        Row: {
+          colour: string | null
+          created_at: string
+          currency: string | null
+          id: string
+          image_url: string | null
+          order_id: string
+          product_id: string | null
+          product_title: string | null
+          quantity: number
+          size: string | null
+          sku: string | null
+          total_price: number | null
+          unit_price: number | null
+          variant_id: string | null
+          variant_title: string | null
+        }
+        Insert: {
+          colour?: string | null
+          created_at?: string
+          currency?: string | null
+          id?: string
+          image_url?: string | null
+          order_id: string
+          product_id?: string | null
+          product_title?: string | null
+          quantity?: number
+          size?: string | null
+          sku?: string | null
+          total_price?: number | null
+          unit_price?: number | null
+          variant_id?: string | null
+          variant_title?: string | null
+        }
+        Update: {
+          colour?: string | null
+          created_at?: string
+          currency?: string | null
+          id?: string
+          image_url?: string | null
+          order_id?: string
+          product_id?: string | null
+          product_title?: string | null
+          quantity?: number
+          size?: string | null
+          sku?: string | null
+          total_price?: number | null
+          unit_price?: number | null
+          variant_id?: string | null
+          variant_title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_variant_id_fkey"
+            columns: ["variant_id"]
+            isOneToOne: false
+            referencedRelation: "product_variants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           cancelled_at: string | null
           created_at: string
+          currency: string | null
           customer_email: string | null
           customer_id: string | null
           customer_name: string | null
           deleted_at: string | null
           fulfilled_at: string | null
+          fulfilment_status: string | null
           id: string
           internal_notes: string | null
           line_items: Json | null
           order_number: string
+          payment_provider: string | null
           payment_status: string | null
           shipping: number | null
           shipping_address: Json | null
           status: string
+          stripe_checkout_session_id: string | null
+          stripe_customer_id: string | null
+          stripe_payment_intent_id: string | null
           subtotal: number | null
           tax: number | null
           total: number | null
@@ -520,19 +602,25 @@ export type Database = {
         Insert: {
           cancelled_at?: string | null
           created_at?: string
+          currency?: string | null
           customer_email?: string | null
           customer_id?: string | null
           customer_name?: string | null
           deleted_at?: string | null
           fulfilled_at?: string | null
+          fulfilment_status?: string | null
           id?: string
           internal_notes?: string | null
           line_items?: Json | null
           order_number: string
+          payment_provider?: string | null
           payment_status?: string | null
           shipping?: number | null
           shipping_address?: Json | null
           status?: string
+          stripe_checkout_session_id?: string | null
+          stripe_customer_id?: string | null
+          stripe_payment_intent_id?: string | null
           subtotal?: number | null
           tax?: number | null
           total?: number | null
@@ -541,25 +629,81 @@ export type Database = {
         Update: {
           cancelled_at?: string | null
           created_at?: string
+          currency?: string | null
           customer_email?: string | null
           customer_id?: string | null
           customer_name?: string | null
           deleted_at?: string | null
           fulfilled_at?: string | null
+          fulfilment_status?: string | null
           id?: string
           internal_notes?: string | null
           line_items?: Json | null
           order_number?: string
+          payment_provider?: string | null
           payment_status?: string | null
           shipping?: number | null
           shipping_address?: Json | null
           status?: string
+          stripe_checkout_session_id?: string | null
+          stripe_customer_id?: string | null
+          stripe_payment_intent_id?: string | null
           subtotal?: number | null
           tax?: number | null
           total?: number | null
           updated_at?: string
         }
         Relationships: []
+      }
+      payment_events: {
+        Row: {
+          checkout_session_id: string | null
+          created_at: string
+          error_message: string | null
+          event_type: string
+          id: string
+          order_id: string | null
+          payment_intent_id: string | null
+          processed: boolean
+          processed_at: string | null
+          safe_payload: Json | null
+          stripe_event_id: string
+        }
+        Insert: {
+          checkout_session_id?: string | null
+          created_at?: string
+          error_message?: string | null
+          event_type: string
+          id?: string
+          order_id?: string | null
+          payment_intent_id?: string | null
+          processed?: boolean
+          processed_at?: string | null
+          safe_payload?: Json | null
+          stripe_event_id: string
+        }
+        Update: {
+          checkout_session_id?: string | null
+          created_at?: string
+          error_message?: string | null
+          event_type?: string
+          id?: string
+          order_id?: string | null
+          payment_intent_id?: string | null
+          processed?: boolean
+          processed_at?: string | null
+          safe_payload?: Json | null
+          stripe_event_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_events_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       preorder_requests: {
         Row: {
@@ -610,6 +754,89 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "preorder_requests_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_variants: {
+        Row: {
+          available_quantity: number | null
+          barcode: string | null
+          colour: string | null
+          colour_hex: string | null
+          compare_at_price: number | null
+          created_at: string
+          currency: string | null
+          id: string
+          image_url: string | null
+          low_stock_threshold: number | null
+          position: number | null
+          price: number | null
+          product_id: string
+          reserved_quantity: number
+          size: string | null
+          sku: string | null
+          status: string
+          stock_quantity: number
+          stripe_price_id: string | null
+          title: string | null
+          updated_at: string
+          weight_grams: number | null
+        }
+        Insert: {
+          available_quantity?: number | null
+          barcode?: string | null
+          colour?: string | null
+          colour_hex?: string | null
+          compare_at_price?: number | null
+          created_at?: string
+          currency?: string | null
+          id?: string
+          image_url?: string | null
+          low_stock_threshold?: number | null
+          position?: number | null
+          price?: number | null
+          product_id: string
+          reserved_quantity?: number
+          size?: string | null
+          sku?: string | null
+          status?: string
+          stock_quantity?: number
+          stripe_price_id?: string | null
+          title?: string | null
+          updated_at?: string
+          weight_grams?: number | null
+        }
+        Update: {
+          available_quantity?: number | null
+          barcode?: string | null
+          colour?: string | null
+          colour_hex?: string | null
+          compare_at_price?: number | null
+          created_at?: string
+          currency?: string | null
+          id?: string
+          image_url?: string | null
+          low_stock_threshold?: number | null
+          position?: number | null
+          price?: number | null
+          product_id?: string
+          reserved_quantity?: number
+          size?: string | null
+          sku?: string | null
+          status?: string
+          stock_quantity?: number
+          stripe_price_id?: string | null
+          title?: string | null
+          updated_at?: string
+          weight_grams?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_variants_product_id_fkey"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
@@ -916,6 +1143,63 @@ export type Database = {
           site_settings_data?: Json
         }
         Relationships: []
+      }
+      stock_movements: {
+        Row: {
+          change_quantity: number
+          created_at: string
+          created_by: string | null
+          id: string
+          movement_type: string
+          new_quantity: number | null
+          note: string | null
+          previous_quantity: number | null
+          product_id: string | null
+          reason: string | null
+          variant_id: string | null
+        }
+        Insert: {
+          change_quantity: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          movement_type: string
+          new_quantity?: number | null
+          note?: string | null
+          previous_quantity?: number | null
+          product_id?: string | null
+          reason?: string | null
+          variant_id?: string | null
+        }
+        Update: {
+          change_quantity?: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          movement_type?: string
+          new_quantity?: number | null
+          note?: string | null
+          previous_quantity?: number | null
+          product_id?: string | null
+          reason?: string | null
+          variant_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stock_movements_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stock_movements_variant_id_fkey"
+            columns: ["variant_id"]
+            isOneToOne: false
+            referencedRelation: "product_variants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       suppressed_emails: {
         Row: {

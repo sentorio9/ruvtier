@@ -1254,6 +1254,34 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      adjust_variant_stock: {
+        Args: {
+          p_change_qty: number
+          p_movement_type: string
+          p_note?: string
+          p_reason?: string
+          p_variant_id: string
+        }
+        Returns: {
+          change_quantity: number
+          created_at: string
+          created_by: string | null
+          id: string
+          movement_type: string
+          new_quantity: number | null
+          note: string | null
+          previous_quantity: number | null
+          product_id: string | null
+          reason: string | null
+          variant_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "stock_movements"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       cleanup_rate_limit_attempts: {
         Args: { _older_than_hours?: number }
         Returns: undefined

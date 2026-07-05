@@ -186,6 +186,10 @@ export default function AdminDashboard() {
             <StatCard label="Pending Orders" value={stats.pendingOrders} icon={ShoppingCart} accent="text-[hsl(40,60%,55%)]" />
             <StatCard label="Fulfilled" value={stats.fulfilledOrders} icon={ShoppingCart} accent="text-[hsl(140,40%,50%)]" />
             <StatCard label="Customers" value={stats.totalCustomers} icon={Users} />
+            <StatCard label="Low Stock" value={stats.lowStockVariants} icon={Boxes} accent="text-[hsl(40,60%,55%)]" />
+            <StatCard label="Out of Stock" value={stats.outOfStockVariants} icon={Boxes} accent="text-[hsl(0,50%,55%)]" />
+            <StatCard label="Pending Allocations" value={stats.pendingAllocations} icon={ClipboardList} />
+            <StatCard label="Pending Appointments" value={stats.pendingAppointments} icon={CalendarClock} />
           </div>
 
           {/* Active Sessions */}

@@ -57,12 +57,42 @@ export default function AdminStripeReadiness() {
         state: purchasableWithoutVariants ? "warn" : "pass",
       });
 
-      // Secret / infrastructure checks — cannot read secrets from client, so surface as manual blockers.
-      checks.push({ label: "STRIPE_SECRET_KEY configured", detail: "Server-side only — request via Cloud secrets", state: "block" });
-      checks.push({ label: "STRIPE_WEBHOOK_SECRET configured", detail: "Server-side only", state: "block" });
-      checks.push({ label: "SITE_URL configured", detail: "Server-side only", state: "block" });
-      checks.push({ label: "create-stripe-checkout edge function deployed", state: "block" });
-      checks.push({ label: "stripe-webhook edge function deployed", state: "block" });
+      // Secret / infrastructure checks — proxied via stripe-status edge function (admin-only).
+      let status: any = null;
+      let statusErr: any = null;
+      try {
+        const res = await supabase.functions.invoke("stripe-status");
+        status = res.data;
+        statusErr = res.error;
+      } catch (e) {
+        statusErr = e;
+      }
+      if (statusErr || !status) {
+        checks.push({ label: "stripe-status edge function reachable", detail: "Deploy pending or admin auth failed", state: "block" });
+        checks.push({ label: "STRIPE_SECRET_KEY configured", detail: "Unknown — status endpoint unreachable", state: "block" });
+        checks.push({ label: "STRIPE_WEBHOOK_SECRET configured", detail: "Unknown", state: "block" });
+        checks.push({ label: "SITE_URL configured", detail: "Unknown", state: "block" });
+      } else {
+        checks.push({ label: "stripe-status edge function reachable", state: "pass" });
+        checks.push({
+          label: "STRIPE_SECRET_KEY configured",
+          detail: status.stripe_secret_key_configured ? `Mode: ${status.mode}` : "Not set — add via Cloud secrets",
+          state: status.stripe_secret_key_configured ? (status.mode === "live" ? "pass" : "warn") : "block",
+        });
+        checks.push({
+          label: "STRIPE_WEBHOOK_SECRET configured",
+          state: status.stripe_webhook_secret_configured ? "pass" : "block",
+        });
+        checks.push({
+          label: "SITE_URL configured",
+          state: status.site_url_configured ? "pass" : "warn",
+        });
+        checks.push({
+          label: "Live checkout enabled",
+          detail: status.checkout_enabled ? "CHECKOUT_ENABLED=true" : "Disabled — waitlist / preorder / allocation only",
+          state: status.checkout_enabled ? "pass" : "warn",
+        });
+      }
 
       // Frontend safety
       checks.push({ label: "No Stripe secret in frontend bundle", detail: "src/ contains no STRIPE_SECRET_KEY reference", state: "pass" });

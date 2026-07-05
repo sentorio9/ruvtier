@@ -246,10 +246,15 @@ export default function ClientLoungeDrawer({ isOpen, onClose, initialView }: Pro
           >
             <div className="flex flex-col h-full">
               {/* Header */}
-              <div className="flex items-center justify-between px-8 pt-8 pb-6">
-                <h2 className="font-serif text-[18px] font-light tracking-[0.12em] text-foreground">
-                  Client Lounge
-                </h2>
+              <div className="flex items-start justify-between px-8 pt-8 pb-4">
+                <div className="pr-4">
+                  <h2 className="font-serif text-[18px] font-light tracking-[0.12em] text-foreground">
+                    Client Lounge
+                  </h2>
+                  <p className="mt-2 font-sans text-[11px] tracking-[0.04em] text-muted-foreground leading-[1.7] max-w-[300px]">
+                    Reserved for private allocation updates, appointment details and selected client correspondence.
+                  </p>
+                </div>
                 <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Close client lounge">
                   <X size={18} strokeWidth={1} />
                 </button>

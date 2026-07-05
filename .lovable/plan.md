@@ -1,93 +1,104 @@
-# Final QA Pass — RUVTIER
 
-Read-only verification sweep, followed by micro-polish only where a real issue is found. No new features, no redesign, no Shopify, no checkout.
+# RUVTIER — Stripe Readiness Plan
 
-## 1. Route sweep (Playwright, headless, 1280×1800 + 390×844)
+This work prepares RUVTIER to eventually sell through Stripe. It does **not** turn on live checkout, does not touch Shopify, and does not put any secret keys in the browser. The public site continues to run as waitlist / preorder / allocation / appointment only until you explicitly approve going live.
 
-Load and screenshot each route. Log console errors, 404s, broken images.
+The plan is split into six phases so you can approve step by step. I recommend approving Phase 1 first (audit + wording + safe DB scaffolding), then reviewing before I build the Stripe edge functions.
 
-- `/`, `/the-collection`, `/the-house`, `/journal`, `/stillness`
-- `/appointments`, `/made-to-measure`, `/contact`, `/faq`, `/find-boutique`
-- Product pages: Theia Sweater + every product in `products` table
-- Materials: each material route
-- Boutique categories: every `/boutique/*` incl. all coming-soon
-- Policies: `/privacy`, `/cookies`, `/terms`, `/returns`, `/refund`, `/shipping`
+---
 
-Checks per page: HTTP 200, no console errors, no `£0` / `$0`, no `[insert…]`
-placeholders, no duplicate gallery thumbs, breadcrumbs render, images load.
+## Phase 1 — Remove Shopify wording, add "Payment readiness" framing
 
-## 2. Product page checks
+Text-only, no schema changes.
 
-- Query `products` in DB for any row with `price = 0`, null image, or duplicated image URLs — spot-fix in DB only if truly broken.
-- Verify Theia Sweater renders "Available by allocation" (not £0).
-- Click Request Allocation → drawer opens → submit test row → confirm row lands in `preorder_requests` and appears in Admin → Preorders.
-- Confirm 4 accordions render (Material / Fit / Care / Provenance).
-- Mobile screenshot of one product page.
+- `src/admin/pages/AdminOrders.tsx` notice: "Future Shopify integration" → "Future Stripe checkout integration. Preorder / allocation-only mode is active."
+- `src/admin/pages/AdminCarts.tsx`: same treatment — clarify carts are not live commerce yet.
+- Search the codebase for `shopify`, `Shopify`, `SHOPIFY` and replace user-facing copy with Stripe / payment-readiness equivalents. Keep any archived code comments only if removing would break context.
+- `AdminDashboard`: add a "Payment readiness" tile showing `Stripe: not connected` until Phase 4 is wired.
 
-## 3. Appointments flow
+## Phase 2 — Database: variants, stock movements, order items, payment events
 
-- Submit `/appointments` form with each `appointment_type`, a date, a time.
-- Verify row in `appointment_requests`.
-- Load `/123vhtg241s/appointments` as admin, confirm row visible, change status → confirm updated + audit log written.
-- Screenshot success and validation-error states.
+Non-destructive migration. Existing `products`, `orders`, `preorder_requests`, `appointment_requests`, `customers`, `user_roles` stay as-is. New tables:
 
-## 4. Allocation flow
+- `product_variants` — `id, product_id, title, sku (unique), barcode, size, colour, colour_hex, price, compare_at_price, currency, stock_quantity, reserved_quantity, low_stock_threshold, weight_grams, image_url, status, stripe_price_id, created_at, updated_at`. `available_quantity` as a generated column (`stock_quantity - reserved_quantity`).
+- `stock_movements` — `id, variant_id, product_id, change_quantity, movement_type, reason, previous_quantity, new_quantity, note, created_by, created_at`. Enum: `stock_added, stock_removed, manual_adjustment, reserved, reservation_released, sold, returned, damaged, correction`.
+- `order_items` — `id, order_id, product_id, variant_id, product_title, variant_title, sku, size, colour, quantity, unit_price, total_price, image_url, created_at`.
+- `payment_events` — `id, stripe_event_id (unique), event_type, order_id, payment_intent_id, checkout_session_id, processed, processed_at, safe_payload jsonb, created_at`. Idempotency via unique `stripe_event_id`.
+- Extend `orders` with: `payment_status, fulfilment_status, stripe_checkout_session_id, stripe_payment_intent_id, stripe_customer_id, payment_provider, subtotal, shipping_total, tax_total, currency` (nullable, backfilled).
+- Extend `products` with `availability` enum: `purchasable, by_allocation, preorder, coming_soon, sold_out, archived`. Defaults existing rows to `by_allocation` so nothing accidentally becomes purchasable.
 
-- Submit Register Interest from a coming-soon category → confirm row in `preorder_requests` (single unified table, no duplicate system).
-- Grep codebase for any second allocation table / endpoint to rule out duplication.
+Every new public table gets: `GRANT` block, `ENABLE RLS`, and policies:
+- `product_variants`: public `SELECT` where parent product is active; write restricted to admin/editor via `is_editor_or_admin(auth.uid())`.
+- `stock_movements`, `order_items`, `payment_events`: admin-only.
 
-## 5. Nav / CTA / footer
+`update_updated_at_column` triggers on the tables that need it.
 
-- Click every primary nav item, footer link, and homepage CTA in Playwright — record any 404 / dead-end / weak landing.
-- Verify active nav state on 3 sample routes.
-- Open mobile menu, verify all links resolve.
+## Phase 3 — Admin panel upgrades
 
-## 6. Luxury polish review
+Reuse existing dark admin theme. No new nav sections unless listed.
 
-Screenshot Coming-Soon, Made-to-Measure, The House, Journal, Stillness,
-Contact, Appointments on desktop + mobile. Only flag/fix small issues
-(spacing, orphan lines, empty sections, missing breadcrumb). No redesign.
+- **Products form** — add availability dropdown, fit / care / provenance / short_description / seo_title / seo_description fields if any are missing, hero image selector, alt text per image, drag-reorder for gallery.
+- **Variants editor** (new component inside product edit page) — matrix of size × colour, per-cell SKU / price / stock / status. SKU auto-suggest `RUV-{category3}-{colour3}-{size}` with duplicate check.
+- **Sizes & colours** — small managed lists (either as JSON on product or shared reference tables; I'll use per-product arrays first, shared tables only if you want reuse).
+- **Stock page** (new route `/123vhtg241s/stock`) — list variants with filters (low stock, out of stock, by allocation), inline adjust with reason, writes a `stock_movements` row. No direct stock edits — all go through adjust action so history is preserved.
+- **Orders** — extend list with payment status + fulfilment status columns, detail drawer showing items, Stripe IDs (read-only), internal notes, refund button (disabled until Phase 4 live).
+- **Dashboard** — tiles: total/active/draft products, low-stock variants, out-of-stock, pending allocation requests, pending appointments, recent stock movements, Stripe status.
+- **Stripe Readiness page** (new route `/123vhtg241s/stripe-readiness`) — runs the checklist in section 10 of your brief and shows pass / warn / block.
 
-## 7. Technical QA
+## Phase 4 — Server-side Stripe layer (scaffolded, not live)
 
-- Console error scan across the sweep.
-- `public/sitemap.xml`: confirm no admin routes (`/123vhtg241s/*`), no
-  `lovable.app` / `lovableproject.com` URLs, canonical is `ruvtier.com`.
-- `index.html`: title + meta description are RUVTIER-specific, no
-  "Lovable Generated Project", canonical + og:url = `https://ruvtier.com`.
-- `rg` for `[insert`, `lovable.app`, `lovableproject.com`, `gmail.com`,
-  `TODO`, `FIXME`, `example.com` across `src/`, `public/`, policies.
-- Confirm no secrets in client code (`SERVICE_ROLE`, hardcoded keys).
-- RLS spot-check on `appointment_requests`, `preorder_requests` via
-  `supabase--read_query`.
-- Tablet (768) + mobile (390) screenshots of Home, Product, Appointments.
+Client code never imports Stripe secret. All secret work lives in edge functions.
 
-## 8. Micro-polish scope (allowed edits only)
+Edge functions (created but return `503 not_configured` until secrets exist):
+- `create-stripe-checkout` — validates cart server-side, re-reads prices/stock from DB, creates order in `pending_payment`, creates Stripe Checkout Session, returns session URL.
+- `stripe-webhook` — verifies signature with `STRIPE_WEBHOOK_SECRET`, dedupes via `payment_events.stripe_event_id`, handles `checkout.session.completed`, `checkout.session.expired`, `payment_intent.payment_failed`, `charge.refunded`. Marks orders, writes `stock_movements`.
+- `stripe-session-status` — safe read of a session status by ID.
+- `stripe-refund` — admin-only, requires super_admin role check server-side.
 
-If — and only if — the sweep surfaces one of these, fix in place:
+Frontend service layer at `src/lib/payments/`:
+- `types.ts`, `paymentConfig.ts`, `paymentStatus.ts`, `checkoutService.ts` (calls edge functions via `supabase.functions.invoke`), `refundService.ts` (admin only).
+- No `stripeClient.ts` in the frontend bundle. The server-side Stripe SDK lives inside each edge function.
 
-- A placeholder string (`[insert…]`, `gmail.com`, `lovable.app` in metadata).
-- A sitemap entry pointing at an admin route or removed page.
-- A `£0` product rendered as a price instead of "Available by allocation".
-- A duplicate image in a product gallery not caught by the dedupe.
-- A missing breadcrumb on a route already using the pattern.
-- A form that fails basic validation (empty submit passes).
+Secrets to request via `add_secret` when you approve going live: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `SITE_URL`, `ADMIN_NOTIFICATION_EMAIL`. `STRIPE_PUBLISHABLE_KEY` only if we adopt Stripe.js Elements later — Checkout Session redirect doesn't need it. I will **not** request these in this plan; they come after your go-live decision.
 
-Anything larger is reported, not fixed.
+Behaviour today: every function short-circuits with `{ error: "stripe_not_configured" }` when the secret is missing, so nothing accidentally attempts a live call.
 
-## 9. Final report delivered to user
+## Phase 5 — Product availability logic on the public site
 
-Sections A–J exactly as requested: Routes tested · Issues fixed · Issues
-remaining · Product pages · Appointments · Allocation · Mobile · Admin
-panel · Sitemap & metadata · Publish recommendation. Ends with the
-verbatim clearance line if everything passes:
+- `ProductPage` reads `products.availability` and renders the correct CTA: Add to Bag (purchasable, hidden until Stripe live), Request Allocation (by_allocation / coming_soon), Preorder (preorder), Sold Out, or nothing (archived).
+- Until Stripe is live, `purchasable` items still show Request Allocation with a small "checkout coming soon" note so no half-working buy button ever appears.
+- `formatPrice` continues rounding to luxury integers; `£0` fallback rule preserved.
 
-> "RUVTIER is ready to publish as a public waitlist, preorder and appointment-only luxury website."
+## Phase 6 — QA + report
 
-## Technical notes
+- Typecheck, build, Playwright sweep of key routes + admin flows.
+- Verify no `shopify` strings remain in user-facing copy.
+- Verify no Stripe secret is referenced from `src/`.
+- Verify admin routes still absent from `sitemap.xml` and `robots.txt`.
+- Produce the A–S final report from your brief, including a readiness score.
 
-- Playwright script under `/tmp/browser/qa/`, screenshots per route,
-  console + network captured to file, grepped after.
-- DB reads via `supabase--read_query`; any data fix via
-  `supabase--migration` (only if a real broken row is found).
-- No dependency installs, no route additions, no schema changes.
+---
+
+## Explicit non-goals
+
+- No Shopify enable, no Shopify sync, no checkout going live.
+- No secret keys added or requested in this plan.
+- No destructive migrations. Existing rows preserved; new columns nullable with safe defaults.
+- No redesign of the public site.
+
+## Technical notes (for reference)
+
+- Variant matrix uses a single `product_variants` table rather than separate `sizes` / `colours` tables — simpler for a single-brand catalogue and matches how Stripe Prices map 1:1 to variants.
+- `stripe_price_id` on variant lets us later mirror the catalogue into Stripe without a second table.
+- Idempotency: `payment_events.stripe_event_id UNIQUE` + insert-then-process pattern inside the webhook.
+- Reservation model is scaffolded (`reserved_quantity`) but not enforced until you decide whether checkout should hold stock during the Stripe session.
+
+## Suggested approval order
+
+1. Phase 1 + 2 together (wording + schema).
+2. Phase 3 (admin panel).
+3. Phase 4 + 5 (Stripe scaffolding + availability logic) — still no live checkout.
+4. Phase 6 (QA + report).
+5. Separate future turn: request Stripe secrets and switch checkout on.
+
+Reply "go" to start Phase 1 + 2, or tell me which phases to bundle differently.

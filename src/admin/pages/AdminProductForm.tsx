@@ -9,6 +9,7 @@ import { ADMIN_PREFIX } from "../config";
 import ImageUpload from "../components/ImageUpload";
 import MediaGalleryUpload from "../components/MediaGalleryUpload";
 import TagListEditor from "../components/TagListEditor";
+import VariantMatrix from "../components/VariantMatrix";
 import { toast } from "sonner";
 
 // Schema enforced before any DB write. Mirrors the public product contract:
@@ -331,6 +332,18 @@ export default function AdminProductForm() {
               suggestions={["Ivory", "Sand", "Charcoal", "Black", "Navy", "Camel"]}
             />
           </div>
+
+          {isEditing && id && (
+            <div className="pt-4 border-t border-[hsl(220,10%,14%)]">
+              <VariantMatrix
+                productId={id}
+                productName={form.name}
+                collection={form.collection || null}
+                sizes={form.size_options}
+                colours={form.color_options}
+              />
+            </div>
+          )}
         </div>
 
         {/* Details */}

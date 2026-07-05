@@ -9,7 +9,7 @@ import { usePageMeta } from "@/hooks/usePageMeta";
 const FindBoutiquePage = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   usePageMeta({
-    title: "Private Appointments",
+    title: "Visiting the House",
     description: "RUVTIER does not maintain a public boutique. Visits are arranged privately in Palermo or by private video appointment.",
   });
 

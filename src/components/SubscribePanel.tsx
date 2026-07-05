@@ -78,7 +78,7 @@ const SubscribePanel = ({ isOpen, onClose }: SubscribePanelProps) => {
     const body = encodeURIComponent(
       `New subscriber:\n\nEmail: ${form.email.trim()}\nFirst Name: ${form.firstName.trim()}\nLast Name: ${form.lastName.trim()}`
     );
-    window.open(`mailto:theruvtier@gmail.com?subject=${subject}&body=${body}`, "_self");
+    window.open(`mailto:clientservices@ruvtier.com?subject=${subject}&body=${body}`, "_self");
     setSubmitted(true);
   };
 

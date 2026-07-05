@@ -3,13 +3,14 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAdminAuth } from "../hooks/useAdminAuth";
 import {
   LayoutDashboard, Package, ShoppingCart, Users, ScrollText,
-  FileText, Settings, LogOut, ChevronLeft, ChevronRight, ShoppingBag, ClipboardList, Power, Wand2, CalendarClock
+  FileText, Settings, LogOut, ChevronLeft, ChevronRight, ShoppingBag, ClipboardList, Power, Wand2, CalendarClock, Boxes, CreditCard
 } from "lucide-react";
 import { ADMIN_PREFIX } from "../config";
 
 const navItems = [
   { to: ADMIN_PREFIX, icon: LayoutDashboard, label: "Dashboard", exact: true },
   { to: `${ADMIN_PREFIX}/products`, icon: Package, label: "Products" },
+  { to: `${ADMIN_PREFIX}/stock`, icon: Boxes, label: "Stock" },
   { to: `${ADMIN_PREFIX}/orders`, icon: ShoppingCart, label: "Orders" },
   { to: `${ADMIN_PREFIX}/customers`, icon: Users, label: "Customers" },
   { to: `${ADMIN_PREFIX}/carts`, icon: ShoppingBag, label: "Carts" },
@@ -18,6 +19,7 @@ const navItems = [
   { to: `${ADMIN_PREFIX}/content`, icon: FileText, label: "Content" },
   { to: `${ADMIN_PREFIX}/editor`, icon: Wand2, label: "Website Editor" },
   { to: `${ADMIN_PREFIX}/maintenance`, icon: Power, label: "Maintenance" },
+  { to: `${ADMIN_PREFIX}/stripe-readiness`, icon: CreditCard, label: "Stripe Readiness" },
   { to: `${ADMIN_PREFIX}/logs`, icon: ScrollText, label: "Audit Logs" },
   { to: `${ADMIN_PREFIX}/settings`, icon: Settings, label: "Settings" },
 ];

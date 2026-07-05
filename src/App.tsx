@@ -52,6 +52,9 @@ const AdminPreorders = lazy(() => import("./admin/pages/AdminPreorders"));
 const AdminAppointments = lazy(() => import("./admin/pages/AdminAppointments"));
 const AdminMaintenance = lazy(() => import("./admin/pages/AdminMaintenance"));
 const AdminWebsiteEditor = lazy(() => import("./admin/pages/AdminWebsiteEditor"));
+const AdminStock = lazy(() => import("./admin/pages/AdminStock"));
+const AdminOrderDetail = lazy(() => import("./admin/pages/AdminOrderDetail"));
+const AdminStripeReadiness = lazy(() => import("./admin/pages/AdminStripeReadiness"));
 const AdminApproval = lazy(() => import("./pages/AdminApproval"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
@@ -221,6 +224,9 @@ const App = () => (
             <Route path="products/new" element={<AdminProductForm />} />
             <Route path="products/:id" element={<AdminProductForm />} />
             <Route path="orders" element={<AdminOrders />} />
+            <Route path="orders/:id" element={<AdminOrderDetail />} />
+            <Route path="stock" element={<AdminStock />} />
+            <Route path="stripe-readiness" element={<AdminStripeReadiness />} />
             <Route path="customers" element={<AdminCustomers />} />
             <Route path="carts" element={<AdminCarts />} />
             <Route path="content" element={<AdminContent />} />

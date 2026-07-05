@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "../components/AdminLayout";
 import { useAdminAuth } from "../hooks/useAdminAuth";
-import { Package, ShoppingCart, Users, Activity, AlertCircle, Monitor, X } from "lucide-react";
+import { Package, ShoppingCart, Users, Activity, AlertCircle, Monitor, X, Boxes, ClipboardList, CalendarClock } from "lucide-react";
 
 interface DashboardStats {
   totalProducts: number;
@@ -12,6 +12,10 @@ interface DashboardStats {
   pendingOrders: number;
   fulfilledOrders: number;
   totalCustomers: number;
+  lowStockVariants: number;
+  outOfStockVariants: number;
+  pendingAllocations: number;
+  pendingAppointments: number;
   recentLogs: Array<{ id: string; action: string; actor_email: string | null; created_at: string }>;
   activeSessions: Array<{
     id: string;
@@ -70,19 +74,25 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats>({
     totalProducts: 0, activeProducts: 0, archivedProducts: 0,
     totalOrders: 0, pendingOrders: 0, fulfilledOrders: 0,
-    totalCustomers: 0, recentLogs: [], activeSessions: [],
+    totalCustomers: 0,
+    lowStockVariants: 0, outOfStockVariants: 0,
+    pendingAllocations: 0, pendingAppointments: 0,
+    recentLogs: [], activeSessions: [],
   });
   const [loading, setLoading] = useState(true);
   const [revoking, setRevoking] = useState<string | null>(null);
 
   useEffect(() => {
     async function load() {
-      const [products, orders, customers, logs, sessions] = await Promise.all([
+      const [products, orders, customers, logs, sessions, variants, allocations, appointments] = await Promise.all([
         supabase.from("products").select("status", { count: "exact" }).is("deleted_at", null),
         supabase.from("orders").select("status", { count: "exact" }).is("deleted_at", null),
         supabase.from("customers").select("id", { count: "exact" }).is("deleted_at", null),
         supabase.from("audit_logs").select("id, action, actor_email, created_at").order("created_at", { ascending: false }).limit(10),
         supabase.from("admin_sessions").select("id, last_accessed_at, last_ip_address, last_user_agent, access_count, expires_at, credential_id").gt("expires_at", new Date().toISOString()).order("last_accessed_at", { ascending: false }),
+        supabase.from("product_variants").select("available_quantity, low_stock_threshold, status"),
+        supabase.from("preorder_requests").select("id", { count: "exact", head: true }).eq("status", "pending"),
+        supabase.from("appointment_requests").select("id", { count: "exact", head: true }).eq("status", "pending"),
       ]);
 
       // Fetch credential info for sessions
@@ -105,6 +115,9 @@ export default function AdminDashboard() {
 
       const productRows = products.data || [];
       const orderRows = orders.data || [];
+      const variantRows = (variants.data as any[]) || [];
+      const lowStock = variantRows.filter(v => v.status === "active" && (v.available_quantity ?? 0) > 0 && (v.available_quantity ?? 0) <= (v.low_stock_threshold ?? 2)).length;
+      const outOfStock = variantRows.filter(v => v.status === "active" && (v.available_quantity ?? 0) <= 0).length;
 
       setStats({
         totalProducts: productRows.length,
@@ -114,6 +127,10 @@ export default function AdminDashboard() {
         pendingOrders: orderRows.filter(o => o.status === "pending").length,
         fulfilledOrders: orderRows.filter(o => o.status === "fulfilled").length,
         totalCustomers: customers.count || 0,
+        lowStockVariants: lowStock,
+        outOfStockVariants: outOfStock,
+        pendingAllocations: allocations.count || 0,
+        pendingAppointments: appointments.count || 0,
         recentLogs: (logs.data || []) as DashboardStats["recentLogs"],
         activeSessions: enrichedSessions,
       });
@@ -169,6 +186,10 @@ export default function AdminDashboard() {
             <StatCard label="Pending Orders" value={stats.pendingOrders} icon={ShoppingCart} accent="text-[hsl(40,60%,55%)]" />
             <StatCard label="Fulfilled" value={stats.fulfilledOrders} icon={ShoppingCart} accent="text-[hsl(140,40%,50%)]" />
             <StatCard label="Customers" value={stats.totalCustomers} icon={Users} />
+            <StatCard label="Low Stock" value={stats.lowStockVariants} icon={Boxes} accent="text-[hsl(40,60%,55%)]" />
+            <StatCard label="Out of Stock" value={stats.outOfStockVariants} icon={Boxes} accent="text-[hsl(0,50%,55%)]" />
+            <StatCard label="Pending Allocations" value={stats.pendingAllocations} icon={ClipboardList} />
+            <StatCard label="Pending Appointments" value={stats.pendingAppointments} icon={CalendarClock} />
           </div>
 
           {/* Active Sessions */}

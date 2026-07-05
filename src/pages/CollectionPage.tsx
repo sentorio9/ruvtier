@@ -162,7 +162,7 @@ const CollectionPage = () => {
                           {product.name}
                         </h3>
                         <p className="type-body">
-                          {formatPrice(product.price)}
+                          {formatPrice(product.price) ?? "Request Allocation"}
                         </p>
                       </div>
                     </Link>

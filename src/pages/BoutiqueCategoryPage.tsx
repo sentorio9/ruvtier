@@ -68,7 +68,7 @@ const BoutiqueCategoryPage = ({ title, gender, subtitle }: BoutiqueCategoryPageP
                       {product.name}
                     </h3>
                     <p className="type-body">
-                      {formatPrice(product.price)}
+                      {formatPrice(product.price) ?? "Request Allocation"}
                     </p>
                   </Link>
                 </ScrollFadeIn>

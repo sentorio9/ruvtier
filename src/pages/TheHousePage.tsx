@@ -17,6 +17,7 @@
  * `<Editable>` wrappers source fallbacks from
  * `HOUSE_MANIFESTO` in `src/content/brand.ts`.
  */
+import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";

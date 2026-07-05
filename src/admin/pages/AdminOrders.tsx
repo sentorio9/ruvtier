@@ -43,7 +43,7 @@ export default function AdminOrders() {
       <div className="mb-6 px-4 py-3 bg-[hsl(40,30%,8%)] border border-[hsl(40,40%,18%)] flex items-start gap-3">
         <span className="text-[10px] tracking-[0.2em] uppercase text-[hsl(40,55%,60%)] mt-0.5" style={fontStyle}>Notice</span>
         <p className="text-[12px] text-[hsl(40,30%,75%)] leading-[1.6]" style={fontStyle}>
-          Preorder-only mode active · No live checkout connected · Future Shopify integration. Orders will populate here once commerce is enabled.
+          Preorder & allocation-only mode active · No live Stripe checkout connected · Orders will populate here once Stripe checkout is enabled.
         </p>
       </div>
 

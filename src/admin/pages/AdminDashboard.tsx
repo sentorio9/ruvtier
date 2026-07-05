@@ -225,12 +225,12 @@ export default function AdminDashboard() {
           {/* Integration status */}
           <div className="bg-[hsl(220,15%,9%)] border border-[hsl(220,10%,14%)] p-5 mb-8">
             <h2 className="text-[13px] tracking-[0.12em] uppercase text-[hsl(220,10%,60%)] mb-3" style={{ fontFamily: "var(--font-sans)" }}>
-              Integrations
+              Payment Readiness
             </h2>
             <div className="flex items-center gap-3">
               <AlertCircle size={14} className="text-[hsl(220,10%,35%)]" />
               <span className="text-[12px] text-[hsl(220,10%,40%)]" style={{ fontFamily: "var(--font-sans)" }}>
-                Shopify — Not connected
+                Stripe — Not connected (preorder & allocation-only mode)
               </span>
             </div>
           </div>

@@ -139,8 +139,8 @@ export default function AdminSettings() {
           </div>
           <div className="flex items-center justify-between py-3 border-b border-[hsl(220,10%,12%)]">
             <div>
-              <p className="text-[13px] text-[hsl(220,10%,65%)]" style={fontStyle}>Shopify</p>
-              <p className="text-[11px] text-[hsl(220,10%,30%)]" style={fontStyle}>Product sync, orders, inventory</p>
+              <p className="text-[13px] text-[hsl(220,10%,65%)]" style={fontStyle}>Stripe</p>
+              <p className="text-[11px] text-[hsl(220,10%,30%)]" style={fontStyle}>Checkout sessions, payments, refunds, webhooks</p>
             </div>
             <span className="text-[10px] tracking-[0.1em] uppercase text-[hsl(220,10%,30%)] border border-[hsl(220,10%,16%)] px-2 py-0.5" style={fontStyle}>
               Not connected

@@ -149,11 +149,10 @@ const PreorderPage = () => {
                 </h1>
 
                 {/* Price + availability */}
-                {product?.price != null && (
-                  <p className="text-sm text-muted-foreground tracking-wide mb-6">
-                    {formatPrice(product.price)} — {PREORDER_AVAILABILITY}
-                  </p>
-                )}
+                <p className="text-sm text-muted-foreground tracking-wide mb-6">
+                  {formatPrice(product?.price) ?? "Available by allocation"}
+                  {formatPrice(product?.price) && ` — ${PREORDER_AVAILABILITY}`}
+                </p>
 
                 {/* Description */}
                 {product?.description && (

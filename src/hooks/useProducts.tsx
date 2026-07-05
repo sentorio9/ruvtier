@@ -61,20 +61,19 @@ export function useProductBySlug(slug: string | undefined) {
   });
 }
 
-// Prices are authored in EUR (base). This static helper reads the active region
-// AND the cached FX rates from localStorage so non-React contexts can display
-// the converted, market-priced amount. Components that need to re-render on
-// currency change should additionally subscribe via `useRegionCurrency()` or
-// the `usePriceTick()` hook below.
+// Prices are authored in EUR (base). Displayed in the region-selected
+// currency (default GBP) using cached FX rates from localStorage.
 const ZERO_DECIMAL = new Set(["JPY", "KRW", "VND", "IDR", "HUF", "CLP", "TWD"]);
 
-export const formatPrice = (price: number | null | undefined) => {
-  if (price == null) return "—";
+export const formatPrice = (price: number | null | undefined): string | null => {
+  // Zero or unset prices never render as "£0" — callers should render
+  // a Request Allocation CTA instead.
+  if (price == null || price <= 0) return null;
 
-  let locale = "fr-FR";
-  let currency = "EUR";
-  let symbol = "€";
-  let countryCode = "FR";
+  let locale = "en-GB";
+  let currency = "GBP";
+  let symbol = "£";
+  let countryCode = "GB";
   let rate = 1;
   let language = "en";
 
@@ -91,7 +90,6 @@ export const formatPrice = (price: number | null | undefined) => {
     if (savedLang) language = savedLang;
 
     if (currency !== "EUR") {
-      // Use the v2 cache key written by useRegionCurrency.
       const savedRates = localStorage.getItem("ruvtier_fx_rates_v2");
       if (savedRates) {
         const fx = JSON.parse(savedRates);
@@ -102,9 +100,13 @@ export const formatPrice = (price: number | null | undefined) => {
     }
   } catch { /* keep defaults */ }
 
-  if (price === 0) return `${symbol}0`;
+  // Always render clean, rounded luxury figures — no decimals, no conversion
+  // artefacts like "£2,802.4".
+  const converted = price * rate;
+  const clean = ZERO_DECIMAL.has(currency)
+    ? Math.round(converted / 10) * 10
+    : Math.round(converted);
 
-  // Combine UI language with country for natural formatting (e.g. "en-FR").
   const candidates = [`${language}-${countryCode}`, language, locale];
   let displayLocale = candidates[0];
   try {
@@ -116,20 +118,23 @@ export const formatPrice = (price: number | null | undefined) => {
     }
   } catch { /* ignore */ }
 
-  const converted = price * rate;
-  const zd = ZERO_DECIMAL.has(currency);
   try {
     return new Intl.NumberFormat(displayLocale, {
       style: "currency",
       currency,
       currencyDisplay: "symbol",
       minimumFractionDigits: 0,
-      maximumFractionDigits: zd ? 0 : 2,
-    }).format(converted);
+      maximumFractionDigits: 0,
+    }).format(clean);
   } catch {
-    return `${symbol}${(zd ? Math.round(converted) : converted).toLocaleString("en-US", { maximumFractionDigits: zd ? 0 : 2 })}`;
+    return `${symbol}${clean.toLocaleString("en-GB", { maximumFractionDigits: 0 })}`;
   }
 };
+
+/** Returns a formatted price or the quiet "Request Allocation" fallback
+ * when no firm price exists. */
+export const priceOrRequest = (price: number | null | undefined): string =>
+  formatPrice(price) ?? "Request Allocation";
 
 // Tiny hook: forces a re-render when the region or FX rates change so callers
 // that use the static `formatPrice` helper still update live on currency switch.

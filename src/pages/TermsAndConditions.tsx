@@ -16,10 +16,10 @@ const TermsAndConditions = () => (
         heading: "1. About RUVTIER",
         paragraphs: [
           "RUVTIER is a luxury clothing and lifestyle brand.",
-          "Business name: [insert legal business name]",
+          "Business name: RUVTIER",
           "Trading name: RUVTIER",
-          "Business address: [insert business address]",
-          "Email: [insert contact email]",
+          "Business address: Palermo, Italy (correspondence address available on request)",
+          "Email: contact@ruvtier.com",
         ],
       },
       {
@@ -92,7 +92,7 @@ const TermsAndConditions = () => (
       },
       {
         heading: "12. Contact",
-        paragraphs: ["For questions about these Terms, contact us at [insert contact email]."],
+        paragraphs: ["For questions about these Terms, contact us at contact@ruvtier.com."],
       },
     ]}
   />

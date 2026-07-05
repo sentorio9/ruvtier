@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAdminAuth } from "../hooks/useAdminAuth";
 import {
   LayoutDashboard, Package, ShoppingCart, Users, ScrollText,
-  FileText, Settings, LogOut, ChevronLeft, ChevronRight, ShoppingBag, ClipboardList, Power, Wand2
+  FileText, Settings, LogOut, ChevronLeft, ChevronRight, ShoppingBag, ClipboardList, Power, Wand2, CalendarClock
 } from "lucide-react";
 import { ADMIN_PREFIX } from "../config";
 
@@ -14,6 +14,7 @@ const navItems = [
   { to: `${ADMIN_PREFIX}/customers`, icon: Users, label: "Customers" },
   { to: `${ADMIN_PREFIX}/carts`, icon: ShoppingBag, label: "Carts" },
   { to: `${ADMIN_PREFIX}/preorders`, icon: ClipboardList, label: "Preorders" },
+  { to: `${ADMIN_PREFIX}/appointments`, icon: CalendarClock, label: "Appointments" },
   { to: `${ADMIN_PREFIX}/content`, icon: FileText, label: "Content" },
   { to: `${ADMIN_PREFIX}/editor`, icon: Wand2, label: "Website Editor" },
   { to: `${ADMIN_PREFIX}/maintenance`, icon: Power, label: "Maintenance" },

@@ -102,6 +102,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const company = (
     <>
       <Link to="/the-house" className={linkClass}>{t("footer.company.house")}</Link>
+      <Link to="/journal" className={linkClass}>Journal</Link>
       <Link to="/craft-career" className={linkClass}>{t("footer.company.career")}</Link>
       <Link to="/find-boutique" className={linkClass}>{t("footer.company.find_boutique")}</Link>
     </>
@@ -109,6 +110,7 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
   const touch = (
     <>
       <Link to="/contact" className={linkClass}>{t("footer.touch.contact")}</Link>
+      <Link to="/appointments" className={linkClass}>Book Appointment</Link>
       <Link to="/faq" className={linkClass}>{t("footer.touch.faq")}</Link>
     </>
   );

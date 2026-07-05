@@ -1,37 +1,41 @@
 /**
  * Product detail page (`/product/:slug`).
  *
- * A single garment composed in editorial silence: large image, name,
- * description, material, price. If the product has `preorder_enabled`
- * the page transparently redirects to `/preorder/:slug`.
- *
- * Section order: Navigation · image + intent column · related
- * products · LuxuryFooter.
- *
- * Design-system dependencies: `.luxury-container`,
- * `.type-display` / `.type-body`, `.luxury-button`. Emits Product
- * JSON-LD for SEO.
+ * A single garment composed in editorial silence. The product page
+ * applies the same accordion template across every piece: title,
+ * gallery, price or Request Allocation, size selector, allocation and
+ * appointment CTAs, and info accordions for Material / Fit / Care /
+ * Provenance. Redirects to `/preorder/:slug` when preorder is enabled.
  */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import PrivateAccessDrawer from "@/components/PrivateAccessDrawer";
+import InfoAccordion from "@/components/preorder/InfoAccordion";
 import { useProductBySlug, useActiveProducts, formatPrice, usePriceTick } from "@/hooks/useProducts";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import garmentImage from "@/assets/garment-single.jpg";
-import materialImage from "@/assets/material-texture.jpg";
+
+const AVAILABILITY_COPY: Record<string, string> = {
+  in_store: "Available",
+  by_allocation: "Available by allocation",
+  made_to_measure: "Available by made-to-measure",
+  coming_soon: "Coming soon",
+};
 
 const ProductPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const { data: product, isLoading } = useProductBySlug(slug);
-  const { data: relatedProducts } = useActiveProducts({ limit: 3 });
+  const { data: relatedProducts } = useActiveProducts({ limit: 4 });
 
   // Redirect to preorder page if preorder is enabled
   useEffect(() => {
@@ -39,6 +43,11 @@ const ProductPage = () => {
       navigate(`/preorder/${slug}`, { replace: true });
     }
   }, [product, slug, navigate]);
+
+  const priceLabel = formatPrice(product?.price);
+  const availability = ((product as any)?.availability as string | undefined) ?? "in_store";
+  const availabilityCopy = AVAILABILITY_COPY[availability] ?? "Available";
+  const needsAllocation = !priceLabel || availability === "by_allocation" || availability === "coming_soon";
 
   const productImageForMeta = (product as any)?.hero_image_url || (product as any)?.thumbnail_url || undefined;
   const productJsonLd = product
@@ -55,7 +64,7 @@ const ProductPage = () => {
         offers: {
           "@type": "Offer",
           price: product.price ?? 0,
-          priceCurrency: "EUR",
+          priceCurrency: "GBP",
           availability:
             product.stock_quantity && product.stock_quantity > 0
               ? "https://schema.org/InStock"
@@ -80,23 +89,22 @@ const ProductPage = () => {
   });
   usePriceTick();
 
-  // Parse size_options from product JSON
   const sizes: string[] = product?.size_options
     ? (Array.isArray(product.size_options) ? product.size_options as string[] : [])
-    : ["XS", "S", "M", "L", "XL"];
-
-  const colors: string[] = product?.color_options
-    ? (Array.isArray(product.color_options) ? product.color_options as string[] : [])
     : [];
 
-  const gallery: string[] = product?.media_gallery && Array.isArray(product.media_gallery)
-    ? (product.media_gallery as string[])
-    : [];
-
-  // Compose hero image stack: media_gallery if present, otherwise hero/thumbnail
-  const galleryImages = gallery.length > 0
-    ? gallery
-    : [product?.hero_image_url, product?.thumbnail_url].filter(Boolean) as string[];
+  // De-dupe gallery images: never render the same URL twice, even if
+  // hero_image_url and thumbnail_url happen to be identical.
+  const galleryImages = useMemo(() => {
+    const raw: string[] = [
+      ...(product?.media_gallery && Array.isArray(product.media_gallery)
+        ? (product.media_gallery as string[])
+        : []),
+      product?.hero_image_url as string | undefined,
+      product?.thumbnail_url as string | undefined,
+    ].filter(Boolean) as string[];
+    return Array.from(new Set(raw));
+  }, [product]);
 
   if (isLoading) {
     return (
@@ -105,9 +113,7 @@ const ProductPage = () => {
         <section className="pt-20 md:pt-28">
           <div className="luxury-container">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
-              <div className="animate-pulse">
-                <div className="aspect-[3/4] bg-secondary" />
-              </div>
+              <div className="animate-pulse"><div className="aspect-[3/4] bg-secondary" /></div>
               <div className="animate-pulse space-y-4 pt-8">
                 <div className="h-8 bg-secondary w-3/4" />
                 <div className="h-4 bg-secondary w-1/4" />
@@ -126,13 +132,11 @@ const ProductPage = () => {
         <Navigation />
         <section className="pt-28 md:pt-36 pb-20">
           <div className="luxury-container text-center">
-            <h1 className="luxury-heading mb-4">Product not found</h1>
+            <h1 className="luxury-heading mb-4">Piece not found</h1>
             <p className="luxury-body text-muted-foreground mb-8">
               This piece may no longer be available.
             </p>
-            <Link to="/collection" className="luxury-button">
-              Return to Collection
-            </Link>
+            <Link to="/collection" className="luxury-button">Return to Collection</Link>
           </div>
         </section>
       </div>
@@ -140,16 +144,23 @@ const ProductPage = () => {
   }
 
   const filtered = relatedProducts?.filter((p) => p.id !== product.id).slice(0, 3) || [];
+  const materials = product.materials?.trim();
+  const care = product.care_info?.trim();
 
   return (
     <div className="relative">
       <Navigation />
 
-      {/* Product hero */}
-      <section className="pt-20 md:pt-28">
+      <section className="pt-28 md:pt-32">
         <div className="luxury-container">
+          <Breadcrumbs items={[
+            { label: "Home", to: "/" },
+            { label: "Collection", to: "/collection" },
+            { label: product.name },
+          ]} />
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
-            {/* Images */}
+            {/* Gallery */}
             <ScrollFadeIn>
               <div className="flex flex-col gap-4">
                 {galleryImages.length > 0 ? (
@@ -164,23 +175,35 @@ const ProductPage = () => {
                     </div>
                   ))
                 ) : (
-                  <div className="aspect-[3/4] bg-secondary overflow-hidden">
-                    <img src={garmentImage} alt={product.name} className="w-full h-full object-cover" />
+                  <div className="aspect-[3/4] bg-secondary flex items-center justify-center px-8">
+                    <p className="font-serif italic text-foreground/50 text-center text-sm md:text-base leading-relaxed">
+                      Photography of {product.name} is in quiet preparation.
+                    </p>
                   </div>
                 )}
               </div>
             </ScrollFadeIn>
 
             {/* Details */}
-            <div className="lg:sticky lg:top-28 lg:self-start">
+            <div className="lg:sticky lg:top-32 lg:self-start">
               <ScrollFadeIn delay={0.15}>
-                <h1 className="luxury-heading mb-3">{product.name}</h1>
+                <p className="font-sans text-[10px] tracking-[0.28em] uppercase text-muted-foreground mb-4">
+                  {availabilityCopy}
+                </p>
+                <h1 className="luxury-heading mb-4">{product.name}</h1>
+
                 <p className="text-muted-foreground text-lg tracking-wide mb-8">
-                  {formatPrice(product.price)}
-                  {product.compare_at_price && product.compare_at_price > (product.price || 0) && (
-                    <span className="ml-3 line-through text-muted-foreground/50 text-base">
-                      {formatPrice(product.compare_at_price)}
-                    </span>
+                  {priceLabel ? (
+                    <>
+                      {priceLabel}
+                      {product.compare_at_price && product.compare_at_price > (product.price || 0) && (
+                        <span className="ml-3 line-through text-muted-foreground/50 text-base">
+                          {formatPrice(product.compare_at_price)}
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    <span className="text-foreground/70">Price available on request</span>
                   )}
                 </p>
 
@@ -188,40 +211,15 @@ const ProductPage = () => {
                   <p className="luxury-body mb-8">{product.description}</p>
                 )}
 
-                {/* Colour selector */}
-                {colors.length > 0 && (
-                  <div className="mb-6">
-                    <p className="text-sm text-muted-foreground tracking-wide mb-3">
-                      Colour{selectedColor ? ` — ${selectedColor}` : ""}
-                    </p>
-                    <div className="flex flex-wrap gap-3">
-                      {colors.map((c) => (
-                        <button
-                          key={c}
-                          onClick={() => setSelectedColor(c)}
-                          aria-pressed={selectedColor === c}
-                          className={`px-4 h-9 border text-xs tracking-[0.15em] uppercase transition-colors duration-300 ${
-                            selectedColor === c
-                              ? "border-foreground bg-foreground text-background"
-                              : "border-border text-foreground hover:border-foreground"
-                          }`}
-                        >
-                          {c}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
                 {/* Size selector */}
                 {sizes.length > 0 && (
                   <div className="mb-8">
                     <p className="text-sm text-muted-foreground tracking-wide mb-3">Size</p>
-                    <div className="flex gap-3">
+                    <div className="flex flex-wrap gap-3">
                       {sizes.map((size) => (
                         <button
                           key={size}
-                          onClick={() => setSelectedSize(size as string)}
+                          onClick={() => setSelectedSize(size)}
                           aria-label={`Select size ${size}`}
                           aria-pressed={selectedSize === size}
                           className={`w-12 h-12 border text-sm tracking-wider transition-colors duration-300 ${
@@ -230,66 +228,65 @@ const ProductPage = () => {
                               : "border-border text-foreground hover:border-foreground"
                           }`}
                         >
-                          {size as string}
+                          {size}
                         </button>
                       ))}
                     </div>
                   </div>
                 )}
 
-                {/* Add to cart placeholder */}
+                {/* CTAs — always Request Allocation for now, plus appointment link */}
                 <button
-                  disabled={!product.stock_quantity || product.stock_quantity <= 0}
-                  className="w-full py-4 bg-foreground text-background text-sm tracking-[0.2em] uppercase opacity-40 cursor-not-allowed mb-4"
+                  type="button"
+                  onClick={() => setDrawerOpen(true)}
+                  className="w-full py-4 bg-foreground text-background text-xs tracking-[0.25em] uppercase transition-opacity duration-300 hover:opacity-80 mb-3"
                 >
-                  Add to bag — coming soon
+                  {needsAllocation ? "Request Allocation" : "Request Private Access"}
                 </button>
-                <p className="text-xs text-muted-foreground text-center tracking-wide">
-                  {product.stock_quantity && product.stock_quantity > 0
-                    ? "Purchasing will be available soon"
-                    : "Currently unavailable"}
+                <Link
+                  to={`/appointments?type=collection_viewing`}
+                  className="block w-full py-4 border border-border text-foreground text-xs tracking-[0.25em] uppercase text-center transition-colors duration-300 hover:border-foreground mb-6"
+                >
+                  Book Private Appointment
+                </Link>
+
+                <p className="text-xs text-muted-foreground tracking-wide text-center mb-10">
+                  Complimentary alterations for life · Size guidance by appointment
                 </p>
 
-                {/* Materials & Care */}
-                {(product.materials || product.care_info) && (
-                  <div className="mt-10 pt-8 border-t border-border space-y-4">
-                    {product.materials && (
-                      <div>
-                        <p className="text-xs text-muted-foreground tracking-[0.15em] uppercase mb-1">Materials</p>
-                        <p className="text-sm text-foreground/80">{product.materials}</p>
-                      </div>
+                {/* Info accordions — always four, safe fall-backs when data missing */}
+                <div>
+                  <InfoAccordion label="Material">
+                    <p>{materials || "Composition confirmed on request. The piece is composed from selected natural fibres in restrained volumes."}</p>
+                  </InfoAccordion>
+                  <InfoAccordion label="Fit">
+                    {sizes.length > 0 ? (
+                      <p>Offered in {sizes.join(", ")}. Detailed measurements available on request.</p>
+                    ) : (
+                      <p>Measurements and fit guidance available by appointment.</p>
                     )}
-                    {product.care_info && (
-                      <div>
-                        <p className="text-xs text-muted-foreground tracking-[0.15em] uppercase mb-1">Care</p>
-                        <p className="text-sm text-foreground/80">{product.care_info}</p>
-                      </div>
+                  </InfoAccordion>
+                  <InfoAccordion label="Care">
+                    <p>{care || "Rest between wear. Store folded and away from direct light. Full care guidance provided with each piece."}</p>
+                  </InfoAccordion>
+                  <InfoAccordion label="Provenance">
+                    {product.long_description ? (
+                      <p>{product.long_description}</p>
+                    ) : (
+                      <p>Composed in the atelier under the quiet supervision of the house. Further provenance is shared in correspondence with the client.</p>
                     )}
-                  </div>
-                )}
+                  </InfoAccordion>
+                  <div className="border-t border-border" />
+                </div>
               </ScrollFadeIn>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Long description / editorial */}
-      {product.long_description && (
-        <section className="luxury-section">
-          <div className="luxury-container text-center">
-            <ScrollFadeIn>
-              <h2 className="luxury-heading mb-6">The making</h2>
-            </ScrollFadeIn>
-            <ScrollFadeIn delay={0.15}>
-              <p className="luxury-body mx-auto text-center">{product.long_description}</p>
-            </ScrollFadeIn>
-          </div>
-        </section>
-      )}
-
       {/* Related */}
       {filtered.length > 0 && (
-        <section className="luxury-section border-t border-border">
+        <section className="luxury-section border-t border-border mt-16">
           <div className="luxury-container">
             <ScrollFadeIn>
               <h2 className="luxury-heading text-center mb-12">You may also appreciate</h2>
@@ -309,7 +306,9 @@ const ProductPage = () => {
                     <h3 className="font-serif font-light text-base tracking-wide text-foreground mb-1">
                       {item.name}
                     </h3>
-                    <p className="text-sm text-muted-foreground tracking-wide">{formatPrice(item.price)}</p>
+                    <p className="text-sm text-muted-foreground tracking-wide">
+                      {formatPrice(item.price) ?? "Request Allocation"}
+                    </p>
                   </Link>
                 </ScrollFadeIn>
               ))}
@@ -317,6 +316,13 @@ const ProductPage = () => {
           </div>
         </section>
       )}
+
+      <PrivateAccessDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        product={product}
+        defaultSize={selectedSize}
+      />
 
       <LuxuryFooter onSubscribeClick={() => setSubscribeOpen(true)} />
       <SubscribePanel isOpen={subscribeOpen} onClose={() => setSubscribeOpen(false)} />

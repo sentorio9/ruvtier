@@ -24,11 +24,11 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { useT } from "@/i18n/useT";
 import type { TranslationKey } from "@/i18n/translations";
 
-const CATEGORY_ROUTES: { key: TranslationKey; to: string }[] = [
-  { key: "nav.women", to: "/boutique/women" },
-  { key: "nav.men", to: "/boutique/men" },
-  { key: "nav.lifestyle", to: "/boutique/lifestyle" },
-  { key: "nav.appointments", to: "/appointments" },
+const CATEGORY_ROUTES: { key: TranslationKey; to: string; matches: (path: string) => boolean }[] = [
+  { key: "nav.women", to: "/boutique/women", matches: (p) => p === "/boutique/women" || p.startsWith("/boutique/women/") },
+  { key: "nav.men", to: "/boutique/men", matches: (p) => p === "/boutique/men" || p.startsWith("/boutique/men/") },
+  { key: "nav.lifestyle", to: "/boutique/lifestyle", matches: (p) => p === "/boutique/lifestyle" },
+  { key: "nav.appointments", to: "/appointments", matches: (p) => p.startsWith("/appointments") },
 ];
 
 const Navigation = () => {
@@ -133,15 +133,21 @@ const Navigation = () => {
               <div className="border-t border-border" />
             </div>
             <div className="mx-auto max-w-[1400px] flex items-center justify-center h-[40px] px-4 md:px-8 lg:px-12 gap-10 md:gap-14">
-              {CATEGORY_ROUTES.map((cat) => (
-                <Link
-                  key={cat.to}
-                  to={cat.to}
-                  className="font-sans text-[11.5px] md:text-[12px] font-light tracking-[0.16em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300"
-                >
-                  {t(cat.key)}
-                </Link>
-              ))}
+              {CATEGORY_ROUTES.map((cat) => {
+                const active = cat.matches(location.pathname);
+                return (
+                  <Link
+                    key={cat.to}
+                    to={cat.to}
+                    aria-current={active ? "page" : undefined}
+                    className={`font-sans text-[11.5px] md:text-[12px] font-light tracking-[0.16em] uppercase transition-colors duration-300 ${
+                      active ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {t(cat.key)}
+                  </Link>
+                );
+              })}
             </div>
           </>
         )}

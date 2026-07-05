@@ -59,14 +59,11 @@ import {
 } from "@/content/brand";
 
 // Whole-figure price formatter used inside The Edit and The Icons.
-// Defers to formatPrice for currency/symbol/region, then strips the
-// fractional part so editorial cards never show "€2,400.00".
-const formatPriceWhole = (price: number | null | undefined): string => {
-  const formatted = formatPrice(price);
-  if (formatted === "—") return formatted;
-  // Drop a decimal portion if present (e.g. "€2,400.00" -> "€2,400").
-  return formatted.replace(/[.,]\d{2}(?!\d)/, "");
-};
+// formatPrice already returns a clean, rounded, whole-figure luxury
+// price, or null when the piece has no firm price yet. In that case
+// we surface the quiet allocation CTA.
+const formatPriceWhole = (price: number | null | undefined): string =>
+  formatPrice(price) ?? "Request Allocation";
 
 const Index = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);

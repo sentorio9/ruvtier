@@ -17,6 +17,7 @@
  * `<Editable>` wrappers source fallbacks from
  * `HOUSE_MANIFESTO` in `src/content/brand.ts`.
  */
+import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import ScrollFadeIn from "@/components/ScrollFadeIn";
 import LuxuryFooter from "@/components/LuxuryFooter";
@@ -46,9 +47,42 @@ const TheHousePage = () => {
 
       <article className="pt-40 pb-20 md:pt-48 md:pb-28">
         <div className="max-w-[620px] mx-auto px-6 md:px-8">
+          <div className="text-center mb-14 md:mb-20">
+            <p className="font-sans text-[10px] tracking-[0.28em] uppercase text-muted-foreground mb-6">
+              The House · Atelier Palermo
+            </p>
+            <h1 className="luxury-heading">The House of RUVTIER</h1>
+          </div>
+
           {PARAGRAPHS.map((p, i) => (
             <ManifestoParagraph key={p.key} index={i} para={p} />
           ))}
+
+          {/* Founder credit */}
+          <div className="text-center mb-14 md:mb-20">
+            <p className="font-sans text-[10px] tracking-[0.28em] uppercase text-muted-foreground mb-3">
+              Founder
+            </p>
+            <p className="font-serif text-lg text-foreground/90">
+              Rexford Joon Valenttier
+            </p>
+            <p className="font-sans text-[11px] tracking-[0.12em] text-muted-foreground mt-1">
+              Custodian of the house
+            </p>
+          </div>
+
+          {/* Closing CTAs */}
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-16 md:mb-20 pt-8 border-t border-border">
+            <Link to="/appointments" className="luxury-button !text-[12px] tracking-[0.2em]">
+              Book Appointment
+            </Link>
+            <Link to="/collection" className="luxury-button !text-[12px] tracking-[0.2em]">
+              Explore The Collection
+            </Link>
+            <Link to="/journal" className="luxury-button !text-[12px] tracking-[0.2em]">
+              Read the Journal
+            </Link>
+          </div>
 
           {/* Social links */}
           <ScrollFadeIn delay={0.15}>

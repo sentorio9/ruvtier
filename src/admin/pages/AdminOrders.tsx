@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "../components/AdminLayout";
+import { ADMIN_PREFIX } from "../config";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Order = Tables<"orders">;
@@ -74,7 +76,7 @@ export default function AdminOrders() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-[hsl(220,10%,14%)] bg-[hsl(220,15%,8%)]">
-                {["Order #", "Customer", "Status", "Total", "Date"].map((h) => (
+                {["Order #", "Customer", "Status", "Payment", "Fulfilment", "Total", "Date"].map((h) => (
                   <th key={h} className="text-left text-[10px] tracking-[0.12em] uppercase text-[hsl(220,10%,40%)] px-4 py-3 font-normal" style={fontStyle}>{h}</th>
                 ))}
               </tr>
@@ -82,12 +84,16 @@ export default function AdminOrders() {
             <tbody>
               {orders.map((o) => (
                 <tr key={o.id} className="border-b border-[hsl(220,10%,10%)] hover:bg-[hsl(220,15%,9%)]">
-                  <td className="px-4 py-3 text-[13px] text-[hsl(220,10%,75%)]" style={fontStyle}>{o.order_number}</td>
+                  <td className="px-4 py-3 text-[13px] text-[hsl(220,10%,75%)]" style={fontStyle}>
+                    <Link to={`${ADMIN_PREFIX}/orders/${o.id}`} className="hover:text-[hsl(220,10%,95%)]">{o.order_number}</Link>
+                  </td>
                   <td className="px-4 py-3 text-[12px] text-[hsl(220,10%,55%)]" style={fontStyle}>{o.customer_name || o.customer_email || "—"}</td>
                   <td className="px-4 py-3">
                     <span className={`text-[11px] tracking-[0.1em] uppercase ${statusColors[o.status] || ""}`} style={fontStyle}>{o.status}</span>
                   </td>
-                  <td className="px-4 py-3 text-[12px] text-[hsl(220,10%,60%)]" style={fontStyle}>€{Number(o.total).toFixed(2)}</td>
+                  <td className="px-4 py-3 text-[11px] tracking-[0.1em] uppercase text-[hsl(220,10%,55%)]" style={fontStyle}>{(o as any).payment_status || "—"}</td>
+                  <td className="px-4 py-3 text-[11px] tracking-[0.1em] uppercase text-[hsl(220,10%,55%)]" style={fontStyle}>{(o as any).fulfilment_status || "—"}</td>
+                  <td className="px-4 py-3 text-[12px] text-[hsl(220,10%,60%)]" style={fontStyle}>{(o as any).currency || "£"}{Number(o.total).toFixed(2)}</td>
                   <td className="px-4 py-3 text-[11px] text-[hsl(220,10%,35%)]" style={fontStyle}>{new Date(o.created_at).toLocaleDateString()}</td>
                 </tr>
               ))}

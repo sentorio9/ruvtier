@@ -28,7 +28,7 @@ const CATEGORY_ROUTES: { key: TranslationKey; to: string; matches: (path: string
   { key: "nav.women", to: "/boutique/women", matches: (p) => p === "/boutique/women" || p.startsWith("/boutique/women/") },
   { key: "nav.men", to: "/boutique/men", matches: (p) => p === "/boutique/men" || p.startsWith("/boutique/men/") },
   { key: "nav.lifestyle", to: "/boutique/lifestyle", matches: (p) => p === "/boutique/lifestyle" },
-  { key: "nav.appointments", to: "/appointments", matches: (p) => p.startsWith("/appointments") },
+  { key: "nav.the_house", to: "/the-house", matches: (p) => p.startsWith("/the-house") },
 ];
 
 const Navigation = () => {

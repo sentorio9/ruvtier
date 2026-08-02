@@ -49,7 +49,7 @@ const TheHouseStayPage = () => {
 
           <ScrollFadeIn delay={0.15}>
             <div className="mb-12 md:mb-16">
-              <p className="type-eyebrow mb-8 text-center">Things you can do at your visit</p>
+              <p className="type-eyebrow mb-8 text-center">{HOUSE_STAY.experiencesEyebrow}</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border border border-border">
                 {EXPERIENCES.map((exp, i) => (
                   <div

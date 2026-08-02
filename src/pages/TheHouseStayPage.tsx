@@ -30,11 +30,9 @@ const TheHouseStayPage = () => {
         <div className="luxury-container max-w-[900px] mx-auto">
           <ScrollFadeIn>
             <div className="text-center mb-16 md:mb-24">
-              <p className="type-eyebrow mb-6">Invitation-Led Visit</p>
-              <h1 className="type-display mb-6">RUVTIER Stay</h1>
-              <p className="luxury-body mx-auto max-w-[580px]">
-                A place to experience the House beyond its garment. A place where craftsmanship, hospitality and stillness form.
-              </p>
+              <p className="type-eyebrow mb-6">{HOUSE_STAY.eyebrow}</p>
+              <h1 className="type-display mb-6">{HOUSE_STAY.title}</h1>
+              <p className="luxury-body mx-auto max-w-[580px]">{HOUSE_STAY.intro}</p>
             </div>
           </ScrollFadeIn>
 

@@ -65,7 +65,7 @@ const TheHouseHub = () => {
           <ScrollFadeIn delay={0.4}>
             <div className="text-center mt-16 md:mt-24 pt-12 border-t border-border">
               <p className="font-serif font-light text-lg md:text-xl text-foreground/90 italic tracking-wide">
-                Ruvtier does not persuade. It remains.
+                {HOUSE_HUB.closing}
               </p>
             </div>
           </ScrollFadeIn>

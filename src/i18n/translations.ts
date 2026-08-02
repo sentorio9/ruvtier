@@ -9,7 +9,7 @@ export type TranslationKey =
   | "nav.women"
   | "nav.men"
   | "nav.lifestyle"
-  | "nav.appointments"
+  | "nav.the_house"
   | "nav.client_lounge"
   | "nav.menu"
   | "nav.search"

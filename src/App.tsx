@@ -25,6 +25,8 @@ const Materials = lazy(() => import("./pages/Materials"));
 const MaterialPage = lazy(() => import("./pages/MaterialPage"));
 const EditorialPage = lazy(() => import("./pages/EditorialPage"));
 const CollectionPage = lazy(() => import("./pages/CollectionPage"));
+const NewArrivalPage = lazy(() => import("./pages/NewArrivalPage"));
+const ByAllocationPage = lazy(() => import("./pages/ByAllocationPage"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
 const PreorderPage = lazy(() => import("./pages/PreorderPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
@@ -130,6 +132,8 @@ const App = () => (
           <Route path="/materials" element={<Materials />} />
           <Route path="/materials/:slug" element={<MaterialPage />} />
           <Route path="/collection" element={<CollectionPage />} />
+          <Route path="/new-arrival" element={<NewArrivalPage />} />
+          <Route path="/by-allocation" element={<ByAllocationPage />} />
           <Route path="/product/:slug" element={<ProductPage />} />
           <Route path="/preorder/:slug" element={<PreorderPage />} />
           <Route

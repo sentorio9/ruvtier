@@ -150,7 +150,8 @@ export const PREORDER_FINEPRINT =
 export const PREORDER_ALLOCATION_LABEL = "Allocation status";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// The House — src/pages/TheHousePage.tsx (manifesto paragraphs)
+// The House — src/pages/TheHouseHub.tsx, TheHousePhilosophyPage.tsx,
+//               TheHouseStayPage.tsx, HouseVisitBookingForm.tsx
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const HOUSE_MANIFESTO = {
@@ -166,6 +167,71 @@ export const HOUSE_MANIFESTO = {
     "Founded by Rexford Joon Valenttier. He serves as custodian.",
   closing:
     "Ruvtier does not persuade. It remains.",
+} as const;
+
+/** The House hub — four section cards. */
+export const HOUSE_HUB = {
+  eyebrow: "Atelier Palermo",
+  title: "The House",
+  intro:
+    "A place to experience the house beyond its garment. A place where craftsmanship, hospitality and stillness form.",
+  closing: "Ruvtier does not persuade. It remains.",
+  sections: [
+    {
+      key: "philosophy",
+      eyebrow: "The House",
+      title: "Philosophy",
+      body: "Stillness as discipline. The conviction behind every garment, space, and silence the house keeps.",
+      cta: "Read the manifesto",
+    },
+    {
+      key: "stay",
+      eyebrow: "Experience",
+      title: "RUVTIER Stay",
+      body: "An invitation-led visit to the headquarters. Craftsmanship, hospitality and stillness in one place.",
+      cta: "Discover the stay",
+    },
+    {
+      key: "journal",
+      eyebrow: "Stories",
+      title: "Journal",
+      body: "Heritage notes, material journeys, and the slow chronicle of the house.",
+      cta: "Read the journal",
+    },
+    {
+      key: "appointments",
+      eyebrow: "By Appointment",
+      title: "Appointments",
+      body: "Reserve a private consultation, collection viewing, or a moment with a steward of the house.",
+      cta: "Book an appointment",
+    },
+  ],
+} as const;
+
+/** RUVTIER Stay — hero and experience cards. */
+export const HOUSE_STAY = {
+  eyebrow: "Invitation-Led Visit",
+  title: "RUVTIER Stay",
+  intro:
+    "A place to experience the House beyond its garment. A place where craftsmanship, hospitality and stillness form.",
+  invitationHeadline: "Book a trip to visit the House",
+  invitationBody:
+    "Visits are arranged by invitation and confirmed in correspondence with a steward of the house.",
+  experiencesEyebrow: "Things you can do at your visit",
+  formEyebrow: "Request an Invitation",
+  formTitle: "Book a trip to Visit the House",
+  formBody:
+    "Share your preferred dates and the experiences that interest you. A steward will reply to arrange your visit.",
+  experiences: [
+    { title: "Morning breakfast", body: "A slow start in the garden room. Coffee, fruit, and the first light of the day before the house opens." },
+    { title: "Private library", body: "A quiet room of reference: textile archives, pattern books, and the collected history of the house." },
+    { title: "Wine cellar", body: "A small, curated cellar beneath the atelier. Tastings are offered by arrangement." },
+    { title: "Meet artisans", body: "Spend time with the hands that cut, finish and inspect each piece. Questions are welcomed slowly." },
+    { title: "Garden & mountain walks", body: "The grounds surrounding the house are composed as carefully as the garments. Walks are guided or taken alone." },
+    { title: "Made-to-measure fittings", body: "A private fitting with the atelier team. Proportions are recorded and a piece is composed to the wearer." },
+    { title: "Styling consultation", body: "A one-to-one conversation on silhouette, material and wardrobe rhythm with a house stylist." },
+    { title: "Showroom viewing", body: "See the current collection in a private salon, away from display and distraction." },
+  ],
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────

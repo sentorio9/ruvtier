@@ -28,7 +28,9 @@ const CollectionPage = lazy(() => import("./pages/CollectionPage"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
 const PreorderPage = lazy(() => import("./pages/PreorderPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
-const TheHousePage = lazy(() => import("./pages/TheHousePage"));
+const TheHouseHub = lazy(() => import("./pages/TheHouseHub"));
+const TheHousePhilosophyPage = lazy(() => import("./pages/TheHousePhilosophyPage"));
+const TheHouseStayPage = lazy(() => import("./pages/TheHouseStayPage"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const RitualsOfCarePage = lazy(() => import("./pages/RitualsOfCarePage"));
 const BoutiqueCategoryPage = lazy(() => import("./pages/BoutiqueCategoryPage"));
@@ -172,7 +174,9 @@ const App = () => (
           {/* Alias — keep /home-interior indexed but consolidated */}
           <Route path="/home-interior" element={<Navigate to="/boutique/home-interiors" replace />} />
 
-          <Route path="/the-house" element={<TheHousePage />} />
+          <Route path="/the-house" element={<TheHouseHub />} />
+          <Route path="/the-house/philosophy" element={<TheHousePhilosophyPage />} />
+          <Route path="/the-house/stay" element={<TheHouseStayPage />} />
           <Route
             path="/craft-career"
             element={

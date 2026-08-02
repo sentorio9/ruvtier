@@ -69,11 +69,9 @@ const TheHouseStayPage = () => {
           <ScrollFadeIn delay={0.2}>
             <div className="pt-12 md:pt-16 border-t border-border">
               <div className="text-center mb-12">
-                <p className="type-eyebrow mb-4">Request an Invitation</p>
-                <h2 className="type-title mb-4">Book a trip to Visit the House</h2>
-                <p className="luxury-body mx-auto max-w-[520px]">
-                  Share your preferred dates and the experiences that interest you. A steward will reply to arrange your visit.
-                </p>
+                <p className="type-eyebrow mb-4">{HOUSE_STAY.formEyebrow}</p>
+                <h2 className="type-title mb-4">{HOUSE_STAY.formTitle}</h2>
+                <p className="luxury-body mx-auto max-w-[520px]">{HOUSE_STAY.formBody}</p>
               </div>
               <HouseVisitBookingForm />
             </div>

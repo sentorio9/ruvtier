@@ -25,9 +25,11 @@ import { useT } from "@/i18n/useT";
 import type { TranslationKey } from "@/i18n/translations";
 
 const CATEGORY_ROUTES: { key: TranslationKey; to: string; matches: (path: string) => boolean }[] = [
+  { key: "nav.new_arrival", to: "/new-arrival", matches: (p) => p === "/new-arrival" },
+  { key: "nav.collection", to: "/collection", matches: (p) => p === "/collection" },
   { key: "nav.women", to: "/boutique/women", matches: (p) => p === "/boutique/women" || p.startsWith("/boutique/women/") },
   { key: "nav.men", to: "/boutique/men", matches: (p) => p === "/boutique/men" || p.startsWith("/boutique/men/") },
-  { key: "nav.lifestyle", to: "/boutique/lifestyle", matches: (p) => p === "/boutique/lifestyle" },
+  { key: "nav.by_allocation", to: "/by-allocation", matches: (p) => p === "/by-allocation" },
   { key: "nav.the_house", to: "/the-house", matches: (p) => p.startsWith("/the-house") },
 ];
 

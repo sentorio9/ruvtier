@@ -38,11 +38,9 @@ const TheHouseHub = () => {
         <div className="luxury-container max-w-[1100px] mx-auto">
           <ScrollFadeIn>
             <div className="text-center mb-16 md:mb-24">
-              <p className="type-eyebrow mb-6">Atelier Palermo</p>
-              <h1 className="type-display mb-6">The House</h1>
-              <p className="luxury-body mx-auto max-w-[560px]">
-                A place to experience the house beyond its garment. A place where craftsmanship, hospitality and stillness form.
-              </p>
+              <p className="type-eyebrow mb-6">{HOUSE_HUB.eyebrow}</p>
+              <h1 className="type-display mb-6">{HOUSE_HUB.title}</h1>
+              <p className="luxury-body mx-auto max-w-[560px]">{HOUSE_HUB.intro}</p>
             </div>
           </ScrollFadeIn>
 

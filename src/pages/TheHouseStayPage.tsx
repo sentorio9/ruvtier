@@ -39,10 +39,10 @@ const TheHouseStayPage = () => {
           <ScrollFadeIn delay={0.1}>
             <div className="text-center mb-16 md:mb-24 py-12 md:py-16 border-y border-border">
               <p className="font-serif font-light text-xl md:text-2xl text-foreground leading-relaxed max-w-[640px] mx-auto">
-                Book a trip to visit the House
+                {HOUSE_STAY.invitationHeadline}
               </p>
               <p className="type-body mt-4 max-w-[480px] mx-auto">
-                Visits are arranged by invitation and confirmed in correspondence with a steward of the house.
+                {HOUSE_STAY.invitationBody}
               </p>
             </div>
           </ScrollFadeIn>

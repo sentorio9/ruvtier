@@ -11,41 +11,9 @@ import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
 import HouseVisitBookingForm from "@/components/HouseVisitBookingForm";
 import { usePageMeta } from "@/hooks/usePageMeta";
+import { HOUSE_STAY } from "@/content/brand";
 
-const EXPERIENCES = [
-  {
-    title: "Morning breakfast",
-    body: "A slow start in the garden room. Coffee, fruit, and the first light of the day before the house opens.",
-  },
-  {
-    title: "Private library",
-    body: "A quiet room of reference: textile archives, pattern books, and the collected history of the house.",
-  },
-  {
-    title: "Wine cellar",
-    body: "A small, curated cellar beneath the atelier. Tastings are offered by arrangement.",
-  },
-  {
-    title: "Meet artisans",
-    body: "Spend time with the hands that cut, finish and inspect each piece. Questions are welcomed slowly.",
-  },
-  {
-    title: "Garden & mountain walks",
-    body: "The grounds surrounding the house are composed as carefully as the garments. Walks are guided or taken alone.",
-  },
-  {
-    title: "Made-to-measure fittings",
-    body: "A private fitting with the atelier team. Proportions are recorded and a piece is composed to the wearer.",
-  },
-  {
-    title: "Styling consultation",
-    body: "A one-to-one conversation on silhouette, material and wardrobe rhythm with a house stylist.",
-  },
-  {
-    title: "Showroom viewing",
-    body: "See the current collection in a private salon, away from display and distraction.",
-  },
-];
+const EXPERIENCES = HOUSE_STAY.experiences;
 
 const TheHouseStayPage = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);

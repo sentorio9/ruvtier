@@ -6,6 +6,9 @@ import type { LanguageCode } from "@/hooks/useLanguage";
 
 export type TranslationKey =
   // Nav categories
+  | "nav.new_arrival"
+  | "nav.collection"
+  | "nav.by_allocation"
   | "nav.women"
   | "nav.men"
   | "nav.lifestyle"
@@ -58,6 +61,9 @@ export type TranslationKey =
 type Dict = Record<TranslationKey, string>;
 
 const en: Dict = {
+  "nav.new_arrival": "New Arrival",
+  "nav.collection": "Collection",
+  "nav.by_allocation": "By Allocation",
   "nav.women": "Women",
   "nav.men": "Men",
   "nav.lifestyle": "Lifestyle",
@@ -101,6 +107,9 @@ const en: Dict = {
 };
 
 const fr: Dict = {
+  "nav.new_arrival": "Nouveautés",
+  "nav.collection": "Collection",
+  "nav.by_allocation": "Sur Allocation",
   "nav.women": "Femme",
   "nav.men": "Homme",
   "nav.lifestyle": "Art de vivre",
@@ -144,6 +153,9 @@ const fr: Dict = {
 };
 
 const de: Dict = {
+  "nav.new_arrival": "Neuheiten",
+  "nav.collection": "Kollektion",
+  "nav.by_allocation": "Auf Anfrage",
   "nav.women": "Damen",
   "nav.men": "Herren",
   "nav.lifestyle": "Lifestyle",
@@ -187,6 +199,9 @@ const de: Dict = {
 };
 
 const it: Dict = {
+  "nav.new_arrival": "Nuovi Arrivi",
+  "nav.collection": "Collezione",
+  "nav.by_allocation": "Su Allocazione",
   "nav.women": "Donna",
   "nav.men": "Uomo",
   "nav.lifestyle": "Lifestyle",
@@ -230,6 +245,9 @@ const it: Dict = {
 };
 
 const es: Dict = {
+  "nav.new_arrival": "Novedades",
+  "nav.collection": "Colección",
+  "nav.by_allocation": "Por Asignación",
   "nav.women": "Mujer",
   "nav.men": "Hombre",
   "nav.lifestyle": "Lifestyle",
@@ -273,6 +291,9 @@ const es: Dict = {
 };
 
 const pt: Dict = {
+  "nav.new_arrival": "Novidades",
+  "nav.collection": "Coleção",
+  "nav.by_allocation": "Por Alocação",
   "nav.women": "Feminino",
   "nav.men": "Masculino",
   "nav.lifestyle": "Lifestyle",
@@ -316,6 +337,9 @@ const pt: Dict = {
 };
 
 const ja: Dict = {
+  "nav.new_arrival": "新作",
+  "nav.collection": "コレクション",
+  "nav.by_allocation": "アロケーション",
   "nav.women": "ウィメンズ",
   "nav.men": "メンズ",
   "nav.lifestyle": "ライフスタイル",
@@ -359,6 +383,9 @@ const ja: Dict = {
 };
 
 const ko: Dict = {
+  "nav.new_arrival": "신상품",
+  "nav.collection": "컬렉션",
+  "nav.by_allocation": "알로케이션",
   "nav.women": "우먼",
   "nav.men": "맨",
   "nav.lifestyle": "라이프스타일",
@@ -402,6 +429,9 @@ const ko: Dict = {
 };
 
 const zhHant: Dict = {
+  "nav.new_arrival": "新品",
+  "nav.collection": "系列",
+  "nav.by_allocation": "預訂甄選",
   "nav.women": "女士",
   "nav.men": "男士",
   "nav.lifestyle": "生活方式",
@@ -445,6 +475,9 @@ const zhHant: Dict = {
 };
 
 const zhHans: Dict = {
+  "nav.new_arrival": "新品",
+  "nav.collection": "系列",
+  "nav.by_allocation": "预订甄选",
   "nav.women": "女士",
   "nav.men": "男士",
   "nav.lifestyle": "生活方式",
@@ -488,6 +521,9 @@ const zhHans: Dict = {
 };
 
 const ar: Dict = {
+  "nav.new_arrival": "وصل حديثاً",
+  "nav.collection": "المجموعة",
+  "nav.by_allocation": "حسب الطلب",
   "nav.women": "نساء",
   "nav.men": "رجال",
   "nav.lifestyle": "نمط الحياة",

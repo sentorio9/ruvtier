@@ -14,41 +14,14 @@ import LuxuryFooter from "@/components/LuxuryFooter";
 import SubscribePanel from "@/components/SubscribePanel";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { useState } from "react";
+import { HOUSE_HUB } from "@/content/brand";
 
-const SECTIONS = [
-  {
-    key: "philosophy",
-    eyebrow: "The House",
-    title: "Philosophy",
-    body: "Stillness as discipline. The conviction behind every garment, space, and silence the house keeps.",
-    to: "/the-house/philosophy",
-    cta: "Read the manifesto",
-  },
-  {
-    key: "stay",
-    eyebrow: "Experience",
-    title: "RUVTIER Stay",
-    body: "An invitation-led visit to the headquarters. Craftsmanship, hospitality and stillness in one place.",
-    to: "/the-house/stay",
-    cta: "Discover the stay",
-  },
-  {
-    key: "journal",
-    eyebrow: "Stories",
-    title: "Journal",
-    body: "Heritage notes, material journeys, and the slow chronicle of the house.",
-    to: "/journal",
-    cta: "Read the journal",
-  },
-  {
-    key: "appointments",
-    eyebrow: "By Appointment",
-    title: "Appointments",
-    body: "Reserve a private consultation, collection viewing, or a moment with a steward of the house.",
-    to: "/appointments",
-    cta: "Book an appointment",
-  },
-];
+const SECTIONS = HOUSE_HUB.sections.map((s) => ({
+  ...s,
+  to: s.key === "philosophy" ? "/the-house/philosophy" :
+      s.key === "stay" ? "/the-house/stay" :
+      s.key === "journal" ? "/journal" : "/appointments",
+}));
 
 const TheHouseHub = () => {
   const [subscribeOpen, setSubscribeOpen] = useState(false);

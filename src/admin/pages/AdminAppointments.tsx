@@ -31,6 +31,7 @@ const TYPE_LABELS: Record<string, string> = {
   made_to_measure: "Made-to-measure",
   collection_viewing: "Collection viewing",
   client_services: "Client services",
+  house_visit: "Visit the House",
 };
 
 export default function AdminAppointments() {

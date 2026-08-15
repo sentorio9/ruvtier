@@ -96,7 +96,18 @@ const PrivacyPolicy = () => (
         heading: "6. Sharing your information",
         paragraphs: [
           "We do not sell your personal information.",
-          "We may share limited information with trusted service providers who help us operate the website, manage email communication, host data, provide analytics or support customer enquiries. These providers must handle your information securely and only for the purposes we instruct.",
+          "We work with a small number of trusted providers who process personal data on our behalf. They must handle your information securely and only for the purposes we instruct:",
+        ],
+        list: [
+          "Supabase — database, authentication and file hosting for this website",
+          "Resend — delivery of account, appointment and newsletter emails from notify.ruvtier.com",
+          "Stripe — payment processing and fraud prevention, once ordering is live. Card details are entered on Stripe's own secure surface and are never held by RUVTIER",
+          "Our website hosting provider — serving this website and its static assets",
+          "An IP-based geolocation service, used only to suggest a shipping region and currency",
+        ],
+      },
+      {
+        paragraphs: [
           "We may also share information if required by law, regulation or legal process.",
         ],
       },

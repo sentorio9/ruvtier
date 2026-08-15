@@ -33,7 +33,7 @@ export function useActiveProducts(options?: { collection?: string; gender?: stri
 
       let query = supabase
         .from("products")
-        .select("*")
+        .select(PUBLIC_PRODUCT_COLUMNS)
         .eq("status", "active")
         .is("deleted_at", null)
         .order("created_at", { ascending: false });
@@ -63,7 +63,7 @@ export function useProductBySlug(slug: string | undefined) {
       if (!isSupabaseConfigured || !slug) return null;
       const { data, error } = await supabase
         .from("products")
-        .select("*")
+        .select(PUBLIC_PRODUCT_COLUMNS)
         .eq("slug", slug)
         .eq("status", "active")
         .is("deleted_at", null)

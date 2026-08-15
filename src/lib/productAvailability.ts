@@ -12,14 +12,17 @@ export type AvailabilityState =
 
 interface VariantLike {
   status?: string | null;
+  // Exact integers are admin-only. Public callers receive `stock_state`.
   stock_quantity?: number | null;
   reserved_quantity?: number | null;
+  stock_state?: string | null;
 }
 
 interface ProductLike {
   availability?: string | null;
   preorder_enabled?: boolean | null;
   stock_quantity?: number | null;
+  stock_state?: string | null;
 }
 
 export function computeAvailability(
@@ -29,11 +32,12 @@ export function computeAvailability(
   const active = variants.filter(v => (v.status ?? "active") === "active");
 
   if (active.length > 0) {
-    const totalAvailable = active.reduce(
-      (sum, v) => sum + Math.max(0, (v.stock_quantity ?? 0) - (v.reserved_quantity ?? 0)),
-      0,
+    const hasStock = active.some(v =>
+      v.stock_state
+        ? v.stock_state !== "closed"
+        : Math.max(0, (v.stock_quantity ?? 0) - (v.reserved_quantity ?? 0)) > 0,
     );
-    if (totalAvailable > 0) return "purchasable";
+    if (hasStock) return "purchasable";
     if (product.preorder_enabled) return "preorder";
     if (product.availability === "by_allocation") return "by_allocation";
     if (product.availability === "coming_soon") return "coming_soon";
@@ -44,7 +48,10 @@ export function computeAvailability(
   if (product.preorder_enabled) return "preorder";
   const a = (product.availability || "").toString();
   if (a === "purchasable") {
-    return (product.stock_quantity ?? 0) > 0 ? "purchasable" : "sold_out";
+    const inStock = product.stock_state
+      ? product.stock_state !== "closed"
+      : (product.stock_quantity ?? 0) > 0;
+    return inStock ? "purchasable" : "sold_out";
   }
   if (a === "by_allocation") return "by_allocation";
   if (a === "coming_soon") return "coming_soon";

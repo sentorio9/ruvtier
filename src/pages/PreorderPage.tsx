@@ -62,10 +62,19 @@ const PreorderPage = () => {
     ? (product.size_options as string[])
     : ["XS", "S", "M", "L"];
 
-  // ── Allocation counter (hidden when edition_size is null) ────────────────
+  // ── Allocation status (hidden when edition_size is null) ─────────────────
+  // Exact allocation integers are never sent to the browser. The database
+  // computes a coarse state (open / limited / closed) which we phrase here.
   const editionSize = (product as any)?.edition_size as number | null | undefined;
-  const allocated = ((product as any)?.allocated_count as number | null | undefined) ?? 0;
-  const remaining = editionSize ? Math.max(editionSize - allocated, 0) : null;
+  const allocationState = (product as any)?.allocation_state as string | null | undefined;
+  const allocationLabel =
+    allocationState === "closed"
+      ? "Fully allocated"
+      : allocationState === "limited"
+        ? "Limited allocation remaining"
+        : allocationState === "open"
+          ? "Allocation open"
+          : null;
 
   if (isLoading) {
     return (
@@ -191,14 +200,14 @@ const PreorderPage = () => {
                 )}
 
                 {/* Allocation status */}
-                {editionSize && remaining != null && (
+                {allocationLabel && (
                   <div className="mb-6">
                     <div className="flex items-baseline justify-between border-b border-border pb-3">
                       <span className="text-xs tracking-[0.15em] uppercase text-foreground/80">
                         {PREORDER_ALLOCATION_LABEL}
                       </span>
                       <span className="text-xs tracking-wide text-muted-foreground">
-                        {remaining} of {editionSize} remaining
+                        {allocationLabel}
                       </span>
                     </div>
                   </div>

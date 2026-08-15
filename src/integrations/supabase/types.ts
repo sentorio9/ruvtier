@@ -781,6 +781,7 @@ export type Database = {
           sku: string | null
           status: string
           stock_quantity: number
+          stock_state: string | null
           stripe_price_id: string | null
           title: string | null
           updated_at: string
@@ -805,6 +806,7 @@ export type Database = {
           sku?: string | null
           status?: string
           stock_quantity?: number
+          stock_state?: string | null
           stripe_price_id?: string | null
           title?: string | null
           updated_at?: string
@@ -829,6 +831,7 @@ export type Database = {
           sku?: string | null
           status?: string
           stock_quantity?: number
+          stock_state?: string | null
           stripe_price_id?: string | null
           title?: string | null
           updated_at?: string
@@ -847,6 +850,7 @@ export type Database = {
       products: {
         Row: {
           allocated_count: number
+          allocation_state: string | null
           availability: string
           care_info: string | null
           collection: string | null
@@ -875,12 +879,14 @@ export type Database = {
           slug: string
           status: string
           stock_quantity: number | null
+          stock_state: string | null
           thumbnail_url: string | null
           updated_at: string
           updated_by: string | null
         }
         Insert: {
           allocated_count?: number
+          allocation_state?: string | null
           availability?: string
           care_info?: string | null
           collection?: string | null
@@ -909,12 +915,14 @@ export type Database = {
           slug: string
           status?: string
           stock_quantity?: number | null
+          stock_state?: string | null
           thumbnail_url?: string | null
           updated_at?: string
           updated_by?: string | null
         }
         Update: {
           allocated_count?: number
+          allocation_state?: string | null
           availability?: string
           care_info?: string | null
           collection?: string | null
@@ -943,6 +951,7 @@ export type Database = {
           slug?: string
           status?: string
           stock_quantity?: number | null
+          stock_state?: string | null
           thumbnail_url?: string | null
           updated_at?: string
           updated_by?: string | null

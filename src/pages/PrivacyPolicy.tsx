@@ -32,13 +32,22 @@ const PrivacyPolicy = () => (
           "Name",
           "Email address",
           "Phone number, if provided",
-          "Appointment or preorder details",
+          "Client Lounge account details: email, display name, phone and password (the password is stored only as a secure hash by our authentication provider)",
+          "Shipping and billing addresses saved to your Client Lounge account",
+          "Appointment, house visit, allocation and preorder request details, including preferred dates, sizes and delivery region",
+          "Basket contents held against your session or account",
+          "Order records, including items, totals and delivery address, once ordering is live",
           "Delivery or location preferences, if provided",
           "Messages sent through contact forms",
-          "Newsletter subscription preferences",
+          "Newsletter and private-list subscription preferences",
           "Website usage information",
           "Device, browser and IP-related technical information",
           "Cookie and analytics preferences",
+        ],
+      },
+      {
+        paragraphs: [
+          "We do not use artificial intelligence to process your personal data. Nothing you submit through this website is sent to an AI provider.",
         ],
       },
       {
@@ -87,7 +96,18 @@ const PrivacyPolicy = () => (
         heading: "6. Sharing your information",
         paragraphs: [
           "We do not sell your personal information.",
-          "We may share limited information with trusted service providers who help us operate the website, manage email communication, host data, provide analytics or support customer enquiries. These providers must handle your information securely and only for the purposes we instruct.",
+          "We work with a small number of trusted providers who process personal data on our behalf. They must handle your information securely and only for the purposes we instruct:",
+        ],
+        list: [
+          "Supabase — database, authentication and file hosting for this website",
+          "Resend — delivery of account, appointment and newsletter emails from notify.ruvtier.com",
+          "Stripe — payment processing and fraud prevention, once ordering is live. Card details are entered on Stripe's own secure surface and are never held by RUVTIER",
+          "Our website hosting provider — serving this website and its static assets",
+          "An IP-based geolocation service, used only to suggest a shipping region and currency",
+        ],
+      },
+      {
+        paragraphs: [
           "We may also share information if required by law, regulation or legal process.",
         ],
       },
@@ -121,7 +141,10 @@ const PrivacyPolicy = () => (
         ],
       },
       {
-        paragraphs: ["To exercise your rights, contact us at contact@ruvtier.com."],
+        paragraphs: [
+          "To exercise any of these rights, email contact@ruvtier.com from the address you used with RUVTIER, stating what you would like us to do. We will verify that the request comes from you, confirm receipt, and respond within one month. Where we cannot verify ownership of an address, we may ask for further information before acting.",
+          "Account deletion removes your Client Lounge profile, saved addresses, saved basket, and appointment, allocation and preorder history, except where we are required to keep records for legal, tax or fraud-prevention purposes.",
+        ],
       },
       {
         heading: "10. Security",

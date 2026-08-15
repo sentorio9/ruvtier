@@ -366,6 +366,19 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
           </button>
         </div>
       </div>
+      {/* C7 — hidden link trap. Invisible and unreachable for humans and
+          screen readers; disallowed in robots.txt. Any client requesting
+          /private-index is a crawler ignoring both, and can be blocked at
+          the edge (Cloudflare rule on this path). */}
+      <a
+        href="/private-index"
+        aria-hidden="true"
+        tabIndex={-1}
+        rel="nofollow"
+        style={{ position: "absolute", left: "-10000px", width: 1, height: 1, overflow: "hidden" }}
+      >
+        .
+      </a>
       <ShippingRegionModal open={shippingOpen} onClose={() => setShippingOpen(false)} />
     </footer>
   );

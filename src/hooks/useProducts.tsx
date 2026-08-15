@@ -5,6 +5,19 @@ import type { Tables } from "@/integrations/supabase/types";
 
 export type Product = Tables<"products">;
 
+// A17/C2 — the public site never asks for internal columns. Exact stock and
+// allocation integers are not granted to the anonymous role; the database
+// exposes coarse `stock_state` / `allocation_state` signals instead.
+export const PUBLIC_PRODUCT_COLUMNS = [
+  "id", "name", "slug", "collection", "gender_segment", "description",
+  "long_description", "price", "compare_at_price", "sku", "status", "featured",
+  "materials", "care_info", "size_options", "color_options", "media_gallery",
+  "thumbnail_url", "hero_image_url", "seo_title", "seo_description",
+  "created_at", "updated_at", "deleted_at", "preorder_enabled",
+  "preorder_statement", "availability", "edition_size",
+  "stock_state", "allocation_state",
+].join(", ");
+
 export function useActiveProducts(options?: { collection?: string; gender?: string; featured?: boolean; limit?: number }) {
   return useQuery<Product[]>({
     queryKey: ["products", "active", options],
@@ -20,7 +33,7 @@ export function useActiveProducts(options?: { collection?: string; gender?: stri
 
       let query = supabase
         .from("products")
-        .select("*")
+        .select(PUBLIC_PRODUCT_COLUMNS)
         .eq("status", "active")
         .is("deleted_at", null)
         .order("created_at", { ascending: false });
@@ -36,7 +49,7 @@ export function useActiveProducts(options?: { collection?: string; gender?: stri
         throw error;
       }
       console.info("[useActiveProducts] result", { count: data?.length ?? 0, options });
-      return data as Product[];
+      return data as unknown as Product[];
     },
   });
 }
@@ -50,13 +63,13 @@ export function useProductBySlug(slug: string | undefined) {
       if (!isSupabaseConfigured || !slug) return null;
       const { data, error } = await supabase
         .from("products")
-        .select("*")
+        .select(PUBLIC_PRODUCT_COLUMNS)
         .eq("slug", slug)
         .eq("status", "active")
         .is("deleted_at", null)
         .maybeSingle();
       if (error) throw error;
-      return data as Product | null;
+      return data as unknown as Product | null;
     },
   });
 }

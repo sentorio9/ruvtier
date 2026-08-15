@@ -42,6 +42,24 @@ const TermsAndConditions = () => (
         ],
       },
       {
+        heading: "3a. Allocation and private access requests",
+        paragraphs: [
+          "Certain pieces are released by allocation. Submitting an allocation or private access request is an expression of interest only. RUVTIER decides at its sole discretion whether to offer an allocation, and may decline any request without giving reasons.",
+          "Where a piece is described as a limited edition, the stated edition size is a maximum. RUVTIER may hold back pieces for archive, press, atelier or client-service purposes.",
+          "An allocation offer, once made, is personal to you, is not transferable, and lapses if not accepted within the period stated in the offer.",
+          "No payment is taken at the point of request. Any deposit, balance, cancellation or refund terms will be set out in writing before payment is taken, and those written terms will prevail over this page for that specific piece.",
+          "Indicative delivery windows given for preorders and allocations are estimates, not guarantees. Where a stated window will be materially missed, we will contact you and you may withdraw your request.",
+          "Requests submitted through automated means, duplicate submissions, or submissions containing information we believe to be false may be refused or removed.",
+        ],
+      },
+      {
+        heading: "3b. Appointments and house visits",
+        paragraphs: [
+          "Appointment and house visit requests are invitations to treat. A visit is only confirmed once RUVTIER has replied in writing with a date and time.",
+          "We ask that you tell us as early as possible if you cannot attend a confirmed appointment. Repeated non-attendance may lead us to decline future requests.",
+        ],
+      },
+      {
         heading: "4. Product information",
         paragraphs: [
           "We aim to present product information accurately. However, product descriptions, images, availability, pricing, materials and release details may change.",

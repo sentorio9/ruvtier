@@ -66,7 +66,7 @@ const ProductPage = () => {
           price: product.price ?? 0,
           priceCurrency: "GBP",
           availability:
-            product.stock_quantity && product.stock_quantity > 0
+            (product as any).stock_state && (product as any).stock_state !== "closed"
               ? "https://schema.org/InStock"
               : (product as any).preorder_enabled
                 ? "https://schema.org/PreOrder"

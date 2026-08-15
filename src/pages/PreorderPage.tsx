@@ -200,14 +200,14 @@ const PreorderPage = () => {
                 )}
 
                 {/* Allocation status */}
-                {editionSize && remaining != null && (
+                {allocationLabel && (
                   <div className="mb-6">
                     <div className="flex items-baseline justify-between border-b border-border pb-3">
                       <span className="text-xs tracking-[0.15em] uppercase text-foreground/80">
                         {PREORDER_ALLOCATION_LABEL}
                       </span>
                       <span className="text-xs tracking-wide text-muted-foreground">
-                        {remaining} of {editionSize} remaining
+                        {allocationLabel}
                       </span>
                     </div>
                   </div>

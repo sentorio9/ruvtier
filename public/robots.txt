@@ -1,9 +1,22 @@
 # RUVTIER — Robots policy
-# Public marketing site. Private routes are not listed here on purpose
-# (listing them would broadcast their existence). Access is enforced
-# server-side via authentication.
+# Public product and editorial pages are crawlable. Private, account and
+# administrative surfaces are disallowed. Note: hostile bots ignore this
+# file entirely — access is enforced server-side via authentication and RLS.
 
 User-agent: *
 Allow: /
+Disallow: /123vhtg241s
+Disallow: /123vhtg241s/
+Disallow: /admin
+Disallow: /admin-approval
+Disallow: /lounge
+Disallow: /reset-password
+Disallow: /account
+Disallow: /cart
+Disallow: /checkout
+Disallow: /api/
+Disallow: /rest/
+Disallow: /functions/
+Disallow: /private-index
 
 Sitemap: https://ruvtier.com/sitemap.xml

@@ -141,7 +141,10 @@ const PrivacyPolicy = () => (
         ],
       },
       {
-        paragraphs: ["To exercise your rights, contact us at contact@ruvtier.com."],
+        paragraphs: [
+          "To exercise any of these rights, email contact@ruvtier.com from the address you used with RUVTIER, stating what you would like us to do. We will verify that the request comes from you, confirm receipt, and respond within one month. Where we cannot verify ownership of an address, we may ask for further information before acting.",
+          "Account deletion removes your Client Lounge profile, saved addresses, saved basket, and appointment, allocation and preorder history, except where we are required to keep records for legal, tax or fraud-prevention purposes.",
+        ],
       },
       {
         heading: "10. Security",

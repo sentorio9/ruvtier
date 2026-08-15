@@ -49,7 +49,7 @@ export function useActiveProducts(options?: { collection?: string; gender?: stri
         throw error;
       }
       console.info("[useActiveProducts] result", { count: data?.length ?? 0, options });
-      return data as Product[];
+      return data as unknown as Product[];
     },
   });
 }
@@ -69,7 +69,7 @@ export function useProductBySlug(slug: string | undefined) {
         .is("deleted_at", null)
         .maybeSingle();
       if (error) throw error;
-      return data as Product | null;
+      return data as unknown as Product | null;
     },
   });
 }

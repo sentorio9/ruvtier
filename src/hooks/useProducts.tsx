@@ -5,6 +5,19 @@ import type { Tables } from "@/integrations/supabase/types";
 
 export type Product = Tables<"products">;
 
+// A17/C2 — the public site never asks for internal columns. Exact stock and
+// allocation integers are not granted to the anonymous role; the database
+// exposes coarse `stock_state` / `allocation_state` signals instead.
+export const PUBLIC_PRODUCT_COLUMNS = [
+  "id", "name", "slug", "collection", "gender_segment", "description",
+  "long_description", "price", "compare_at_price", "sku", "status", "featured",
+  "materials", "care_info", "size_options", "color_options", "media_gallery",
+  "thumbnail_url", "hero_image_url", "seo_title", "seo_description",
+  "created_at", "updated_at", "deleted_at", "preorder_enabled",
+  "preorder_statement", "availability", "edition_size",
+  "stock_state", "allocation_state",
+].join(", ");
+
 export function useActiveProducts(options?: { collection?: string; gender?: string; featured?: boolean; limit?: number }) {
   return useQuery<Product[]>({
     queryKey: ["products", "active", options],

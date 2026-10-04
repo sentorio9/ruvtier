@@ -588,6 +588,7 @@ function ProfileView({ user, profile, editMode, editName, editPhone, shippingAdd
             <button onClick={onSignOut} className="w-full h-11 text-[11px] tracking-[0.15em] uppercase text-muted-foreground hover:text-foreground transition-colors font-sans">
               Sign Out
             </button>
+            <DeleteAccountSection onDeleted={onSignOut} />
           </div>
         </div>
       ) : (

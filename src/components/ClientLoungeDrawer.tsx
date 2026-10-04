@@ -1,5 +1,4 @@
 /**
- * ClientLoungeDrawer — right-anchored drawer holding the four auth
  * views: login · register · profile · forgot-password.
  *
  * Props:
@@ -13,6 +12,7 @@
  * `AddressFields.tsx`); 12-char min password rule; body scroll locks
  * while open.
  */
+import DeleteAccountSection from "./client-lounge/DeleteAccountSection";
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
@@ -588,6 +588,7 @@ function ProfileView({ user, profile, editMode, editName, editPhone, shippingAdd
             <button onClick={onSignOut} className="w-full h-11 text-[11px] tracking-[0.15em] uppercase text-muted-foreground hover:text-foreground transition-colors font-sans">
               Sign Out
             </button>
+            <DeleteAccountSection onDeleted={onSignOut} />
           </div>
         </div>
       ) : (

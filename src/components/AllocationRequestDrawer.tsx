@@ -131,6 +131,10 @@ const AllocationRequestDrawer = ({ open, onClose, category, headline }: Props) =
 
               {error && <p className="text-xs text-red-400 tracking-wide">{error}</p>}
 
+              <p className="text-[11px] leading-relaxed text-muted-foreground font-light">
+                We use these details only to respond to this allocation request. We will not send marketing without your separate consent. See our <a href="/privacy-policy" className="underline underline-offset-2">Privacy Policy</a>.
+              </p>
+
               <button type="submit" disabled={submitting}
                 className="w-full py-4 bg-foreground text-background text-xs tracking-[0.2em] uppercase transition-opacity duration-300 hover:opacity-80 disabled:opacity-40">
                 {submitting ? "Submitting..." : "Register Interest"}

@@ -348,11 +348,16 @@ const LuxuryFooter = ({ onSubscribeClick }: LuxuryFooterProps) => {
 
         {/* ─── Copyright + Shipping/Region ─── */}
         <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-4 pt-8 border-t border-border/60">
-          <p className="text-muted-foreground text-[12px] tracking-[0.08em] font-light">
-            © {new Date().getFullYear()}{" "}
-            <span className="font-serif tracking-[0.12em]">RUVTIER</span>
-            . {t("footer.rights")}
-          </p>
+          <div className="space-y-1">
+            <p className="text-muted-foreground text-[12px] tracking-[0.08em] font-light">
+              © {new Date().getFullYear()}{" "}
+              <span className="font-serif tracking-[0.12em]">RUVTIER</span>
+              . {t("footer.rights")}
+            </p>
+            <p className="text-muted-foreground/70 text-[11px] tracking-[0.04em] font-light">
+              [NEEDS-REAL-VALUE: registered company name] · Company no. [NEEDS-REAL-VALUE: company number] · Registered in [NEEDS-REAL-VALUE: place of registration] · Registered office: [NEEDS-REAL-VALUE: registered office address]
+            </p>
+          </div>
           <button
             onClick={() => setShippingOpen(true)}
             className="flex items-center gap-2 text-[12px] tracking-[0.14em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-300 self-start md:self-auto font-light"
